@@ -1,7 +1,5 @@
 import type { Pattern } from "./types";
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
-
 export function escapeRegex(str: string): string {
 	return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
@@ -14,23 +12,10 @@ export function fromCaptureName(name: string): string {
 	return name.replace(/__/g, ".");
 }
 
-/** Named capture group names must be valid JS identifiers. */
 function isValidCaptureName(name: string): boolean {
 	return /^[a-zA-Z_$][\w$]*$/.test(name);
 }
 
-// ─── Main builder ─────────────────────────────────────────────────────────────
-
-/**
- * Build a regex string for `pattern`.
- *
- * itemName     — when inside a loop body, restricts which variable names are
- *                captured.  Others become anonymous `[\s\S]+?` groups.
- * seen         — capture names already emitted; duplicate → backreference.
- * branchSuffix — `_C{id}T` / `_C{id}E` for conditional branches.
- * loopVar      — loop variable name for classic `for` loops; enables bracket
- *                access `arr[i]` to be treated as the loop item.
- */
 export function buildRegex(
 	pattern: Pattern,
 	itemName?: string,
@@ -45,31 +30,25 @@ export function buildRegex(
 		case "variable": {
 			let captureName = pattern.name;
 
-			// ── Inside a loop body ───────────────────────────────────────────────
 			if (itemName !== undefined) {
 				const bracketItem = loopVar ? `${itemName}[${loopVar}]` : "";
 
 				if (captureName === itemName) {
-					// direct item — keep name as-is
+					// direct item
 				} else if (itemName && captureName.startsWith(itemName + ".")) {
-					// item.prop  →  prop
 					captureName = captureName.slice(itemName.length + 1);
 				} else if (bracketItem && captureName === bracketItem) {
-					// arr[i]  →  treat as direct item
 					captureName = itemName || captureName;
 				} else if (!itemName) {
-					// while loop (itemName='') — capture all variables normally
+					// while loop — capture all variables
 				} else {
-					// unrelated variable (loop index, etc.) — anonymous
 					return `[\\s\\S]+?`;
 				}
 			}
 
 			const key = toCaptureName(captureName) + (branchSuffix ?? "");
 
-			// Expressions with JS operators produce invalid capture names → anonymous
 			if (!isValidCaptureName(key)) return `[\\s\\S]+?`;
-
 			if (seen.has(key)) return `\\k<${key}>`;
 			seen.add(key);
 			return `(?<${key}>[\\s\\S]+?)`;
@@ -129,7 +108,6 @@ export function buildRegex(
 		}
 
 		case "sequence": {
-			// Detect adjacent variables — they are always ambiguous
 			for (let i = 0; i < pattern.parts.length - 1; i++) {
 				const curr = pattern.parts[i];
 				const next = pattern.parts[i + 1];
@@ -148,17 +126,14 @@ export function buildRegex(
 	}
 }
 
-// ─── No-groups variant ────────────────────────────────────────────────────────
-
 export function buildRegexNoGroups(pattern: Pattern): string {
 	switch (pattern.type) {
 		case "literal":
 			return escapeRegex(pattern.value);
 		case "variable":
 			return `[\\s\\S]+?`;
-		case "loop": {
+		case "loop":
 			return `(?:${buildRegexNoGroups(pattern.body)})*`;
-		}
 		case "conditional": {
 			const then = buildRegexNoGroups(pattern.thenBranch);
 			if (!pattern.elseBranch) return `(?:${then})?`;

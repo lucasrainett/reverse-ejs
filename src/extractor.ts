@@ -7,8 +7,6 @@ import type {
 } from "./types";
 import { buildRegex, fromCaptureName, toCaptureName } from "./regexBuilder";
 
-// ─── Default HTML entity unescaping ──────────────────────────────────────────
-
 function unescapeHtml(s: string): string {
 	return s
 		.replace(/&amp;/g, "&")
@@ -18,12 +16,8 @@ function unescapeHtml(s: string): string {
 		.replace(/&#39;/g, "'");
 }
 
-// ─── Sentinel / branch-suffix regexes ────────────────────────────────────────
-
-const BRANCH_RE = /^(.+)_C(\d+)([TE])$/; // e.g. name_C0T
-const SENTINEL_RE = /^_C\d+[TE]S$/; // e.g. _C0TS
-
-// ─── Public API ──────────────────────────────────────────────────────────────
+const BRANCH_RE = /^(.+)_C(\d+)([TE])$/;
+const SENTINEL_RE = /^_C\d+[TE]S$/;
 
 export function extract(
 	pattern: Pattern,
@@ -43,14 +37,10 @@ export function extract(
 		);
 	}
 
-	// All output tags were expressions (ternary, method calls, etc.) →
-	// regex matched but has no named groups; nothing can be extracted.
 	if (!match.groups) return {};
 
 	return groupsToObject(match.groups, pattern, unescape);
 }
-
-// ─── Internals ───────────────────────────────────────────────────────────────
 
 function groupsToObject(
 	groups: Record<string, string | undefined>,
@@ -74,7 +64,7 @@ function groupsToObject(
 				);
 			}
 		} else if (SENTINEL_RE.test(captureName)) {
-			// zero-length branch sentinel — used only by extractConditionBooleans
+			// sentinel — handled by extractConditionBooleans
 		} else {
 			const branchMatch = BRANCH_RE.exec(captureName);
 			if (branchMatch) {
@@ -98,7 +88,7 @@ function extractLoopItems(
 
 	const bodyRegexStr = buildRegex(
 		loopPattern.body,
-		loopPattern.itemName || undefined, // '' → undefined so item logic is skipped
+		loopPattern.itemName || undefined,
 		new Set(),
 		undefined,
 		loopPattern.loopVar,
@@ -126,7 +116,6 @@ function extractLoopItems(
 			...Object.keys(nestedLoops),
 		];
 
-		// Simple string array: body produces exactly one capture and it IS the item
 		const expectedItemKey = loopPattern.itemName
 			? toCaptureName(loopPattern.itemName)
 			: null;

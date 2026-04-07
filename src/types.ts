@@ -1,5 +1,3 @@
-// ─── Tokens ──────────────────────────────────────────────────────────────────
-
 export type Token =
 	| { type: "literal"; value: string }
 	| { type: "variable"; name: string }
@@ -13,8 +11,6 @@ export type Token =
 	| { type: "if_start"; condition?: string }
 	| { type: "else" }
 	| { type: "if_end" };
-
-// ─── Patterns ────────────────────────────────────────────────────────────────
 
 export type Pattern =
 	| { type: "sequence"; parts: Pattern[] }
@@ -37,24 +33,14 @@ export type Pattern =
 
 export type LoopPattern = Extract<Pattern, { type: "loop" }>;
 
-// ─── Options ─────────────────────────────────────────────────────────────────
-
 export interface EjsOptions {
-	/** Override the tag delimiter character (default `%`). */
 	delimiter?: string;
-	/** Override the opening delimiter character (default `<`). */
 	openDelimiter?: string;
-	/** Override the closing delimiter character (default `>`). */
 	closeDelimiter?: string;
-	/** Mirror EJS's rmWhitespace — strip leading/trailing whitespace from every template line. */
 	rmWhitespace?: boolean;
-	/** Custom HTML-unescape function; defaults to the standard 5-entity map. */
 	unescape?: (s: string) => string;
-	/** Map of partial name → EJS source for <%- include("name") %> expansion. */
 	partials?: Record<string, string>;
 }
-
-// ─── Output ──────────────────────────────────────────────────────────────────
 
 export type ExtractedItem = string | Record<string, unknown>;
 export type ExtractedValue = string | boolean | ExtractedItem[];

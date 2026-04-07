@@ -8,7 +8,6 @@ export function buildPattern(tokens: Token[]): Pattern {
 	return pattern;
 }
 
-/** Depth-first assignment of sequential IDs to every conditional node. */
 function assignCondIds(ctx: { n: number }, p: Pattern): void {
 	if (p.type === "conditional") {
 		(p as { condId: number }).condId = ctx.n++;
@@ -21,15 +20,6 @@ function assignCondIds(ctx: { n: number }, p: Pattern): void {
 	}
 }
 
-/**
- * Parse a sequence of tokens into a Pattern.
- * Stops (and returns) at loop_end / if_end / else — the caller decides what to
- * do with the stop token.
- *
- * Returns [pattern, stopIndex, stopReason]
- *   stopIndex:  index of the token that caused the stop (or tokens.length for 'end')
- *   stopReason: why we stopped
- */
 function parseSequence(
 	tokens: Token[],
 	startIndex: number,
@@ -40,7 +30,6 @@ function parseSequence(
 	while (i < tokens.length) {
 		const token = tokens[i];
 
-		// ── Stop tokens ──────────────────────────────────────────────────────────
 		if (
 			token.type === "loop_end" ||
 			token.type === "if_end" ||
@@ -49,15 +38,12 @@ function parseSequence(
 			return [wrap(parts), i, token.type];
 		}
 
-		// ── Leaf tokens ──────────────────────────────────────────────────────────
 		if (token.type === "literal") {
 			parts.push({ type: "literal", value: token.value });
 			i++;
 		} else if (token.type === "variable") {
 			parts.push({ type: "variable", name: token.name });
 			i++;
-
-			// ── Loop ─────────────────────────────────────────────────────────────────
 		} else if (token.type === "loop_start") {
 			const [body, endIdx] = parseSequence(tokens, i + 1);
 			parts.push({
@@ -67,9 +53,7 @@ function parseSequence(
 				body,
 				loopVar: token.loopVar,
 			});
-			i = endIdx + 1; // skip loop_end
-
-			// ── Conditional ──────────────────────────────────────────────────────────
+			i = endIdx + 1;
 		} else if (token.type === "if_start") {
 			const [thenBranch, stopIdx, stopReason] = parseSequence(
 				tokens,

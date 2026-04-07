@@ -7,8 +7,6 @@ import { ExtractedObject } from "./types";
 export type ReverseEjsOptions = EjsOptions;
 export { ExtractedObject };
 
-// ─── Include expansion ────────────────────────────────────────────────────────
-
 const INCLUDE_RE =
 	/<%-\s*include\s*\(\s*['"]([^'"]+)['"]\s*(?:,[^)]+)?\s*\)\s*%>/g;
 
@@ -29,18 +27,6 @@ function expandIncludes(
 	});
 }
 
-// ─── Public API ──────────────────────────────────────────────────────────────
-
-/**
- * The inverse of EJS render.
- *
- * Given an EJS template and the string it produced, return the data object
- * that was used to render it.
- *
- * @example
- * reverseEjs('Hello, <%= name %>!', 'Hello, John!')
- * // → { name: 'John' }
- */
 export function reverseEjs(
 	template: string,
 	finalString: string,
