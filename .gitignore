@@ -1,1 +1,29 @@
-/.idea/
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Test coverage
+coverage/
+
+# IDE
+.idea/
+
+# Claude
+/.claude/
+
+# Environment
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Lock files (keep pnpm-lock.yaml)
+package-lock.json
+yarn.lock

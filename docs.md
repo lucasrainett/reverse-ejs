@@ -4,9 +4,9 @@
 > the rendered output string it produced, return the original data object.
 
 ```ts
-import { reverseEjs } from 'reverse-ejs'
+import { reverseEjs } from "reverse-ejs";
 
-reverseEjs('Hello, <%= name %>!', 'Hello, Alice!')
+reverseEjs("Hello, <%= name %>!", "Hello, Alice!");
 // → { name: 'Alice' }
 ```
 
@@ -116,24 +116,24 @@ Central type definitions — no logic, no imports.
 
 **`Token`** — the output of the tokenizer. A discriminated union:
 
-| Variant | Fields | Meaning |
-|---|---|---|
-| `literal` | `value: string` | Raw text segment |
-| `variable` | `name: string` | A `<%= ... %>` or `<%-` output tag |
-| `loop_start` | `arrayName`, `itemName`, `loopVar?` | Opening of any loop construct |
-| `loop_end` | — | Closing `}` or `})` of a loop |
-| `if_start` | `condition?` | Opening `if (...)` or `case:` |
-| `else` | — | `} else {`, `} else if (...)`, `case:` transition, `default:` |
-| `if_end` | — | Closing `}` of an if/else block or switch |
+| Variant      | Fields                              | Meaning                                                       |
+| ------------ | ----------------------------------- | ------------------------------------------------------------- |
+| `literal`    | `value: string`                     | Raw text segment                                              |
+| `variable`   | `name: string`                      | A `<%= ... %>` or `<%-` output tag                            |
+| `loop_start` | `arrayName`, `itemName`, `loopVar?` | Opening of any loop construct                                 |
+| `loop_end`   | —                                   | Closing `}` or `})` of a loop                                 |
+| `if_start`   | `condition?`                        | Opening `if (...)` or `case:`                                 |
+| `else`       | —                                   | `} else {`, `} else if (...)`, `case:` transition, `default:` |
+| `if_end`     | —                                   | Closing `}` of an if/else block or switch                     |
 
 **`Pattern`** — the intermediate AST:
 
-| Variant | Purpose |
-|---|---|
-| `sequence` | Ordered list of child patterns |
-| `literal` | Fixed string — maps 1:1 to a token literal |
-| `variable` | Named capture group in the final regex |
-| `loop` | Repeated section → array in output |
+| Variant       | Purpose                                       |
+| ------------- | --------------------------------------------- |
+| `sequence`    | Ordered list of child patterns                |
+| `literal`     | Fixed string — maps 1:1 to a token literal    |
+| `variable`    | Named capture group in the final regex        |
+| `loop`        | Repeated section → array in output            |
 | `conditional` | Regex alternation for if/else and switch/case |
 
 **`EjsOptions`** — mirrors EJS's own options object, plus `partials` and `unescape`.
@@ -169,20 +169,20 @@ literal segment.
 **Control flow detection** (`processScriptlet`) — after the state machine
 emits a code string, a cascade of regex tests classifies it:
 
-| Test | Emits |
-|---|---|
-| `arr.forEach(item => {` or `arr.map(item => {` | `loop_start` |
-| Chained `arr.filter(…).forEach(item => {` | `loop_start` (base name extracted) |
-| `for (const item of arr)` | `loop_start` |
-| `for (let i = 0; i < arr.length; i++)` | `loop_start` (with `loopVar = 'i'`) |
-| `for (const key in obj)` | `loop_start` |
-| `while (arr.length)` | `loop_start` (itemName set to `''`) |
-| `switch (expr) {` | push switch stack entry |
-| `case X:` / `default:` | `if_start` (or `else + if_start` after first case) |
-| `if (...)` | `if_start` |
-| `} else if (...) {` | `else + if_start` (no stack change) |
-| `} else {` | `else` |
-| `}` or `})` | `loop_end` or `if_end` from stack |
+| Test                                           | Emits                                              |
+| ---------------------------------------------- | -------------------------------------------------- |
+| `arr.forEach(item => {` or `arr.map(item => {` | `loop_start`                                       |
+| Chained `arr.filter(…).forEach(item => {`      | `loop_start` (base name extracted)                 |
+| `for (const item of arr)`                      | `loop_start`                                       |
+| `for (let i = 0; i < arr.length; i++)`         | `loop_start` (with `loopVar = 'i'`)                |
+| `for (const key in obj)`                       | `loop_start`                                       |
+| `while (arr.length)`                           | `loop_start` (itemName set to `''`)                |
+| `switch (expr) {`                              | push switch stack entry                            |
+| `case X:` / `default:`                         | `if_start` (or `else + if_start` after first case) |
+| `if (...)`                                     | `if_start`                                         |
+| `} else if (...) {`                            | `else + if_start` (no stack change)                |
+| `} else {`                                     | `else`                                             |
+| `}` or `})`                                    | `loop_end` or `if_end` from stack                  |
 
 `locals.varName` is normalised to `varName` during variable emission.
 Dynamic include filenames (`include(varName)` without quotes) throw a
@@ -209,7 +209,7 @@ final regex).
 
 `else if` is handled transparently: the tokenizer emits `else` + `if_start`
 for each `} else if (…) {`, and the stack is not touched. From the pattern
-builder's point of view this looks like an else branch that *itself* starts
+builder's point of view this looks like an else branch that _itself_ starts
 with an `if_start`, building a chain of nested `conditional` nodes. The regex
 builder then emits `(?:thenA|(?:thenB|elseB))` — a natural right-nested
 alternation.
@@ -266,6 +266,7 @@ Runs the regex against `finalString` and converts named groups to a nested
 object.
 
 **`extract(pattern, finalString, opts?)`**:
+
 1. Build regex string, compile with `s` flag (dot-all).
 2. `exec` against the final string.
 3. If no match → throw with regex and string in the message.
@@ -285,11 +286,13 @@ object.
 
 After plain values, `extractConditionBooleans` recurses through the Pattern
 AST looking for `conditional` nodes that have a named `condition`. For each:
+
 - If `_C{id}TS` (then-sentinel) is defined in groups → `condition = true`
 - If `_C{id}ES` (else-sentinel) is defined → `condition = false`
 
 **`extractLoopItems`**:
-1. Build body regex *with* `itemName` and `loopVar`, so item-properties get
+
+1. Build body regex _with_ `itemName` and `loopVar`, so item-properties get
    named captures and index variables stay anonymous.
 2. Apply `bodyRegex` globally (flag `gs`) to the captured loop section.
 3. For each match:
@@ -309,11 +312,7 @@ decimal numeric references.
 The public surface:
 
 ```ts
-export function reverseEjs(
-  template:    string,
-  finalString: string,
-  options?:    ReverseEjsOptions,
-): ExtractedObject
+export function reverseEjs(template: string, finalString: string, options?: ReverseEjsOptions): ExtractedObject;
 ```
 
 Before tokenising, `expandIncludes` recursively replaces
@@ -356,7 +355,7 @@ Named groups have two decisive advantages:
    name. No index mapping needed.
 2. **Backreferences** — when a variable appears twice in a template (e.g.
    `<%= name %>` … `<%= name %>`), the second occurrence must produce the
-   *same* value. Named backreferences (`\k<name>`) express this constraint
+   _same_ value. Named backreferences (`\k<name>`) express this constraint
    directly in the regex. An index-based approach would need external
    post-processing to enforce it.
 
@@ -365,18 +364,20 @@ Named groups have two decisive advantages:
 The naive approach to loops would be to build a regex like
 `(?:body)*` where `body` contains named capture groups. JavaScript regex
 engines reject this: a named group that appears inside a `*` quantifier
-is only captured for its *last* match, and duplicate group names are illegal.
+is only captured for its _last_ match, and duplicate group names are illegal.
 
 The solution is a **two-pass approach**:
 
 1. **Outer pass** — the entire repeated section is captured as a single blob:
-   ```
-   (?<items_LOOP>(?:bodyNoGroups)*)
-   ```
-   The body regex has no named groups (all replaced with `[\s\S]+?`).
+
+    ```
+    (?<items_LOOP>(?:bodyNoGroups)*)
+    ```
+
+    The body regex has no named groups (all replaced with `[\s\S]+?`).
 
 2. **Inner pass** — once the blob is extracted, `extractLoopItems` applies the
-   *named* body regex globally (`gs` flags) to the blob string, collecting one
+   _named_ body regex globally (`gs` flags) to the blob string, collecting one
    result per iteration.
 
 This never puts named groups inside a quantifier, so the JS engine is happy.
@@ -440,7 +441,7 @@ injected at the start of each branch:
 The extractor checks these sentinels to set `condition: true` or `false`.
 
 For purely literal branches — branches that produce output but contain no
-variables — the sentinel is the *only* capture group in the branch. Without it,
+variables — the sentinel is the _only_ capture group in the branch. Without it,
 there would be no way to distinguish which branch matched.
 
 ### 4.7 else if chains and switch/case
@@ -531,8 +532,8 @@ what the caller would expect.
 EJS supports overriding the three delimiter characters:
 
 ```ts
-ejs.render('<?= name ?>', data, { delimiter: '?' })
-ejs.render('[%= name %]', data, { openDelimiter: '[', closeDelimiter: ']' })
+ejs.render("<?= name ?>", data, { delimiter: "?" });
+ejs.render("[%= name %]", data, { openDelimiter: "[", closeDelimiter: "]" });
 ```
 
 The tokenizer receives these options and calls `buildEjsRe(o, d, c)` and
@@ -547,8 +548,7 @@ every template line before rendering. The tokenizer applies the same two
 transformations:
 
 ```ts
-text = text.replace(/[\r\n]+/g, '\n')
-           .replace(/^\s+|\s+$/gm, '')
+text = text.replace(/[\r\n]+/g, "\n").replace(/^\s+|\s+$/gm, "");
 ```
 
 An important subtlety: `rmWhitespace` strips per-line indentation, but it does
@@ -603,6 +603,7 @@ Dynamic include filenames are not supported. Use a quoted string: include("filen
 ## 5. Data Flow Example — Walked Step by Step
 
 **Template:**
+
 ```ejs
 <% if (isAdmin) { %>
 <h1>Admin: <%= name %></h1>
@@ -612,6 +613,7 @@ Dynamic include filenames are not supported. Use a quoted string: include("filen
 ```
 
 **Final string:**
+
 ```
 <h1>Admin: Alice</h1>
 ```
@@ -677,6 +679,7 @@ groups: {
 - `_C0TS` defined + condition `'isAdmin'` → `isAdmin = true`
 
 **Result:**
+
 ```js
 { isAdmin: true, name: 'Alice' }
 ```
@@ -685,42 +688,42 @@ groups: {
 
 ## 6. EJS Feature Coverage
 
-| Feature | Status | Notes |
-|---|---|---|
-| `<%= var %>` | ✅ | Named capture group |
-| `<%- var %>` | ✅ | Treated identically to `<%=` for extraction |
-| `<%# comment %>` | ✅ | Ignored during tokenisation |
-| `<%%` | ✅ | Emits literal `<%` text |
-| `%%>` | ✅ | Emits literal `%>` text |
-| `-%>` newline slurp | ✅ | Strips leading newline from next literal |
-| `<%_` whitespace slurp | ✅ | Strips trailing tabs/spaces from preceding literal |
-| `_%>` whitespace slurp | ✅ | Strips leading tabs/spaces from next literal |
-| HTML entity unescaping (`<%=`) | ✅ | `&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#39;` |
-| `forEach(item => {` | ✅ | |
-| `map(item => {` | ✅ | Treated same as forEach |
-| `forEach((item, idx) => {` | ✅ | Index variable treated as anonymous |
-| `.filter(…).forEach(item => {` | ✅ | Base array name extracted from chain |
-| `for (const item of arr)` | ✅ | |
-| `for (let i = 0; i < arr.length; i++)` | ✅ | `arr[i]` access in body mapped to items |
-| `for (const key in obj)` | ✅ | Keys captured as string array |
-| `while (arr.length)` | ✅ | Body variables captured as array |
-| `if (cond)` | ✅ | Optional regex group; condition as boolean |
-| `if/else` | ✅ | Branch suffix + sentinel technique |
-| `else if` chains | ✅ | Tokenizer emits else+if_start; pattern builds nested conditionals |
-| `switch/case` | ✅ | Mapped to if/else chain tokens |
-| `<%- include("file") %>` | ✅ | Inline expansion from `options.partials` |
-| `include("file", { locals })` | ✅ | Locals argument accepted and ignored |
-| Custom delimiter | ✅ | `delimiter`, `openDelimiter`, `closeDelimiter` |
-| `rmWhitespace` | ✅ | Preprocessing applied before tokenisation |
-| Custom `unescape` function | ✅ | Replaces built-in entity map |
-| `locals.varName` prefix | ✅ | Stripped during token emission |
-| JS expressions in `<%= %>` | ✅ | Anonymous match; not added to result |
-| Adjacent variables | ✅ | Throws a descriptive error |
-| Dynamic `include(varName)` | ✅ | Throws a descriptive error |
-| Repeated variables | ✅ | Backreference enforces value consistency |
-| Nested loops | ✅ | Two-pass extraction recurses |
-| Variables outside a loop (siblings) | ✅ | |
-| Empty loop | ✅ | Empty blob → empty array |
+| Feature                                | Status | Notes                                                             |
+| -------------------------------------- | ------ | ----------------------------------------------------------------- |
+| `<%= var %>`                           | ✅     | Named capture group                                               |
+| `<%- var %>`                           | ✅     | Treated identically to `<%=` for extraction                       |
+| `<%# comment %>`                       | ✅     | Ignored during tokenisation                                       |
+| `<%%`                                  | ✅     | Emits literal `<%` text                                           |
+| `%%>`                                  | ✅     | Emits literal `%>` text                                           |
+| `-%>` newline slurp                    | ✅     | Strips leading newline from next literal                          |
+| `<%_` whitespace slurp                 | ✅     | Strips trailing tabs/spaces from preceding literal                |
+| `_%>` whitespace slurp                 | ✅     | Strips leading tabs/spaces from next literal                      |
+| HTML entity unescaping (`<%=`)         | ✅     | `&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#39;`                        |
+| `forEach(item => {`                    | ✅     |                                                                   |
+| `map(item => {`                        | ✅     | Treated same as forEach                                           |
+| `forEach((item, idx) => {`             | ✅     | Index variable treated as anonymous                               |
+| `.filter(…).forEach(item => {`         | ✅     | Base array name extracted from chain                              |
+| `for (const item of arr)`              | ✅     |                                                                   |
+| `for (let i = 0; i < arr.length; i++)` | ✅     | `arr[i]` access in body mapped to items                           |
+| `for (const key in obj)`               | ✅     | Keys captured as string array                                     |
+| `while (arr.length)`                   | ✅     | Body variables captured as array                                  |
+| `if (cond)`                            | ✅     | Optional regex group; condition as boolean                        |
+| `if/else`                              | ✅     | Branch suffix + sentinel technique                                |
+| `else if` chains                       | ✅     | Tokenizer emits else+if_start; pattern builds nested conditionals |
+| `switch/case`                          | ✅     | Mapped to if/else chain tokens                                    |
+| `<%- include("file") %>`               | ✅     | Inline expansion from `options.partials`                          |
+| `include("file", { locals })`          | ✅     | Locals argument accepted and ignored                              |
+| Custom delimiter                       | ✅     | `delimiter`, `openDelimiter`, `closeDelimiter`                    |
+| `rmWhitespace`                         | ✅     | Preprocessing applied before tokenisation                         |
+| Custom `unescape` function             | ✅     | Replaces built-in entity map                                      |
+| `locals.varName` prefix                | ✅     | Stripped during token emission                                    |
+| JS expressions in `<%= %>`             | ✅     | Anonymous match; not added to result                              |
+| Adjacent variables                     | ✅     | Throws a descriptive error                                        |
+| Dynamic `include(varName)`             | ✅     | Throws a descriptive error                                        |
+| Repeated variables                     | ✅     | Backreference enforces value consistency                          |
+| Nested loops                           | ✅     | Two-pass extraction recurses                                      |
+| Variables outside a loop (siblings)    | ✅     |                                                                   |
+| Empty loop                             | ✅     | Empty blob → empty array                                          |
 
 ---
 
@@ -761,25 +764,25 @@ groups: {
 The test file (`tests/index.test.ts`) has 77 tests arranged in thematic groups.
 Each group has a numbered comment header (`// ─── N. Description ───`).
 
-| Tests | Group |
-|---|---|
-| 1–21 | Basic extraction (single var, multiple vars, loops, nested loops, edge cases) |
-| 22–31 | EJS tag modifiers (`<%-`, `<%%`, `-%>`, `<%_`, `_%>`) |
-| 32–34 | HTML entity unescaping |
-| 35–38 | `for...of` and `forEach` with index |
-| 39–46 | Conditionals (`if`, `if/else`, complex branches, loops inside conditionals) |
-| 47–56 | Include (`partials`, nested, error cases, locals syntax) |
+| Tests | Group                                                                           |
+| ----- | ------------------------------------------------------------------------------- |
+| 1–21  | Basic extraction (single var, multiple vars, loops, nested loops, edge cases)   |
+| 22–31 | EJS tag modifiers (`<%-`, `<%%`, `-%>`, `<%_`, `_%>`)                           |
+| 32–34 | HTML entity unescaping                                                          |
+| 35–38 | `for...of` and `forEach` with index                                             |
+| 39–46 | Conditionals (`if`, `if/else`, complex branches, loops inside conditionals)     |
+| 47–56 | Include (`partials`, nested, error cases, locals syntax)                        |
 | 57–61 | Expressions in output tags (ternary, method call, arithmetic, bracket, nullish) |
-| 62–63 | `else if` chains |
-| 64 | `switch/case` |
-| 65–67 | Custom delimiters |
-| 68–70 | `for`, `for...in`, `while` |
-| 71–72 | `.map()`, `.filter().forEach()` |
-| 73 | Adjacent variables error |
-| 74 | `locals.` prefix stripping |
-| 75 | `rmWhitespace` option |
-| 76 | Custom `unescape` function |
-| 77 | Dynamic include filename error |
+| 62–63 | `else if` chains                                                                |
+| 64    | `switch/case`                                                                   |
+| 65–67 | Custom delimiters                                                               |
+| 68–70 | `for`, `for...in`, `while`                                                      |
+| 71–72 | `.map()`, `.filter().forEach()`                                                 |
+| 73    | Adjacent variables error                                                        |
+| 74    | `locals.` prefix stripping                                                      |
+| 75    | `rmWhitespace` option                                                           |
+| 76    | Custom `unescape` function                                                      |
+| 77    | Dynamic include filename error                                                  |
 
 ---
 
@@ -808,7 +811,7 @@ support duplicate named capture groups, even in alternation. This was
 discovered by empirical testing:
 
 ```js
-/(?:(?<n>a)|(?<n>b))/   // throws SyntaxError
+/(?:(?<n>a)|(?<n>b))/; // throws SyntaxError
 ```
 
 The branch-suffix + sentinel technique (`_C0T` / `_C0E` / `_C0TS` / `_C0ES`)
@@ -835,4 +838,4 @@ All 77 tests pass on Node ≥ 16.
 
 ---
 
-*This document describes the library as of the 77-test milestone.*
+_This document describes the library as of the 77-test milestone._

@@ -1,0 +1,60 @@
+name: Publish
+
+on:
+  push:
+    branches: [master]
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+      - name: Publish if version changed
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          TAG="${NAME}@${VERSION}"
+
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            CHANGED=$(git diff --name-only "$TAG"..HEAD -- src/)
+            if [ -z "$CHANGED" ]; then
+              echo "No source changes since $TAG — skipping"
+              exit 0
+            fi
+            npm version patch --no-git-tag-version
+            VERSION=$(node -p "require('./package.json').version")
+            TAG="${NAME}@${VERSION}"
+          fi
+
+          pnpm publish --provenance --no-git-checks
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add package.json
+          git commit -m "chore: release ${TAG}" --allow-empty || true
+          git tag "$TAG"
+          git push origin master --tags
