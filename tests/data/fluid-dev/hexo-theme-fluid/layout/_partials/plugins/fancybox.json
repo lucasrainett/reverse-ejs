@@ -1,0 +1,23 @@
+{
+  "theme": {
+    "static_prefix": {
+      "fancybox": "sample-value"
+    }
+  },
+  "jquery": {
+    "fancybox": {
+      "min": {
+        "css": "default",
+        "js": "sample-value"
+      }
+    }
+  },
+  "Fluid": {
+    "utils": {
+      "createScript": "sample-value"
+    },
+    "plugins": {
+      "fancyBox": "sample-value"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "site": {
+    "categories": {
+      "length": "sample-value"
+    }
+  },
+  "category": {
+    "name": "Sample Title",
+    "posts": {
+      "sort": "sample-value"
+    }
+  },
+  "_partial": "sample-value",
+  "archive": "sample-value",
+  "post": {
+    "subtitle": {
+      "length": "sample-value"
+    }
+  },
+  "index": 1
+}

@@ -1,0 +1,51 @@
+{
+  "Fluid": {
+    "utils": {
+      "createScript": "sample-value"
+    },
+    "events": {
+      "registerRefreshCallback": "sample-value"
+    }
+  },
+  "theme": {
+    "static_prefix": {
+      "anchor": "sample-value"
+    }
+  },
+  "anchor": {
+    "min": {
+      "js": "sample-value"
+    }
+  },
+  "window": {
+    "anchors": {
+      "options": {
+        "icon": "https://example.com/image.jpg",
+        "class": "default"
+      },
+      "add": "sample-value"
+    }
+  },
+  "CONFIG": {
+    "anchorjs": {
+      "placement": "sample-value",
+      "visible": true,
+      "icon": "https://example.com/image.jpg",
+      "element": "sample-value"
+    }
+  },
+  "res": {
+    "push": "sample-value",
+    "join": "sample-value"
+  },
+  "item": {
+    "trim": "sample-value"
+  },
+  "anchors": {
+    "removeAll": "sample-value",
+    "options": {
+      "class": "default"
+    },
+    "add": "sample-value"
+  }
+}

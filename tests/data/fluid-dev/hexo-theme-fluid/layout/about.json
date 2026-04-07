@@ -1,0 +1,48 @@
+{
+  "theme": {
+    "about": {
+      "name": "Sample Title",
+      "introduce": "sample-value",
+      "intro": "sample-value",
+      "title": "Sample Title",
+      "subtitle": "Sample Title",
+      "banner_img": "https://example.com/image.jpg",
+      "banner_img_height": "sample-value",
+      "banner_mask_alpha": "sample-value",
+      "icons": "sample-value"
+    },
+    "post": {
+      "comments": {
+        "type": "sample-value"
+      }
+    }
+  },
+  "isQr": "sample-value",
+  "href": "https://example.com/path",
+  "qr": "sample-value",
+  "trigger": "sample-value",
+  "hint": "sample-value",
+  "bottom": "sample-value",
+  "rounded": "sample-value",
+  "_self": "sample-value",
+  "_blank": "sample-value",
+  "cls": "sample-value",
+  "page": {
+    "content": "<p>Content here</p>",
+    "layout": "about",
+    "title": "Sample Title",
+    "subtitle": "Sample Title",
+    "banner_img": "https://example.com/image.jpg",
+    "banner_img_height": "sample-value",
+    "banner_mask_alpha": "sample-value",
+    "comments": "sample-value",
+    "comment": "sample-value"
+  },
+  "type": "_partials/comments/sample-value",
+  "_partials": "sample-value",
+  "plugins": "sample-value",
+  "about": {
+    "title": "Sample Title",
+    "subtitle": "Sample Title"
+  }
+}

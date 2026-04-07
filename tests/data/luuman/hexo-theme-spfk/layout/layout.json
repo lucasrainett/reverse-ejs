@@ -1,0 +1,15 @@
+{
+  "_partial": "sample-value",
+  "head": "sample-value",
+  "left": "sample-value",
+  "col": "sample-value",
+  "cache": "sample-value",
+  "config": {
+    "relative_link": "https://example.com/path"
+  },
+  "mobile": "sample-value",
+  "nav": "sample-value",
+  "body": "<p>Content here</p>",
+  "footer": "sample-value",
+  "after": "sample-value"
+}

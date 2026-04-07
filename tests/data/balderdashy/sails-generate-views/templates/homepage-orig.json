@@ -1,0 +1,6 @@
+{
+  "view": {
+    "pathFromApp": "views/homepage",
+    "ext": "ejs"
+  }
+}

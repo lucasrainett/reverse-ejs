@@ -1,0 +1,13 @@
+{
+  "page": {
+    "tags": {
+      "length": "sample-value"
+    }
+  },
+  "show_count": 1,
+  "style": "default",
+  "link": "https://example.com/path",
+  "a": "sample-value",
+  "p": "sample-value",
+  "category": "sample-value"
+}

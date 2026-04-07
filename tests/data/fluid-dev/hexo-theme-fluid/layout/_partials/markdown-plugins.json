@@ -1,0 +1,76 @@
+{
+  "_partials": "sample-value",
+  "plugins": "sample-value",
+  "highlight": {
+    "ejs": "sample-value"
+  },
+  "code": "abc123",
+  "widget": {
+    "ejs": "sample-value"
+  },
+  "anchorjs": {
+    "ejs": "sample-value"
+  },
+  "fancybox": {
+    "ejs": "sample-value"
+  },
+  "math": {
+    "ejs": "sample-value"
+  },
+  "mermaid": {
+    "ejs": "sample-value"
+  },
+  "theme": {
+    "static_prefix": {
+      "github_markdown": "sample-value",
+      "hint": "sample-value"
+    },
+    "code": {
+      "highlight": {
+        "enable": true
+      },
+      "language": {
+        "enable": true,
+        "default": "sample-value"
+      },
+      "copy_btn": "sample-value"
+    },
+    "fun_features": {
+      "anchorjs": {
+        "enable": true
+      }
+    },
+    "post": {
+      "image_zoom": {
+        "enable": true
+      },
+      "image_caption": {
+        "enable": true
+      },
+      "math": {
+        "enable": true,
+        "specific": "sample-value"
+      },
+      "mermaid": {
+        "enable": true,
+        "specific": "sample-value"
+      }
+    }
+  },
+  "hint": {
+    "min": {
+      "css": "default"
+    }
+  },
+  "page": {
+    "anchorjs": "sample-value",
+    "image_zoom": "sample-value",
+    "math": "sample-value",
+    "mermaid": "abc123"
+  },
+  "Fluid": {
+    "plugins": {
+      "imageCaption": "sample-value"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "item": {
+    "path": "https://example.com/path",
+    "name": "Sample Title",
+    "posts": {
+      "length": "sample-value"
+    }
+  },
+  "site": {
+    "tags": {
+      "length": "sample-value",
+      "random": "sample-value"
+    }
+  }
+}

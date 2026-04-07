@@ -1,0 +1,5 @@
+{
+  "includePath": "https://example.com/path",
+  "viewsText": "<p>Content here</p>",
+  "test": "sample-value"
+}

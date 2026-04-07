@@ -1,0 +1,27 @@
+{
+  "post_total_count": 1,
+  "site": {
+    "posts": {
+      "length": "sample-value",
+      "sort": "sample-value"
+    }
+  },
+  "config": {
+    "archive_dir": "sample-value"
+  },
+  "year": "sample-value",
+  "_partial": "sample-value",
+  "archive": "sample-value",
+  "even": "sample-value",
+  "i": "sample-value",
+  "index": 1,
+  "prev_text": "<p>Content here</p>",
+  "next_text": "<p>Content here</p>",
+  "page": {
+    "posts": {
+      "each": "sample-value",
+      "length": "sample-value"
+    },
+    "total": 1
+  }
+}

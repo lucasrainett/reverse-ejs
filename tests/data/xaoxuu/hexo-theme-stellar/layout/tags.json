@@ -1,0 +1,25 @@
+{
+  "_partial": "sample-value",
+  "main": "sample-value",
+  "navbar": "sample-value",
+  "nav_tabs_blog": "sample-value",
+  "tag": {
+    "path": "https://example.com/path",
+    "name": "Sample Title"
+  },
+  "page": {
+    "robots": "noindex,follow",
+    "menu_id": "abc123",
+    "title": "btn.tags",
+    "layout": "tags"
+  },
+  "site": {
+    "tags": {
+      "length": "sample-value",
+      "sort": "sample-value"
+    }
+  },
+  "btn": {
+    "tags": "sample-value"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "header": "sample-value",
+  "footer": "sample-value",
+  "posts": {
+    "forEach": "sample-value"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "_partial": "sample-value",
+  "main": "sample-value",
+  "navbar": "sample-value",
+  "nav_tabs_blog": "sample-value",
+  "category": {
+    "parent": "sample-value",
+    "path": "https://example.com/path",
+    "name": "Sample Title",
+    "posts": {
+      "length": "sample-value"
+    }
+  },
+  "cat": "sample-value",
+  "child": "sample-value",
+  "page": {
+    "robots": "noindex,follow",
+    "menu_id": "abc123",
+    "title": "btn.categories",
+    "layout": "categories"
+  },
+  "site": {
+    "categories": {
+      "length": "sample-value",
+      "sort": "sample-value"
+    }
+  },
+  "btn": {
+    "categories": "sample-value"
+  }
+}

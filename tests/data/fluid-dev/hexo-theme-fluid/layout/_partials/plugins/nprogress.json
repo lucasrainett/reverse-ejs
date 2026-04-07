@@ -1,0 +1,19 @@
+{
+  "theme": {
+    "static_prefix": {
+      "nprogress": "sample-value"
+    },
+    "fun_features": {
+      "progressbar": {
+        "options": "sample-value",
+        "enable": true
+      }
+    }
+  },
+  "nprogress": {
+    "min": {
+      "js": "sample-value",
+      "css": "default"
+    }
+  }
+}

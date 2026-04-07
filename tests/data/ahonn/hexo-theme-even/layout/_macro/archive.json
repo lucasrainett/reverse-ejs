@@ -1,0 +1,35 @@
+{
+  "page": {
+    "tag": "sample-value",
+    "category": "sample-value",
+    "archive": "sample-value",
+    "prev": "sample-value",
+    "posts": {
+      "forEach": "sample-value"
+    }
+  },
+  "counter": {
+    "archives": "sample-value"
+  },
+  "site": {
+    "posts": {
+      "length": "sample-value"
+    }
+  },
+  "config": {
+    "archive_dir": "sample-value"
+  },
+  "year": "sample-value",
+  "MM": "sample-value",
+  "DD": "sample-value",
+  "YYYY": "sample-value",
+  "_partial": "sample-value",
+  "pagination": {
+    "ejs": "sample-value"
+  },
+  "theme": {
+    "mode": {
+      "toLowerCase": "sample-value"
+    }
+  }
+}

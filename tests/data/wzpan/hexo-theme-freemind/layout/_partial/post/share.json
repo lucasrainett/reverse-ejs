@@ -1,0 +1,12 @@
+{
+  "theme": {
+    "addthis": {
+      "pubid": "abc123",
+      "enable": true,
+      "facebook": "sample-value",
+      "twitter": "sample-value",
+      "google": "sample-value",
+      "pinterest": "sample-value"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "config": {
+    "root": "sample-value"
+  },
+  "owner": "Alice",
+  "repo": "sample-value",
+  "client_id": "abc123",
+  "client_secret": "sample-value"
+}

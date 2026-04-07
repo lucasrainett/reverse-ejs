@@ -1,0 +1,44 @@
+{
+  "post": {
+    "path": "https://example.com/path",
+    "title": "Sample Title",
+    "date": "2025-01-15",
+    "author": "Alice",
+    "content": "<p>Content here</p>",
+    "categories": {
+      "length": "sample-value",
+      "forEach": "sample-value"
+    },
+    "description": "A sample description",
+    "excerpt": "A sample description",
+    "tags": {
+      "length": "sample-value",
+      "forEach": "sample-value"
+    }
+  },
+  "YYYY": "sample-value",
+  "MM": "sample-value",
+  "DD": "sample-value",
+  "posts": {
+    "visits": "sample-value",
+    "readmore": "sample-value"
+  },
+  "_partial": "sample-value",
+  "_post": "sample-value",
+  "excerpt": "A sample description",
+  "copyright": {
+    "ejs": "sample-value"
+  },
+  "reward": {
+    "ejs": "sample-value"
+  },
+  "pagination": {
+    "ejs": "sample-value"
+  },
+  "theme": {
+    "leancloud": {
+      "app_id": "abc123",
+      "app_key": "abc123"
+    }
+  }
+}

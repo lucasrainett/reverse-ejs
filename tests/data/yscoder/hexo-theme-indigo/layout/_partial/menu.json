@@ -1,0 +1,24 @@
+{
+  "theme": {
+    "avatar_link": "https://example.com/path",
+    "avatar": "https://example.com/image.jpg",
+    "email": "user@example.com",
+    "menu": "sample-value"
+  },
+  "config": {
+    "author": "Alice"
+  },
+  "mail": "user@example.com",
+  "menuItem": "s",
+  "i": "0",
+  "footer": "sample-value",
+  "item": {
+    "url": "https://example.com/path"
+  },
+  "index": {
+    "html": "<p>Content here</p>"
+  },
+  "page": {
+    "path": "https://example.com/path"
+  }
+}

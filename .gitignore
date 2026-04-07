@@ -7,12 +7,15 @@ dist/
 # Test coverage
 coverage/
 
+# Downloaded test fixtures and generated outputs
+tests/fixtures/
+tests/rendered/
+
 # IDE
 .idea/
 
 # Claude
 /.claude/
-
 # Environment
 .env
 .env.*

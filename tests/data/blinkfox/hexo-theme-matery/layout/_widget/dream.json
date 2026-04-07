@@ -1,0 +1,9 @@
+{
+  "theme": {
+    "dream": {
+      "title": "Sample Title",
+      "text": "<p>Content here</p>",
+      "showTitle": "Sample Title"
+    }
+  }
+}

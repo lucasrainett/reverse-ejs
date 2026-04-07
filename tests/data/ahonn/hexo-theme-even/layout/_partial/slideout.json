@@ -1,0 +1,9 @@
+{
+  "config": {
+    "title": "Sample Title"
+  },
+  "theme": {
+    "menu": "sample-value"
+  },
+  "itemName": "menu.11"
+}

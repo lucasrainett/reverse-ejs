@@ -1,0 +1,78 @@
+{
+  "https": "sample-value",
+  "raw": {
+    "githubusercontent": {
+      "com": "sample-value"
+    }
+  },
+  "HubSpot": "sample-value",
+  "pace": {
+    "min": {
+      "js": "sample-value"
+    }
+  },
+  "v1": {
+    "0": {
+      "2": "sample-value"
+    }
+  },
+  "theme": {
+    "progressBar": {
+      "themeCSS": "default",
+      "enable": true
+    },
+    "keywords": "sample-value",
+    "google_site_verification": "sample-value",
+    "baidu_site_verification": "sample-value",
+    "qihu_site_verification": "sample-value",
+    "twitter": "sample-value",
+    "google_plus": "sample-value",
+    "fb_admins": "sample-value",
+    "fb_app_id": "abc123",
+    "rss": "sample-value",
+    "favicon": "https://example.com/image.jpg",
+    "ad": {
+      "google_adsense_ad_client_id": "abc123"
+    },
+    "donate": {
+      "enable": true
+    }
+  },
+  "title": "Sample Title",
+  "config": {
+    "title": "Sample Title",
+    "root": "sample-value",
+    "highlight": {
+      "enable": true
+    }
+  },
+  "page": {
+    "keywords": "sample-value",
+    "title": "Sample Title",
+    "year": "sample-value",
+    "month": "sample-value",
+    "category": "sample-value",
+    "tag": "sample-value",
+    "tags": {
+      "length": "sample-value",
+      "forEach": "sample-value"
+    }
+  },
+  "twitter_id": "abc123",
+  "google_plus": "sample-value",
+  "fb_admins": "sample-value",
+  "fb_app_id": "abc123",
+  "style": "default",
+  "code": {
+    "jquery": {
+      "com": "sample-value"
+    }
+  },
+  "jquery": "sample-value",
+  "min": {
+    "js": "sample-value"
+  },
+  "my": {
+    "css": "default"
+  }
+}

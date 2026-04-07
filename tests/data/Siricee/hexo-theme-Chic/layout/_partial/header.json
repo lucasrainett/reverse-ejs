@@ -1,0 +1,9 @@
+{
+  "config": {
+    "root": "sample-value"
+  },
+  "theme": {
+    "navname": "Sample Title",
+    "nav": "sample-value"
+  }
+}

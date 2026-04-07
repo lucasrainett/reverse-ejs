@@ -1,0 +1,12 @@
+{
+  "main": "sample-value",
+  "search": "sample-value",
+  "mathjax": "sample-value",
+  "theme": {
+    "cnzz": "sample-value",
+    "search": "sample-value",
+    "mathjax": "sample-value"
+  },
+  "google": "sample-value",
+  "analytics": "sample-value"
+}

@@ -1,0 +1,20 @@
+{
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "logo": {
+      "length": "sample-value"
+    },
+    "githubLink": {
+      "enable": true
+    }
+  },
+  "config": {
+    "title": "Sample Title"
+  },
+  "_partial": "sample-value",
+  "navigation": "sample-value",
+  "github": "sample-value",
+  "link": "https://example.com/path"
+}

@@ -1,0 +1,55 @@
+{
+  "config": {
+    "language": "en"
+  },
+  "colorSchema": "sample-value",
+  "data": "sample-value",
+  "color": "sample-value",
+  "scheme": "sample-value",
+  "_partials": "sample-value",
+  "head": {
+    "ejs": "sample-value"
+  },
+  "bodyBegin": "sample-value",
+  "header": "sample-value",
+  "body": "<p>Content here</p>",
+  "banner_img_height": null,
+  "theme": {
+    "banner": {
+      "parallax": "sample-value"
+    },
+    "about": {
+      "avatar": "https://example.com/image.jpg"
+    },
+    "custom_html": "<p>Content here</p>",
+    "index": {
+      "banner_img_height": "sample-value"
+    },
+    "dark_mode": {
+      "enable": true,
+      "default": "sample-value"
+    },
+    "scroll_top_arrow": {
+      "enable": true
+    },
+    "search": {
+      "enable": true
+    }
+  },
+  "style": "default",
+  "margin": "sample-value",
+  "top": "sample-value",
+  "search": {
+    "ejs": "sample-value"
+  },
+  "footer": "sample-value",
+  "scripts": {
+    "ejs": "sample-value"
+  },
+  "bodyEnd": "sample-value",
+  "noscript_warning": "sample-value",
+  "page": {
+    "banner_img_height": "sample-value",
+    "layout": "sample-value"
+  }
+}

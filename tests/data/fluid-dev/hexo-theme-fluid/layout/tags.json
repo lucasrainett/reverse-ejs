@@ -1,0 +1,37 @@
+{
+  "min_font": "sample-value",
+  "max_font": "sample-value",
+  "amount": 1,
+  "unit": "sample-value",
+  "color": "sample-value",
+  "start_color": "sample-value",
+  "end_color": "sample-value",
+  "page": {
+    "layout": "tags",
+    "title": "Sample Title",
+    "subtitle": "Sample Title",
+    "banner_img": "https://example.com/image.jpg",
+    "banner_img_height": "sample-value",
+    "banner_mask_alpha": "sample-value"
+  },
+  "theme": {
+    "tag": {
+      "title": "Sample Title",
+      "subtitle": "Sample Title",
+      "banner_img": "https://example.com/image.jpg",
+      "banner_img_height": "sample-value",
+      "banner_mask_alpha": "sample-value",
+      "tagcloud": {
+        "min_font": "sample-value",
+        "max_font": "sample-value",
+        "unit": "sample-value",
+        "start_color": "sample-value",
+        "end_color": "sample-value"
+      }
+    }
+  },
+  "tag": {
+    "title": "Sample Title",
+    "subtitle": "Sample Title"
+  }
+}

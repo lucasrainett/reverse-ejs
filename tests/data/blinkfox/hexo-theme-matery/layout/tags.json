@@ -1,0 +1,14 @@
+{
+  "_partial": "sample-value",
+  "bg": "sample-value",
+  "cover": "https://example.com/image.jpg",
+  "_widget": "sample-value",
+  "tag": "sample-value",
+  "cloud": "sample-value",
+  "wordcloud": "sample-value",
+  "site": {
+    "tags": {
+      "length": "sample-value"
+    }
+  }
+}

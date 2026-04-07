@@ -1,0 +1,15 @@
+{
+  "counter": {
+    "tagcloud": "sample-value"
+  },
+  "site": {
+    "tags": {
+      "length": "sample-value"
+    }
+  },
+  "min_font": "sample-value",
+  "max_font": "sample-value",
+  "amount": 1,
+  "orderby": "sample-value",
+  "count": 1
+}

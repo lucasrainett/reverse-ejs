@@ -1,0 +1,20 @@
+{
+  "blog": {
+    "title": "My N-Blog",
+    "description": "A blog about web development"
+  },
+  "user": {
+    "_id": "u001",
+    "name": "Alice",
+    "gender": "f",
+    "bio": "Full-stack developer",
+    "avatar": "alice.png"
+  },
+  "post": {
+    "_id": "p001",
+    "title": "Getting Started with Node.js",
+    "content": "Node.js is a JavaScript runtime built on Chrome's V8 engine."
+  },
+  "success": "",
+  "error": ""
+}

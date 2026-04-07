@@ -1,0 +1,12 @@
+{
+  "cur_year": "sample-value",
+  "theme": {
+    "date_format": "sample-value"
+  },
+  "_partial": "sample-value",
+  "page": {
+    "posts": {
+      "each": "sample-value"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "layoutDiv": "sample-value",
+  "theme": {
+    "notebooks": {
+      "tree": "sample-value"
+    },
+    "wiki": {
+      "tree": "sample-value"
+    }
+  },
+  "page": {
+    "notebook": "sample-value",
+    "wiki": "sample-value",
+    "search": "sample-value",
+    "path": {
+      "match": "sample-value"
+    }
+  },
+  "item": {
+    "filter": "sample-value",
+    "placeholder": "sample-value"
+  },
+  "search": {
+    "search_in": "sample-value",
+    "search": "sample-value",
+    "no_results": "sample-value"
+  },
+  "notebook": {
+    "name": "Sample Title",
+    "base_dir": "sample-value"
+  },
+  "btn": {
+    "notebook": "sample-value"
+  },
+  "document": {
+    "getElementById": "abc123"
+  },
+  "filter": {
+    "length": "sample-value",
+    "startsWith": "sample-value"
+  }
+}

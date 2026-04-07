@@ -1,0 +1,17 @@
+{
+  "page": {
+    "path": "https://example.com/path",
+    "title": "Sample Title"
+  },
+  "counter": {
+    "views": "sample-value"
+  },
+  "theme": {
+    "comment": {
+      "valine": {
+        "on": "sample-value",
+        "visitor": "sample-value"
+      }
+    }
+  }
+}

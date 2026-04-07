@@ -1,0 +1,9 @@
+{
+  "_widget": "sample-value",
+  "theme": {
+    "sidebar": "sample-value",
+    "widgets": {
+      "forEach": "sample-value"
+    }
+  }
+}

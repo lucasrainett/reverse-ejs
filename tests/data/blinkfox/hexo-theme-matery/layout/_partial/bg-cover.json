@@ -1,0 +1,6 @@
+{
+  "_partial": "sample-value",
+  "bg": "sample-value",
+  "cover": "https://example.com/image.jpg",
+  "content": "<p>Content here</p>"
+}

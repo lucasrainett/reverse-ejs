@@ -1,0 +1,9 @@
+{
+  "page": {
+    "title": "Sample Title",
+    "content": "<p>Content here</p>"
+  },
+  "theme": {
+    "page_title_enable": true
+  }
+}

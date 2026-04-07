@@ -1,0 +1,60 @@
+{
+  "_partial": "sample-value",
+  "bg": "sample-value",
+  "cover": "https://example.com/image.jpg",
+  "_widget": "sample-value",
+  "calendar": "sample-value",
+  "archives": "sample-value",
+  "year": "1970",
+  "m": "sample-value",
+  "YYYY": "sample-value",
+  "MM": "sample-value",
+  "DD": "sample-value",
+  "substring": "sample-value",
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "postCalendar": "sample-value",
+    "featureImages": "sample-value"
+  },
+  "featureimg": "/medias/featureimages/0.jpg",
+  "config": {
+    "date_format": "sample-value",
+    "author": "Alice"
+  },
+  "paging": "sample-value",
+  "str": {
+    "length": "sample-value",
+    "charCodeAt": "sample-value"
+  },
+  "page": {
+    "posts": {
+      "each": "sample-value"
+    },
+    "total": 1
+  },
+  "featureImages": "sample-value",
+  "post": {
+    "categories": [
+      {
+        "path": "https://example.com/path",
+        "name": "Sample Title"
+      },
+      {
+        "path": "https://example.com/path",
+        "name": "Sample Title"
+      }
+    ],
+    "tags": [
+      {
+        "path": "https://example.com/path",
+        "name": "Sample Title"
+      },
+      {
+        "path": "https://example.com/path",
+        "name": "Sample Title"
+      }
+    ]
+  }
+}

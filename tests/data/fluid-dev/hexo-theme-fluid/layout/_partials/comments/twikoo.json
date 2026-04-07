@@ -1,0 +1,18 @@
+{
+  "theme": {
+    "static_prefix": {
+      "twikoo": "sample-value"
+    },
+    "twikoo": {
+      "path": "https://example.com/path",
+      "envId": "abc123"
+    }
+  },
+  "twikoo": {
+    "all": {
+      "min": {
+        "js": "sample-value"
+      }
+    }
+  }
+}

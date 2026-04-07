@@ -1,0 +1,53 @@
+{
+  "image": "https://example.com/image.jpg",
+  "page": 1,
+  "fb_app_id": "abc123",
+  "theme": {
+    "open_graph": {
+      "fb_app_id": "abc123",
+      "fb_admins": "sample-value",
+      "twitter_id": "abc123",
+      "google_plus": "sample-value"
+    },
+    "gravatar": {
+      "email": "user@example.com",
+      "hash": "abc123"
+    },
+    "favicon": {
+      "desktop": {
+        "url": "https://example.com/path",
+        "gravatar": "https://example.com/image.jpg"
+      },
+      "android": {
+        "url": "https://example.com/path",
+        "gravatar": "https://example.com/image.jpg"
+      },
+      "apple": {
+        "url": "https://example.com/path",
+        "gravatar": "https://example.com/image.jpg"
+      }
+    },
+    "rss": "sample-value",
+    "direction": "sample-value",
+    "mathjax": {
+      "enabled": true
+    }
+  },
+  "fb_admins": "sample-value",
+  "twitter_id": "abc123",
+  "google_plus": "sample-value",
+  "google_analytics": {
+    "ejs": "sample-value"
+  },
+  "umami_analytics": {
+    "ejs": "sample-value"
+  },
+  "style": "default",
+  "rtl": "sample-value",
+  "config": {
+    "title": "Sample Title",
+    "feed": {
+      "path": "https://example.com/path"
+    }
+  }
+}

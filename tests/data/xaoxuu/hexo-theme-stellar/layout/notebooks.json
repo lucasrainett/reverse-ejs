@@ -1,0 +1,11 @@
+{
+  "include": "sample-value",
+  "_partial": "sample-value",
+  "main": "sample-value",
+  "notebook_card": "sample-value",
+  "theme": {
+    "notebooks": {
+      "tree": "sample-value"
+    }
+  }
+}

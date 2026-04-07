@@ -1,0 +1,12 @@
+{
+  "categories": "sample-value",
+  "show_count": 1,
+  "theme": {
+    "show_count": 1
+  },
+  "site": {
+    "categories": {
+      "length": "sample-value"
+    }
+  }
+}

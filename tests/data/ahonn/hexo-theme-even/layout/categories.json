@@ -1,0 +1,13 @@
+{
+  "counter": {
+    "categories": "sample-value"
+  },
+  "site": {
+    "categories": {
+      "length": "sample-value"
+    }
+  },
+  "style": "default",
+  "separator": "sample-value",
+  "depth": "sample-value"
+}

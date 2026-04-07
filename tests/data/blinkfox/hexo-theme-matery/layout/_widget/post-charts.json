@@ -1,0 +1,77 @@
+{
+  "postCharts": "sample-value",
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "libs": {
+      "js": {
+        "echarts": "sample-value"
+      }
+    }
+  },
+  "postPublishChart": "sample-value",
+  "monthArr": "sample-value",
+  "postsNumberName": "Sample Title",
+  "monthValueArr": "sample-value",
+  "maximum": "sample-value",
+  "minimum": "sample-value",
+  "average": "sample-value",
+  "categoriesChart": "sample-value",
+  "categories": "sample-value",
+  "categoryArrJson": "sample-value",
+  "top10TagsChart": "sample-value",
+  "tagNameArrJson": "sample-value",
+  "tagCountArrJson": "sample-value",
+  "monthMap": {
+    "has": "sample-value",
+    "set": "sample-value",
+    "get": "sample-value",
+    "keys": "sample-value",
+    "values": "sample-value"
+  },
+  "site": {
+    "posts": {
+      "forEach": "sample-value"
+    },
+    "categories": {
+      "map": "sample-value"
+    },
+    "tags": {
+      "map": "sample-value"
+    }
+  },
+  "post": {
+    "date": {
+      "format": "sample-value"
+    }
+  },
+  "categoryArr": {
+    "push": "sample-value"
+  },
+  "category": {
+    "name": "Sample Title",
+    "length": "sample-value"
+  },
+  "tagArr": {
+    "push": "sample-value",
+    "sort": "sample-value",
+    "length": "sample-value"
+  },
+  "tag": {
+    "name": "Sample Title",
+    "length": "sample-value"
+  },
+  "b": {
+    "value": "sample-value"
+  },
+  "a": {
+    "value": "sample-value"
+  },
+  "tagNameArr": {
+    "push": "sample-value"
+  },
+  "tagCountArr": {
+    "push": "sample-value"
+  }
+}

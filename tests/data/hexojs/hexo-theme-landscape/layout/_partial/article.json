@@ -1,0 +1,36 @@
+{
+  "post": {
+    "layout": "sample-value",
+    "slug": "sample-value",
+    "excerpt": "A sample description",
+    "path": "https://example.com/path",
+    "content": "<p>Content here</p>",
+    "permalink": "https://example.com/path",
+    "_id": "abc123",
+    "title": "Sample Title",
+    "link": "https://example.com/path",
+    "comments": "sample-value"
+  },
+  "class_name": "Sample Title",
+  "article": "sample-value",
+  "date_format": "sample-value",
+  "category": "sample-value",
+  "gallery": "sample-value",
+  "title": "Sample Title",
+  "p": "sample-value",
+  "name": "Sample Title",
+  "theme": {
+    "excerpt_link": "https://example.com/path",
+    "disqus_shortname": "Sample Title",
+    "valine": {
+      "enable": true,
+      "appId": "abc123",
+      "appKey": "abc123"
+    }
+  },
+  "share": "sample-value",
+  "comment": "sample-value",
+  "tag": "sample-value",
+  "nav": "sample-value",
+  "index": 1
+}

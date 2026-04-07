@@ -1,0 +1,23 @@
+{
+  "copyright": {
+    "author": "Alice",
+    "link": "https://example.com/path",
+    "license": "sample-value"
+  },
+  "config": {
+    "url": "https://example.com/path",
+    "author": "Alice"
+  },
+  "page": {
+    "permalink": "https://example.com/path",
+    "copyright": "sample-value",
+    "license": "sample-value"
+  },
+  "license": "sample-value",
+  "theme": {
+    "copyright": {
+      "enable": true,
+      "license": "sample-value"
+    }
+  }
+}

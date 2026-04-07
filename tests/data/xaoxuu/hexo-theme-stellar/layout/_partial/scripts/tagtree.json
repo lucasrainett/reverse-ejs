@@ -1,0 +1,9 @@
+{
+  "theme": {
+    "widgets": {
+      "tagtree": {
+        "expand_active": true
+      }
+    }
+  }
+}

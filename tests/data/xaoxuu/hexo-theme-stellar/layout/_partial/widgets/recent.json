@@ -1,0 +1,60 @@
+{
+  "layoutDiv": "sample-value",
+  "meta": {
+    "recent_update": "2025-01-15"
+  },
+  "item": {
+    "rss": "sample-value",
+    "limit": "sample-value"
+  },
+  "page": {
+    "menu_id": "abc123",
+    "layout": "sample-value",
+    "notebook": "sample-value"
+  },
+  "theme": {
+    "wiki": {
+      "all_pages": {
+        "filter": "sample-value"
+      },
+      "tree": "sample-value"
+    },
+    "notebooks": {
+      "tree": "sample-value"
+    }
+  },
+  "p": {
+    "wiki": "sample-value",
+    "notebook": "sample-value",
+    "title": {
+      "length": "sample-value"
+    }
+  },
+  "arr": {
+    "sort": "sample-value",
+    "filter": "sample-value",
+    "length": "sample-value",
+    "forEach": "sample-value"
+  },
+  "p1": {
+    "updated": "2025-01-15"
+  },
+  "p2": {
+    "updated": "2025-01-15"
+  },
+  "site": {
+    "pages": {
+      "filter": "sample-value"
+    },
+    "posts": {
+      "filter": "sample-value"
+    }
+  },
+  "post": {
+    "link": "https://example.com/path",
+    "path": "https://example.com/path",
+    "wiki": "sample-value",
+    "notebook": "sample-value",
+    "title": "Sample Title"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "note": {
+    "cover": "https://example.com/image.jpg",
+    "title": "Sample Title",
+    "excerpt": "A sample description",
+    "description": "A sample description",
+    "content": "<p>Content here</p>",
+    "updated": "2025-01-15",
+    "date": "2025-01-15",
+    "pin": "sample-value",
+    "tags": {
+      "forEach": "sample-value"
+    }
+  },
+  "length": "sample-value",
+  "theme": {
+    "notebook": {
+      "auto_excerpt": "A sample description"
+    },
+    "plugins": {
+      "heti": "sample-value"
+    }
+  },
+  "solar": "sample-value",
+  "pin": "sample-value",
+  "linear": "sample-value",
+  "calendar": "sample-value",
+  "config": {
+    "date_format": "sample-value"
+  }
+}

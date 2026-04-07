@@ -1,0 +1,10 @@
+{
+  "theme": {
+    "umami_analytics": {
+      "id": "abc123",
+      "host": "sample-value",
+      "script_name": "Sample Title",
+      "enabled": true
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "theme": {
+    "socialLink": {
+      "github": "sample-value",
+      "email": "user@example.com",
+      "facebook": "sample-value",
+      "twitter": "sample-value",
+      "qq": "sample-value",
+      "weibo": "sample-value",
+      "zhihu": "sample-value",
+      "rss": "sample-value"
+    }
+  },
+  "atom": {
+    "xml": "sample-value"
+  }
+}

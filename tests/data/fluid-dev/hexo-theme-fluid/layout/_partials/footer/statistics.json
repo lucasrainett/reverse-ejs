@@ -1,0 +1,41 @@
+{
+  "pv_texts": {
+    "length": "sample-value"
+  },
+  "uv_texts": {
+    "length": "sample-value"
+  },
+  "theme": {
+    "footer": {
+      "statistics": {
+        "pv_format": "sample-value",
+        "uv_format": "sample-value",
+        "source": "sample-value"
+      }
+    },
+    "static_prefix": {
+      "internal_js": "sample-value",
+      "busuanzi": "sample-value"
+    }
+  },
+  "footer": {
+    "pv": "sample-value",
+    "uv": "sample-value"
+  },
+  "leancloud": {
+    "js": "sample-value"
+  },
+  "openkounter": {
+    "js": "sample-value"
+  },
+  "busuanzi": {
+    "pure": {
+      "mini": {
+        "js": "sample-value"
+      }
+    }
+  },
+  "view": {
+    "js": "sample-value"
+  }
+}

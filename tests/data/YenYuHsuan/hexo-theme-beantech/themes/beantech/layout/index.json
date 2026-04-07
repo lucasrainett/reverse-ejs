@@ -1,0 +1,30 @@
+{
+  "config": {
+    "root": "sample-value",
+    "author": "Alice",
+    "date_format": "sample-value",
+    "home_posts_tag": "sample-value"
+  },
+  "Untitled": "sample-value",
+  "length": "sample-value",
+  "omission": "sample-value",
+  "page": {
+    "prev_link": "https://example.com/path",
+    "next_link": "https://example.com/path",
+    "posts": {
+      "each": "sample-value"
+    },
+    "prev": "sample-value",
+    "next": "sample-value"
+  },
+  "post": {
+    "tags": [
+      {
+        "name": "Sample Title"
+      },
+      {
+        "name": "Sample Title"
+      }
+    ]
+  }
+}

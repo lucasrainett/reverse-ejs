@@ -1,0 +1,15 @@
+{
+  "page": {
+    "activeTag": "sample-value",
+    "posts": {
+      "each": "sample-value"
+    }
+  },
+  "tag": "sample-value",
+  "include": "sample-value",
+  "_partial": "sample-value",
+  "main": "sample-value",
+  "notebook": "sample-value",
+  "note_card": "sample-value",
+  "note": "sample-value"
+}

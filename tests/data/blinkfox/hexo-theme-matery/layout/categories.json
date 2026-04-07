@@ -1,0 +1,14 @@
+{
+  "_partial": "sample-value",
+  "bg": "sample-value",
+  "cover": "https://example.com/image.jpg",
+  "_widget": "sample-value",
+  "category": "sample-value",
+  "cloud": "sample-value",
+  "radar": "sample-value",
+  "site": {
+    "categories": {
+      "length": "sample-value"
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "_partial": "sample-value",
+  "bg": "sample-value",
+  "cover": "https://example.com/image.jpg",
+  "friends": "sample-value",
+  "i": 12,
+  "friend": "e",
+  "page": {
+    "content": {
+      "length": "sample-value"
+    }
+  },
+  "gitalk": "sample-value",
+  "gitment": "sample-value",
+  "disqus": "sample-value",
+  "livere": "sample-value",
+  "valine": "sample-value",
+  "site": {
+    "data": {
+      "friends": "sample-value"
+    }
+  },
+  "theme": {
+    "gitalk": {
+      "enable": true
+    },
+    "gitment": {
+      "enable": true
+    },
+    "disqus": {
+      "enable": true
+    },
+    "livere": {
+      "enable": true
+    },
+    "valine": {
+      "enable": true
+    }
+  }
+}

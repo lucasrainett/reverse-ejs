@@ -1,0 +1,53 @@
+{
+  "keyWords": "sample-value",
+  "config": {
+    "description": "A sample description",
+    "title": "Sample Title",
+    "keywords": "sample-value"
+  },
+  "_partial": "sample-value",
+  "google": "sample-value",
+  "analytics": "sample-value",
+  "pageTitle": "Sample Title | Sample Title",
+  "iconType": "sample-value",
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "favicon": {
+      "substr": "sample-value",
+      "lastIndexOf": "sample-value",
+      "length": "sample-value"
+    },
+    "libs": {
+      "css": {
+        "fontAwesome": "sample-value",
+        "materialize": "sample-value",
+        "aos": "sample-value",
+        "animate": "sample-value",
+        "lightgallery": "sample-value",
+        "matery": "sample-value",
+        "mycss": "default"
+      },
+      "js": {
+        "jquery": "sample-value"
+      }
+    }
+  },
+  "page": {
+    "title": "Sample Title",
+    "year": "sample-value",
+    "month": "sample-value",
+    "category": "sample-value",
+    "tag": "sample-value",
+    "keywords": "sample-value",
+    "summary": "A sample description",
+    "__post": "sample-value",
+    "content": "<p>Content here</p>"
+  },
+  "vnd": {
+    "microsoft": {
+      "icon": "https://example.com/image.jpg"
+    }
+  }
+}

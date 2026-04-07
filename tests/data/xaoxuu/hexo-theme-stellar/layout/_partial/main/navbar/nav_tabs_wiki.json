@@ -1,0 +1,37 @@
+{
+  "layoutDiv": "sample-value",
+  "page": {
+    "filter": "sample-value",
+    "tagName": "Sample Title",
+    "path": "https://example.com/path"
+  },
+  "theme": {
+    "site_tree": {
+      "index_wiki": {
+        "base_dir": "sample-value"
+      }
+    },
+    "wiki": "sample-value"
+  },
+  "btn": {
+    "all_wiki": "sample-value"
+  },
+  "tag": {
+    "items": {
+      "filter": "sample-value"
+    },
+    "name": {
+      "length": "sample-value"
+    },
+    "path": "https://example.com/path"
+  },
+  "shelf": {
+    "includes": "sample-value"
+  },
+  "projects": {
+    "length": "sample-value"
+  },
+  "index": {
+    "html": "<p>Content here</p>"
+  }
+}

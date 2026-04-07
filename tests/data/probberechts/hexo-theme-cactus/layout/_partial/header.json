@@ -1,0 +1,23 @@
+{
+  "theme": {
+    "gravatar": {
+      "email": "user@example.com",
+      "hash": "abc123"
+    },
+    "logo": {
+      "width": "sample-value",
+      "url": "https://example.com/path",
+      "enabled": true,
+      "gravatar": "https://example.com/image.jpg"
+    },
+    "nav": "sample-value"
+  },
+  "config": {
+    "title": "Sample Title"
+  },
+  "icons": {
+    "menu": "sample-value"
+  },
+  "nav": "sample-value",
+  "replace": "sample-value"
+}

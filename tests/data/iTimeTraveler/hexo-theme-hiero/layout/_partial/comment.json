@@ -1,0 +1,44 @@
+{
+  "theme": {
+    "gentie_productKey": "abc123",
+    "duoshuo_shortname": "Sample Title",
+    "disqus_shortname": "Sample Title",
+    "uyan_uid": "abc123",
+    "url": "https://example.com/path",
+    "livere_shortname": "Sample Title",
+    "gitment": {
+      "owner": "Alice",
+      "repo": "sample-value",
+      "client_id": "abc123",
+      "client_secret": "sample-value"
+    },
+    "valine": {
+      "notify": "sample-value",
+      "verify": "sample-value",
+      "visitor": "sample-value",
+      "appid": "abc123",
+      "appkey": "abc123",
+      "placeholder": "sample-value",
+      "avatar": "https://example.com/image.jpg",
+      "pageSize": 1,
+      "app_id": "abc123",
+      "app_key": "abc123"
+    },
+    "wumii": "sample-value"
+  },
+  "config": {
+    "root": "sample-value"
+  },
+  "post": {
+    "path": "https://example.com/path",
+    "title": "Sample Title",
+    "permalink": "https://example.com/path"
+  },
+  "comment": "sample-value",
+  "ds": {
+    "css": "default"
+  },
+  "gitment": {
+    "css": "default"
+  }
+}

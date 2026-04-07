@@ -1,0 +1,36 @@
+{
+  "theme": {
+    "web_analytics": {
+      "baidu": "sample-value",
+      "google": {
+        "measurement_id": "abc123"
+      },
+      "umami": {
+        "src": "https://example.com/path",
+        "website_id": "abc123",
+        "domains": "sample-value"
+      },
+      "tencent": {
+        "sid": "abc123",
+        "cid": "abc123"
+      },
+      "enable": true,
+      "leancloud": {
+        "app_id": "abc123",
+        "app_key": "abc123"
+      },
+      "openkounter": {
+        "server_url": "https://example.com/path"
+      }
+    },
+    "static_prefix": {
+      "internal_js": "sample-value"
+    }
+  },
+  "leancloud": {
+    "js": "sample-value"
+  },
+  "openkounter": {
+    "js": "sample-value"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "_partials": "sample-value",
+  "category": {
+    "title": "Sample Title",
+    "subtitle": "Sample Title"
+  },
+  "list": "sample-value",
+  "curCats": "sample-value",
+  "params": "sample-value",
+  "orderBy": "sample-value",
+  "postLimit": "sample-value",
+  "theme": {
+    "category": {
+      "post_limit": "sample-value",
+      "post_order_by": "sample-value",
+      "title": "Sample Title",
+      "subtitle": "Sample Title",
+      "banner_img": "https://example.com/image.jpg",
+      "banner_img_height": "sample-value",
+      "banner_mask_alpha": "sample-value",
+      "order_by": "sample-value"
+    }
+  },
+  "postOrderBy": "sample-value",
+  "config": {
+    "index_generator": {
+      "order_by": "sample-value"
+    }
+  },
+  "page": {
+    "layout": "categories",
+    "title": "Sample Title",
+    "subtitle": "Sample Title",
+    "banner_img": "https://example.com/image.jpg",
+    "banner_img_height": "sample-value",
+    "banner_mask_alpha": "sample-value"
+  },
+  "site": {
+    "categories": {
+      "find": "sample-value"
+    }
+  },
+  "cat": {
+    "length": "sample-value"
+  }
+}

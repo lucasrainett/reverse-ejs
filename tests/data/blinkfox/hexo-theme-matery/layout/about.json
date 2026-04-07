@@ -1,0 +1,37 @@
+{
+  "_partial": "sample-value",
+  "bg": "sample-value",
+  "cover": "https://example.com/image.jpg",
+  "post": "sample-value",
+  "statis": "sample-value",
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "profile": {
+      "avatar": "https://example.com/image.jpg",
+      "career": "sample-value",
+      "introduction": "sample-value"
+    },
+    "myProjects": {
+      "enable": true
+    },
+    "mySkills": {
+      "enable": true
+    },
+    "myGallery": {
+      "enable": true
+    }
+  },
+  "config": {
+    "author": "Alice"
+  },
+  "social": "sample-value",
+  "link": "https://example.com/path",
+  "_widget": "sample-value",
+  "charts": "sample-value",
+  "my": "sample-value",
+  "projects": "sample-value",
+  "skills": "sample-value",
+  "gallery": "sample-value"
+}

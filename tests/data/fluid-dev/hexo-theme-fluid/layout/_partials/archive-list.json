@@ -1,0 +1,16 @@
+{
+  "params": {
+    "key": "abc123",
+    "postTotal": 1
+  },
+  "post_total": 1,
+  "dateCursor": "sample-value",
+  "MM": "sample-value",
+  "DD": "sample-value",
+  "_partials": "sample-value",
+  "page": {
+    "posts": {
+      "each": "sample-value"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "theme": {
+    "navbar": {
+      "blog_title": "Sample Title",
+      "menu": "sample-value"
+    },
+    "search": {
+      "enable": true
+    },
+    "static_prefix": {
+      "internal_js": "sample-value"
+    },
+    "dark_mode": {
+      "enable": true
+    }
+  },
+  "config": {
+    "title": "Sample Title"
+  },
+  "i": "sample-value",
+  "_self": "sample-value",
+  "subText": {
+    "indexOf": "sample-value"
+  },
+  "iconfont": "sample-value",
+  "link": "https://example.com/path",
+  "fill": "sample-value",
+  "subGridText": {
+    "indexOf": "sample-value"
+  },
+  "search": {
+    "title": "Sample Title",
+    "js": "sample-value"
+  },
+  "Search": "sample-value",
+  "darkmode": {
+    "light": "sample-value",
+    "dark": "sample-value"
+  },
+  "each": {
+    "submenu": [
+      {
+        "link": "https://example.com/path",
+        "target": "sample-value",
+        "icon": "https://example.com/image.jpg"
+      },
+      {
+        "link": "https://example.com/path",
+        "target": "sample-value",
+        "icon": "https://example.com/image.jpg"
+      }
+    ]
+  }
+}

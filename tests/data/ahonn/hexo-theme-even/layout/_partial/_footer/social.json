@@ -1,0 +1,16 @@
+{
+  "path": "e",
+  "config": {
+    "feed": {
+      "path": "https://example.com/path"
+    }
+  },
+  "rss_link": "https://example.com/path",
+  "theme": {
+    "rss": "sample-value",
+    "social": "sample-value"
+  },
+  "atom": {
+    "xml": "sample-value"
+  }
+}

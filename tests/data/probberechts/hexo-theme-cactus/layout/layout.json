@@ -1,0 +1,23 @@
+{
+  "config": {
+    "language": {
+      "substring": "sample-value"
+    }
+  },
+  "lang": "en",
+  "_partial": "sample-value",
+  "head": "sample-value",
+  "theme": {
+    "direction": "sample-value"
+  },
+  "post": "sample-value",
+  "actions_desktop": "sample-value",
+  "h": "sample-value",
+  "card": "sample-value",
+  "header": "sample-value",
+  "body": "<p>Content here</p>",
+  "actions_mobile": "sample-value",
+  "footer": "sample-value",
+  "styles": "sample-value",
+  "scripts": "sample-value"
+}

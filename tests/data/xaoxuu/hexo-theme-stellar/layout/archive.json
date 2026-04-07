@@ -1,0 +1,55 @@
+{
+  "layoutDiv": "sample-value",
+  "page": {
+    "robots": "noindex,follow",
+    "menu_id": "abc123",
+    "author": {
+      "name": "Sample Title",
+      "banner": "https://example.com/image.jpg",
+      "avatar": "https://example.com/image.jpg",
+      "description": "A sample description",
+      "id": "abc123"
+    },
+    "header": false,
+    "title": "Sample Title",
+    "banner": "https://example.com/image.jpg",
+    "banner_info": {
+      "avatar": "https://example.com/image.jpg",
+      "subtitle": "A sample description"
+    },
+    "posts": "sample-value"
+  },
+  "btn": {
+    "archives": "sample-value"
+  },
+  "site": {
+    "posts": {
+      "filter": "sample-value"
+    }
+  },
+  "p": {
+    "author": "Alice"
+  },
+  "theme": {
+    "default_author": {
+      "id": "abc123"
+    }
+  },
+  "posts": {
+    "sort": "sample-value"
+  },
+  "post": {
+    "year": "sample-value",
+    "date": "2025-01-15",
+    "title": "Sample Title",
+    "link": "https://example.com/path",
+    "path": "https://example.com/path"
+  },
+  "years": {
+    "includes": "sample-value",
+    "push": "sample-value"
+  },
+  "config": {
+    "date_format": "sample-value"
+  }
+}

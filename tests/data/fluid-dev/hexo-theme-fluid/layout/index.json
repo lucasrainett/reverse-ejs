@@ -1,0 +1,75 @@
+{
+  "config": {
+    "title": "Sample Title",
+    "date_format": "sample-value",
+    "subtitle": "Sample Title"
+  },
+  "post_url": "https://example.com/path",
+  "theme": {
+    "index": {
+      "post_url_target": "sample-value",
+      "post_sticky": {
+        "icon": "https://example.com/image.jpg",
+        "enable": true
+      },
+      "slogan": {
+        "enable": true,
+        "text": "<p>Content here</p>"
+      },
+      "banner_img": "https://example.com/image.jpg",
+      "banner_img_height": "sample-value",
+      "banner_mask_alpha": "sample-value",
+      "auto_excerpt": {
+        "enable": true
+      },
+      "post_meta": {
+        "date": "2025-01-15",
+        "category": "sample-value",
+        "tag": "sample-value"
+      }
+    },
+    "post": {
+      "default_index_img": "https://example.com/image.jpg"
+    }
+  },
+  "index_img": "https://example.com/image.jpg",
+  "index": 1,
+  "excerpt__noimg": "https://example.com/image.jpg",
+  "excerpt": "A sample description",
+  "substring": "sample-value",
+  "trim": "sample-value",
+  "replace": "sample-value",
+  "n": "sample-value",
+  "g": "sample-value",
+  "YYYY": "sample-value",
+  "MM": "sample-value",
+  "DD": "sample-value",
+  "HH": "sample-value",
+  "mm": "sample-value",
+  "_partials": "sample-value",
+  "category": "sample-value",
+  "chains": "sample-value",
+  "categories": "sample-value",
+  "limit": "sample-value",
+  "page": {
+    "subtitle": "<p>Content here</p>",
+    "banner_img": "https://example.com/image.jpg",
+    "banner_img_height": "sample-value",
+    "banner_mask_alpha": "sample-value",
+    "posts": {
+      "each": "sample-value"
+    }
+  },
+  "post": {
+    "tags": [
+      {
+        "path": "https://example.com/path",
+        "name": "Sample Title"
+      },
+      {
+        "path": "https://example.com/path",
+        "name": "Sample Title"
+      }
+    ]
+  }
+}

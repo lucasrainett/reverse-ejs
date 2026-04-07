@@ -1,0 +1,20 @@
+{
+  "page": {
+    "description": "A sample description",
+    "title": "Sample Title",
+    "keywords": "sample-value",
+    "tags": {
+      "length": "sample-value",
+      "forEach": "sample-value"
+    }
+  },
+  "config": {
+    "description": "A sample description",
+    "keywords": "sample-value",
+    "title": "Sample Title"
+  },
+  "theme": {
+    "baidu_verification": "sample-value",
+    "google_verification": "sample-value"
+  }
+}

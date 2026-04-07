@@ -1,0 +1,20 @@
+{
+  "year": 0,
+  "_partial": "sample-value",
+  "post": "sample-value",
+  "class_name": "Sample Title",
+  "meta": "sample-value",
+  "title": "Sample Title",
+  "index": 1,
+  "pagination": "sample-value",
+  "theme": {
+    "archive": {
+      "sort_updated": "2025-01-15"
+    }
+  },
+  "page": {
+    "posts": {
+      "sort": "sample-value"
+    }
+  }
+}

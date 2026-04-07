@@ -1,0 +1,8 @@
+{
+  "theme": {
+    "leancloud": {
+      "app_id": "abc123",
+      "app_key": "abc123"
+    }
+  }
+}

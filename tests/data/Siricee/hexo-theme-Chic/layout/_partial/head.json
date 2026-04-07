@@ -1,0 +1,37 @@
+{
+  "config": {
+    "author": "Alice",
+    "subtitle": "Sample Title",
+    "description": "A sample description",
+    "keywords": "sample-value",
+    "title": "Sample Title"
+  },
+  "title": "Sample Title",
+  "theme": {
+    "favicon": "https://example.com/image.jpg",
+    "stylesheets": {
+      "length": "sample-value",
+      "forEach": "sample-value"
+    },
+    "scripts": {
+      "length": "sample-value",
+      "forEach": "sample-value"
+    },
+    "mathjax": {
+      "enable": true,
+      "import": "sample-value"
+    }
+  },
+  "_plugins": "sample-value",
+  "mathjax": {
+    "ejs": "sample-value"
+  },
+  "page": {
+    "title": "Sample Title",
+    "year": "sample-value",
+    "month": "sample-value",
+    "category": "sample-value",
+    "tag": "sample-value",
+    "mathjax": "sample-value"
+  }
+}

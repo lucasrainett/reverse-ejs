@@ -1,0 +1,26 @@
+{
+  "post": "sample-value",
+  "slogan": "sample-value",
+  "title_top": "sample-value",
+  "index": 1,
+  "entry": "sample-value",
+  "title": "Sample Title",
+  "index_pagination": "sample-value",
+  "sidebar": "sample-value",
+  "theme": {
+    "widgets": {
+      "length": "sample-value"
+    }
+  },
+  "page": {
+    "current": "sample-value",
+    "posts": {
+      "each": "sample-value"
+    }
+  },
+  "site": {
+    "posts": {
+      "each": "sample-value"
+    }
+  }
+}

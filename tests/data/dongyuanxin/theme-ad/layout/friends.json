@@ -1,0 +1,26 @@
+{
+  "theme": {
+    "friends": [
+      {
+        "show": true,
+        "meta": "Web developer",
+        "avatar": "https://example.com/bob.jpg",
+        "nickname": "Bob",
+        "site": "https://bob.dev"
+      },
+      {
+        "show": true,
+        "meta": "Designer",
+        "avatar": "https://example.com/carol.jpg",
+        "nickname": "Carol",
+        "site": "https://carol.design"
+      }
+    ],
+    "friends_avatar_cdn": ""
+  },
+  "page": {
+    "content": "<p>These are my friends.</p>",
+    "more": "",
+    "toc_number": true
+  }
+}

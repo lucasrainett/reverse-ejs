@@ -1,0 +1,15 @@
+{
+  "posts": {
+    "reward": "sample-value"
+  },
+  "qrCode": "abc123",
+  "theme": {
+    "reward": {
+      "enable": true,
+      "qrCode": "abc123"
+    }
+  },
+  "page": {
+    "reward": "sample-value"
+  }
+}

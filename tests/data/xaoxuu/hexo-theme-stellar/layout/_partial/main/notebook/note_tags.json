@@ -1,0 +1,14 @@
+{
+  "tag": {
+    "path": "https://example.com/path",
+    "name": "Sample Title"
+  },
+  "page": {
+    "tags": "sample-value"
+  },
+  "notebook": {
+    "tagTree": {
+      "get": "sample-value"
+    }
+  }
+}

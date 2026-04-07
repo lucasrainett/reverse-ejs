@@ -1,0 +1,19 @@
+{
+  "min_font": "sample-value",
+  "max_font": "sample-value",
+  "_partial": "sample-value",
+  "archive": "sample-value",
+  "post": {
+    "subtitle": {
+      "length": "sample-value"
+    }
+  },
+  "index": 1,
+  "site": {
+    "tags": {
+      "length": "sample-value",
+      "map": "sample-value",
+      "sort": "sample-value"
+    }
+  }
+}

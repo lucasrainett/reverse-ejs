@@ -1,0 +1,16 @@
+{
+  "_page": 1,
+  "tag": "sample-value",
+  "pagination": "sample-value",
+  "config": {
+    "tag": "sample-value"
+  },
+  "index": {
+    "md": "sample-value"
+  },
+  "site": {
+    "tags": {
+      "forEach": "sample-value"
+    }
+  }
+}

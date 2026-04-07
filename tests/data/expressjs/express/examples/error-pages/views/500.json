@@ -1,0 +1,9 @@
+{
+  "error_header": "sample-value",
+  "error": {
+    "message": "sample-value",
+    "stack": "sample-value"
+  },
+  "footer": "sample-value",
+  "settings": "sample-value"
+}

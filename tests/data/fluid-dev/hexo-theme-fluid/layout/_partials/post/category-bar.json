@@ -1,0 +1,45 @@
+{
+  "_partials": "sample-value",
+  "category": "sample-value",
+  "list": "sample-value",
+  "curCats": "sample-value",
+  "parent": "sample-value",
+  "params": "sample-value",
+  "type": "sample-value",
+  "post": "sample-value",
+  "filterIds": {
+    "push": "sample-value"
+  },
+  "postLimit": "sample-value",
+  "theme": {
+    "post": {
+      "category_bar": {
+        "post_limit": "sample-value",
+        "post_order_by": "sample-value"
+      }
+    }
+  },
+  "postOrderBy": "sample-value",
+  "config": {
+    "index_generator": {
+      "order_by": "sample-value"
+    }
+  },
+  "page": {
+    "categories": {
+      "filter": "sample-value",
+      "map": "sample-value"
+    },
+    "category_bar": {
+      "indexOf": "sample-value"
+    },
+    "_id": "abc123"
+  },
+  "c": {
+    "parent": "sample-value",
+    "_id": "abc123"
+  },
+  "cat": {
+    "name": "Sample Title"
+  }
+}

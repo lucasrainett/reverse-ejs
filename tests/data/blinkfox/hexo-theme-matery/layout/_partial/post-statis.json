@@ -1,0 +1,16 @@
+{
+  "site": {
+    "posts": {
+      "length": "sample-value"
+    },
+    "categories": {
+      "length": "sample-value"
+    },
+    "tags": {
+      "length": "sample-value"
+    }
+  },
+  "posts": "sample-value",
+  "categories": "sample-value",
+  "tags": "sample-value"
+}

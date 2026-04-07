@@ -1,0 +1,13 @@
+{
+  "key": "abc123",
+  "title": "Sample Title",
+  "url": "https://example.com/path",
+  "theme": {
+    "duoshuo": {
+      "domain": "sample-value"
+    }
+  },
+  "config": {
+    "root": "sample-value"
+  }
+}

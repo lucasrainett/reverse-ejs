@@ -1,0 +1,74 @@
+{
+  "post": {
+    "toc": "sample-value"
+  },
+  "Fluid": {
+    "utils": {
+      "createScript": "sample-value"
+    },
+    "events": {
+      "registerRefreshCallback": "sample-value"
+    }
+  },
+  "theme": {
+    "static_prefix": {
+      "tocbot": "sample-value"
+    }
+  },
+  "tocbot": {
+    "min": {
+      "js": "sample-value"
+    },
+    "refresh": "sample-value"
+  },
+  "window": {
+    "tocbot": {
+      "init": "sample-value"
+    },
+    "__tocToggleObserver": {
+      "observe": "sample-value"
+    }
+  },
+  "boardCtn": {
+    "offset": "sample-value"
+  },
+  "CONFIG": {
+    "toc": {
+      "expand_all": "sample-value"
+    }
+  },
+  "li": {
+    "children": "sample-value",
+    "prepend": "sample-value",
+    "length": "sample-value"
+  },
+  "toggle": {
+    "length": "sample-value"
+  },
+  "childList": {
+    "hasClass": "default",
+    "length": "sample-value",
+    "toggleClass": "default"
+  },
+  "click": {
+    "tocToggle": "sample-value"
+  },
+  "e": {
+    "preventDefault": "sample-value",
+    "stopPropagation": "sample-value"
+  },
+  "mutations": {
+    "forEach": "sample-value"
+  },
+  "mutation": {
+    "type": "sample-value",
+    "attributeName": "Sample Title",
+    "target": "sample-value"
+  },
+  "list": {
+    "parent": "sample-value"
+  },
+  "tocConfig": {
+    "collapseDepth": "sample-value"
+  }
+}

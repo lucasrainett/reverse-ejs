@@ -1,0 +1,21 @@
+{
+  "class_name": "Sample Title",
+  "post": {
+    "date": "2025-01-15",
+    "updated": "2025-01-15"
+  },
+  "config": {
+    "date_format": "sample-value"
+  },
+  "theme": {
+    "post": {
+      "show_updated": "2025-01-15"
+    },
+    "posts_overview": {
+      "sort_updated": "2025-01-15"
+    },
+    "archive": {
+      "sort_updated": "2025-01-15"
+    }
+  }
+}

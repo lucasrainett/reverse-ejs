@@ -1,0 +1,5 @@
+{
+  "error_header": "sample-value",
+  "url": "https://example.com/path",
+  "footer": "sample-value"
+}

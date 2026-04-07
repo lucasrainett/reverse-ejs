@@ -1,0 +1,62 @@
+{
+  "div": "sample-value",
+  "post": {
+    "poster": "sample-value",
+    "cover": "https://example.com/image.jpg",
+    "tags": {
+      "reverse": "sample-value"
+    },
+    "title": "Sample Title",
+    "date": "2025-01-15",
+    "excerpt": "A sample description",
+    "description": "A sample description",
+    "content": "<p>Content here</p>",
+    "categories": {
+      "length": "sample-value",
+      "forEach": "sample-value"
+    },
+    "layout": "sample-value",
+    "sticky": "sample-value"
+  },
+  "obj": {
+    "image": "https://example.com/image.jpg"
+  },
+  "poster": {
+    "headline": "sample-value",
+    "topic": "sample-value",
+    "caption": "sample-value",
+    "color": "sample-value"
+  },
+  "theme": {
+    "article": {
+      "auto_cover": "https://example.com/image.jpg",
+      "auto_excerpt": "A sample description"
+    },
+    "plugins": {
+      "heti": "sample-value"
+    }
+  },
+  "source": {
+    "unsplash": {
+      "com": "sample-value"
+    }
+  },
+  "tag": {
+    "name": "Sample Title"
+  },
+  "config": {
+    "date_format": "sample-value"
+  },
+  "cats": {
+    "push": "sample-value",
+    "length": "sample-value",
+    "join": "sample-value",
+    "pop": "sample-value"
+  },
+  "cat": {
+    "name": "Sample Title"
+  },
+  "position": {
+    "length": "sample-value"
+  }
+}

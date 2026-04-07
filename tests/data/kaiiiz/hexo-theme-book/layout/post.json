@@ -1,0 +1,10 @@
+{
+  "page": {
+    "content": "<p>Content here</p>",
+    "comments": "sample-value"
+  },
+  "_lib": "sample-value",
+  "comments": "sample-value",
+  "book": "sample-value",
+  "post": "sample-value"
+}

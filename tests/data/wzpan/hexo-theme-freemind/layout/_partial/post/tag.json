@@ -1,0 +1,13 @@
+{
+  "tags": [],
+  "item": {
+    "tags": {
+      "forEach": "sample-value"
+    }
+  },
+  "tag": {
+    "path": "https://example.com/path",
+    "name": "Sample Title",
+    "length": "sample-value"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "archives": "sample-value",
+  "year": "sample-value",
+  "summary": "A sample description",
+  "nav": {
+    "current_page": 1,
+    "total_page": 1
+  },
+  "page": {
+    "current": "sample-value",
+    "total": 1,
+    "posts": {
+      "each": "sample-value",
+      "length": "sample-value"
+    }
+  },
+  "prev_text": "<p>Content here</p>",
+  "laquo": "sample-value",
+  "next_text": "<p>Content here</p>",
+  "raquo": "sample-value",
+  "escape": "sample-value"
+}

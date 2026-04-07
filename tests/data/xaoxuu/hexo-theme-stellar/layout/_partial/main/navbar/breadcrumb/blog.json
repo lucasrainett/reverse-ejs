@@ -1,0 +1,31 @@
+{
+  "layoutDiv": "sample-value",
+  "theme": {
+    "topic": {
+      "tree": "sample-value"
+    },
+    "site_tree": {
+      "index_topic": {
+        "base_dir": "sample-value"
+      }
+    }
+  },
+  "page": {
+    "topic": "sample-value",
+    "categories": "sample-value"
+  },
+  "btn": {
+    "topic": "sample-value",
+    "blog": "sample-value"
+  },
+  "topicObject": {
+    "homepage": 1,
+    "name": "Sample Title",
+    "title": "Sample Title"
+  },
+  "config": {
+    "index_generator": {
+      "path": "https://example.com/path"
+    }
+  }
+}

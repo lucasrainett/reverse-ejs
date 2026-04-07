@@ -1,0 +1,25 @@
+{
+  "theme": {
+    "comments": {
+      "utterances": {
+        "user": "Alice",
+        "repo": "sample-value",
+        "theme": "sample-value",
+        "enable": true
+      },
+      "disqus": {
+        "shortname": "Sample Title",
+        "enable": true
+      },
+      "gitalk": {
+        "ClientID": "abc123",
+        "ClientSecret": "sample-value",
+        "repo": "sample-value",
+        "githubID": "abc123",
+        "adminUser": "Alice",
+        "distractionFreeMode": "sample-value",
+        "enable": true
+      }
+    }
+  }
+}

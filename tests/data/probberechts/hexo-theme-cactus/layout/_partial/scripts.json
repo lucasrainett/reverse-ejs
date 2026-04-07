@@ -1,0 +1,61 @@
+{
+  "getCdnScript": "sample-value",
+  "jquery": {
+    "min": "sample-value",
+    "justifiedGallery": {
+      "min": {
+        "js": "sample-value"
+      }
+    }
+  },
+  "lib": "sample-value",
+  "justified_gallery_js": "sample-value",
+  "justified": "sample-value",
+  "gallery": "sample-value",
+  "clipboard": {
+    "min": "sample-value"
+  },
+  "tooltip": {
+    "copy_tip": "sample-value",
+    "copied": "sample-value"
+  },
+  "main": "sample-value",
+  "search": {
+    "js": "sample-value"
+  },
+  "config": {
+    "search": {
+      "path": "https://example.com/path"
+    },
+    "root": "sample-value"
+  },
+  "theme": {
+    "baidu_analytics": {
+      "id": "abc123",
+      "enabled": true
+    },
+    "cloudflare_analytics": {
+      "id": "abc123",
+      "enabled": true
+    },
+    "disqus": {
+      "shortname": "Sample Title",
+      "enabled": true
+    },
+    "utterances": {
+      "repo": "sample-value",
+      "issue_term": "sample-value",
+      "label": "Sample Title",
+      "theme": "sample-value",
+      "enabled": true
+    }
+  },
+  "page": {
+    "photos": {
+      "length": "sample-value"
+    },
+    "search": "sample-value",
+    "type": "sample-value",
+    "comments": "sample-value"
+  }
+}

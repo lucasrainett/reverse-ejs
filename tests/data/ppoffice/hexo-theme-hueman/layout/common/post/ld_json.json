@@ -1,0 +1,33 @@
+{
+  "config": {
+    "author": "Alice",
+    "url": "https://example.com/path"
+  },
+  "post": {
+    "title": "Sample Title",
+    "tags": {
+      "map": "sample-value"
+    },
+    "categories": {
+      "map": "sample-value"
+    },
+    "date": "2025-01-15",
+    "updated": "2025-01-15",
+    "path": "https://example.com/path",
+    "content": {
+      "split": "sample-value"
+    }
+  },
+  "t": {
+    "name": "Sample Title"
+  },
+  "join": "sample-value",
+  "c": {
+    "name": "Sample Title"
+  },
+  "YYYY": "sample-value",
+  "MM": "sample-value",
+  "DD": "sample-value",
+  "excerpt": "A sample description",
+  "length": "sample-value"
+}

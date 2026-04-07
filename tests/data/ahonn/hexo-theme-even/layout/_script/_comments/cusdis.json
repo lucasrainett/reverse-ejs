@@ -1,0 +1,12 @@
+{
+  "theme": {
+    "cusdis": {
+      "host": "sample-value",
+      "enable": true
+    }
+  },
+  "https": "sample-value",
+  "cusdis": {
+    "com": "sample-value"
+  }
+}

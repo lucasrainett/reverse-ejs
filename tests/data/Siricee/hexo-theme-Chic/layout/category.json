@@ -1,0 +1,28 @@
+{
+  "_page": 1,
+  "category": "sample-value",
+  "pagination": "sample-value",
+  "config": {
+    "category": "sample-value"
+  },
+  "index": {
+    "md": "sample-value"
+  },
+  "site": {
+    "categories": {
+      "forEach": "sample-value"
+    }
+  },
+  "category_item": {
+    "posts": [
+      {
+        "path": "https://example.com/path",
+        "title": "Sample Title"
+      },
+      {
+        "path": "https://example.com/path",
+        "title": "Sample Title"
+      }
+    ]
+  }
+}

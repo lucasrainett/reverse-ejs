@@ -1,0 +1,17 @@
+{
+  "theme": {
+    "static_prefix": {
+      "mermaid": "abc123"
+    },
+    "post": {
+      "mermaid": {
+        "options": "sample-value"
+      }
+    }
+  },
+  "mermaid": {
+    "min": {
+      "js": "sample-value"
+    }
+  }
+}

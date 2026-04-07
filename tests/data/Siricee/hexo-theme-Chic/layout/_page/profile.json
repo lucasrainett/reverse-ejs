@@ -1,0 +1,13 @@
+{
+  "theme": {
+    "nav": {
+      "Posts": "sample-value"
+    },
+    "avatar": "https://example.com/image.jpg",
+    "nickname": "Sample Title",
+    "description": "A sample description",
+    "links": "sample-value",
+    "links_text_enable": true,
+    "links_icon_enable": true
+  }
+}

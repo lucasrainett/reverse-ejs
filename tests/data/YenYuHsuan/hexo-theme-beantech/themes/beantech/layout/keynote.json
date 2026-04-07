@@ -1,0 +1,46 @@
+{
+  "config": {
+    "root": "sample-value",
+    "author": "Alice",
+    "date_format": "sample-value",
+    "url": "https://example.com/path",
+    "SEOTitle": "Sample Title",
+    "friends": {
+      "forEach": "sample-value"
+    }
+  },
+  "url": "https://example.com/path",
+  "root": "sample-value",
+  "page": {
+    "iframe": "sample-value",
+    "title": "Sample Title",
+    "subtitle": "Sample Title",
+    "author": "Alice",
+    "date": {
+      "format": "sample-value"
+    },
+    "content": "<p>Content here</p>",
+    "path": "https://example.com/path",
+    "permalink": "https://example.com/path",
+    "prev_link": "https://example.com/path",
+    "prev": {
+      "title": "Sample Title"
+    },
+    "next_link": "https://example.com/path",
+    "next": {
+      "title": "Sample Title"
+    },
+    "tags": {
+      "forEach": "sample-value"
+    }
+  },
+  "header": "sample-value",
+  "img": "https://example.com/image.jpg",
+  "length": "sample-value",
+  "omission": "sample-value",
+  "style": "default",
+  "show_count": 1,
+  "separator": "sample-value",
+  "duoshuo_username": "Sample Title",
+  "disqus_username": "Sample Title"
+}

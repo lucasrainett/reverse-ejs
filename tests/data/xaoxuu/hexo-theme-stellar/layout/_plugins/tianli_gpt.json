@@ -1,0 +1,12 @@
+{
+  "theme": {
+    "plugins": {
+      "tianli_gpt": "sample-value"
+    }
+  },
+  "page": {
+    "layout": "sample-value",
+    "wiki": "sample-value",
+    "topic": "sample-value"
+  }
+}

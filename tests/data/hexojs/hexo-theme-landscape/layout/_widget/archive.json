@@ -1,0 +1,14 @@
+{
+  "archive_a": "sample-value",
+  "show_count": 1,
+  "theme": {
+    "show_count": 1,
+    "archive_type": "sample-value"
+  },
+  "type": "sample-value",
+  "site": {
+    "posts": {
+      "length": "sample-value"
+    }
+  }
+}

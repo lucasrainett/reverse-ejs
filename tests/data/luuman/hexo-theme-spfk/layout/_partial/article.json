@@ -1,0 +1,78 @@
+{
+  "post": {
+    "layout": "sample-value",
+    "slug": "sample-value",
+    "description": "A sample description",
+    "excerpt": "A sample description",
+    "content": "<p>Content here</p>",
+    "path": "https://example.com/path",
+    "title": "Sample Title",
+    "noDate": "2025-01-15",
+    "link": "https://example.com/path",
+    "toc": "sample-value",
+    "top": "sample-value",
+    "comments": "sample-value",
+    "fancybox": "sample-value"
+  },
+  "class_name": "Sample Title",
+  "article": "sample-value",
+  "date_format": "sample-value",
+  "title": "Sample Title",
+  "category": "sample-value",
+  "tag": "sample-value",
+  "_partial": "sample-value",
+  "page": 1,
+  "theme": {
+    "reward_wording1": "sample-value",
+    "reward_wording2": "sample-value",
+    "alipay": "sample-value",
+    "weixin": "sample-value",
+    "excerpt_link": "https://example.com/path",
+    "gitment": {
+      "owner": "Alice",
+      "repo": "sample-value",
+      "client_id": "abc123",
+      "client_secret": "sample-value",
+      "on": "sample-value"
+    },
+    "disqus": {
+      "shortname": "Sample Title",
+      "on": "sample-value"
+    },
+    "fancybox": "sample-value",
+    "reward_type": "sample-value",
+    "share": "sample-value",
+    "baidushare": "sample-value",
+    "showshare": "sample-value",
+    "duoshuo": {
+      "on": "sample-value"
+    },
+    "youyan": {
+      "on": "sample-value"
+    }
+  },
+  "nav": "sample-value",
+  "share": "sample-value",
+  "baidu": "sample-value",
+  "showshare": "sample-value",
+  "comments": "sample-value",
+  "duoshuo": "sample-value",
+  "key": "abc123",
+  "url": "https://example.com/path",
+  "config": {
+    "url": "https://example.com/path",
+    "disqus_shortname": "Sample Title"
+  },
+  "youyan": "sample-value",
+  "gitment": "sample-value",
+  "owner": "Alice",
+  "repo": "sample-value",
+  "client_id": "abc123",
+  "client_secret": "sample-value",
+  "desc": "A sample description",
+  "id": "abc123",
+  "disqus": "sample-value",
+  "shortname": "Sample Title",
+  "button": "sample-value",
+  "index": 1
+}

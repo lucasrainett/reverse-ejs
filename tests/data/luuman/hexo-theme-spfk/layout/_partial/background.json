@@ -1,0 +1,12 @@
+{
+  "theme": {
+    "background": {
+      "background_sum": "sample-value",
+      "background_image": "https://example.com/image.jpg",
+      "on": "sample-value"
+    }
+  },
+  "config": {
+    "root": "sample-value"
+  }
+}

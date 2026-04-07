@@ -1,0 +1,13 @@
+{
+  "page": {
+    "prev_link": "https://example.com/path",
+    "current": "sample-value",
+    "total": 1,
+    "next_link": "https://example.com/path",
+    "prev": "sample-value",
+    "next": "sample-value"
+  },
+  "pagination": {
+    "page": 1
+  }
+}

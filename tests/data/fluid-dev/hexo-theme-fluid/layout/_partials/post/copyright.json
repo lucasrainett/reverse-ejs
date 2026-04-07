@@ -1,0 +1,49 @@
+{
+  "page": {
+    "title": "Sample Title",
+    "path": "https://example.com/path",
+    "author": "Alice",
+    "date": "2025-01-15",
+    "updated": "2025-01-15",
+    "copyright": "sample-value",
+    "license": "sample-value"
+  },
+  "post": {
+    "copyright": {
+      "author": "Alice",
+      "posted": "sample-value",
+      "updated": "2025-01-15",
+      "licensed": "sample-value",
+      "ZERO": "sample-value"
+    }
+  },
+  "config": {
+    "author": "Alice"
+  },
+  "theme": {
+    "post": {
+      "copyright": {
+        "post_date": {
+          "format": "sample-value",
+          "enable": true
+        },
+        "update_date": {
+          "format": "sample-value",
+          "enable": true
+        },
+        "enable": true,
+        "license": "sample-value",
+        "author": {
+          "enable": true
+        }
+      }
+    }
+  },
+  "LL": "sample-value",
+  "license": "SAMPLE-VALUE",
+  "items": {
+    "length": "sample-value"
+  },
+  "idx": "sample-value",
+  "toLowerCase": "sample-value"
+}

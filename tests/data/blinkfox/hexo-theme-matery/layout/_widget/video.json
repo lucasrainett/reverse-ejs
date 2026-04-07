@@ -1,0 +1,31 @@
+{
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "libs": {
+      "css": {
+        "dplayer": "sample-value"
+      },
+      "js": {
+        "dplayer": "sample-value"
+      }
+    },
+    "video": {
+      "title": "Sample Title",
+      "height": "sample-value",
+      "autoplay": "sample-value",
+      "theme": "sample-value",
+      "loop": "sample-value",
+      "preload": "sample-value",
+      "volume": "sample-value",
+      "url": "https://example.com/path",
+      "pic": "sample-value",
+      "thumbnails": "sample-value",
+      "showTitle": "Sample Title"
+    }
+  },
+  "config": {
+    "language": "en"
+  }
+}

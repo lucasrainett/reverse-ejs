@@ -1,0 +1,8 @@
+{
+  "theme": {
+    "zoom_image": "https://example.com/image.jpg"
+  },
+  "page": {
+    "zoom_image": "https://example.com/image.jpg"
+  }
+}

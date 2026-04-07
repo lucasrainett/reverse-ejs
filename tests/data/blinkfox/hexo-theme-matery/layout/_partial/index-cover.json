@@ -1,0 +1,70 @@
+{
+  "_partial": "sample-value",
+  "bg": "sample-value",
+  "cover": "https://example.com/image.jpg",
+  "content": "<p>Content here</p>",
+  "theme": {
+    "dream": "sample-value",
+    "music": "sample-value",
+    "video": "sample-value",
+    "recommend": "sample-value",
+    "indexbtn": {
+      "url": "https://example.com/path",
+      "icon": "https://example.com/image.jpg",
+      "name": "Sample Title",
+      "enable": true
+    },
+    "githubLink": {
+      "url": "https://example.com/path",
+      "title": "Sample Title",
+      "enable": true
+    },
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "cover": {
+      "duration": "sample-value",
+      "showIndicators": "sample-value",
+      "intervalTime": "2025-01-15",
+      "showPrevNext": "sample-value",
+      "autoLoop": "sample-value"
+    },
+    "featureImages": "sample-value"
+  },
+  "every": "sample-value",
+  "i": {
+    "enable": true
+  },
+  "indexCard": "sample-value",
+  "articles": "sample-value",
+  "startRead": "sample-value",
+  "social": "sample-value",
+  "link": "https://example.com/path",
+  "coverImg": "https://example.com/image.jpg",
+  "post": {
+    "title": "Sample Title",
+    "summary": {
+      "length": "sample-value"
+    },
+    "content": "<p>Content here</p>",
+    "path": "https://example.com/path",
+    "cover": "https://example.com/image.jpg",
+    "coverImg": "https://example.com/image.jpg",
+    "img": "https://example.com/image.jpg"
+  },
+  "substring": "sample-value",
+  "readMore": "sample-value",
+  "site": {
+    "posts": {
+      "forEach": "sample-value"
+    }
+  },
+  "coverPosts": [],
+  "str": {
+    "length": "sample-value",
+    "charCodeAt": "sample-value"
+  },
+  "featureImages": {
+    "length": "sample-value"
+  }
+}

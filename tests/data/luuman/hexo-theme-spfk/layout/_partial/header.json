@@ -1,0 +1,12 @@
+{
+  "config": {
+    "title": "Sample Title"
+  },
+  "theme": {
+    "subtitle": "Sample Title",
+    "menu": "sample-value",
+    "rss": "sample-value"
+  },
+  "button": "sample-value",
+  "xF002": "sample-value"
+}

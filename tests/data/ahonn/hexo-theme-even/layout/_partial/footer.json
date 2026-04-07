@@ -1,0 +1,32 @@
+{
+  "_footer": "sample-value",
+  "social": {
+    "ejs": "sample-value"
+  },
+  "footer": {
+    "powered": "sample-value",
+    "theme": "sample-value",
+    "hosting": "sample-value"
+  },
+  "a": "sample-value",
+  "hexo": {
+    "io": "sample-value"
+  },
+  "link": "https://example.com/path",
+  "href": "https://example.com/path",
+  "https": "sample-value",
+  "Hexo": "sample-value",
+  "netlify": "sample-value",
+  "www": {
+    "netlify": {
+      "com": "sample-value"
+    }
+  },
+  "theme": {
+    "since": "sample-value"
+  },
+  "current": 2026,
+  "config": {
+    "author": "Alice"
+  }
+}

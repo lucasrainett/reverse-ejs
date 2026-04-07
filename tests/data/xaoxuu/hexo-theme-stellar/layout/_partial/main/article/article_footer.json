@@ -1,0 +1,80 @@
+{
+  "layoutDiv": "sample-value",
+  "page": {
+    "references": "sample-value",
+    "wiki": "sample-value",
+    "license": "sample-value",
+    "layout": "sample-value",
+    "author": "Alice",
+    "share": "sample-value",
+    "permalink": "https://example.com/path",
+    "title": "Sample Title",
+    "cover": "https://example.com/image.jpg",
+    "icon": "https://example.com/image.jpg",
+    "description": "A sample description",
+    "excerpt": "A sample description",
+    "content": "<p>Content here</p>"
+  },
+  "item": {
+    "push": "sample-value",
+    "length": "sample-value"
+  },
+  "theme": {
+    "article": {
+      "license": "sample-value",
+      "share": {
+        "forEach": "sample-value",
+        "includes": "sample-value"
+      }
+    },
+    "data_services": {
+      "contributors": {
+        "edit_this_page": 1
+      }
+    },
+    "wiki": {
+      "tree": "sample-value"
+    },
+    "authors": "sample-value",
+    "default_author": "Alice"
+  },
+  "meta": {
+    "references": "sample-value",
+    "license": "sample-value",
+    "share": "sample-value"
+  },
+  "proj": {
+    "license": "sample-value",
+    "share": "sample-value"
+  },
+  "license": {
+    "replace": "sample-value"
+  },
+  "author": {
+    "name": "Sample Title",
+    "url": "https://example.com/path"
+  },
+  "util": {
+    "toggle": "sample-value",
+    "copy": "sample-value"
+  },
+  "service": {
+    "weibo": {
+      "com": "sample-value"
+    }
+  },
+  "share": {
+    "php": "sample-value"
+  },
+  "config": {
+    "title": "Sample Title"
+  },
+  "message": {
+    "copied": "sample-value"
+  },
+  "api": {
+    "qrserver": {
+      "com": "sample-value"
+    }
+  }
+}

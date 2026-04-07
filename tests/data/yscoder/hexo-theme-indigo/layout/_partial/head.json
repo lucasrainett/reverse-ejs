@@ -1,0 +1,39 @@
+{
+  "title": "Sample Title",
+  "config": {
+    "title": "Sample Title",
+    "subtitle": "Sample Title",
+    "description": "A sample description",
+    "keywords": "sample-value"
+  },
+  "theme": {
+    "color": "sample-value",
+    "twitter": "sample-value",
+    "google_plus": "sample-value",
+    "fb_admins": "sample-value",
+    "fb_app_id": "abc123",
+    "rss": "sample-value",
+    "favicon": "https://example.com/image.jpg"
+  },
+  "keyWords": [],
+  "twitter_id": "abc123",
+  "google_plus": "sample-value",
+  "fb_admins": "sample-value",
+  "fb_app_id": "abc123",
+  "page": {
+    "excerpt": "A sample description",
+    "title": "Sample Title",
+    "year": "sample-value",
+    "month": "sample-value",
+    "category": "sample-value",
+    "tag": "sample-value",
+    "tags": {
+      "each": "sample-value"
+    }
+  },
+  "favicon_tag": "sample-value",
+  "style": "default",
+  "k": {
+    "name": "Sample Title"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "comment": "sample-value",
+  "disqus": "sample-value",
+  "script": "sample-value",
+  "duoshuo": "sample-value",
+  "youyan": "sample-value",
+  "livere": "sample-value",
+  "facebook": "sample-value",
+  "isso": "sample-value",
+  "changyan": "sample-value",
+  "valine": "sample-value",
+  "gitalk": "sample-value",
+  "theme": {
+    "comment": {
+      "disqus": "sample-value",
+      "duoshuo": "sample-value",
+      "youyan": "sample-value",
+      "livere": "sample-value",
+      "facebook": "sample-value",
+      "isso": {
+        "on": "sample-value"
+      },
+      "changyan": {
+        "on": "sample-value"
+      },
+      "valine": {
+        "on": "sample-value"
+      },
+      "gitalk": {
+        "on": "sample-value"
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "title": "sample-value/sample-value",
+  "post": "sample-value",
+  "index": 1,
+  "entry": "sample-value",
+  "index_pagination": "sample-value",
+  "year": "sample-value",
+  "YYYY": "sample-value",
+  "MM": "sample-value",
+  "DD": "sample-value",
+  "sidebar": "sample-value",
+  "site": {
+    "posts": "sample-value"
+  },
+  "page": {
+    "category": "sample-value",
+    "posts": {
+      "each": "sample-value"
+    },
+    "tag": "sample-value",
+    "archive": "sample-value",
+    "year": "sample-value",
+    "month": "sample-value"
+  },
+  "theme": {
+    "inverse": "sample-value",
+    "widgets": {
+      "length": "sample-value"
+    }
+  },
+  "posts": {
+    "each": "sample-value"
+  }
+}

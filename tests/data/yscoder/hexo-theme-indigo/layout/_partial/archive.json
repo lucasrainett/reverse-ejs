@@ -1,0 +1,9 @@
+{
+  "post": "sample-value",
+  "date_format": "sample-value",
+  "MMM": "sample-value",
+  "D": "sample-value",
+  "title": "Sample Title",
+  "hasLink": "https://example.com/path",
+  "tag": "sample-value"
+}

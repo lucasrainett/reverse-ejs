@@ -1,0 +1,43 @@
+{
+  "banner_attrs": " parallax=true",
+  "banner_img": "https://example.com/image.jpg",
+  "banner_mask_alpha": null,
+  "subtitle": "Sample Title",
+  "postMetaTop": "sample-value",
+  "page": {
+    "banner_img": "https://example.com/image.jpg",
+    "banner_img_height": "sample-value",
+    "banner_mask_alpha": "sample-value",
+    "subtitle": "Sample Title",
+    "title": "Sample Title",
+    "layout": "sample-value"
+  },
+  "theme": {
+    "post": {
+      "banner_img": "https://example.com/image.jpg"
+    },
+    "index": {
+      "banner_img": "https://example.com/image.jpg",
+      "banner_img_height": "sample-value",
+      "banner_mask_alpha": "sample-value"
+    },
+    "banner": {
+      "random_img": "https://example.com/image.jpg",
+      "parallax": "sample-value"
+    },
+    "banner_img_list": {
+      "length": "sample-value"
+    },
+    "fun_features": {
+      "typing": {
+        "enable": true,
+        "scope": "sample-value"
+      }
+    },
+    "scroll_down_arrow": {
+      "enable": true,
+      "banner_height_limit": "sample-value"
+    }
+  },
+  "random_banner_list": []
+}

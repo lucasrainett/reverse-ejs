@@ -1,0 +1,6 @@
+{
+  "page": {
+    "more": "<h2 id=\"section-1\">Section 1</h2><p>Content</p><h2 id=\"section-2\">Section 2</h2><p>More content</p>",
+    "toc_number": true
+  }
+}

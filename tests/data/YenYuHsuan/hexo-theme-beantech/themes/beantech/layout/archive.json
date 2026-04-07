@@ -1,0 +1,22 @@
+{
+  "year": "sample-value",
+  "post": {
+    "date": {
+      "format": "sample-value",
+      "year": "sample-value"
+    },
+    "path": "https://example.com/path",
+    "title": "Sample Title"
+  },
+  "MM": "sample-value",
+  "DD": "sample-value",
+  "config": {
+    "root": "sample-value"
+  },
+  "Untitled": "sample-value",
+  "site": {
+    "posts": {
+      "sort": "sample-value"
+    }
+  }
+}

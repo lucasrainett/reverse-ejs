@@ -1,0 +1,22 @@
+{
+  "theme": {
+    "static_prefix": {
+      "internal_css": "default",
+      "gitalk": "sample-value"
+    },
+    "gitalk": {
+      "clientID": "abc123",
+      "clientSecret": "sample-value",
+      "repo": "sample-value"
+    }
+  },
+  "gitalk": {
+    "css": "default",
+    "min": {
+      "js": "sample-value"
+    }
+  },
+  "page": {
+    "path": "https://example.com/path"
+  }
+}

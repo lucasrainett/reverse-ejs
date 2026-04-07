@@ -1,0 +1,22 @@
+{
+  "featureimg": "https://example.com/image.jpg",
+  "page": {
+    "title": "Sample Title",
+    "img": "https://example.com/image.jpg"
+  },
+  "bg": {
+    "jpg": "sample-value"
+  },
+  "str": {
+    "length": "sample-value",
+    "charCodeAt": "sample-value"
+  },
+  "theme": {
+    "featureImages": {
+      "length": "sample-value"
+    },
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    }
+  }
+}

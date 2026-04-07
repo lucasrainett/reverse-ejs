@@ -1,0 +1,12 @@
+{
+  "theme": {
+    "reward": {
+      "title": "Sample Title",
+      "alipay": "sample-value",
+      "wechat": "sample-value"
+    },
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    }
+  }
+}

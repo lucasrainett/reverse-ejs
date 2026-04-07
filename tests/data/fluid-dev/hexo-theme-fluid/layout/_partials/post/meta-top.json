@@ -1,0 +1,80 @@
+{
+  "page": {
+    "author": "Alice",
+    "date": "2025-01-15",
+    "meta": "sample-value"
+  },
+  "config": {
+    "author": "Alice"
+  },
+  "YYYY": "sample-value",
+  "MM": "sample-value",
+  "DD": "sample-value",
+  "HH": "sample-value",
+  "mm": "sample-value",
+  "theme": {
+    "post": {
+      "meta": {
+        "date": {
+          "format": "sample-value",
+          "enable": true
+        },
+        "wordcount": {
+          "format": {
+            "replace": "sample-value"
+          },
+          "enable": true
+        },
+        "min2read": {
+          "format": {
+            "replace": "sample-value"
+          },
+          "enable": true,
+          "awl": "sample-value",
+          "wpm": "sample-value"
+        },
+        "author": {
+          "enable": true
+        },
+        "views": {
+          "format": "sample-value",
+          "enable": true,
+          "source": "sample-value"
+        }
+      }
+    },
+    "static_prefix": {
+      "internal_js": "sample-value",
+      "busuanzi": "sample-value"
+    }
+  },
+  "post": {
+    "meta": {
+      "wordcount": 1,
+      "min2read": "sample-value",
+      "views": "sample-value"
+    }
+  },
+  "min2read": "sample-value",
+  "awl": "sample-value",
+  "wpm": "sample-value",
+  "views_texts": {
+    "length": "sample-value"
+  },
+  "leancloud": {
+    "js": "sample-value"
+  },
+  "openkounter": {
+    "js": "sample-value"
+  },
+  "busuanzi": {
+    "pure": {
+      "mini": {
+        "js": "sample-value"
+      }
+    }
+  },
+  "view": {
+    "js": "sample-value"
+  }
+}

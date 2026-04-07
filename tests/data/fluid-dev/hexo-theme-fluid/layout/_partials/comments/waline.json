@@ -1,0 +1,15 @@
+{
+  "theme": {
+    "static_prefix": {
+      "waline": "sample-value"
+    },
+    "waline": {
+      "path": "https://example.com/path",
+      "serverURL": "https://example.com/path"
+    }
+  },
+  "waline": {
+    "css": "default",
+    "js": "sample-value"
+  }
+}

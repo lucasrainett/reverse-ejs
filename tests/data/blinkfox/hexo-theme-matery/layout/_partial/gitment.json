@@ -1,0 +1,23 @@
+{
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "gitment": {
+      "owner": "Alice",
+      "repo": "sample-value",
+      "oauth": {
+        "clientId": "abc123",
+        "clientSecret": "sample-value"
+      }
+    }
+  },
+  "libs": "sample-value",
+  "gitment": {
+    "css": "default",
+    "js": "sample-value"
+  },
+  "page": {
+    "date": "2025-01-15"
+  }
+}

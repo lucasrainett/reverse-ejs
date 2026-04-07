@@ -1,0 +1,22 @@
+{
+  "article": "sample-value",
+  "index": 1,
+  "config": {
+    "archive_dir": "sample-value"
+  },
+  "year": "sample-value",
+  "archive": "sample-value",
+  "even": "sample-value",
+  "i": "sample-value",
+  "prev_text": "<p>Content here</p>",
+  "next_text": "<p>Content here</p>",
+  "escape": "sample-value",
+  "page": {
+    "posts": {
+      "each": "sample-value",
+      "length": "sample-value"
+    },
+    "total": 1
+  },
+  "expand": "sample-value"
+}

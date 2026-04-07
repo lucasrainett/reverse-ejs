@@ -1,0 +1,6 @@
+{
+  "include": {
+    "ejs": "sample-value"
+  },
+  "views": "sample-value"
+}

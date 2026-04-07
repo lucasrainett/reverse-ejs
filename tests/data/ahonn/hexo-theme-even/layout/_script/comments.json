@@ -1,0 +1,21 @@
+{
+  "_comments": "sample-value",
+  "disqus": {
+    "ejs": "sample-value"
+  },
+  "changyan": {
+    "ejs": "sample-value"
+  },
+  "livere": {
+    "ejs": "sample-value"
+  },
+  "gitalk": {
+    "ejs": "sample-value"
+  },
+  "utterances": {
+    "ejs": "sample-value"
+  },
+  "cusdis": {
+    "ejs": "sample-value"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "prev_text": "<p>Content here</p>",
+  "laquo": "sample-value",
+  "Prev": "sample-value",
+  "next_text": "<p>Content here</p>",
+  "Next": "sample-value",
+  "raquo": "sample-value",
+  "prev_next": "sample-value",
+  "end_size": 1,
+  "mid_size": 1,
+  "page": {
+    "total": 1
+  }
+}

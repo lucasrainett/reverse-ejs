@@ -1,0 +1,126 @@
+{
+  "notag": "sample-value",
+  "publishDate": "2025-01-15",
+  "page": {
+    "date": "2025-01-15",
+    "updated": "2025-01-15",
+    "content": "<p>Content here</p>",
+    "tags": {
+      "length": "sample-value",
+      "forEach": "sample-value"
+    },
+    "categories": {
+      "length": "sample-value",
+      "forEach": "sample-value"
+    },
+    "layout": "sample-value"
+  },
+  "YYYY": "sample-value",
+  "MM": "sample-value",
+  "DD": "sample-value",
+  "updateDate": "2025-01-15",
+  "wordCount": 1,
+  "wordcount": 1,
+  "readTimes": "sample-value",
+  "min2read": "sample-value",
+  "Minutes": "sample-value",
+  "readCount": 1,
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "libs": {
+      "css": {
+        "prism": "sample-value"
+      }
+    },
+    "copyright": {
+      "minCharNumber": 1,
+      "description": "A sample description",
+      "enable": true
+    },
+    "postInfo": {
+      "date": "2025-01-15",
+      "update": "2025-01-15",
+      "wordCount": 1,
+      "min2read": "sample-value",
+      "readCount": 1
+    },
+    "busuanziStatistics": {
+      "enable": true
+    },
+    "code": {
+      "break": "sample-value",
+      "lang": "en",
+      "copy": "sample-value",
+      "shrink": "sample-value"
+    },
+    "bbtime": {
+      "enable": true
+    },
+    "reward": {
+      "enable": true
+    },
+    "gitalk": {
+      "enable": true
+    },
+    "gitment": {
+      "enable": true
+    },
+    "disqus": {
+      "enable": true
+    },
+    "livere": {
+      "enable": true
+    },
+    "valine": {
+      "enable": true
+    },
+    "minivaline": {
+      "enable": true
+    },
+    "changyan": {
+      "enable": true
+    }
+  },
+  "bb": {
+    "css": "default"
+  },
+  "_partial": "sample-value",
+  "reprint": "sample-value",
+  "statement": "sample-value",
+  "share": "sample-value",
+  "reward": "sample-value",
+  "gitalk": "sample-value",
+  "gitment": "sample-value",
+  "disqus": "sample-value",
+  "livere": "sample-value",
+  "valine": "sample-value",
+  "minivaline": "sample-value",
+  "changyan": "sample-value",
+  "prev": "sample-value",
+  "next": "sample-value",
+  "config": {
+    "title": "Sample Title",
+    "author": "Alice",
+    "prismjs": {
+      "enable": true
+    }
+  },
+  "author": "Alice",
+  "link": "https://example.com/path",
+  "libs": "sample-value",
+  "codeBlock": "sample-value",
+  "codeBlockFuction": {
+    "js": "sample-value"
+  },
+  "codeLang": {
+    "js": "sample-value"
+  },
+  "codeCopy": {
+    "js": "sample-value"
+  },
+  "codeShrink": {
+    "js": "sample-value"
+  }
+}

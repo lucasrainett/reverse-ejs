@@ -1,0 +1,18 @@
+{
+  "page": {
+    "title": "Sample Title",
+    "date": "2025-01-15",
+    "noDate": "2025-01-15"
+  },
+  "config": {
+    "title": "Sample Title",
+    "subtitle": "Sample Title"
+  },
+  "post": "sample-value",
+  "head": "sample-value",
+  "meta": "sample-value",
+  "theme": {
+    "search": "sample-value",
+    "share": "sample-value"
+  }
+}

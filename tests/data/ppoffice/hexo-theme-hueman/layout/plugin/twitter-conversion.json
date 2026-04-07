@@ -1,0 +1,10 @@
+{
+  "tct": {
+    "pixel_id": "abc123"
+  },
+  "theme": {
+    "plugins": {
+      "twitter_conversion_tracking": "sample-value"
+    }
+  }
+}

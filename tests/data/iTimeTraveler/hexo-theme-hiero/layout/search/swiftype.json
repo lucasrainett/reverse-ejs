@@ -1,0 +1,10 @@
+{
+  "theme": {
+    "search": {
+      "swiftype": "sample-value"
+    },
+    "customize": {
+      "theme_color": "sample-value"
+    }
+  }
+}

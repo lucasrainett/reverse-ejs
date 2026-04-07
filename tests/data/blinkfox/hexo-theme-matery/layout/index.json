@@ -1,0 +1,73 @@
+{
+  "_partial": "sample-value",
+  "index": 1,
+  "cover": "https://example.com/image.jpg",
+  "bg": "sample-value",
+  "_widget": "sample-value",
+  "dream": "sample-value",
+  "music": "sample-value",
+  "video": "sample-value",
+  "recommend": "sample-value",
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "dream": {
+      "enable": true
+    },
+    "music": {
+      "enable": true,
+      "fixed": "sample-value"
+    },
+    "video": {
+      "enable": true
+    },
+    "recommend": {
+      "enable": true
+    },
+    "featureImages": "sample-value"
+  },
+  "featureimg": "https://example.com/image.jpg",
+  "substring": "sample-value",
+  "config": {
+    "date_format": "sample-value",
+    "author": "Alice"
+  },
+  "paging": "sample-value",
+  "page": {
+    "current": "sample-value",
+    "posts": {
+      "forEach": "sample-value"
+    },
+    "total": 1
+  },
+  "str": {
+    "length": "sample-value",
+    "charCodeAt": "sample-value"
+  },
+  "featureImages": {
+    "length": "sample-value"
+  },
+  "post": {
+    "categories": [
+      {
+        "path": "https://example.com/path",
+        "name": "Sample Title"
+      },
+      {
+        "path": "https://example.com/path",
+        "name": "Sample Title"
+      }
+    ],
+    "tags": [
+      {
+        "path": "https://example.com/path",
+        "name": "Sample Title"
+      },
+      {
+        "path": "https://example.com/path",
+        "name": "Sample Title"
+      }
+    ]
+  }
+}

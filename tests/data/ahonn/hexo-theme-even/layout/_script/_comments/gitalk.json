@@ -1,0 +1,33 @@
+{
+  "gitalk_js_url": "//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js",
+  "gitalk_css_url": "//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css",
+  "md5_url": "//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js",
+  "theme": {
+    "gitalk": {
+      "client_id": "abc123",
+      "client_secret": "sample-value",
+      "repo": "sample-value",
+      "github_id": "abc123",
+      "admin_user": "Alice",
+      "language": "en",
+      "distraction_free_mode": "sample-value",
+      "enable": true
+    }
+  },
+  "cdn": {
+    "jsdelivr": {
+      "net": "sample-value"
+    }
+  },
+  "gitalk": {
+    "min": {
+      "js": "sample-value",
+      "css": "default"
+    }
+  },
+  "md5": {
+    "min": {
+      "js": "sample-value"
+    }
+  }
+}

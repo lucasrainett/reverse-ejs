@@ -1,0 +1,15 @@
+{
+  "banner_img_height": null,
+  "_partials": "sample-value",
+  "header": "sample-value",
+  "navigation": "sample-value",
+  "banner": "https://example.com/image.jpg",
+  "page": {
+    "banner_img_height": "sample-value"
+  },
+  "theme": {
+    "index": {
+      "banner_img_height": "sample-value"
+    }
+  }
+}

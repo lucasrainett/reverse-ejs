@@ -1,0 +1,28 @@
+{
+  "post": {
+    "layout": "sample-value",
+    "slug": "sample-value",
+    "content": "<p>Content here</p>"
+  },
+  "tag": "sample-value",
+  "share": "sample-value",
+  "className": "Sample Title",
+  "list_number": 1,
+  "theme": {
+    "toc": {
+      "list_number": 1
+    },
+    "share": "sample-value",
+    "reward": "sample-value"
+  },
+  "page": {
+    "permalink": "https://example.com/path"
+  },
+  "config": {
+    "url": "https://example.com/path",
+    "title": "Sample Title"
+  },
+  "nav": "sample-value",
+  "comment": "sample-value",
+  "reward": "sample-value"
+}

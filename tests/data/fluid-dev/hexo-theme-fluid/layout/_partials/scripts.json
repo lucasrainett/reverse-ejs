@@ -1,0 +1,49 @@
+{
+  "_partials": "sample-value",
+  "plugins": {
+    "js": "sample-value"
+  },
+  "nprogress": {
+    "ejs": "sample-value"
+  },
+  "theme": {
+    "static_prefix": {
+      "jquery": "sample-value",
+      "bootstrap": "sample-value",
+      "internal_js": "sample-value"
+    },
+    "custom_js": "sample-value",
+    "lazyload": {
+      "enable": true,
+      "onlypost": "sample-value"
+    }
+  },
+  "jquery": {
+    "min": {
+      "js": "sample-value"
+    }
+  },
+  "bootstrap": {
+    "min": {
+      "js": "sample-value"
+    }
+  },
+  "events": {
+    "js": "sample-value"
+  },
+  "typed": {
+    "ejs": "sample-value"
+  },
+  "img": "https://example.com/image.jpg",
+  "lazyload": {
+    "js": "sample-value"
+  },
+  "script_snippets": "",
+  "idx": 0,
+  "boot": {
+    "js": "sample-value"
+  },
+  "page": {
+    "script_snippets": []
+  }
+}

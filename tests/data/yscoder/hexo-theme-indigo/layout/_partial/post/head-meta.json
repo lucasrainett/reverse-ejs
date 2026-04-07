@@ -1,0 +1,18 @@
+{
+  "page": {
+    "date": {
+      "format": "sample-value"
+    },
+    "categories": {
+      "length": "sample-value"
+    }
+  },
+  "config": {
+    "date_format": "sample-value"
+  },
+  "show_count": 1,
+  "article": "sample-value",
+  "category": "sample-value",
+  "style": "default",
+  "list": "sample-value"
+}

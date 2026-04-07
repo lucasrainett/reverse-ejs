@@ -1,0 +1,8 @@
+{
+  "post": {
+    "path": "https://example.com/path",
+    "date": "2025-01-15"
+  },
+  "class_name": "Sample Title",
+  "date_format": "sample-value"
+}

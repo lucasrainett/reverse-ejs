@@ -1,0 +1,41 @@
+{
+  "_partials": "sample-value",
+  "archive": "sample-value",
+  "list": {
+    "ejs": "sample-value"
+  },
+  "params": "sample-value",
+  "key": "abc123",
+  "page": {
+    "layout": "category",
+    "title": "category.title - sample-value",
+    "category": "sample-value",
+    "subtitle": "category.subtitle - sample-value",
+    "banner_img": "https://example.com/image.jpg",
+    "banner_img_height": "sample-value",
+    "banner_mask_alpha": "sample-value"
+  },
+  "postTotal": 1,
+  "cat": {
+    "posts": {
+      "length": "sample-value"
+    },
+    "length": "sample-value"
+  },
+  "category": {
+    "title": "Sample Title",
+    "subtitle": "Sample Title"
+  },
+  "theme": {
+    "category": {
+      "banner_img": "https://example.com/image.jpg",
+      "banner_img_height": "sample-value",
+      "banner_mask_alpha": "sample-value"
+    }
+  },
+  "site": {
+    "categories": {
+      "find": "sample-value"
+    }
+  }
+}

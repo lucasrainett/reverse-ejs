@@ -1,0 +1,15 @@
+{
+  "_partial": "sample-value",
+  "sidebar": "sample-value",
+  "theme": {
+    "copyright": "sample-value",
+    "sidebar": "sample-value"
+  },
+  "pug": "sample-value",
+  "YYYY": "sample-value",
+  "config": {
+    "author": "Alice",
+    "title": "Sample Title"
+  },
+  "powered_by": "sample-value"
+}

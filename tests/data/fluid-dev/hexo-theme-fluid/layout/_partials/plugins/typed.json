@@ -1,0 +1,36 @@
+{
+  "js_ex": "sample-value",
+  "theme": {
+    "static_prefix": {
+      "typed": "sample-value"
+    },
+    "index": {
+      "slogan": {
+        "api": {
+          "method": "sample-value",
+          "url": "https://example.com/path",
+          "headers": "sample-value",
+          "keys": "sample-value",
+          "enable": true
+        },
+        "text": {
+          "length": "sample-value"
+        }
+      }
+    },
+    "fun_features": {
+      "typing": {
+        "enable": true,
+        "scope": "sample-value"
+      }
+    }
+  },
+  "typed": {
+    "min": {
+      "js": "sample-value"
+    }
+  },
+  "page": {
+    "subtitle": "Sample Title"
+  }
+}

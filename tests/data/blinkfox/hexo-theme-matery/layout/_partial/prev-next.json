@@ -1,0 +1,85 @@
+{
+  "prev": "sample-value",
+  "page": {
+    "prev": {
+      "path": "https://example.com/path",
+      "img": "https://example.com/image.jpg",
+      "title": "Sample Title",
+      "summary": {
+        "length": "sample-value"
+      },
+      "excerpt": "A sample description",
+      "date": "2025-01-15",
+      "author": {
+        "length": "sample-value"
+      },
+      "categories": {
+        "length": "sample-value",
+        "forEach": "sample-value"
+      },
+      "tags": {
+        "length": "sample-value",
+        "forEach": "sample-value"
+      }
+    },
+    "path": "https://example.com/path",
+    "img": "https://example.com/image.jpg",
+    "title": "Sample Title",
+    "summary": {
+      "length": "sample-value"
+    },
+    "excerpt": "A sample description",
+    "date": "2025-01-15",
+    "author": {
+      "length": "sample-value"
+    },
+    "next": {
+      "path": "https://example.com/path",
+      "img": "https://example.com/image.jpg",
+      "title": "Sample Title",
+      "summary": {
+        "length": "sample-value"
+      },
+      "excerpt": "A sample description",
+      "date": "2025-01-15",
+      "author": {
+        "length": "sample-value"
+      },
+      "categories": {
+        "length": "sample-value",
+        "forEach": "sample-value"
+      },
+      "tags": {
+        "length": "sample-value",
+        "forEach": "sample-value"
+      }
+    },
+    "categories": {
+      "length": "sample-value",
+      "forEach": "sample-value"
+    },
+    "tags": {
+      "length": "sample-value",
+      "forEach": "sample-value"
+    }
+  },
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "featureImages": "sample-value"
+  },
+  "featureimg": "/medias/featureimages/0.jpg",
+  "substring": "sample-value",
+  "config": {
+    "date_format": "sample-value",
+    "author": "Alice"
+  },
+  "curr": "sample-value",
+  "next": "sample-value",
+  "str": {
+    "length": "sample-value",
+    "charCodeAt": "sample-value"
+  },
+  "featureImages": "sample-value"
+}

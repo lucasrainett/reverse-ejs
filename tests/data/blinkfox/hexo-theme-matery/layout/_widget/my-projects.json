@@ -1,0 +1,16 @@
+{
+  "myProjects": "sample-value",
+  "myprojects": "sample-value",
+  "project": "sample-value",
+  "url": "https://example.com/path",
+  "iconBackground": "sample-value",
+  "desc": "A sample description",
+  "_config": {
+    "yml": "sample-value"
+  },
+  "theme": {
+    "myProjects": {
+      "data": "sample-value"
+    }
+  }
+}

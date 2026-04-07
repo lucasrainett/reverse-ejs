@@ -1,0 +1,104 @@
+{
+  "tree": "sample-value",
+  "name": "Sample Title",
+  "version": "1.0.0",
+  "generate_canonical": "sample-value",
+  "generate_robots": "sample-value",
+  "preconnect": "sample-value",
+  "generate_title": "Sample Title",
+  "og_args": "sample-value",
+  "generate_description": "A sample description",
+  "generate_keywords": "sample-value",
+  "title": "Sample Title",
+  "config": {
+    "title": "Sample Title",
+    "favicon": "https://example.com/image.jpg",
+    "description": "A sample description",
+    "keywords": {
+      "length": "sample-value"
+    },
+    "avatar": "https://example.com/image.jpg",
+    "email": "user@example.com",
+    "inject": "sample-value",
+    "feed": {
+      "path": "https://example.com/path"
+    },
+    "highlight": {
+      "enable": true,
+      "hljs": "sample-value"
+    }
+  },
+  "theme": {
+    "stellar": {
+      "main_css": "default"
+    },
+    "style": {
+      "codeblock": {
+        "highlightjs_theme": "sample-value"
+      }
+    },
+    "wiki": {
+      "tree": "sample-value"
+    },
+    "open_graph": {
+      "enable": true,
+      "twitter_id": "abc123"
+    },
+    "preconnect": "sample-value",
+    "inject": "sample-value",
+    "canonical": {
+      "originalHost": "sample-value"
+    }
+  },
+  "v": "sample-value",
+  "custom_inject": "sample-value",
+  "page": {
+    "wiki": "sample-value",
+    "title": "Sample Title",
+    "category": "sample-value",
+    "tag": "sample-value",
+    "description": "A sample description",
+    "excerpt": "A sample description",
+    "content": "<p>Content here</p>",
+    "keywords": {
+      "length": "sample-value"
+    },
+    "tags": {
+      "length": "sample-value",
+      "map": "sample-value"
+    },
+    "robots": "sample-value",
+    "layout": "sample-value",
+    "cover": "https://example.com/image.jpg",
+    "open_graph": "sample-value",
+    "inject": "sample-value",
+    "path": "https://example.com/path"
+  },
+  "symbol": {
+    "colon": "sample-value"
+  },
+  "btn": {
+    "category": "sample-value",
+    "tag": "sample-value"
+  },
+  "proj": {
+    "description": "A sample description"
+  },
+  "tag": {
+    "name": "Sample Title"
+  },
+  "process": {
+    "env": {
+      "IS_BACKUP": "sample-value"
+    }
+  },
+  "args": {
+    "twitter_id": "abc123",
+    "twitter_card": "sample-value",
+    "image": "https://example.com/image.jpg"
+  },
+  "originalHost": {
+    "length": "sample-value"
+  },
+  "paths": ["https://example.com/path"]
+}

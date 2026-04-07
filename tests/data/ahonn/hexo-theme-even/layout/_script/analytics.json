@@ -1,0 +1,8 @@
+{
+  "_analytics": "sample-value",
+  "baidu": "sample-value",
+  "analytics": {
+    "ejs": "sample-value"
+  },
+  "google": "sample-value"
+}

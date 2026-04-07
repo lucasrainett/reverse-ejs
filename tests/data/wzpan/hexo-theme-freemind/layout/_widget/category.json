@@ -1,0 +1,16 @@
+{
+  "categories": "sample-value",
+  "item": {
+    "path": "https://example.com/path",
+    "name": "Sample Title",
+    "posts": {
+      "length": "sample-value"
+    }
+  },
+  "site": {
+    "categories": {
+      "length": "sample-value",
+      "sort": "sample-value"
+    }
+  }
+}

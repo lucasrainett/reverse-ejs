@@ -1,0 +1,44 @@
+{
+  "recommendedPosts": "sample-value",
+  "featureImg": "https://example.com/image.jpg",
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "recommend": {
+      "useConfig": "sample-value",
+      "showTitle": "Sample Title"
+    },
+    "featureImages": "sample-value"
+  },
+  "post": "s",
+  "substring": "sample-value",
+  "bgColor": "sample-value",
+  "readMore": "sample-value",
+  "grid": "abc123",
+  "description": "A sample description",
+  "site": {
+    "data": {
+      "recommends": "sample-value"
+    },
+    "posts": {
+      "forEach": "sample-value"
+    }
+  },
+  "topPosts": "sample-value",
+  "str": {
+    "length": "sample-value",
+    "charCodeAt": "sample-value"
+  },
+  "featureImages": "sample-value",
+  "bgColorArr": [
+    "linear-gradient(to right, #FF5E3A 0%, #FF2A68 100%)",
+    "linear-gradient(to right, #EF4DB6 0%, #C643FC 100%)",
+    "linear-gradient(to right, #1AD6FD 0%, #1D62F0 100%)",
+    "linear-gradient(to right, #FFCC00 0%, #FF9500 100%)",
+    "linear-gradient(to right, #4cbf30 0%, #0f9d58 100%)",
+    "linear-gradient(to right, #C644FC 0%, #5856D6 100%)",
+    "linear-gradient(to right, #55EFCB 0%, #5BCAFF 100%)"
+  ],
+  "length": {}
+}

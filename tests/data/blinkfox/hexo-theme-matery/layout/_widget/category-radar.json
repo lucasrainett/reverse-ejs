@@ -1,0 +1,28 @@
+{
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "libs": {
+      "js": {
+        "echarts": "sample-value"
+      }
+    }
+  },
+  "categoryRadarTitle": "Sample Title",
+  "indicatorData": "sample-value",
+  "radarValueData": "sample-value",
+  "categoryNumber": 1,
+  "site": {
+    "categories": "sample-value"
+  },
+  "categories": "sample-value",
+  "radarValueArr": [],
+  "category": {
+    "length": "sample-value",
+    "name": "Sample Title"
+  },
+  "indicatorArr": {
+    "push": "sample-value"
+  }
+}

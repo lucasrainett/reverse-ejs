@@ -1,0 +1,11 @@
+{
+  "theme": {
+    "utterances": {
+      "repo": "sample-value",
+      "issueTerm": "sample-value",
+      "theme": "sample-value",
+      "label": "Sample Title",
+      "enable": true
+    }
+  }
+}

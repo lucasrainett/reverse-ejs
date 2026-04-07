@@ -1,0 +1,85 @@
+{
+  "config": {
+    "language": "en"
+  },
+  "_partial": "sample-value",
+  "head": "sample-value",
+  "background": "sample-value",
+  "header": "sample-value",
+  "body": "<p>Content here</p>",
+  "footer": "sample-value",
+  "search": "sample-value",
+  "back": "sample-value",
+  "top": "sample-value",
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "libs": {
+      "js": {
+        "materialize": "sample-value",
+        "masonry": "sample-value",
+        "aos": "sample-value",
+        "scrollProgress": "sample-value",
+        "lightgallery": "sample-value",
+        "matery": "sample-value",
+        "clicklove": "sample-value",
+        "busuanzi": "sample-value",
+        "canvas_nest": "sample-value",
+        "ribbon_dynamic": "sample-value",
+        "instantpage": 1,
+        "ribbon": "sample-value",
+        "ribbonRefresh": "sample-value"
+      }
+    },
+    "tidio": {
+      "public_key": "abc123",
+      "enable": true
+    },
+    "daovoice": {
+      "app_id": "abc123",
+      "enable": true
+    },
+    "tuxiaochao": {
+      "productId": "abc123",
+      "enable": true
+    },
+    "canvas_nest": {
+      "color": "sample-value",
+      "pointColor": "sample-value",
+      "opacity": "sample-value",
+      "zIndex": 1,
+      "count": 1,
+      "enable": true
+    },
+    "ribbon": {
+      "size": 1,
+      "alpha": "sample-value",
+      "zIndex": 1,
+      "enable": true,
+      "clickChange": "sample-value"
+    },
+    "background": {
+      "enable": true
+    },
+    "clicklove": {
+      "enable": true
+    },
+    "busuanziStatistics": {
+      "enable": true
+    },
+    "toc": {
+      "showToggleBtn": "sample-value"
+    },
+    "ribbon_dynamic": {
+      "enable": true
+    },
+    "instantpage": {
+      "enable": true
+    }
+  },
+  "baidu": "sample-value",
+  "analytics": "sample-value",
+  "push": "sample-value",
+  "ribbonSrc": "sample-value"
+}

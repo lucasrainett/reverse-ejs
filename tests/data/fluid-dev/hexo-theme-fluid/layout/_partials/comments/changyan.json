@@ -1,0 +1,10 @@
+{
+  "page": {
+    "permalink": "https://example.com/path"
+  },
+  "theme": {
+    "changyan": {
+      "appid": "abc123"
+    }
+  }
+}

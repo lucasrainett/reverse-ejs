@@ -1,0 +1,17 @@
+{
+  "page": {
+    "title": "Sample Title"
+  },
+  "config": {
+    "title": "Sample Title"
+  },
+  "theme": {
+    "avatar": "https://example.com/image.jpg",
+    "share": "sample-value"
+  },
+  "url": "https://example.com/path",
+  "post": "sample-value",
+  "share": "sample-value",
+  "className": "Sample Title",
+  "global": "sample-value"
+}

@@ -1,0 +1,28 @@
+{
+  "_partial": "sample-value",
+  "post": "sample-value",
+  "gallery": "sample-value",
+  "search": "sample-value",
+  "counter": {
+    "tag_cloud": "sample-value",
+    "categories": "sample-value"
+  },
+  "visibleTags": "sample-value",
+  "min_font": "sample-value",
+  "max_font": "sample-value",
+  "amount": 1,
+  "visibleCategories": "sample-value",
+  "page": {
+    "content": "<p>Content here</p>",
+    "search": "sample-value",
+    "type": "sample-value"
+  },
+  "site": {
+    "tags": {
+      "each": "sample-value"
+    },
+    "categories": {
+      "each": "sample-value"
+    }
+  }
+}

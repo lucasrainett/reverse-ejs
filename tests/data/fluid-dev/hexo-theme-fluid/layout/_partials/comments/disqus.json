@@ -1,0 +1,25 @@
+{
+  "theme": {
+    "static_prefix": {
+      "disqusjs": "sample-value"
+    },
+    "disqus": {
+      "shortname": "Sample Title",
+      "apikey": "abc123",
+      "api": "sample-value",
+      "admin": "sample-value",
+      "adminLabel": "Sample Title",
+      "disqusjs": "sample-value"
+    }
+  },
+  "disqusjs": {
+    "css": "default"
+  },
+  "disqus": {
+    "js": "sample-value"
+  },
+  "page": {
+    "permalink": "https://example.com/path",
+    "path": "https://example.com/path"
+  }
+}

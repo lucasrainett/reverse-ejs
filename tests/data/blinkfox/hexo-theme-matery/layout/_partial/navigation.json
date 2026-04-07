@@ -1,0 +1,18 @@
+{
+  "theme": {
+    "menu": "sample-value"
+  },
+  "key": "abc123",
+  "url": "https://example.com/path",
+  "config": {
+    "language": "en",
+    "root": "sample-value"
+  },
+  "zh": "sample-value",
+  "CN": "sample-value",
+  "menuMap": {},
+  "search": "sample-value",
+  "_partial": "sample-value",
+  "mobile": "sample-value",
+  "nav": "sample-value"
+}

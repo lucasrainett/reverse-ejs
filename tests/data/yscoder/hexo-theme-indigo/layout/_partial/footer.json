@@ -1,0 +1,9 @@
+{
+  "config": {
+    "title": "Sample Title"
+  },
+  "YYYY": "sample-value",
+  "theme": {
+    "rss": "sample-value"
+  }
+}

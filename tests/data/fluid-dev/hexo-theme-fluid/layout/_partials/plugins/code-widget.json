@@ -1,0 +1,20 @@
+{
+  "theme": {
+    "code": {
+      "copy_btn": "sample-value"
+    },
+    "static_prefix": {
+      "clipboard": "sample-value"
+    }
+  },
+  "clipboard": {
+    "min": {
+      "js": "sample-value"
+    }
+  },
+  "Fluid": {
+    "plugins": {
+      "codeWidget": "sample-value"
+    }
+  }
+}

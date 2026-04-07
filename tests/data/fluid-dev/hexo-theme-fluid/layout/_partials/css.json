@@ -1,0 +1,49 @@
+{
+  "theme": {
+    "static_prefix": {
+      "bootstrap": "sample-value",
+      "iconfont": "sample-value",
+      "internal_css": "default"
+    },
+    "iconfont": "sample-value",
+    "custom_css": "default",
+    "code": {
+      "highlight": {
+        "enable": true
+      }
+    },
+    "dark_mode": {
+      "enable": true
+    }
+  },
+  "bootstrap": {
+    "min": {
+      "css": "default"
+    }
+  },
+  "css_snippets": "",
+  "idx": 0,
+  "at": {
+    "alicdn": {
+      "com": "sample-value"
+    }
+  },
+  "t": "sample-value",
+  "c": "sample-value",
+  "font_1749284_5i9bdhy70f8": {
+    "css": "default"
+  },
+  "main": {
+    "css": "default"
+  },
+  "highlight": {
+    "css": "default"
+  },
+  "id": "abc123",
+  "dark": {
+    "css": "default"
+  },
+  "page": {
+    "css_snippets": []
+  }
+}

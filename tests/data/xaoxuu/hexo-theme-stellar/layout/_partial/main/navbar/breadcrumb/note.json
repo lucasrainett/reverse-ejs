@@ -1,0 +1,23 @@
+{
+  "theme": {
+    "site_tree": {
+      "notebooks": {
+        "base_dir": "sample-value"
+      }
+    },
+    "notebooks": {
+      "tree": "sample-value"
+    }
+  },
+  "btn": {
+    "notebook": "sample-value"
+  },
+  "notebook": {
+    "base_dir": "sample-value",
+    "name": "Sample Title",
+    "title": "Sample Title"
+  },
+  "page": {
+    "notebook": "sample-value"
+  }
+}

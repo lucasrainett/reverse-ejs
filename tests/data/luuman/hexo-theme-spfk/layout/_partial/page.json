@@ -1,0 +1,17 @@
+{
+  "depth": "sample-value",
+  "min_font": "sample-value",
+  "max_font": "sample-value",
+  "amount": 1,
+  "color": "sample-value",
+  "start_color": "sample-value",
+  "gray": "sample-value",
+  "end_color": "sample-value",
+  "black": "sample-value",
+  "page": {
+    "path": "https://example.com/path"
+  },
+  "index": {
+    "html": "<p>Content here</p>"
+  }
+}

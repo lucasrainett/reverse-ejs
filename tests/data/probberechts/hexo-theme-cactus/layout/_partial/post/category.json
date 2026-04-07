@@ -1,0 +1,11 @@
+{
+  "page": {
+    "categories": {
+      "length": "sample-value"
+    }
+  },
+  "show_count": 1,
+  "style": "default",
+  "link": "https://example.com/path",
+  "separator": "sample-value"
+}

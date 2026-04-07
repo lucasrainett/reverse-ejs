@@ -1,0 +1,32 @@
+{
+  "theme": {
+    "code": {
+      "highlight": {
+        "lib": "sample-value",
+        "prismjs": {
+          "preprocess": "sample-value"
+        },
+        "line_number": 1
+      }
+    },
+    "static_prefix": {
+      "prismjs": "sample-value"
+    }
+  },
+  "core": {
+    "min": {
+      "js": "sample-value"
+    }
+  },
+  "autoloader": {
+    "min": {
+      "js": "sample-value"
+    }
+  },
+  "numbers": {
+    "min": {
+      "css": "default",
+      "js": "sample-value"
+    }
+  }
+}

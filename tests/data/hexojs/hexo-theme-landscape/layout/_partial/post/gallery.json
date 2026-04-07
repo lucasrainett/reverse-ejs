@@ -1,0 +1,9 @@
+{
+  "post": {
+    "_id": "abc123",
+    "photos": {
+      "length": "sample-value",
+      "forEach": "sample-value"
+    }
+  }
+}

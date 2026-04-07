@@ -1,0 +1,81 @@
+{
+  "theme": {
+    "apple_touch_icon": "https://example.com/image.jpg",
+    "favicon": "https://example.com/image.jpg",
+    "color": {
+      "navbar_bg_color": "sample-value"
+    },
+    "custom_head": "sample-value",
+    "static_prefix": {
+      "internal_js": "sample-value"
+    },
+    "title_join_string": "sample-value",
+    "tab_title_separator": "sample-value",
+    "open_graph": {
+      "enable": true
+    },
+    "canonical": {
+      "enable": true
+    },
+    "force_https": "sample-value",
+    "post": {
+      "meta": {
+        "views": {
+          "enable": true,
+          "source": "sample-value"
+        }
+      }
+    },
+    "footer": {
+      "statistics": {
+        "enable": true,
+        "source": "sample-value"
+      }
+    }
+  },
+  "config": {
+    "url": "https://example.com/path",
+    "author": "Alice",
+    "title": "Sample Title",
+    "keywords": "sample-value",
+    "description": "A sample description"
+  },
+  "page": {
+    "canonical_path": {
+      "replace": "sample-value"
+    },
+    "author": "Alice",
+    "title": "Sample Title",
+    "keywords": "sample-value",
+    "description": "A sample description",
+    "excerpt": "A sample description",
+    "content": "<p>Content here</p>",
+    "og_img": "https://example.com/image.jpg",
+    "index_img": "https://example.com/image.jpg"
+  },
+  "index": {
+    "html": "<p>Content here</p>"
+  },
+  "keywords": "sample-value",
+  "ogConfig": {
+    "image": "https://example.com/image.jpg",
+    "enable": true
+  },
+  "description": "A sample description",
+  "title": "Sample Titlesample-valueSample Title",
+  "_partials": "sample-value",
+  "export_config": "sample-value",
+  "js_ex": "sample-value",
+  "utils": {
+    "js": "sample-value"
+  },
+  "color": "sample-value",
+  "schema": {
+    "js": "sample-value"
+  },
+  "plugins": "sample-value",
+  "analytics": {
+    "ejs": "sample-value"
+  },
+  "head": "sample-value"
+}

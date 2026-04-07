@@ -1,0 +1,28 @@
+{
+  "post": {
+    "layout": "sample-value",
+    "slug": "sample-value",
+    "excerpt": {
+      "replace": "sample-value"
+    },
+    "content": {
+      "replace": "sample-value"
+    },
+    "path": "https://example.com/path"
+  },
+  "title": "Sample Title",
+  "hasLink": "https://example.com/path",
+  "date_format": "sample-value",
+  "config": {
+    "date_format": "sample-value"
+  },
+  "category": "sample-value",
+  "tagReg": "sample-value",
+  "substring": "sample-value",
+  "theme": {
+    "excerpt_length": "sample-value",
+    "excerpt_link": "https://example.com/path",
+    "excerpt_render": "sample-value"
+  },
+  "tag": "sample-value"
+}

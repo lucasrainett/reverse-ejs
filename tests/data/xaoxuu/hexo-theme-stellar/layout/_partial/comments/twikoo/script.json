@@ -1,0 +1,10 @@
+{
+  "theme": {
+    "comments": {
+      "lazyload": "sample-value",
+      "twikoo": {
+        "js": "sample-value"
+      }
+    }
+  }
+}

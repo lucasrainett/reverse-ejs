@@ -1,0 +1,14 @@
+{
+  "YYYY": "sample-value",
+  "config": {
+    "author": "Alice",
+    "title": "Sample Title"
+  },
+  "theme": {
+    "visit_counter": {
+      "site_visit": "sample-value",
+      "page_visit": "sample-value",
+      "on": "sample-value"
+    }
+  }
+}

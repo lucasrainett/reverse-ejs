@@ -1,0 +1,17 @@
+{
+  "config": {
+    "language": "en"
+  },
+  "_partials": "sample-value",
+  "head": "sample-value",
+  "_components": "sample-value",
+  "brand": "sample-value",
+  "menu": "sample-value",
+  "sidebar": "sample-value",
+  "toggle": "sample-value",
+  "navbar": "sample-value",
+  "body": "<p>Content here</p>",
+  "post": "sample-value",
+  "info": "sample-value",
+  "book": "sample-value"
+}

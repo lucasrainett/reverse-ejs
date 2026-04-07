@@ -1,0 +1,20 @@
+{
+  "_macro": "sample-value",
+  "_partial": "sample-value",
+  "pagination": {
+    "ejs": "sample-value"
+  },
+  "archive": {
+    "ejs": "sample-value"
+  },
+  "theme": {
+    "mode": {
+      "toLowerCase": "sample-value"
+    }
+  },
+  "page": {
+    "posts": {
+      "each": "sample-value"
+    }
+  }
+}

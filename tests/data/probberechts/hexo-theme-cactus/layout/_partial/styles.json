@@ -1,0 +1,26 @@
+{
+  "getCdnLink": "https://example.com/path",
+  "justified_gallery_css": "default",
+  "preload": "sample-value",
+  "lib": "sample-value",
+  "justified": "sample-value",
+  "gallery": "sample-value",
+  "justifiedGallery": {
+    "min": {
+      "css": "default"
+    }
+  },
+  "font_awesome": "sample-value",
+  "font": "sample-value",
+  "awesome": "sample-value",
+  "all": {
+    "min": {
+      "css": "default"
+    }
+  },
+  "page": {
+    "photos": {
+      "length": "sample-value"
+    }
+  }
+}

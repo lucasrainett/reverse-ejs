@@ -1,0 +1,47 @@
+{
+  "_partial": "sample-value",
+  "page": {
+    "title": "Sample Title",
+    "date": "2025-01-15",
+    "content": "<p>Content here</p>",
+    "permalink": "https://example.com/path",
+    "categories": {
+      "length": "sample-value",
+      "forEach": "sample-value"
+    },
+    "tags": {
+      "length": "sample-value",
+      "forEach": "sample-value"
+    }
+  },
+  "config": {
+    "author": "Alice",
+    "root": "sample-value"
+  },
+  "theme": {
+    "date_format": "sample-value",
+    "time_format": "sample-value",
+    "post_copyright_license_text": "<p>Content here</p>",
+    "post_copyright_slogan_text": "<p>Content here</p>",
+    "post_toc_enable": true,
+    "post_meta_enable": true,
+    "post_author_enable": true,
+    "post_date_enable": true,
+    "post_category_enable": true,
+    "post_copyright_enable": true,
+    "post_copyright_author_enable": true,
+    "post_copyright_permalink_enable": true,
+    "post_copyright_license_enable": true,
+    "post_copyright_slogan_enable": true
+  },
+  "post": {
+    "prev": {
+      "path": "https://example.com/path",
+      "title": "Sample Title"
+    },
+    "next": {
+      "path": "https://example.com/path",
+      "title": "Sample Title"
+    }
+  }
+}

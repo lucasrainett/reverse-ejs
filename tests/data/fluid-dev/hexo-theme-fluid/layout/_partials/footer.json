@@ -1,0 +1,21 @@
+{
+  "theme": {
+    "footer": {
+      "content": "<p>Content here</p>",
+      "statistics": {
+        "enable": true
+      },
+      "beian": {
+        "enable": true
+      }
+    }
+  },
+  "_partials": "sample-value",
+  "footer": "sample-value",
+  "statistics": {
+    "ejs": "sample-value"
+  },
+  "beian": {
+    "ejs": "sample-value"
+  }
+}

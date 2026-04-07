@@ -1,0 +1,97 @@
+{
+  "layoutLogo": "https://example.com/image.jpg",
+  "layoutNavArea": "sample-value",
+  "layoutWidgets": "sample-value",
+  "layoutFooterDiv": "sample-value",
+  "theme": {
+    "wiki": {
+      "tree": "sample-value"
+    },
+    "topic": {
+      "tree": "sample-value"
+    },
+    "notebooks": {
+      "tree": "sample-value"
+    },
+    "widgets": "sample-value",
+    "footer": "sample-value"
+  },
+  "page": {
+    "wiki": "sample-value",
+    "topic": "sample-value",
+    "notebook": "sample-value",
+    "leftbar": {
+      "replace": "sample-value",
+      "forEach": "sample-value"
+    },
+    "layout": "sample-value",
+    "search": "sample-value",
+    "menu": "sample-value"
+  },
+  "site_tree": {
+    "home": {
+      "leftbar": "sample-value"
+    },
+    "notebooks": {
+      "leftbar": "sample-value"
+    },
+    "notes": {
+      "leftbar": "sample-value"
+    },
+    "index_blog": {
+      "leftbar": "sample-value"
+    },
+    "post": {
+      "leftbar": "sample-value"
+    },
+    "index_wiki": {
+      "leftbar": "sample-value"
+    },
+    "wiki": {
+      "leftbar": "sample-value"
+    },
+    "error_page": {
+      "leftbar": "sample-value"
+    },
+    "page": {
+      "leftbar": "sample-value"
+    }
+  },
+  "notebook": {
+    "leftbar": "sample-value",
+    "note_leftbar": "sample-value"
+  },
+  "topic": {
+    "leftbar": "sample-value",
+    "search": "sample-value"
+  },
+  "wiki": {
+    "leftbar": "sample-value",
+    "search": "sample-value"
+  },
+  "sub": {
+    "split": "sample-value"
+  },
+  "arr": {
+    "length": "sample-value",
+    "shift": "sample-value",
+    "join": "sample-value"
+  },
+  "w": {
+    "override": "sample-value",
+    "layout": "sample-value"
+  },
+  "widget": {
+    "layout": "sample-value"
+  },
+  "item": {
+    "icon": "https://example.com/image.jpg",
+    "url": {
+      "includes": "sample-value"
+    },
+    "onclick": {
+      "replace": "sample-value"
+    },
+    "title": "Sample Title"
+  }
+}

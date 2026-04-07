@@ -1,0 +1,14 @@
+{
+  "post": {
+    "layout": "sample-value"
+  },
+  "class_name": "Sample Title",
+  "archive": "sample-value",
+  "article": "sample-value",
+  "date_format": "sample-value",
+  "MM": "sample-value",
+  "DD": "sample-value",
+  "title": "Sample Title",
+  "category": "sample-value",
+  "tag": "sample-value"
+}

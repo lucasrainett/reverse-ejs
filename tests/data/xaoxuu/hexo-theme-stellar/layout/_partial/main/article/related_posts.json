@@ -1,0 +1,16 @@
+{
+  "layoutDiv": "sample-value",
+  "theme": {
+    "article": {
+      "related_posts": {
+        "enable": true,
+        "title": "Sample Title",
+        "max_count": 1
+      }
+    }
+  },
+  "meta": {
+    "related_posts": "sample-value"
+  },
+  "page": 1
+}

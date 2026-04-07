@@ -1,0 +1,11 @@
+{
+  "posts": {
+    "toc": "sample-value"
+  },
+  "page": {
+    "content": "<p>Content here</p>"
+  },
+  "theme": {
+    "toc": "sample-value"
+  }
+}

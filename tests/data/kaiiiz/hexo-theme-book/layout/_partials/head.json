@@ -1,0 +1,17 @@
+{
+  "theme": {
+    "favicon_url": "https://example.com/path"
+  },
+  "page": {
+    "title": "Sample Title"
+  },
+  "config": {
+    "title": "Sample Title"
+  },
+  "book": "sample-value",
+  "_lib": "sample-value",
+  "google": "sample-value",
+  "analytics": "sample-value",
+  "zooming": "sample-value",
+  "image": "https://example.com/image.jpg"
+}

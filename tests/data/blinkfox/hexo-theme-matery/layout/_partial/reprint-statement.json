@@ -1,0 +1,46 @@
+{
+  "author": "Alice",
+  "about": "sample-value",
+  "page": {
+    "author": "Alice",
+    "path": "https://example.com/path",
+    "title": "Sample Title",
+    "reprintPolicy": "sample-value"
+  },
+  "config": {
+    "author": "Alice",
+    "url": "https://example.com/path"
+  },
+  "link": "https://example.com/path",
+  "reprint": "sample-value",
+  "use": "sample-value",
+  "cc_by_url": "https://example.com/path",
+  "cc_by_name": "Sample Title",
+  "licensed": "sample-value",
+  "cc_by_nd_url": "https://example.com/path",
+  "cc_by_nd_name": "Sample Title",
+  "cc_by_sa_url": "https://example.com/path",
+  "cc_by_sa_name": "Sample Title",
+  "cc_by_nc_url": "https://example.com/path",
+  "cc_by_nc_name": "Sample Title",
+  "cc_by_nc_nd_url": "https://example.com/path",
+  "cc_by_nc_nd_name": "Sample Title",
+  "cc_by_nc_sa_url": "https://example.com/path",
+  "cc_by_nc_sa_name": "Sample Title",
+  "toTheExtentPossibleUnderLaw": "sample-value",
+  "hasWaivedAllCopyrightAndRelatedOrNeighboringRightsTo": "sample-value",
+  "workPublishedFrom": "sample-value",
+  "cc_0_content": "<p>Content here</p>",
+  "cc_0_country": "sample-value",
+  "noreprint": "sample-value",
+  "paycontact": "sample-value",
+  "payreprint": "sample-value",
+  "pleaseFollowReprintPolicy": "sample-value",
+  "checkPolicy": "sample-value",
+  "theme": {
+    "reprint": {
+      "enable": true,
+      "default": "sample-value"
+    }
+  }
+}

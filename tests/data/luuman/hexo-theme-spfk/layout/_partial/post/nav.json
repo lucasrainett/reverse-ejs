@@ -1,0 +1,33 @@
+{
+  "post": {
+    "path": "https://example.com/path",
+    "title": "Sample Title",
+    "date": {
+      "format": "sample-value"
+    },
+    "updated": {
+      "format": "sample-value"
+    },
+    "permalink": "https://example.com/path",
+    "prev": {
+      "path": "https://example.com/path",
+      "title": "Sample Title"
+    },
+    "next": {
+      "path": "https://example.com/path",
+      "title": "Sample Title"
+    },
+    "original": "sample-value"
+  },
+  "config": {
+    "root": "sample-value"
+  },
+  "theme": {
+    "author": "Alice"
+  },
+  "YYYY": "sample-value",
+  "MM": "sample-value",
+  "DD": "sample-value",
+  "HH": "sample-value",
+  "mm": "sample-value"
+}

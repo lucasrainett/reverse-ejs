@@ -1,0 +1,27 @@
+{
+  "dt": {
+    "format": "sample-value"
+  },
+  "MMMM": "sample-value",
+  "YYYY": "sample-value",
+  "_partial": "sample-value",
+  "archive": "sample-value",
+  "post": {
+    "date": {
+      "year": "sample-value",
+      "month": "sample-value"
+    }
+  },
+  "prev_text": "<p>Content here</p>",
+  "next_text": "<p>Content here</p>",
+  "page": {
+    "posts": {
+      "each": "sample-value"
+    },
+    "total": 1
+  },
+  "posts": [],
+  "sortPosts": {
+    "forEach": "sample-value"
+  }
+}

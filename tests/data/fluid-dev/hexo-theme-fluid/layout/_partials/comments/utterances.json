@@ -1,0 +1,14 @@
+{
+  "theme": {
+    "utterances": {
+      "theme": "sample-value",
+      "theme_dark": "sample-value",
+      "repo": "sample-value",
+      "issue_term": "sample-value",
+      "label": "Sample Title"
+    }
+  },
+  "github": "sample-value",
+  "light": "sample-value",
+  "dark": "sample-value"
+}

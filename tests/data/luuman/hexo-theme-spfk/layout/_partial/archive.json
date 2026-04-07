@@ -1,0 +1,23 @@
+{
+  "article": "sample-value",
+  "index": 1,
+  "prev_text": "<p>Content here</p>",
+  "laquo": "sample-value",
+  "Prev": "sample-value",
+  "next_text": "<p>Content here</p>",
+  "Next": "sample-value",
+  "raquo": "sample-value",
+  "archives": "sample-value",
+  "year": "sample-value",
+  "archive": "sample-value",
+  "even": "sample-value",
+  "i": "sample-value",
+  "page": {
+    "posts": {
+      "each": "sample-value",
+      "length": "sample-value"
+    },
+    "total": 1
+  },
+  "pagination": "sample-value"
+}

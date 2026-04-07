@@ -1,0 +1,13 @@
+{
+  "_partial": "sample-value",
+  "index": 1,
+  "item": "sample-value",
+  "prev_text": "<p>Content here</p>",
+  "next_text": "<p>Content here</p>",
+  "page": {
+    "posts": {
+      "each": "sample-value"
+    },
+    "total": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "config": {
+    "root": "sample-value"
+  },
+  "theme": {
+    "avatar": "https://example.com/image.jpg",
+    "author": "Alice",
+    "subtitle": "Sample Title",
+    "menu": "sample-value",
+    "subnav": "sample-value",
+    "friends": {
+      "length": "sample-value"
+    },
+    "aboutme": "sample-value",
+    "animate": "sample-value",
+    "search_box": "sample-value",
+    "tagcloud": "sample-value"
+  }
+}

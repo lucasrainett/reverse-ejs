@@ -1,0 +1,17 @@
+{
+  "config": {
+    "title": "Sample Title",
+    "subtitle": "Sample Title"
+  },
+  "theme": {
+    "subtitle": "Sample Title",
+    "menu": "sample-value",
+    "links": "sample-value",
+    "rss": "sample-value"
+  },
+  "rss_feed": "sample-value",
+  "search": "sample-value",
+  "button": "sample-value",
+  "xF002": "sample-value",
+  "text": "<p>Content here</p>"
+}

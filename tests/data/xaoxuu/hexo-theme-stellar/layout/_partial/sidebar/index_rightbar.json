@@ -1,0 +1,75 @@
+{
+  "layoutWidgets": "sample-value",
+  "theme": {
+    "wiki": {
+      "tree": "sample-value"
+    },
+    "topic": {
+      "tree": "sample-value"
+    },
+    "notebooks": {
+      "tree": "sample-value"
+    },
+    "widgets": "sample-value"
+  },
+  "page": {
+    "wiki": "sample-value",
+    "topic": "sample-value",
+    "notebook": "sample-value",
+    "rightbar": {
+      "replace": "sample-value",
+      "length": "sample-value",
+      "forEach": "sample-value"
+    },
+    "layout": "sample-value"
+  },
+  "site_tree": {
+    "home": {
+      "rightbar": "sample-value"
+    },
+    "notebooks": {
+      "rightbar": "sample-value"
+    },
+    "notes": {
+      "rightbar": "sample-value"
+    },
+    "index_blog": {
+      "rightbar": "sample-value"
+    },
+    "post": {
+      "rightbar": "sample-value"
+    },
+    "index_wiki": {
+      "rightbar": "sample-value"
+    },
+    "wiki": {
+      "rightbar": "sample-value"
+    },
+    "error_page": {
+      "rightbar": "sample-value"
+    },
+    "page": {
+      "rightbar": "sample-value"
+    }
+  },
+  "notebook": {
+    "rightbar": "sample-value",
+    "note_rightbar": "sample-value"
+  },
+  "topic": {
+    "rightbar": "sample-value"
+  },
+  "wiki": {
+    "rightbar": "sample-value"
+  },
+  "w": {
+    "override": "sample-value",
+    "layout": "sample-value"
+  },
+  "widget": {
+    "layout": "sample-value"
+  },
+  "el": {
+    "trim": "sample-value"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "post": {
+    "content": "<p>Content here</p>"
+  },
+  "https": "sample-value",
+  "url": {
+    "cn": "sample-value"
+  },
+  "edu": "sample-value",
+  "jslib": "sample-value",
+  "comb": "sample-value",
+  "require": "sample-value",
+  "jquery": "sample-value",
+  "min": "sample-value",
+  "theme": {
+    "toc_nowrap": "sample-value"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "icons": {
+    "menu": "sample-value",
+    "top": "sample-value"
+  },
+  "theme": {
+    "nav": "sample-value"
+  },
+  "nav": "sample-value",
+  "replace": "sample-value",
+  "post": {
+    "desktop": {
+      "previous": "sample-value",
+      "next": "sample-value",
+      "back_to_top": "sample-value",
+      "share": "sample-value"
+    }
+  },
+  "page": {
+    "prev": {
+      "path": "https://example.com/path"
+    },
+    "next": {
+      "path": "https://example.com/path"
+    },
+    "content": "<p>Content here</p>"
+  },
+  "_partial": "sample-value",
+  "share": "sample-value",
+  "icon_class_name": "Sample Title",
+  "tocHTML": "<p>Content here</p>"
+}

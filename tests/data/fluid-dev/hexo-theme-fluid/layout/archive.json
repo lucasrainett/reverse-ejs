@@ -1,0 +1,35 @@
+{
+  "_partials": "sample-value",
+  "archive": {
+    "title": "Sample Title",
+    "subtitle": "Sample Title"
+  },
+  "list": {
+    "ejs": "sample-value"
+  },
+  "params": "sample-value",
+  "key": "abc123",
+  "page": {
+    "layout": "archive",
+    "title": "Sample Title",
+    "subtitle": "Sample Title",
+    "banner_img": "https://example.com/image.jpg",
+    "banner_img_height": "sample-value",
+    "banner_mask_alpha": "sample-value"
+  },
+  "postTotal": 1,
+  "site": {
+    "posts": {
+      "length": "sample-value"
+    }
+  },
+  "theme": {
+    "archive": {
+      "title": "Sample Title",
+      "subtitle": "Sample Title",
+      "banner_img": "https://example.com/image.jpg",
+      "banner_img_height": "sample-value",
+      "banner_mask_alpha": "sample-value"
+    }
+  }
+}

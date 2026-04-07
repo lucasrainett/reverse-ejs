@@ -1,0 +1,23 @@
+{
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "sharejs": {
+      "sites": "sample-value",
+      "enable": true
+    },
+    "addthis": {
+      "pubid": "abc123",
+      "enable": true
+    }
+  },
+  "libs": "sample-value",
+  "share": {
+    "min": {
+      "css": "default",
+      "js": "sample-value"
+    }
+  },
+  "social": "sample-value"
+}

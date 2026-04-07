@@ -1,0 +1,46 @@
+{
+  "active": true,
+  "tag": {
+    "path": "https://example.com/path",
+    "part": {
+      "toLowerCase": "sample-value"
+    },
+    "id": "abc123",
+    "children": {
+      "length": "sample-value"
+    },
+    "name": "Sample Title"
+  },
+  "level": "sample-value",
+  "meta": {
+    "all_notes": "sample-value",
+    "tag_tree": "sample-value"
+  },
+  "tagcon": "sample-value",
+  "tagAndSub": "sample-value",
+  "tagTree": {
+    "get": "sample-value"
+  },
+  "classes": {
+    "join": "sample-value"
+  },
+  "layoutTag": "sample-value",
+  "layoutChildTags": "sample-value",
+  "theme": {
+    "notebooks": {
+      "tree": "sample-value"
+    },
+    "notebook": {
+      "tagcons": "sample-value"
+    }
+  },
+  "page": {
+    "notebook": "sample-value",
+    "activeTag": "sample-value"
+  },
+  "item": {
+    "show_tagcon": "sample-value",
+    "expand_all": "sample-value",
+    "expand_active": true
+  }
+}

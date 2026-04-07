@@ -1,0 +1,23 @@
+{
+  "theme": {
+    "nav": "sample-value"
+  },
+  "nav": "sample-value",
+  "replace": "sample-value",
+  "page": {
+    "content": "<p>Content here</p>"
+  },
+  "_partial": "sample-value",
+  "post": {
+    "mobile": {
+      "menu": "sample-value",
+      "toc": "sample-value",
+      "share": "sample-value",
+      "back_to_top": "sample-value"
+    }
+  },
+  "share": "sample-value",
+  "icon_class_name": "Sample Title",
+  "fa": "sample-value",
+  "lg": "sample-value"
+}

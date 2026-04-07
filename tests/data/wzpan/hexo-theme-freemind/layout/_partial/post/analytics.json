@@ -1,0 +1,12 @@
+{
+  "theme": {
+    "google_analytics": {
+      "siteid": "abc123",
+      "enable": true
+    },
+    "baidu_tongji": {
+      "siteid": "abc123",
+      "enable": true
+    }
+  }
+}

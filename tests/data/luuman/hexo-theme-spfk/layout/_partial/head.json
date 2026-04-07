@@ -1,0 +1,43 @@
+{
+  "title": "Sample Title",
+  "config": {
+    "title": "Sample Title",
+    "root": "sample-value"
+  },
+  "twitter_id": "abc123",
+  "theme": {
+    "twitter": "sample-value",
+    "google_plus": "sample-value",
+    "fb_admins": "sample-value",
+    "fb_app_id": "abc123",
+    "rss": "sample-value",
+    "favicon": "https://example.com/image.jpg",
+    "baidu_site": "sample-value",
+    "google_site": "sample-value",
+    "fancybox": "sample-value",
+    "animate": "sample-value",
+    "open_in_new": "sample-value"
+  },
+  "google_plus": "sample-value",
+  "fb_admins": "sample-value",
+  "fb_app_id": "abc123",
+  "cdn": {
+    "bootcss": {
+      "com": "sample-value"
+    }
+  },
+  "animate": {
+    "css": "default",
+    "min": {
+      "css": "default"
+    }
+  },
+  "style": "default",
+  "page": {
+    "title": "Sample Title",
+    "year": "sample-value",
+    "month": "sample-value",
+    "category": "sample-value",
+    "tag": "sample-value"
+  }
+}

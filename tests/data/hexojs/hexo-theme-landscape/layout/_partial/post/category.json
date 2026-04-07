@@ -1,0 +1,13 @@
+{
+  "post": {
+    "categories": {
+      "length": "sample-value"
+    }
+  },
+  "show_count": 1,
+  "article": "sample-value",
+  "category": "sample-value",
+  "style": "default",
+  "none": "sample-value",
+  "separator": "sample-value"
+}

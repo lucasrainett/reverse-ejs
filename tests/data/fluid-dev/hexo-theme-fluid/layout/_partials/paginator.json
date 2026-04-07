@@ -1,0 +1,25 @@
+{
+  "prev_text": "<p>Content here</p>",
+  "i": "sample-value",
+  "iconfont": "sample-value",
+  "arrowleft": "sample-value",
+  "next_text": "<p>Content here</p>",
+  "arrowright": "sample-value",
+  "mid_size": 1,
+  "end_size": 1,
+  "format": "sample-value",
+  "config": {
+    "pagination_dir": "sample-value"
+  },
+  "d": "sample-value",
+  "theme": {
+    "scroll_down_arrow": {
+      "scroll_after_turning_page": 1
+    }
+  },
+  "board": "sample-value",
+  "escape": "sample-value",
+  "page": {
+    "total": 1
+  }
+}

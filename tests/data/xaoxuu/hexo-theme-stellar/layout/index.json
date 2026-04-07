@@ -1,0 +1,25 @@
+{
+  "_partial": "sample-value",
+  "main": "sample-value",
+  "navbar": "sample-value",
+  "nav_tabs_blog": "sample-value",
+  "layout_post_list": "sample-value",
+  "post": {
+    "cover": "https://example.com/image.jpg",
+    "poster": "sample-value",
+    "link": "https://example.com/path",
+    "path": "https://example.com/path",
+    "indexing": "sample-value"
+  },
+  "post_list": "sample-value",
+  "post_card": "sample-value",
+  "page": {
+    "menu_id": "abc123",
+    "title": "Sample Title",
+    "wiki": "sample-value",
+    "robots": "noindex,follow",
+    "posts": {
+      "each": "sample-value"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "page": {
+    "prev_link": "https://example.com/path",
+    "next_link": "https://example.com/path",
+    "prev": {
+      "path": "https://example.com/path",
+      "title": "Sample Title"
+    },
+    "next": {
+      "path": "https://example.com/path",
+      "title": "Sample Title"
+    }
+  },
+  "posts": {
+    "prev": "sample-value",
+    "next": "sample-value",
+    "prev_post": "sample-value",
+    "next_post": "sample-value"
+  }
+}

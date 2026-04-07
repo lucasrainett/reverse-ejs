@@ -1,0 +1,15 @@
+{
+  "_partials": "sample-value",
+  "category": "sample-value",
+  "chains": "sample-value",
+  "categories": "sample-value",
+  "page": {
+    "categories": {
+      "length": "sample-value"
+    },
+    "tags": {
+      "length": "sample-value",
+      "each": "sample-value"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "config": {
+    "root": "sample-value",
+    "title": "Sample Title"
+  },
+  "index": {
+    "html": "<p>Content here</p>"
+  },
+  "site": {
+    "pages": {
+      "forEach": "sample-value"
+    }
+  }
+}

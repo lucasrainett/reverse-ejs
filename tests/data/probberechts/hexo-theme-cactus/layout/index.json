@@ -1,0 +1,59 @@
+{
+  "config": {
+    "description": "A sample description"
+  },
+  "index": {
+    "find_me_on": "sample-value",
+    "enum_and": "sample-value",
+    "enum_comma": "sample-value",
+    "articles": "sample-value",
+    "topics": "sample-value",
+    "most_recent": "sample-value",
+    "projects": "sample-value"
+  },
+  "link": "https://example.com/path",
+  "title": "Sample Title",
+  "nb_links": "sample-value",
+  "i": 0,
+  "theme": {
+    "nav": {
+      "articles": "sample-value"
+    },
+    "tags_overview": "sample-value",
+    "projects_url": "https://example.com/path",
+    "social_links": {
+      "length": "sample-value"
+    },
+    "posts_overview": {
+      "sort_updated": "2025-01-15",
+      "show_all_posts": "sample-value",
+      "post_count": 1
+    }
+  },
+  "_partial": "sample-value",
+  "class_name": "Sample Title",
+  "meta": "sample-value",
+  "pagination": "sample-value",
+  "site": {
+    "data": {
+      "projects": "sample-value"
+    },
+    "tags": {
+      "length": "sample-value"
+    },
+    "posts": {
+      "sort": "sample-value"
+    }
+  },
+  "url": "https://example.com/path",
+  "name": "Sample Title",
+  "desc": "A sample description",
+  "page": {
+    "posts": {
+      "sort": "sample-value"
+    }
+  },
+  "show_posts": {
+    "each": "sample-value"
+  }
+}

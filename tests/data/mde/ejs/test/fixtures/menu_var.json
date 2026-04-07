@@ -1,0 +1,11 @@
+{
+  "varPath": "https://example.com/path",
+  "url": "https://example.com/path",
+  "foo": "sample-value",
+  "title": "Sample Title",
+  "Foo": "sample-value",
+  "bar": "sample-value",
+  "Bar": "sample-value",
+  "baz": "sample-value",
+  "Baz": "sample-value"
+}

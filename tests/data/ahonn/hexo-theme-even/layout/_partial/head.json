@@ -1,0 +1,57 @@
+{
+  "_head": "sample-value",
+  "meta": {
+    "ejs": "sample-value"
+  },
+  "config": {
+    "feed": {
+      "path": "https://example.com/path"
+    },
+    "url": "https://example.com/path"
+  },
+  "theme": {
+    "rss": "sample-value",
+    "favicon": "https://example.com/image.jpg",
+    "version": "1.0.0",
+    "fancybox": "sample-value",
+    "latex": "sample-value",
+    "leancloud": "sample-value",
+    "toc": "sample-value",
+    "pjax": "sample-value"
+  },
+  "atom": {
+    "xml": "sample-value"
+  },
+  "page": {
+    "canonical_path": {
+      "replace": "sample-value"
+    }
+  },
+  "index": {
+    "html": "<p>Content here</p>"
+  },
+  "lib": "sample-value",
+  "fancybox": "sample-value",
+  "jquery": {
+    "fancybox": {
+      "css": "default"
+    }
+  },
+  "style": {
+    "css": "default"
+  },
+  "_script": "sample-value",
+  "analytics": {
+    "ejs": "sample-value"
+  },
+  "push": {
+    "ejs": "sample-value"
+  },
+  "counter": {
+    "ejs": "sample-value"
+  },
+  "themeConfig": "sample-value",
+  "env": {
+    "debug": "sample-value"
+  }
+}

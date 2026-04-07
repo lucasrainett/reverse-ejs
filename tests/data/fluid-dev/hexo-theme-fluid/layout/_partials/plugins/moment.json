@@ -1,0 +1,31 @@
+{
+  "config": {
+    "language": "en"
+  },
+  "document": {
+    "getElementById": "abc123"
+  },
+  "updatedTime": {
+    "textContent": "<p>Content here</p>",
+    "style": {
+      "display": "sample-value"
+    }
+  },
+  "text": {
+    "match": "sample-value",
+    "replace": "sample-value"
+  },
+  "Fluid": {
+    "utils": {
+      "createScript": "sample-value"
+    }
+  },
+  "theme": {
+    "static_prefix": {
+      "moment": "sample-value"
+    }
+  },
+  "min": {
+    "js": "sample-value"
+  }
+}

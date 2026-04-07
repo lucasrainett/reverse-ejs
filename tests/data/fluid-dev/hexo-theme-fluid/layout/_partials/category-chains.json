@@ -1,0 +1,18 @@
+{
+  "render_category_chain": "sample-value",
+  "nextCats": {
+    "data": "sample-value",
+    "length": "sample-value"
+  },
+  "categories": {
+    "find": "sample-value"
+  },
+  "config": {
+    "index_generator": {
+      "order_by": "sample-value"
+    }
+  },
+  "catsFirst": {
+    "each": "sample-value"
+  }
+}

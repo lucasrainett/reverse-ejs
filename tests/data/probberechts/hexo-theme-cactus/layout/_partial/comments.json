@@ -1,0 +1,16 @@
+{
+  "comments": {
+    "no_js": "sample-value"
+  },
+  "page": {
+    "comments": "sample-value"
+  },
+  "theme": {
+    "disqus": {
+      "enabled": true
+    },
+    "utterances": {
+      "enabled": true
+    }
+  }
+}

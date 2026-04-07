@@ -1,0 +1,18 @@
+{
+  "theme": {
+    "comments": {
+      "waline": {
+        "js": "sample-value",
+        "css": "default",
+        "meta_css": "default",
+        "imageUploader": "sample-value"
+      },
+      "lazyload": "sample-value"
+    }
+  },
+  "tokenName": "Sample Title",
+  "token": "abc123",
+  "fileName": "Sample Title",
+  "api": "sample-value",
+  "resp": "sample-value"
+}

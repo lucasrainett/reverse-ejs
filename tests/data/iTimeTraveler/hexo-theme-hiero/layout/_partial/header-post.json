@@ -1,0 +1,21 @@
+{
+  "config": {
+    "root": "sample-value",
+    "title": "Sample Title",
+    "description": "A sample description"
+  },
+  "theme": {
+    "avatar": {
+      "bottom": "sample-value",
+      "width": "sample-value",
+      "height": "sample-value",
+      "url": {
+        "startsWith": "sample-value",
+        "indexOf": "sample-value"
+      },
+      "enable": true
+    },
+    "menu": "sample-value",
+    "about_big_image": "https://example.com/image.jpg"
+  }
+}

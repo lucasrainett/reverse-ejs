@@ -1,0 +1,9 @@
+{
+  "theme": {
+    "reward": {
+      "title": "Sample Title",
+      "wechat": "sample-value",
+      "alipay": "sample-value"
+    }
+  }
+}

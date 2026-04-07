@@ -1,0 +1,52 @@
+{
+  "layoutDiv": "sample-value",
+  "config": {
+    "index_generator": {
+      "path": "https://example.com/path"
+    },
+    "category_dir": "sample-value",
+    "tag_dir": "sample-value",
+    "archive_dir": "sample-value"
+  },
+  "btn": {
+    "recent_publish": "sample-value",
+    "category": "sample-value",
+    "categories": "sample-value",
+    "tag": "sample-value",
+    "tags": "sample-value",
+    "topic": "sample-value",
+    "archives": "sample-value"
+  },
+  "site": {
+    "categories": {
+      "length": "sample-value"
+    },
+    "tags": {
+      "length": "sample-value"
+    },
+    "posts": {
+      "length": "sample-value"
+    }
+  },
+  "page": {
+    "category": "sample-value",
+    "layout": "sample-value",
+    "tag": "sample-value",
+    "path": "https://example.com/path"
+  },
+  "symbol": {
+    "colon": "sample-value"
+  },
+  "theme": {
+    "topic": "sample-value",
+    "site_tree": {
+      "index_topic": {
+        "base_dir": "sample-value"
+      },
+      "index_blog": "sample-value"
+    }
+  },
+  "index": {
+    "html": "<p>Content here</p>"
+  }
+}

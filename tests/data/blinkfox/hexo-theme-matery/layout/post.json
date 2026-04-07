@@ -1,0 +1,36 @@
+{
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "libs": {
+      "js": {
+        "crypto": "sample-value"
+      }
+    },
+    "verifyPassword": {
+      "promptMessage": "sample-value",
+      "errorMessage": "sample-value",
+      "enable": true
+    },
+    "mathjax": {
+      "cdn": "sample-value",
+      "enable": true
+    },
+    "toc": {
+      "enable": true
+    }
+  },
+  "page": {
+    "password": "sample-value",
+    "toc": "sample-value",
+    "mathjax": "sample-value"
+  },
+  "_partial": "sample-value",
+  "post": "sample-value",
+  "cover": "https://example.com/image.jpg",
+  "containerClass": "post-container",
+  "detail": {
+    "ejs": "sample-value"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "header": "sample-value",
+  "user": {
+    "name": "Sample Title",
+    "email": "user@example.com"
+  },
+  "footer": "sample-value"
+}

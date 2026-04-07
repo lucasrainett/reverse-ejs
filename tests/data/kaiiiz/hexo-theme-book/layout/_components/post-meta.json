@@ -1,0 +1,28 @@
+{
+  "page": {
+    "author_img": "https://example.com/image.jpg",
+    "author": "Alice",
+    "date": {
+      "format": "sample-value"
+    },
+    "categories": {
+      "length": "sample-value"
+    },
+    "tags": {
+      "length": "sample-value"
+    }
+  },
+  "theme": {
+    "author_img": "https://example.com/image.jpg"
+  },
+  "config": {
+    "author": "Alice",
+    "date_format": "sample-value"
+  },
+  "show_count": 1,
+  "style": "default",
+  "none": "sample-value",
+  "separator": "sample-value",
+  "transform": "sample-value",
+  "str": "sample-value"
+}

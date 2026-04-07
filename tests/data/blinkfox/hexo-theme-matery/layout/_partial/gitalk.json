@@ -1,0 +1,36 @@
+{
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "libs": {
+      "css": {
+        "gitalk": "sample-value"
+      },
+      "js": {
+        "gitalk": "sample-value"
+      }
+    },
+    "gitalk": {
+      "oauth": {
+        "clientId": "abc123",
+        "clientSecret": "sample-value"
+      },
+      "repo": "sample-value",
+      "owner": "Alice",
+      "admin": "sample-value"
+    }
+  },
+  "my": "sample-value",
+  "gitalk": {
+    "css": "default"
+  },
+  "page": {
+    "date": "2025-01-15"
+  },
+  "YYYY": "sample-value",
+  "MM": "sample-value",
+  "DDTHH": "sample-value",
+  "mm": "sample-value",
+  "ss": "sample-value"
+}

@@ -1,0 +1,17 @@
+{
+  "theme": {
+    "static_prefix": {
+      "valine": "sample-value"
+    },
+    "valine": {
+      "path": "https://example.com/path",
+      "appId": "abc123",
+      "appKey": "abc123"
+    }
+  },
+  "Valine": {
+    "min": {
+      "js": "sample-value"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "logo": {
+      "length": "sample-value"
+    },
+    "menu": "sample-value",
+    "navMenu": {
+      "bgColor": "sample-value",
+      "mleft": "sample-value"
+    },
+    "githubLink": {
+      "url": "https://example.com/path",
+      "title": "Sample Title",
+      "enable": true
+    }
+  },
+  "config": {
+    "title": "Sample Title",
+    "description": {
+      "length": "sample-value"
+    },
+    "language": "en",
+    "root": "sample-value"
+  },
+  "key": "abc123",
+  "url": "https://example.com/path",
+  "zh": "sample-value",
+  "CN": "sample-value",
+  "menuMap": {}
+}

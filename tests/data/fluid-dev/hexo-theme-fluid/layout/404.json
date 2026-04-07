@@ -1,0 +1,24 @@
+{
+  "theme": {
+    "page404": {
+      "redirect_delay": "sample-value",
+      "title": "Sample Title",
+      "subtitle": "Sample Title",
+      "banner_img": "https://example.com/image.jpg",
+      "banner_img_height": "sample-value",
+      "banner_mask_alpha": "sample-value"
+    }
+  },
+  "page": {
+    "layout": "404",
+    "title": "Sample Title",
+    "subtitle": "Sample Title",
+    "banner_img": "https://example.com/image.jpg",
+    "banner_img_height": "sample-value",
+    "banner_mask_alpha": "sample-value"
+  },
+  "page404": {
+    "title": "Sample Title",
+    "subtitle": "Sample Title"
+  }
+}

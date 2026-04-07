@@ -1,0 +1,15 @@
+{
+  "duoshuo": "sample-value",
+  "key": "abc123",
+  "post": {
+    "slug": "sample-value",
+    "title": "Sample Title",
+    "comments": "sample-value"
+  },
+  "title": "Sample Title",
+  "url": "https://example.com/path",
+  "theme": {
+    "disqus_shortname": "Sample Title",
+    "duoshuo": "sample-value"
+  }
+}

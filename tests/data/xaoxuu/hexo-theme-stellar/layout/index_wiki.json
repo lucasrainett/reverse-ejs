@@ -1,0 +1,19 @@
+{
+  "layoutDiv": "sample-value",
+  "theme": {
+    "wiki": "sample-value"
+  },
+  "proj": {
+    "pages": {
+      "length": "sample-value"
+    },
+    "homepage": 1,
+    "tags": {
+      "includes": "sample-value"
+    }
+  },
+  "page": {
+    "filter": "sample-value",
+    "tagName": "Sample Title"
+  }
+}

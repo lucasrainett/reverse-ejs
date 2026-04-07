@@ -1,0 +1,13 @@
+{
+  "config": {
+    "root": "sample-value"
+  },
+  "theme": {
+    "author": "Alice",
+    "avatar": "https://example.com/image.jpg",
+    "subtitle": "Sample Title",
+    "menu": "sample-value",
+    "subnav": "sample-value",
+    "animate": "sample-value"
+  }
+}

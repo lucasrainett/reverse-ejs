@@ -1,0 +1,34 @@
+{
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "libs": {
+      "css": {
+        "aplayer": "sample-value"
+      },
+      "js": {
+        "aplayer": "sample-value"
+      }
+    },
+    "music": {
+      "theme": "sample-value",
+      "title": {
+        "show": true,
+        "enable": true
+      },
+      "server": "1.0.0",
+      "type": "sample-value",
+      "id": "abc123",
+      "fixed": "sample-value",
+      "autoplay": "sample-value",
+      "loop": "sample-value",
+      "order": "sample-value",
+      "preload": "sample-value",
+      "volume": "sample-value",
+      "listFolded": "sample-value",
+      "hideLrc": "sample-value",
+      "autoHide": "sample-value"
+    }
+  }
+}

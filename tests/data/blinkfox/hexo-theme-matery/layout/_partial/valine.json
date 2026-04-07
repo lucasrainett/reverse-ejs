@@ -1,0 +1,32 @@
+{
+  "theme": {
+    "valine": {
+      "background": "sample-value",
+      "appId": "abc123",
+      "appKey": "abc123",
+      "notify": "sample-value",
+      "verify": "sample-value",
+      "visitor": "sample-value",
+      "avatar": "https://example.com/image.jpg",
+      "pageSize": 1,
+      "placeholder": "sample-value"
+    },
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "libs": {
+      "js": {
+        "valine": "sample-value"
+      }
+    }
+  },
+  "libs": "sample-value",
+  "valine": "sample-value",
+  "av": "sample-value",
+  "min": {
+    "js": "sample-value"
+  },
+  "config": {
+    "language": "en"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "recent_posts": "sample-value",
+  "post": {
+    "path": "https://example.com/path",
+    "photos": "sample-value",
+    "title": "Sample Title",
+    "date": "2025-01-15"
+  },
+  "no": "sample-value",
+  "title": "Sample Title",
+  "MMMM": "sample-value",
+  "D": "sample-value",
+  "YYYY": "sample-value",
+  "site": {
+    "posts": {
+      "length": "sample-value",
+      "sort": "sample-value"
+    }
+  }
+}

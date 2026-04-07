@@ -1,0 +1,24 @@
+{
+  "layoutDiv": "sample-value",
+  "theme": {
+    "wiki": {
+      "tree": "sample-value"
+    },
+    "site_tree": {
+      "index_wiki": {
+        "base_dir": "sample-value"
+      }
+    }
+  },
+  "page": {
+    "wiki": "sample-value"
+  },
+  "btn": {
+    "wiki": "sample-value"
+  },
+  "wikiObject": {
+    "homepage": 1,
+    "name": "Sample Title",
+    "title": "Sample Title"
+  }
+}

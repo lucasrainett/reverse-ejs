@@ -1,0 +1,14 @@
+{
+  "theme": {
+    "static_prefix": {
+      "discuss": "sample-value"
+    },
+    "discuss": {
+      "path": "https://example.com/path",
+      "serverURLs": "sample-value"
+    }
+  },
+  "discuss": {
+    "js": "sample-value"
+  }
+}

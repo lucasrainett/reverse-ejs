@@ -1,0 +1,44 @@
+{
+  "layoutDiv": "sample-value",
+  "theme": {
+    "plugins": {
+      "heti": "sample-value"
+    },
+    "notebooks": {
+      "tree": "sample-value"
+    },
+    "site_tree": {
+      "wiki": {
+        "menu_id": "abc123"
+      },
+      "topic": {
+        "menu_id": "abc123"
+      },
+      "post": {
+        "menu_id": "abc123"
+      }
+    }
+  },
+  "page": {
+    "notebook": "sample-value",
+    "menu_id": "abc123",
+    "license": "sample-value",
+    "share": "sample-value",
+    "wiki": "sample-value",
+    "topic": "sample-value",
+    "title": "Sample Title",
+    "nav_tabs": "sample-value",
+    "h1": "sample-value",
+    "content": {
+      "length": "sample-value"
+    }
+  },
+  "notebook": {
+    "menu_id": "abc123",
+    "license": "sample-value",
+    "share": "sample-value"
+  },
+  "btn": {
+    "wiki": "sample-value"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "sidebar": {
+    "sticky": "sample-value"
+  },
+  "theme": {
+    "customize": {
+      "thumbnail": "https://example.com/image.jpg"
+    }
+  },
+  "no": "sample-value",
+  "thumbnail": {
+    "ejs": "sample-value"
+  },
+  "common": "sample-value",
+  "post": {
+    "categories": "sample-value",
+    "link": "https://example.com/path",
+    "path": "https://example.com/path",
+    "title": "Sample Title",
+    "date": "2025-01-15",
+    "sticky": "sample-value",
+    "hidden": "sample-value"
+  },
+  "show_count": 1,
+  "depth": "sample-value",
+  "article": "sample-value",
+  "category": "sample-value",
+  "style": "default",
+  "none": "sample-value",
+  "separator": "sample-value",
+  "i": "sample-value",
+  "fa": "sample-value",
+  "angle": "sample-value",
+  "right": "sample-value",
+  "site": {
+    "posts": {
+      "length": "sample-value",
+      "filter": "sample-value"
+    }
+  }
+}

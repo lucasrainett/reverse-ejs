@@ -1,0 +1,17 @@
+{
+  "_partials": "sample-value",
+  "comments": "sample-value",
+  "commentType": "sample-value",
+  "theme": {
+    "post": {
+      "comments": {
+        "enable": true,
+        "type": "sample-value"
+      }
+    }
+  },
+  "page": {
+    "comments": "sample-value",
+    "comment": "sample-value"
+  }
+}

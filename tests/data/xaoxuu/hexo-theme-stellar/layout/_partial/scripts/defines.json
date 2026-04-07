@@ -1,0 +1,47 @@
+{
+  "canonicalWithEncoded": "sample-value",
+  "permalink": "https://example.com/path",
+  "checklink": "https://example.com/path",
+  "meta": {
+    "date_suffix": {
+      "just": "sample-value",
+      "min": "sample-value",
+      "hour": "sample-value",
+      "day": "sample-value"
+    }
+  },
+  "config": {
+    "root": "sample-value"
+  },
+  "theme": {
+    "tag_plugins": {
+      "chat": "sample-value"
+    },
+    "search": {
+      "service": "sample-value",
+      "local_search": "sample-value"
+    },
+    "default": {
+      "avatar": "https://example.com/image.jpg",
+      "cover": "https://example.com/image.jpg",
+      "loading": "sample-value"
+    },
+    "dependencies": {
+      "jquery": "sample-value",
+      "marked": "sample-value",
+      "lazyload": "sample-value"
+    },
+    "canonical": "sample-value",
+    "data_services": {
+      "video": {
+        "js": "sample-value"
+      }
+    }
+  },
+  "Buffer": {
+    "from": "sample-value"
+  },
+  "page": {
+    "permalink": "https://example.com/path"
+  }
+}

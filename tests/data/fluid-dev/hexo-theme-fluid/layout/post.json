@@ -1,0 +1,67 @@
+{
+  "postLeft": "sample-value",
+  "page": {
+    "subtitle": "Sample Title",
+    "title": "Sample Title",
+    "updated": "2025-01-15",
+    "content": "<p>Content here</p>",
+    "custom": "sample-value",
+    "banner_img": "https://example.com/image.jpg",
+    "banner_img_height": "sample-value",
+    "banner_mask_alpha": "sample-value",
+    "date": "2025-01-15",
+    "encrypt": "sample-value",
+    "hide": "sample-value"
+  },
+  "theme": {
+    "post": {
+      "updated": {
+        "note_class": "default",
+        "relative": "sample-value",
+        "content": "<p>Content here</p>",
+        "date_format": "sample-value",
+        "enable": true
+      },
+      "custom": {
+        "content": "<p>Content here</p>",
+        "enable": true
+      },
+      "banner_img": "https://example.com/image.jpg",
+      "banner_img_height": "sample-value",
+      "banner_mask_alpha": "sample-value",
+      "prev_next": {
+        "enable": true
+      }
+    }
+  },
+  "info": "sample-value",
+  "display": "sample-value",
+  "none": "sample-value",
+  "YYYY": "sample-value",
+  "MM": "sample-value",
+  "DDTHH": "sample-value",
+  "mm": "sample-value",
+  "ssZ": "sample-value",
+  "post": {
+    "updated": "2025-01-15",
+    "prev_post": "sample-value",
+    "next_post": "sample-value"
+  },
+  "_partials": "sample-value",
+  "plugins": "sample-value",
+  "postMarkdownBegin": "sample-value",
+  "encrypt": "sample-value",
+  "postMarkdownEnd": "sample-value",
+  "postMetaBottom": "sample-value",
+  "postCopyright": "sample-value",
+  "prev": {
+    "path": "https://example.com/path",
+    "title": "Sample Title"
+  },
+  "next": {
+    "path": "https://example.com/path",
+    "title": "Sample Title"
+  },
+  "postComments": "sample-value",
+  "postRight": "sample-value"
+}

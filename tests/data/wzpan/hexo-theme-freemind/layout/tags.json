@@ -1,0 +1,40 @@
+{
+  "page": {
+    "title": "Sample Title"
+  },
+  "item": {
+    "name": "Sample Title",
+    "posts": {
+      "length": "sample-value"
+    },
+    "_id": "abc123"
+  },
+  "it": {
+    "path": "https://example.com/path",
+    "description": "A sample description",
+    "title": "Sample Title",
+    "tags": {
+      "length": "sample-value",
+      "data": {
+        "forEach": "sample-value"
+      }
+    }
+  },
+  "_partial": "sample-value",
+  "sidebar": "sample-value",
+  "theme": {
+    "inverse": "sample-value",
+    "widgets": {
+      "length": "sample-value"
+    }
+  },
+  "site": {
+    "tags": {
+      "length": "sample-value",
+      "sort": "sample-value"
+    },
+    "posts": {
+      "sort": "sample-value"
+    }
+  }
+}

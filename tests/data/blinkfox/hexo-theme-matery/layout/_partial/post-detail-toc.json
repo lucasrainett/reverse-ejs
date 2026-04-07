@@ -1,0 +1,26 @@
+{
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "libs": {
+      "css": {
+        "tocbot": "sample-value"
+      },
+      "js": {
+        "tocbot": "sample-value"
+      }
+    },
+    "toc": {
+      "collapseDepth": "sample-value",
+      "heading": "Sample Title",
+      "enable": true,
+      "showToggleBtn": "sample-value"
+    }
+  },
+  "_partial": "sample-value",
+  "post": "sample-value",
+  "detail": {
+    "ejs": "sample-value"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "libs": {
+      "css": {
+        "jqcloud": "sample-value"
+      },
+      "js": {
+        "jqcloud": "sample-value"
+      }
+    }
+  },
+  "tagWords": "sample-value",
+  "site": {
+    "tags": {
+      "map": "sample-value"
+    }
+  },
+  "tagWordArr": {
+    "push": "sample-value"
+  },
+  "tag": {
+    "name": "Sample Title",
+    "length": "sample-value",
+    "path": "https://example.com/path"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "config": {
+    "language": "en"
+  },
+  "_partial": "sample-value",
+  "head": "sample-value",
+  "cache": "sample-value",
+  "header": "sample-value",
+  "body": "<p>Content here</p>",
+  "footer": "sample-value"
+}

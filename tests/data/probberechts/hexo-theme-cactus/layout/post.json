@@ -1,0 +1,20 @@
+{
+  "_partial": "sample-value",
+  "post": "sample-value",
+  "title": "Sample Title",
+  "page": {
+    "author": "Alice",
+    "content": "<p>Content here</p>"
+  },
+  "index": 1,
+  "class_name": "Sample Title",
+  "posttitle": "Sample Title",
+  "config": {
+    "author": "Alice"
+  },
+  "postdate": "2025-01-15",
+  "category": "sample-value",
+  "tag": "sample-value",
+  "gallery": "sample-value",
+  "comments": "sample-value"
+}

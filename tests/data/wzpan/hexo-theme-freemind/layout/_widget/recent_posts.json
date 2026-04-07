@@ -1,0 +1,14 @@
+{
+  "recent_posts": "sample-value",
+  "post": {
+    "path": "https://example.com/path",
+    "description": "A sample description",
+    "title": "Sample Title"
+  },
+  "site": {
+    "posts": {
+      "length": "sample-value",
+      "sort": "sample-value"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "cats": [],
+  "item": {
+    "categories": {
+      "forEach": "sample-value"
+    }
+  },
+  "cat": {
+    "path": "https://example.com/path",
+    "name": "Sample Title",
+    "length": "sample-value"
+  }
+}

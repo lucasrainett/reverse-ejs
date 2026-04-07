@@ -1,0 +1,29 @@
+{
+  "https": "sample-value",
+  "url": {
+    "cn": "sample-value"
+  },
+  "edu": "sample-value",
+  "jslib": "sample-value",
+  "comb": "sample-value",
+  "require": "sample-value",
+  "jquery": "sample-value",
+  "min": "sample-value",
+  "main": "sample-value",
+  "background": "sample-value",
+  "analytics": "sample-value",
+  "google": "sample-value",
+  "baidu": "sample-value",
+  "mathjax": "sample-value",
+  "scrolling": "sample-value",
+  "button": "sample-value",
+  "hide": "sample-value",
+  "labels": "sample-value",
+  "post": "sample-value",
+  "TipTitle": "Sample Title",
+  "theme": {
+    "mathjax": "sample-value",
+    "TipTitle": "Sample Title",
+    "search_box": "sample-value"
+  }
+}

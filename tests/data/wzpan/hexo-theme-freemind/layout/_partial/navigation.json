@@ -1,0 +1,12 @@
+{
+  "config": {
+    "root": "sample-value",
+    "title": "Sample Title"
+  },
+  "theme": {
+    "inverse": "sample-value",
+    "menu": {
+      "forEach": "sample-value"
+    }
+  }
+}

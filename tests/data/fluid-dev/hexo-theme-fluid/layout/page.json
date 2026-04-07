@@ -1,0 +1,24 @@
+{
+  "page": {
+    "content": "<p>Content here</p>",
+    "layout": "sample-value",
+    "title": "Sample Title",
+    "subtitle": "Sample Title",
+    "banner_img": "https://example.com/image.jpg",
+    "banner_img_height": "sample-value",
+    "banner_mask_alpha": "sample-value"
+  },
+  "pageComments": "sample-value",
+  "_partials": "sample-value",
+  "plugins": "sample-value",
+  "theme": {
+    "page": {
+      "banner_img": "https://example.com/image.jpg",
+      "banner_img_height": "sample-value",
+      "banner_mask_alpha": "sample-value"
+    }
+  },
+  "gims": {
+    "test": "sample-value"
+  }
+}

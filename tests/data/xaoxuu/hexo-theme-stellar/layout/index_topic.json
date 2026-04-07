@@ -1,0 +1,9 @@
+{
+  "layoutDiv": "sample-value",
+  "theme": {
+    "topic": "sample-value"
+  },
+  "topic": {
+    "homepage": 1
+  }
+}

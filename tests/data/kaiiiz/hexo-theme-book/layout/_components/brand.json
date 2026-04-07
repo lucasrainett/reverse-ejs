@@ -1,0 +1,11 @@
+{
+  "config": {
+    "root": "sample-value",
+    "title": {
+      "toUpperCase": "sample-value"
+    }
+  },
+  "theme": {
+    "favicon_url": "https://example.com/path"
+  }
+}

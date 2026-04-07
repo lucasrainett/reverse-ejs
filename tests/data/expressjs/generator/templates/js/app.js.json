@@ -1,0 +1,15 @@
+{
+  "variable": "sample-value",
+  "modules": "sample-value",
+  "localModules": "sample-value",
+  "view": {
+    "engine": "sample-value",
+    "render": "sample-value"
+  },
+  "uses": {
+    "forEach": "sample-value"
+  },
+  "mounts": {
+    "forEach": "sample-value"
+  }
+}

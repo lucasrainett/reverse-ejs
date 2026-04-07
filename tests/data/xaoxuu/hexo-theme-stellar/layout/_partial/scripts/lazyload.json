@@ -1,0 +1,9 @@
+{
+  "theme": {
+    "dependencies": {
+      "lazyload": {
+        "js": "sample-value"
+      }
+    }
+  }
+}

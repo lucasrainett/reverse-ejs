@@ -1,0 +1,49 @@
+{
+  "_widget": "sample-value",
+  "music": "sample-value",
+  "theme": {
+    "time": {
+      "year": "sample-value",
+      "month": "sample-value",
+      "date": "2025-01-15",
+      "hour": "sample-value",
+      "minute": "sample-value",
+      "second": "sample-value",
+      "enable": true
+    },
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "icp": {
+      "url": "https://example.com/path",
+      "text": "<p>Content here</p>",
+      "enable": true
+    },
+    "music": {
+      "enable": true,
+      "fixed": "sample-value"
+    },
+    "postInfo": {
+      "totalCount": 1
+    },
+    "busuanziStatistics": {
+      "enable": true,
+      "totalTraffic": "sample-value",
+      "totalNumberOfvisitors": "sample-value"
+    }
+  },
+  "getFullYear": "sample-value",
+  "about": "sample-value",
+  "config": {
+    "author": "Alice"
+  },
+  "site": "sample-value",
+  "medias": "sample-value",
+  "icp": {
+    "png": "sample-value"
+  },
+  "socialClass": "default",
+  "_partial": "sample-value",
+  "social": "sample-value",
+  "link": "https://example.com/path"
+}

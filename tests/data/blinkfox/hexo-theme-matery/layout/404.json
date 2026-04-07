@@ -1,0 +1,16 @@
+{
+  "page": {
+    "description": "A sample description"
+  },
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "banner": {
+      "enable": true
+    }
+  },
+  "medias": "sample-value",
+  "banner": "https://example.com/image.jpg",
+  "jpg": "sample-value"
+}

@@ -1,0 +1,42 @@
+{
+  "theme": {
+    "jsDelivr": {
+      "url": "https://example.com/path"
+    },
+    "libs": {
+      "js": {
+        "echarts": "sample-value"
+      }
+    }
+  },
+  "titleText": "<p>Content here</p>",
+  "rangeArr": "sample-value",
+  "nameMap": "sample-value",
+  "datePosts": "sample-value",
+  "config": {
+    "language": {
+      "indexOf": "sample-value"
+    }
+  },
+  "startDate": {
+    "format": "sample-value"
+  },
+  "endDate": {
+    "format": "sample-value"
+  },
+  "site": {
+    "posts": {
+      "forEach": "sample-value"
+    }
+  },
+  "post": {
+    "date": {
+      "format": "sample-value"
+    }
+  },
+  "dateMap": {
+    "get": "sample-value",
+    "set": "sample-value",
+    "has": "sample-value"
+  }
+}

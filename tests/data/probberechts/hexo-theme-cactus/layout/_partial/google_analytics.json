@@ -1,0 +1,8 @@
+{
+  "theme": {
+    "google_analytics": {
+      "id": "abc123",
+      "enabled": true
+    }
+  }
+}

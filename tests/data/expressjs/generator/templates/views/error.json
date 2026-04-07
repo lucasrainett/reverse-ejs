@@ -1,0 +1,7 @@
+{
+  "message": "sample-value",
+  "error": {
+    "status": "sample-value",
+    "stack": "sample-value"
+  }
+}

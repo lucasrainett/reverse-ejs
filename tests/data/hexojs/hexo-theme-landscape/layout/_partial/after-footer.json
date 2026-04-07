@@ -1,0 +1,50 @@
+{
+  "theme": {
+    "disqus_shortname": "Sample Title",
+    "valine": {
+      "guest_info": "sample-value",
+      "notify": "sample-value",
+      "verify": "sample-value",
+      "appId": "abc123",
+      "appKey": "abc123",
+      "placeholder": "sample-value",
+      "pageSize": 1,
+      "avatar": "https://example.com/image.jpg",
+      "lang": "en",
+      "enable": true
+    },
+    "fancybox": "sample-value"
+  },
+  "page": {
+    "permalink": "https://example.com/path",
+    "comments": "sample-value"
+  },
+  "jquery": {
+    "fancybox": {
+      "min": {
+        "js": "sample-value"
+      }
+    }
+  },
+  "min": {
+    "js": "sample-value"
+  },
+  "fancybox": "sample-value",
+  "script": "sample-value",
+  "gauges": "sample-value",
+  "analytics": "sample-value",
+  "https": "sample-value",
+  "cdn": {
+    "jsdelivr": {
+      "net": "sample-value"
+    }
+  },
+  "npm": "sample-value",
+  "valine": "sample-value",
+  "dist": "sample-value",
+  "Valine": {
+    "min": {
+      "js": "sample-value"
+    }
+  }
+}

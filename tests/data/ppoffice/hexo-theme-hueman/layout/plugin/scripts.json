@@ -1,0 +1,86 @@
+{
+  "libs": "sample-value",
+  "lightgallery": {
+    "min": "sample-value"
+  },
+  "justified": "sample-value",
+  "gallery": "sample-value",
+  "justifiedGallery": {
+    "min": "sample-value"
+  },
+  "plugin": "sample-value",
+  "google": "sample-value",
+  "analytics": "sample-value",
+  "baidu": "sample-value",
+  "statcounter": "sample-value",
+  "lg": "sample-value",
+  "thumbnail": {
+    "min": "sample-value"
+  },
+  "pager": {
+    "min": "sample-value"
+  },
+  "autoplay": {
+    "min": "sample-value"
+  },
+  "fullscreen": {
+    "min": "sample-value"
+  },
+  "zoom": {
+    "min": "sample-value"
+  },
+  "hash": {
+    "min": "sample-value"
+  },
+  "share": {
+    "min": "sample-value"
+  },
+  "video": {
+    "min": "sample-value"
+  },
+  "jquery": {
+    "justifiedGallery": {
+      "min": "sample-value"
+    }
+  },
+  "https": "sample-value",
+  "cdnjs": {
+    "cloudflare": {
+      "com": "sample-value"
+    }
+  },
+  "ajax": "sample-value",
+  "mathjax": "sample-value",
+  "MathJax": {
+    "js": "sample-value"
+  },
+  "config": "sample-value",
+  "TeX": "sample-value",
+  "MML": "sample-value",
+  "AM_CHTML": "<p>Content here</p>",
+  "adsense": "sample-value",
+  "cookie": "sample-value",
+  "consent": "sample-value",
+  "twitter": "sample-value",
+  "conversion": "1.0.0",
+  "theme": {
+    "plugins": {
+      "lightgallery": "sample-value",
+      "justifiedgallery": "sample-value",
+      "google_analytics": "sample-value",
+      "baidu_analytics": "sample-value",
+      "cookie_consent": "sample-value",
+      "statcounter": {
+        "on": "sample-value"
+      },
+      "mathjax": "sample-value",
+      "google_adsense": {
+        "publisher_id": "abc123"
+      },
+      "twitter_conversion_tracking": {
+        "enabled": true,
+        "pixel_id": "abc123"
+      }
+    }
+  }
+}

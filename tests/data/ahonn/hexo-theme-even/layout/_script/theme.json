@@ -1,0 +1,10 @@
+{
+  "src": "https://example.com/path",
+  "even": {
+    "js": "sample-value"
+  },
+  "v": "sample-value",
+  "theme": {
+    "version": "1.0.0"
+  }
+}

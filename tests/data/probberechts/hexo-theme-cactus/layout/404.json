@@ -1,0 +1,12 @@
+{
+  "_partial": "sample-value",
+  "post": "sample-value",
+  "gallery": "sample-value",
+  "theme": {
+    "error_404": {
+      "title": "Sample Title",
+      "description": "A sample description",
+      "enabled": true
+    }
+  }
+}

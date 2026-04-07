@@ -1,0 +1,60 @@
+{
+  "theme": {
+    "post": {
+      "math": {
+        "engine": "sample-value"
+      }
+    },
+    "lazyload": {
+      "enable": true
+    },
+    "static_prefix": {
+      "mathjax": {
+        "replace": "sample-value"
+      },
+      "katex": "sample-value"
+    }
+  },
+  "window": {
+    "MathJax": "sample-value"
+  },
+  "document": {
+    "querySelectorAll": "sample-value"
+  },
+  "node": {
+    "parentNode": "sample-value"
+  },
+  "target": {
+    "nodeName": {
+      "toLowerCase": "sample-value"
+    },
+    "parentNode": {
+      "classList": {
+        "add": "sample-value"
+      }
+    }
+  },
+  "MathJax": {
+    "startup": {
+      "document": {
+        "state": "sample-value"
+      }
+    },
+    "texReset": "sample-value",
+    "typeset": "sample-value",
+    "typesetPromise": "sample-value"
+  },
+  "Fluid": {
+    "events": {
+      "registerRefreshCallback": "sample-value"
+    }
+  },
+  "chtml": {
+    "js": "sample-value"
+  },
+  "katex": {
+    "min": {
+      "css": "default"
+    }
+  }
+}

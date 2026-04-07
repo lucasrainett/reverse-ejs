@@ -1,0 +1,44 @@
+{
+  "config": {
+    "language": "en",
+    "title": "Sample Title"
+  },
+  "_partial": "sample-value",
+  "head": {
+    "ejs": "sample-value"
+  },
+  "title": "Sample Title",
+  "slideout": {
+    "ejs": "sample-value"
+  },
+  "header": {
+    "ejs": "sample-value"
+  },
+  "body": "<p>Content here</p>",
+  "comments": {
+    "ejs": "sample-value"
+  },
+  "footer": {
+    "ejs": "sample-value"
+  },
+  "_script": "sample-value",
+  "libs": {
+    "ejs": "sample-value"
+  },
+  "theme": {
+    "ejs": "sample-value"
+  },
+  "page": {
+    "archive": "sample-value",
+    "year": "sample-value",
+    "month": "sample-value",
+    "category": "sample-value",
+    "tag": "sample-value",
+    "title": {
+      "toLowerCase": "sample-value"
+    }
+  },
+  "menu": {
+    "archives": "sample-value"
+  }
+}

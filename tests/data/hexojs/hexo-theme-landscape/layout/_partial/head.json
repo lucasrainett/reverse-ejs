@@ -1,0 +1,61 @@
+{
+  "google": "sample-value",
+  "analytics": "sample-value",
+  "title": "Sample Title",
+  "config": {
+    "title": "Sample Title",
+    "feed": "sample-value",
+    "highlight": {
+      "enable": true
+    }
+  },
+  "twitter_id": "abc123",
+  "theme": {
+    "twitter": "sample-value",
+    "fb_admins": "sample-value",
+    "fb_app_id": "abc123",
+    "rss": "sample-value",
+    "favicon": "https://example.com/image.jpg",
+    "fancybox": "sample-value"
+  },
+  "fb_admins": "sample-value",
+  "fb_app_id": "abc123",
+  "https": "sample-value",
+  "cdn": {
+    "jsdelivr": {
+      "net": "sample-value"
+    }
+  },
+  "npm": "sample-value",
+  "typeface": "sample-value",
+  "source": "sample-value",
+  "code": "abc123",
+  "pro": "sample-value",
+  "index": {
+    "min": {
+      "css": "default"
+    }
+  },
+  "style": "default",
+  "fancybox": "sample-value",
+  "jquery": {
+    "fancybox": {
+      "min": {
+        "css": "default"
+      }
+    }
+  },
+  "fork": "sample-value",
+  "awesome": {
+    "min": {
+      "css": "default"
+    }
+  },
+  "page": {
+    "title": "Sample Title",
+    "year": "sample-value",
+    "month": "sample-value",
+    "category": "sample-value",
+    "tag": "sample-value"
+  }
+}

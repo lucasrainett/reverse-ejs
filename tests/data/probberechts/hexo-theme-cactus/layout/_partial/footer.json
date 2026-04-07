@@ -1,0 +1,20 @@
+{
+  "footer": {
+    "copyright": "sample-value"
+  },
+  "startYear": "sample-value",
+  "endYear": "sample-value",
+  "config": {
+    "author": "Alice",
+    "title": "Sample Title"
+  },
+  "theme": {
+    "nav": "sample-value",
+    "copyright": {
+      "end_year": "sample-value",
+      "start_year": "sample-value"
+    }
+  },
+  "nav": "sample-value",
+  "replace": "sample-value"
+}

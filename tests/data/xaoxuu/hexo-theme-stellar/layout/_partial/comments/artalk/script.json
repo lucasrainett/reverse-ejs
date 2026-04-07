@@ -1,0 +1,21 @@
+{
+  "theme": {
+    "comments": {
+      "lazyload": "sample-value",
+      "artalk": {
+        "css": "default",
+        "js": "sample-value",
+        "server": "1.0.0",
+        "site": "sample-value",
+        "darkMode": "sample-value",
+        "imageUploader": "sample-value"
+      }
+    }
+  },
+  "page": {
+    "title": "Sample Title"
+  },
+  "token": "abc123",
+  "api": "sample-value",
+  "resp": "sample-value"
+}
