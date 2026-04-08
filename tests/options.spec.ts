@@ -39,4 +39,69 @@ describe("options", () => {
 			name: "Alice",
 		});
 	});
+
+	it("should support custom delimiter with if/else", () => {
+		const template =
+			"<? if (active) { ?>" +
+			"<span><?= label ?></span>" +
+			"<? } else { ?>" +
+			"<span>Inactive</span>" +
+			"<? } ?>";
+		const final = "<span>Running</span>";
+		expect(reverseEjs(template, final, { delimiter: "?" })).toEqual({
+			label: "Running",
+			active: true,
+		});
+	});
+
+	it("should support custom delimiter with object loop", () => {
+		const template =
+			"<? users.forEach(u => { ?>" +
+			"<li><?= u.name ?> (<?= u.role ?>)</li>" +
+			"<? }) ?>";
+		const final = "<li>Alice (admin)</li><li>Bob (viewer)</li>";
+		expect(reverseEjs(template, final, { delimiter: "?" })).toEqual({
+			users: [
+				{ name: "Alice", role: "admin" },
+				{ name: "Bob", role: "viewer" },
+			],
+		});
+	});
+
+	it("should support all three custom delimiters together", () => {
+		const template = "{{= name }}";
+		const final = "Alice";
+		expect(
+			reverseEjs(template, final, {
+				delimiter: "=",
+				openDelimiter: "{",
+				closeDelimiter: "}",
+			}),
+		).toEqual({ name: "Alice" });
+	});
+
+	it("should support rmWhitespace with loops", () => {
+		const template =
+			"  <ul>\n" +
+			"    <% items.forEach(item => { %>\n" +
+			"      <li><%= item %></li>\n" +
+			"    <% }) %>\n" +
+			"  </ul>";
+		const final = "<ul>\n<li>Alpha</li>\n<li>Beta</li>\n</ul>";
+		expect(reverseEjs(template, final, { rmWhitespace: true })).toEqual({
+			items: ["Alpha", "Beta"],
+		});
+	});
+
+	it("should support rmWhitespace with conditionals", () => {
+		const template =
+			"  <% if (show) { %>\n" +
+			"    <p><%= message %></p>\n" +
+			"  <% } %>";
+		const final = "<p>Hello</p>";
+		expect(reverseEjs(template, final, { rmWhitespace: true })).toEqual({
+			message: "Hello",
+			show: true,
+		});
+	});
 });

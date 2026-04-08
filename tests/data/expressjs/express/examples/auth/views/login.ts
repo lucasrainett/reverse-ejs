@@ -1,4 +1,0 @@
-export default {
-	"message": "<p class=\"error\">Invalid credentials. Please try again.</p>",
-	"title": "Authentication Example"
-};

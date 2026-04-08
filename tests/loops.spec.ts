@@ -261,4 +261,97 @@ describe("loops", () => {
 			items: [{ name: "Alice" }, { name: "Carol" }],
 		});
 	});
+
+	it("should extract arrow function forEach with string array", () => {
+		const template =
+			"<% features.forEach(feat => { %><li><%= feat %></li><% }) %>";
+		const final = "<li>Hot reload</li><li>Type checking</li>";
+		expect(reverseEjs(template, final)).toEqual({
+			features: ["Hot reload", "Type checking"],
+		});
+	});
+
+	it("should extract arrow function forEach with object array", () => {
+		const template =
+			"<% colors.map(color => { %>" +
+			'<span style="color:<%= color.hex %>"><%= color.name %></span>' +
+			"<% }) %>";
+		const final =
+			'<span style="color:#dc143c">Crimson</span>' +
+			'<span style="color:#008080">Teal</span>';
+		expect(reverseEjs(template, final)).toEqual({
+			colors: [
+				{ name: "Crimson", hex: "#dc143c" },
+				{ name: "Teal", hex: "#008080" },
+			],
+		});
+	});
+
+	it("should extract traditional function() forEach syntax", () => {
+		const template =
+			"<% names.forEach(function(name) { %>" +
+			"<li><%= name %></li>" +
+			"<% }); %>";
+		const final = "<li>Alice</li><li>Bob</li><li>Charlie</li>";
+		expect(reverseEjs(template, final)).toEqual({
+			names: ["Alice", "Bob", "Charlie"],
+		});
+	});
+
+	it("should extract loop with deeply nested item properties", () => {
+		const template =
+			"<% orders.forEach(order => { %>" +
+			"<div><%= order.customer.name %> — <%= order.customer.email %> — $<%= order.total %></div>" +
+			"<% }) %>";
+		const final =
+			"<div>Alice — alice@example.com — $150.00</div>" +
+			"<div>Bob — bob@example.com — $89.99</div>";
+		expect(reverseEjs(template, final)).toEqual({
+			orders: [
+				{
+					"customer.name": "Alice",
+					"customer.email": "alice@example.com",
+					total: "150.00",
+				},
+				{
+					"customer.name": "Bob",
+					"customer.email": "bob@example.com",
+					total: "89.99",
+				},
+			],
+		});
+	});
+
+	it("should extract a loop with a single iteration producing one string", () => {
+		const template =
+			"<ul><% items.forEach(item => { %><li><%= item %></li><% }) %></ul>";
+		const final = "<ul><li>Only</li></ul>";
+		expect(reverseEjs(template, final)).toEqual({ items: ["Only"] });
+	});
+
+	it("should extract two independent loops with different item shapes", () => {
+		const template =
+			"<% tags.forEach(tag => { %><span><%= tag %></span><% }) %>" +
+			"<% users.forEach(user => { %><p><%= user.name %></p><% }) %>";
+		const final =
+			"<span>js</span><span>ts</span>" + "<p>Alice</p><p>Bob</p>";
+		expect(reverseEjs(template, final)).toEqual({
+			tags: ["js", "ts"],
+			users: [{ name: "Alice" }, { name: "Bob" }],
+		});
+	});
+
+	it("should extract for...of loop with nested properties", () => {
+		const template =
+			"<% for (const item of menu) { %>" +
+			'<a href="<%= item.url %>"><%= item.label %></a>' +
+			"<% } %>";
+		const final = '<a href="/">Home</a>' + '<a href="/about">About</a>';
+		expect(reverseEjs(template, final)).toEqual({
+			menu: [
+				{ url: "/", label: "Home" },
+				{ url: "/about", label: "About" },
+			],
+		});
+	});
 });

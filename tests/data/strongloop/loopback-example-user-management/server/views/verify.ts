@@ -1,3 +1,0 @@
-export default {
-	"text": "Please verify your email address by clicking the link sent to alice@example.com."
-};

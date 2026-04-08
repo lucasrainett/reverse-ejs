@@ -94,4 +94,37 @@ describe("EJS tags", () => {
 			items: ["Alpha", "Beta"],
 		});
 	});
+
+	it("should ignore multiple comments interspersed with content", () => {
+		const template =
+			"<%# header %><h1><%= title %></h1><%# body %><p><%= body %></p><%# footer %>";
+		const final = "<h1>Hello</h1><p>World</p>";
+		expect(reverseEjs(template, final)).toEqual({
+			title: "Hello",
+			body: "World",
+		});
+	});
+
+	it("should handle -%> trimming between control flow tags", () => {
+		const template =
+			"<% if (show) { -%>\n" +
+			"<p><%= message %></p>\n" +
+			"<% } -%>\n" +
+			"Done";
+		const final = "<p>Hello</p>\nDone";
+		expect(reverseEjs(template, final)).toEqual({
+			message: "Hello",
+			show: true,
+		});
+	});
+
+	it("should handle <%_ whitespace slurp with conditional", () => {
+		const template =
+			"<div>    <%_ if (active) { _%>    <span><%= label %></span>    <%_ } _%>    </div>";
+		const final = "<div><span>ON</span></div>";
+		expect(reverseEjs(template, final)).toEqual({
+			label: "ON",
+			active: true,
+		});
+	});
 });

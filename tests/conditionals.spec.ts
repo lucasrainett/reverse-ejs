@@ -217,4 +217,74 @@ describe("conditionals", () => {
 			{ label: "Failed" },
 		);
 	});
+
+	it("should handle if block with no else and condition was false (absent)", () => {
+		const template =
+			"<p>Hello</p><% if (showBanner) { %><div><%= banner %></div><% } %><p>End</p>";
+		const final = "<p>Hello</p><p>End</p>";
+		expect(reverseEjs(template, final)).toEqual({});
+	});
+
+	it("should extract from both branches of independent if/else blocks", () => {
+		const template =
+			"<% if (a) { %>A<% } else { %>notA<% } %> " +
+			"<% if (b) { %>B<% } else { %>notB<% } %>";
+		expect(reverseEjs(template, "A notB")).toEqual({ a: true, b: false });
+		expect(reverseEjs(template, "notA B")).toEqual({ a: false, b: true });
+	});
+
+	it("should handle if/else with loop in else branch", () => {
+		const template =
+			"<% if (isEmpty) { %>" +
+			"<p>No results</p>" +
+			"<% } else { %>" +
+			"<% results.forEach(r => { %><li><%= r %></li><% }) %>" +
+			"<% } %>";
+		const final = "<li>Alpha</li><li>Beta</li>";
+		expect(reverseEjs(template, final)).toEqual({
+			isEmpty: false,
+			results: ["Alpha", "Beta"],
+		});
+	});
+
+	it("should handle switch/case with default branch", () => {
+		const template =
+			'<% switch (priority) { case "high": %>' +
+			'<span class="high"><%= label %></span>' +
+			'<% break; case "low": %>' +
+			'<span class="low"><%= label %></span>' +
+			"<% break; default: %>" +
+			'<span class="normal"><%= label %></span>' +
+			"<% break; } %>";
+		expect(
+			reverseEjs(template, '<span class="high">Urgent</span>'),
+		).toEqual({ label: "Urgent" });
+		expect(
+			reverseEjs(template, '<span class="normal">Regular</span>'),
+		).toEqual({ label: "Regular" });
+	});
+
+	it("should handle three-level nested conditionals", () => {
+		const template =
+			"<% if (a) { %>" +
+			"<% if (b) { %>" +
+			"<% if (c) { %>" +
+			"<p>ABC: <%= val %></p>" +
+			"<% } else { %>" +
+			"<p>AB: <%= val %></p>" +
+			"<% } %>" +
+			"<% } else { %>" +
+			"<p>A: <%= val %></p>" +
+			"<% } %>" +
+			"<% } else { %>" +
+			"<p>None</p>" +
+			"<% } %>";
+		expect(reverseEjs(template, "<p>ABC: deep</p>")).toEqual({
+			a: true,
+			b: true,
+			c: true,
+			val: "deep",
+		});
+		expect(reverseEjs(template, "<p>None</p>")).toEqual({ a: false });
+	});
 });

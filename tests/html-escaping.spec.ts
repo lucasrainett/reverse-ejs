@@ -42,4 +42,43 @@ describe("HTML escaping", () => {
 			content: "<b>bold</b>",
 		});
 	});
+
+	it("should unescape single quotes (&#39;)", () => {
+		const template = "<p><%= content %></p>";
+		const final = "<p>it&#39;s a test</p>";
+		expect(reverseEjs(template, final)).toEqual({
+			content: "it's a test",
+		});
+	});
+
+	it("should unescape all five standard entities in one value", () => {
+		const template = "<span><%= value %></span>";
+		const final =
+			"<span>&lt;div class=&quot;x&quot;&gt;A &amp; B&#39;s&lt;/div&gt;</span>";
+		expect(reverseEjs(template, final)).toEqual({
+			value: '<div class="x">A & B\'s</div>',
+		});
+	});
+
+	it("should unescape entities in loop item properties", () => {
+		const template =
+			"<% rows.forEach(row => { %><td><%= row.name %></td><td><%= row.note %></td><% }) %>";
+		const final =
+			"<td>O&#39;Brien</td><td>R &amp; D</td>" +
+			"<td>Li &lt;test&gt;</td><td>&quot;quoted&quot;</td>";
+		expect(reverseEjs(template, final)).toEqual({
+			rows: [
+				{ name: "O'Brien", note: "R & D" },
+				{ name: "Li <test>", note: '"quoted"' },
+			],
+		});
+	});
+
+	it("should not unescape raw <%- output", () => {
+		const template = "<div><%- html %></div>";
+		const final = "<div>&lt;b&gt;bold&lt;/b&gt;</div>";
+		expect(reverseEjs(template, final)).toEqual({
+			html: "&lt;b&gt;bold&lt;/b&gt;",
+		});
+	});
 });

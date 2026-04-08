@@ -1,8 +1,0 @@
-export default {
-	"class_name": "Sample Title",
-	"post": {
-		"link": "https://example.com/path",
-		"title": "Sample Title",
-		"path": "https://example.com/path"
-	}
-};

@@ -1,4 +1,0 @@
-export default {
-	"title": "Swagger Sails App",
-	"body": "<h1>Welcome to Swagger</h1>",
-};

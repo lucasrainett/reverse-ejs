@@ -75,4 +75,72 @@ describe("variables", () => {
 			"Adjacent variables with no literal separator are ambiguous",
 		);
 	});
+
+	it("should extract deeply nested property access", () => {
+		const template =
+			"<%= address.street %>, <%= address.city %>, <%= address.state %> <%= address.zip %>";
+		const final = "742 Evergreen Terrace, Portland, OR 97201";
+		expect(reverseEjs(template, final)).toEqual({
+			"address.street": "742 Evergreen Terrace",
+			"address.city": "Portland",
+			"address.state": "OR",
+			"address.zip": "97201",
+		});
+	});
+
+	it("should extract three levels of nested property access", () => {
+		const template = "<%= company.ceo.name %> runs <%= company.name %>";
+		const final = "Alice Chen runs Acme Corp";
+		expect(reverseEjs(template, final)).toEqual({
+			"company.ceo.name": "Alice Chen",
+			"company.name": "Acme Corp",
+		});
+	});
+
+	it("should extract mixed flat and nested variables", () => {
+		const template =
+			"<h1><%= title %></h1><p>By <%= author.name %> (<%= author.email %>)</p>";
+		const final =
+			"<h1>My Post</h1><p>By Alice Chen (alice@example.com)</p>";
+		expect(reverseEjs(template, final)).toEqual({
+			title: "My Post",
+			"author.name": "Alice Chen",
+			"author.email": "alice@example.com",
+		});
+	});
+
+	it("should extract a variable with numeric value as string", () => {
+		const template = "<span>Age: <%= age %>, Score: <%= score %></span>";
+		const final = "<span>Age: 28, Score: 99.5</span>";
+		expect(reverseEjs(template, final)).toEqual({
+			age: "28",
+			score: "99.5",
+		});
+	});
+
+	it("should extract a variable whose value contains newlines", () => {
+		const template = "<pre><%= content %></pre>";
+		const final = "<pre>line one\nline two\nline three</pre>";
+		expect(reverseEjs(template, final)).toEqual({
+			content: "line one\nline two\nline three",
+		});
+	});
+
+	it("should extract a variable whose value is a single character", () => {
+		const template = "Grade: <%= grade %>";
+		const final = "Grade: A";
+		expect(reverseEjs(template, final)).toEqual({ grade: "A" });
+	});
+
+	it("should extract a variable whose value is an empty string", () => {
+		const template = "[<%= value %>]";
+		const final = "[]";
+		expect(reverseEjs(template, final)).toEqual({ value: "" });
+	});
+
+	it("should extract a variable surrounded by special regex characters", () => {
+		const template = "($<%= price %>)";
+		const final = "($29.99)";
+		expect(reverseEjs(template, final)).toEqual({ price: "29.99" });
+	});
 });

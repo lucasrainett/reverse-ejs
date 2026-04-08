@@ -31,8 +31,6 @@
     "format": "prettier --write --ignore-unknown .",
     "lint": "eslint src",
     "test": "vitest run --coverage",
-    "download-fixtures": "tsx scripts/download-fixtures.ts",
-    "render-fixtures": "tsx scripts/render-fixtures.ts",
     "prepare": "husky"
   },
   "lint-staged": {

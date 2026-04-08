@@ -1,4 +1,0 @@
-export default {
-	"title": "My Sails App",
-	"body": "<h1>Welcome to Sails</h1>",
-};
