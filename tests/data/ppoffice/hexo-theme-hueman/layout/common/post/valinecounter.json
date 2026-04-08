@@ -1,16 +1,13 @@
 {
   "page": {
-    "path": "https://example.com/path",
-    "title": "Sample Title"
-  },
-  "counter": {
-    "views": "sample-value"
+    "path": "2025/01/15/hello-world/",
+    "title": "Hello World"
   },
   "theme": {
     "comment": {
       "valine": {
-        "on": "sample-value",
-        "visitor": "sample-value"
+        "on": true,
+        "visitor": true
       }
     }
   }

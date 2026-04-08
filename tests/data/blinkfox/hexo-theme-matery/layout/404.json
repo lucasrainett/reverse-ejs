@@ -1,16 +1,13 @@
 {
   "page": {
-    "description": "A sample description"
+    "description": "Oops! The page you requested was not found."
   },
   "theme": {
     "jsDelivr": {
-      "url": "https://example.com/path"
+      "url": "https://cdn.jsdelivr.net/gh/user/blog@latest"
     },
     "banner": {
       "enable": true
     }
-  },
-  "medias": "sample-value",
-  "banner": "https://example.com/image.jpg",
-  "jpg": "sample-value"
+  }
 }

@@ -1,13 +1,13 @@
 {
-  "sc": {
-    "sc_project": "sample-value",
-    "sc_invisible": true,
-    "sc_security": "sample-value",
-    "public": "sample-value"
-  },
   "theme": {
     "plugins": {
-      "statcounter": "sample-value"
+      "statcounter": {
+        "on": true,
+        "sc_project": 12345678,
+        "sc_invisible": 1,
+        "sc_security": "abcdef12",
+        "public": false
+      }
     }
   }
 }

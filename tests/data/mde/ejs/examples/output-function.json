@@ -1,8 +1,6 @@
 {
-  "hello": {
-    "ejs": "sample-value"
-  },
-  "users": {
-    "forEach": "sample-value"
-  }
+  "users": [
+    { "name": "Alice", "age": 28, "species": "human" },
+    { "name": "Bob", "age": 35, "species": "human" }
+  ]
 }

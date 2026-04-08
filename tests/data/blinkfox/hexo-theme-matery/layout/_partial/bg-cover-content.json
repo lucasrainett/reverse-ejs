@@ -1,29 +1,24 @@
 {
   "config": {
-    "subtitle": {
-      "length": "sample-value"
-    },
-    "description": "A sample description"
+    "subtitle": "Thoughts on code and creativity",
+    "description": "A blog about web development and design"
   },
   "theme": {
-    "subtitle": {
-      "sub1": "sample-value",
-      "sub2": "sample-value",
-      "startDelay": "sample-value",
-      "typeSpeed": "sample-value",
-      "loop": "sample-value",
-      "backSpeed": "sample-value",
-      "showCursor": "sample-value",
-      "enable": true
-    },
     "jsDelivr": {
-      "url": "https://example.com/path"
+      "url": "https://cdn.jsdelivr.net/gh/user/blog@latest"
     },
     "banner": {
       "enable": true
+    },
+    "subtitle": {
+      "enable": true,
+      "sub1": "Building for the web",
+      "sub2": "One commit at a time",
+      "startDelay": 300,
+      "typeSpeed": 80,
+      "loop": true,
+      "backSpeed": 50,
+      "showCursor": true
     }
-  },
-  "medias": "sample-value",
-  "banner": "https://example.com/image.jpg",
-  "jpg": "sample-value"
+  }
 }

@@ -1,17 +1,14 @@
 {
   "theme": {
     "socialLink": {
-      "github": "sample-value",
-      "email": "user@example.com",
-      "facebook": "sample-value",
-      "twitter": "sample-value",
-      "qq": "sample-value",
-      "weibo": "sample-value",
-      "zhihu": "sample-value",
-      "rss": "sample-value"
+      "github": "https://github.com/alicechen",
+      "email": "alice@example.com",
+      "facebook": "",
+      "twitter": "https://twitter.com/alicechen",
+      "qq": "",
+      "weibo": "",
+      "zhihu": "",
+      "rss": true
     }
-  },
-  "atom": {
-    "xml": "sample-value"
   }
 }

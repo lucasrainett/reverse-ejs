@@ -1,49 +1,46 @@
 {
-  "page": {
-    "title": "Sample Title",
-    "path": "https://example.com/path",
-    "author": "Alice",
-    "date": "2025-01-15",
-    "updated": "2025-01-15",
-    "copyright": "sample-value",
-    "license": "sample-value"
-  },
-  "post": {
-    "copyright": {
-      "author": "Alice",
-      "posted": "sample-value",
-      "updated": "2025-01-15",
-      "licensed": "sample-value",
-      "ZERO": "sample-value"
-    }
-  },
-  "config": {
-    "author": "Alice"
-  },
   "theme": {
     "post": {
       "copyright": {
-        "post_date": {
-          "format": "sample-value",
-          "enable": true
-        },
-        "update_date": {
-          "format": "sample-value",
-          "enable": true
-        },
         "enable": true,
-        "license": "sample-value",
+        "license": "BY-NC-SA",
         "author": {
           "enable": true
+        },
+        "post_date": {
+          "enable": true,
+          "format": "LL"
+        },
+        "update_date": {
+          "enable": true,
+          "format": "LL"
         }
       }
     }
   },
-  "LL": "sample-value",
-  "license": "SAMPLE-VALUE",
-  "items": {
-    "length": "sample-value"
+  "page": {
+    "title": "Hello World",
+    "path": "2025/01/15/hello-world/",
+    "author": "Alice Chen",
+    "date": "2025-01-15",
+    "updated": "2025-01-20",
+    "copyright": true,
+    "license": ""
   },
-  "idx": "sample-value",
-  "toLowerCase": "sample-value"
+  "config": {
+    "title": "Pixel & Code",
+    "subtitle": "A Developer's Journey",
+    "author": "Alice Chen",
+    "url": "https://blog.example.com",
+    "root": "/",
+    "language": "en",
+    "theme": "fluid",
+    "description": "A blog about web development and design",
+    "keywords": ["javascript", "web", "development"],
+    "date_format": "YYYY-MM-DD",
+    "pagination_dir": "page",
+    "index_generator": {
+      "order_by": "-date"
+    }
+  }
 }

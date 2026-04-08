@@ -1,17 +1,15 @@
 {
-  "_partials": "sample-value",
-  "comments": "sample-value",
-  "commentType": "sample-value",
   "theme": {
     "post": {
       "comments": {
-        "enable": true,
-        "type": "sample-value"
+        "type": "utterances",
+        "enable": true
       }
     }
   },
   "page": {
-    "comments": "sample-value",
-    "comment": "sample-value"
+    "layout": "post",
+    "comments": true,
+    "comment": ""
   }
 }

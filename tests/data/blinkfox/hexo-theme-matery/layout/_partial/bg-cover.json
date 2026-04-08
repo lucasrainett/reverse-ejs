@@ -1,6 +1,24 @@
 {
-  "_partial": "sample-value",
-  "bg": "sample-value",
-  "cover": "https://example.com/image.jpg",
-  "content": "<p>Content here</p>"
+  "theme": {
+    "jsDelivr": {
+      "url": "https://cdn.jsdelivr.net/gh/user/blog@latest"
+    },
+    "banner": {
+      "enable": true
+    },
+    "subtitle": {
+      "enable": true,
+      "sub1": "Building for the web",
+      "sub2": "One commit at a time",
+      "startDelay": 300,
+      "typeSpeed": 80,
+      "loop": true,
+      "backSpeed": 50,
+      "showCursor": true
+    }
+  },
+  "config": {
+    "subtitle": "Thoughts on code and creativity",
+    "description": "A blog about web development and design"
+  }
 }

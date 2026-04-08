@@ -1,267 +1,201 @@
 {
   "config": {
     "title": "My Blog",
-    "subtitle": "A developer blog",
-    "author": "Alice",
-    "description": "A blog about web development and technology.",
-    "url": "https://example.com",
+    "subtitle": "Exploring the world of web development",
+    "author": "Alice Chen",
+    "url": "https://blog.example.com",
     "root": "/",
     "language": "en",
-    "timezone": "UTC",
+    "description": "A blog about modern web development, JavaScript, and software engineering",
+    "date_format": "YYYY-MM-DD",
+    "per_page": 10,
+    "keywords": "javascript,web development,programming",
+    "archive_dir": "archives",
+    "tag_dir": "tags",
     "relative_link": false,
-    "keywords": "blog,tech,javascript",
-    "favicon": "/img/favicon.ico",
+    "cover": "/img/default-cover.jpg",
+    "search": {
+      "path": "search.xml"
+    },
+    "algolia": null,
     "feed": {
+      "type": "atom",
       "path": "atom.xml"
     },
-    "highlight": {
-      "enable": false,
-      "hljs": false
-    },
-    "avatar": "https://example.com/avatar.png",
-    "email": "alice@example.com",
-    "inject": {
-      "head": []
-    }
+    "post_asset_folder": false,
+    "disqus_shortname": "myblog",
+    "highlightjs": false,
+    "rss": "/atom.xml"
   },
   "theme": {
-    "menu": {
-      "Home": "/",
-      "Archives": "/archives",
-      "About": "/about"
-    },
-    "sidebar": "right",
-    "widgets": ["recent_posts", "category", "tagcloud", "links"],
-    "excerpt_link": "Read More",
-    "fancybox": true,
-    "google_analytics": "",
-    "duoshuo_shortname": "",
-    "disqus_shortname": "",
+    "inverse": false,
+    "theme": "bootstrap",
     "rss": "/atom.xml",
     "favicon": "/img/favicon.ico",
-    "search": {
-      "insight": true
+    "fancybox": true,
+    "slogan": "Code is poetry",
+    "show_title_in_excerpt": false,
+    "widgets": ["category", "tagcloud", "recent_posts", "links", "rss"],
+    "menu": [
+      {
+        "title": "Home",
+        "url": "/",
+        "icon": "fa fa-home",
+        "intro": "Home page"
+      },
+      {
+        "title": "Archives",
+        "url": "/archives",
+        "icon": "fa fa-archive",
+        "intro": "All posts"
+      },
+      {
+        "title": "Categories",
+        "url": "/categories",
+        "icon": "fa fa-folder",
+        "intro": "All categories"
+      },
+      {
+        "title": "Tags",
+        "url": "/tags",
+        "icon": "fa fa-tags",
+        "intro": "All tags"
+      }
+    ],
+    "google_analytics": {
+      "enable": false,
+      "siteid": ""
     },
-    "comment": {
-      "type": ""
-    },
-    "share": {
-      "type": ""
-    },
-    "links": {
-      "GitHub": "https://github.com",
-      "Stack Overflow": "https://stackoverflow.com"
+    "baidu_tongji": {
+      "enable": false,
+      "siteid": ""
     },
     "bdshare": false,
     "jiathis": false,
-    "slogan": "Welcome to my blog",
+    "swiftype_key": "",
+    "comment_js": null,
+    "comment_gitalk": null,
+    "duoshuo_shortname": "",
+    "addthis": {
+      "enable": false
+    },
     "recommended_posts": {
       "enabled": false
-    }
+    },
+    "links": [
+      {
+        "title": "GitHub",
+        "url": "https://github.com",
+        "icon": "fa fa-github",
+        "intro": "GitHub"
+      },
+      {
+        "title": "Stack Overflow",
+        "url": "https://stackoverflow.com",
+        "icon": "fa fa-stack-overflow",
+        "intro": "Stack Overflow"
+      }
+    ]
   },
   "page": {
-    "title": "Post Title",
-    "content": "<p>Hello world. This is a sample blog post with some content.</p>",
+    "title": "Hello World",
+    "content": "<p>Welcome to my blog. This is a place where I share my thoughts on web development.</p>",
     "date": "2025-01-15",
-    "updated": "2025-01-16",
-    "tags": {
-      "data": [
-        {
-          "name": "javascript",
-          "path": "tags/javascript"
-        },
-        {
-          "name": "nodejs",
-          "path": "tags/nodejs"
-        }
-      ],
-      "length": 2
-    },
-    "categories": {
-      "data": [
-        {
-          "name": "Tech",
-          "path": "categories/tech"
-        }
-      ],
-      "length": 1
-    },
-    "excerpt": "<p>A short excerpt of the post.</p>",
-    "permalink": "https://example.com/2025/01/15/post-title/",
-    "path": "2025/01/15/post-title/",
-    "layout": "post",
-    "slug": "post-title",
-    "link": "",
-    "raw": "",
+    "updated": "2025-01-20",
+    "tags": [
+      {
+        "name": "javascript",
+        "slug": "javascript",
+        "path": "tags/javascript/",
+        "length": 5
+      },
+      {
+        "name": "programming",
+        "slug": "programming",
+        "path": "tags/programming/",
+        "length": 3
+      }
+    ],
+    "categories": [
+      {
+        "name": "Tech",
+        "slug": "tech",
+        "path": "categories/Tech/",
+        "length": 8
+      }
+    ],
+    "excerpt": "<p>Welcome to my blog.</p>",
+    "permalink": "https://blog.example.com/hello-world/",
+    "path": "hello-world/",
+    "comments": true,
+    "prev_link": "page/1/",
+    "next_link": "page/3/",
+    "current": 2,
+    "total": 5,
     "lang": "en",
-    "language": "en",
-    "prev": null,
-    "next": null,
-    "photos": [],
-    "cover": "",
-    "direction": "",
-    "category": "Tech",
-    "tag": "javascript",
     "year": 2025,
     "month": 1,
-    "current": 1,
-    "total": 1,
-    "wiki": "",
-    "topic": "",
-    "keywords": "",
-    "description": "A sample blog post description.",
-    "type": "",
-    "nav_tabs": null,
-    "indent": null,
-    "robots": "",
-    "open_graph": {},
-    "inject": {
-      "head": []
-    }
+    "description": "My personal blog about web development",
+    "keywords": "blog,web,dev"
   },
   "site": {
-    "posts": {
-      "length": 2,
-      "data": [
-        {
-          "title": "First Post",
-          "date": "2025-01-15",
-          "path": "2025/01/15/first-post/",
-          "permalink": "https://example.com/2025/01/15/first-post/",
-          "excerpt": "<p>First excerpt</p>",
-          "tags": {
-            "data": [
-              {
-                "name": "javascript"
-              }
-            ]
-          },
-          "categories": {
-            "data": [
-              {
-                "name": "Tech"
-              }
-            ]
-          },
-          "slug": "first-post",
-          "layout": "post",
-          "content": "<p>First content</p>",
-          "photos": [],
-          "cover": ""
-        },
-        {
-          "title": "Second Post",
-          "date": "2025-01-10",
-          "path": "2025/01/10/second-post/",
-          "permalink": "https://example.com/2025/01/10/second-post/",
-          "excerpt": "<p>Second excerpt</p>",
-          "tags": {
-            "data": [
-              {
-                "name": "nodejs"
-              }
-            ]
-          },
-          "categories": {
-            "data": [
-              {
-                "name": "Tech"
-              }
-            ]
-          },
-          "slug": "second-post",
-          "layout": "post",
-          "content": "<p>Second content</p>",
-          "photos": [],
-          "cover": ""
-        }
-      ]
-    },
-    "tags": {
-      "length": 2,
-      "data": [
-        {
-          "name": "javascript",
-          "path": "tags/javascript",
-          "posts": {
-            "length": 1
-          }
-        },
-        {
-          "name": "nodejs",
-          "path": "tags/nodejs",
-          "posts": {
-            "length": 1
-          }
-        }
-      ]
-    },
-    "categories": {
-      "length": 1,
-      "data": [
-        {
-          "name": "Tech",
-          "path": "categories/tech",
-          "posts": {
-            "length": 2
-          }
-        }
-      ]
-    }
+    "posts": [
+      {
+        "title": "Understanding Modern JavaScript",
+        "path": "2025/01/15/understanding-modern-javascript/",
+        "date": "2025-01-15",
+        "excerpt": "<p>Post excerpt</p>",
+        "content": "<p>JavaScript has evolved significantly over the past decade. ES6 introduced arrow functions, destructuring, and template literals.</p>"
+      },
+      {
+        "title": "Building REST APIs with Express",
+        "path": "2025/01/12/building-rest-apis-express/",
+        "date": "2025-01-15",
+        "excerpt": "<p>Post excerpt</p>",
+        "content": "<p>Express.js is a minimal and flexible Node.js web application framework. It provides a robust set of features for web and mobile applications.</p>"
+      },
+      {
+        "title": "Introduction to TypeScript",
+        "path": "2024/12/20/introduction-to-typescript/",
+        "date": "2025-01-15",
+        "excerpt": "<p>Post excerpt</p>",
+        "content": "<p>TypeScript adds static typing to JavaScript, making your code more predictable and easier to debug.</p>"
+      }
+    ],
+    "tags": [
+      {
+        "name": "javascript",
+        "slug": "javascript",
+        "path": "tags/javascript/",
+        "length": 5
+      },
+      {
+        "name": "programming",
+        "slug": "programming",
+        "path": "tags/programming/",
+        "length": 3
+      },
+      {
+        "name": "typescript",
+        "slug": "typescript",
+        "path": "tags/typescript/",
+        "length": 2
+      }
+    ],
+    "categories": [
+      {
+        "name": "Tech",
+        "slug": "tech",
+        "path": "categories/Tech/",
+        "length": 8
+      },
+      {
+        "name": "Tutorials",
+        "slug": "tutorials",
+        "path": "categories/Tutorials/",
+        "length": 4
+      }
+    ]
   },
-  "body": "<p>Page content rendered by layout.</p>",
-  "post": {
-    "title": "Sample Post",
-    "content": "<p>This is the post content with <strong>formatting</strong>.</p>",
-    "date": "2025-01-15",
-    "updated": "2025-01-16",
-    "excerpt": "<p>A short excerpt.</p>",
-    "permalink": "https://example.com/2025/01/15/sample-post/",
-    "path": "2025/01/15/sample-post/",
-    "layout": "post",
-    "slug": "sample-post",
-    "link": "",
-    "raw": "",
-    "lang": "en",
-    "direction": "",
-    "photos": [],
-    "cover": "",
-    "tags": {
-      "data": [
-        {
-          "name": "javascript",
-          "path": "tags/javascript"
-        },
-        {
-          "name": "nodejs",
-          "path": "tags/nodejs"
-        }
-      ],
-      "length": 2
-    },
-    "categories": {
-      "data": [
-        {
-          "name": "Tech",
-          "path": "categories/tech"
-        }
-      ],
-      "length": 1
-    },
-    "prev": {
-      "title": "Previous Post",
-      "path": "2025/01/14/prev-post/",
-      "permalink": "https://example.com/2025/01/14/prev-post/"
-    },
-    "next": {
-      "title": "Next Post",
-      "path": "2025/01/16/next-post/",
-      "permalink": "https://example.com/2025/01/16/next-post/"
-    },
-    "author": "Alice",
-    "description": "A sample post description.",
-    "category": "Tech",
-    "tag": "javascript",
-    "keywords": "javascript,nodejs"
-  }
+  "body": "<article><p>Welcome to my blog. This is the main content area.</p></article>"
 }

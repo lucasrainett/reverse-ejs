@@ -1,9 +1,10 @@
 {
-  "error_header": "sample-value",
   "error": {
-    "message": "sample-value",
-    "stack": "sample-value"
+    "message": "Internal Server Error",
+    "status": 500,
+    "stack": "Error: Internal Server Error\n    at app.js:42:15\n    at Layer.handle [as handle_request] (router/layer.js:95:5)"
   },
-  "footer": "sample-value",
-  "settings": "sample-value"
+  "settings": {
+    "verbose errors": true
+  }
 }

@@ -1,34 +1,64 @@
 {
   "theme": {
     "links": {
-      "onerror_avatar": "https://example.com/image.jpg",
-      "custom": {
-        "content": "<p>Content here</p>",
-        "enable": true
-      },
-      "title": "Sample Title",
-      "subtitle": "Sample Title",
-      "banner_img": "https://example.com/image.jpg",
-      "banner_img_height": "sample-value",
-      "banner_mask_alpha": "sample-value",
+      "title": "Friend Links",
+      "subtitle": "My friends and partners",
+      "banner_img": "https://blog.example.com/img/links-bg.jpg",
+      "banner_img_height": 70,
+      "banner_mask_alpha": 0.3,
+      "onerror_avatar": "/img/default-avatar.jpg",
+      "items": [
+        {
+          "title": "Bob's Blog",
+          "link": "https://bob.example.com",
+          "avatar": "https://bob.example.com/avatar.jpg",
+          "intro": "A fellow developer"
+        },
+        {
+          "title": "Design Weekly",
+          "link": "https://designweekly.example.com",
+          "avatar": "https://designweekly.example.com/logo.png",
+          "intro": "Weekly design inspiration"
+        },
+        {
+          "title": "Open Source Hub",
+          "link": "https://oss.example.com",
+          "image": "https://oss.example.com/icon.png",
+          "intro": "Open source projects"
+        }
+      ],
       "comments": {
-        "type": "sample-value"
+        "type": "utterances"
       },
-      "items": "sample-value"
+      "custom": {
+        "enable": false,
+        "content": ""
+      }
     }
   },
-  "linksComments": "sample-value",
   "page": {
     "layout": "links",
-    "title": "Sample Title",
-    "subtitle": "Sample Title",
-    "banner_img": "https://example.com/image.jpg",
-    "banner_img_height": "sample-value",
-    "banner_mask_alpha": "sample-value",
-    "comment": "sample-value"
+    "title": "Friend Links",
+    "subtitle": "My friends and partners",
+    "banner_img": "https://blog.example.com/img/links-bg.jpg",
+    "banner_img_height": 70,
+    "banner_mask_alpha": 0.3,
+    "comment": "utterances"
   },
-  "links": {
-    "title": "Sample Title",
-    "subtitle": "Sample Title"
+  "config": {
+    "title": "Pixel & Code",
+    "subtitle": "A Developer's Journey",
+    "author": "Alice Chen",
+    "url": "https://blog.example.com",
+    "root": "/",
+    "language": "en",
+    "theme": "fluid",
+    "description": "A blog about web development and design",
+    "keywords": ["javascript", "web", "development"],
+    "date_format": "YYYY-MM-DD",
+    "pagination_dir": "page",
+    "index_generator": {
+      "order_by": "-date"
+    }
   }
 }

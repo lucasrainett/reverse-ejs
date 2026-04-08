@@ -1,21 +1,14 @@
 {
   "theme": {
     "footer": {
-      "content": "<p>Content here</p>",
+      "content": "<p>&copy; 2025 Pixel & Code. All rights reserved.</p>",
       "statistics": {
-        "enable": true
+        "enable": true,
+        "source": "busuanzi"
       },
       "beian": {
-        "enable": true
+        "enable": false
       }
     }
-  },
-  "_partials": "sample-value",
-  "footer": "sample-value",
-  "statistics": {
-    "ejs": "sample-value"
-  },
-  "beian": {
-    "ejs": "sample-value"
   }
 }

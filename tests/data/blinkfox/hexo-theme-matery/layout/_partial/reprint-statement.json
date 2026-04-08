@@ -1,46 +1,69 @@
 {
-  "author": "Alice",
-  "about": "sample-value",
-  "page": {
-    "author": "Alice",
-    "path": "https://example.com/path",
-    "title": "Sample Title",
-    "reprintPolicy": "sample-value"
-  },
   "config": {
-    "author": "Alice",
-    "url": "https://example.com/path"
+    "title": "Pixel & Code",
+    "author": "Alice Chen",
+    "url": "https://blog.example.com",
+    "root": "/",
+    "language": "en",
+    "description": "A blog about web development and design",
+    "keywords": "blog, web, javascript, hexo",
+    "date_format": "YYYY-MM-DD",
+    "subtitle": "Thoughts on code and creativity"
   },
-  "link": "https://example.com/path",
-  "reprint": "sample-value",
-  "use": "sample-value",
-  "cc_by_url": "https://example.com/path",
-  "cc_by_name": "Sample Title",
-  "licensed": "sample-value",
-  "cc_by_nd_url": "https://example.com/path",
-  "cc_by_nd_name": "Sample Title",
-  "cc_by_sa_url": "https://example.com/path",
-  "cc_by_sa_name": "Sample Title",
-  "cc_by_nc_url": "https://example.com/path",
-  "cc_by_nc_name": "Sample Title",
-  "cc_by_nc_nd_url": "https://example.com/path",
-  "cc_by_nc_nd_name": "Sample Title",
-  "cc_by_nc_sa_url": "https://example.com/path",
-  "cc_by_nc_sa_name": "Sample Title",
-  "toTheExtentPossibleUnderLaw": "sample-value",
-  "hasWaivedAllCopyrightAndRelatedOrNeighboringRightsTo": "sample-value",
-  "workPublishedFrom": "sample-value",
-  "cc_0_content": "<p>Content here</p>",
-  "cc_0_country": "sample-value",
-  "noreprint": "sample-value",
-  "paycontact": "sample-value",
-  "payreprint": "sample-value",
-  "pleaseFollowReprintPolicy": "sample-value",
-  "checkPolicy": "sample-value",
   "theme": {
     "reprint": {
       "enable": true,
-      "default": "sample-value"
+      "default": "cc_by"
     }
+  },
+  "page": {
+    "title": "Hello World",
+    "content": "<p>This is a sample blog post with some interesting content about web development.</p>",
+    "date": "2025-01-15",
+    "updated": "2025-01-16",
+    "tags": [
+      {
+        "name": "Node.js",
+        "path": "tags/nodejs/",
+        "length": 4
+      },
+      {
+        "name": "Tutorial",
+        "path": "tags/tutorial/",
+        "length": 6
+      }
+    ],
+    "categories": [
+      {
+        "name": "JavaScript",
+        "path": "categories/javascript/",
+        "length": 5
+      }
+    ],
+    "excerpt": "This is a sample blog post with some interesting content.",
+    "summary": "A brief overview of the Hello World post.",
+    "permalink": "https://blog.example.com/posts/hello-world/",
+    "path": "posts/hello-world/",
+    "photos": [],
+    "toc": true,
+    "img": "/medias/featureimages/1.jpg",
+    "description": "Page not found",
+    "author": "Alice Chen",
+    "password": "",
+    "mathjax": false,
+    "layout": "post",
+    "reprintPolicy": "cc_by",
+    "current": 1,
+    "total": 3,
+    "prev": 0,
+    "next": 2,
+    "prev_link": "/page/1/",
+    "next_link": "/page/3/",
+    "year": 2025,
+    "month": 1,
+    "category": "JavaScript",
+    "tag": "Node.js",
+    "__post": true,
+    "keywords": "hexo, blog, javascript"
   }
 }

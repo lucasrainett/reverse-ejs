@@ -1,15 +1,12 @@
 {
-  "_partials": "sample-value",
-  "category": "sample-value",
-  "chains": "sample-value",
-  "categories": "sample-value",
   "page": {
     "categories": {
-      "length": "sample-value"
+      "length": 2,
+      "each": "__function__"
     },
     "tags": {
-      "length": "sample-value",
-      "each": "sample-value"
+      "length": 2,
+      "each": "__function__"
     }
   }
 }

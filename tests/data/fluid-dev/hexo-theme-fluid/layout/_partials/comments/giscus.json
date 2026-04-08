@@ -1,7 +1,17 @@
 {
   "theme": {
-    "giscus": "sample-value"
-  },
-  "light": "sample-value",
-  "dark": "sample-value"
+    "giscus": {
+      "repo": "alicechen/blog-comments",
+      "repo-id": "R_kgDOH1a2bQ",
+      "category": "Announcements",
+      "category-id": "DIC_kwDOH1a2bc4CQz3r",
+      "mapping": "pathname",
+      "reactions-enabled": "1",
+      "emit-metadata": "0",
+      "input-position": "top",
+      "lang": "en",
+      "theme-light": "light",
+      "theme-dark": "dark_dimmed"
+    }
+  }
 }

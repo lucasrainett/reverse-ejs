@@ -1,20 +1,46 @@
 {
+  "config": {
+    "title": "Pixel & Code"
+  },
   "theme": {
     "jsDelivr": {
-      "url": "https://example.com/path"
+      "url": "https://cdn.jsdelivr.net/gh/user/blog@latest"
     },
-    "logo": {
-      "length": "sample-value"
-    },
+    "logo": "/medias/logo.png",
     "githubLink": {
-      "enable": true
+      "enable": true,
+      "url": "https://github.com/alicechen/blog",
+      "title": "Fork on GitHub"
+    },
+    "menu": {
+      "Index": {
+        "url": "/",
+        "icon": "fas fa-home"
+      },
+      "Tags": {
+        "url": "/tags",
+        "icon": "fas fa-tags"
+      },
+      "Categories": {
+        "url": "/categories",
+        "icon": "fas fa-bookmark"
+      },
+      "Archives": {
+        "url": "/archives",
+        "icon": "fas fa-archive"
+      },
+      "About": {
+        "url": "/about",
+        "icon": "fas fa-address-card"
+      },
+      "Contact": {
+        "url": "/contact",
+        "icon": "fas fa-comments"
+      },
+      "Friends": {
+        "url": "/friends",
+        "icon": "fas fa-address-book"
+      }
     }
-  },
-  "config": {
-    "title": "Sample Title"
-  },
-  "_partial": "sample-value",
-  "navigation": "sample-value",
-  "github": "sample-value",
-  "link": "https://example.com/path"
+  }
 }

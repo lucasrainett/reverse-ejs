@@ -1,8 +1,9 @@
 {
   "theme": {
     "changyan": {
-      "appId": "abc123",
-      "conf": "sample-value"
+      "enable": false,
+      "appId": "changyan_app_id",
+      "conf": "changyan_conf_123"
     }
   }
 }

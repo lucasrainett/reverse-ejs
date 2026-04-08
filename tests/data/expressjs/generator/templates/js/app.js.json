@@ -1,15 +1,31 @@
 {
-  "variable": "sample-value",
-  "modules": "sample-value",
-  "localModules": "sample-value",
   "view": {
-    "engine": "sample-value",
-    "render": "sample-value"
+    "engine": "ejs",
+    "render": null
   },
-  "uses": {
-    "forEach": "sample-value"
+  "modules": {
+    "cookieParser": "cookie-parser",
+    "logger": "morgan"
   },
-  "mounts": {
-    "forEach": "sample-value"
-  }
+  "localModules": {
+    "indexRouter": "./routes/index",
+    "usersRouter": "./routes/users"
+  },
+  "uses": [
+    "logger('dev')",
+    "express.json()",
+    "express.urlencoded({ extended: false })",
+    "cookieParser()",
+    "express.static(path.join(__dirname, 'public'))"
+  ],
+  "mounts": [
+    {
+      "path": "'/'",
+      "code": "indexRouter"
+    },
+    {
+      "path": "'/users'",
+      "code": "usersRouter"
+    }
+  ]
 }

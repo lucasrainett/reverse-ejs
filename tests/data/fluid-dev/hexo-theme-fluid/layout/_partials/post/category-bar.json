@@ -1,45 +1,47 @@
 {
-  "_partials": "sample-value",
-  "category": "sample-value",
-  "list": "sample-value",
-  "curCats": "sample-value",
-  "parent": "sample-value",
-  "params": "sample-value",
-  "type": "sample-value",
-  "post": "sample-value",
-  "filterIds": {
-    "push": "sample-value"
-  },
-  "postLimit": "sample-value",
   "theme": {
     "post": {
       "category_bar": {
-        "post_limit": "sample-value",
-        "post_order_by": "sample-value"
+        "enable": true,
+        "post_limit": 5,
+        "post_order_by": "-date",
+        "specific": false,
+        "placement": "left"
       }
-    }
-  },
-  "postOrderBy": "sample-value",
-  "config": {
-    "index_generator": {
-      "order_by": "sample-value"
+    },
+    "category": {
+      "collapse_depth": 2
     }
   },
   "page": {
     "categories": {
-      "filter": "sample-value",
-      "map": "sample-value"
+      "filter": "__function__",
+      "map": "__function__",
+      "length": 2
     },
-    "category_bar": {
-      "indexOf": "sample-value"
-    },
-    "_id": "abc123"
+    "category_bar": false,
+    "_id": "post001"
   },
-  "c": {
-    "parent": "sample-value",
-    "_id": "abc123"
+  "site": {
+    "categories": {
+      "find": "__function__",
+      "length": 3
+    }
   },
-  "cat": {
-    "name": "Sample Title"
+  "config": {
+    "title": "Pixel & Code",
+    "subtitle": "A Developer's Journey",
+    "author": "Alice Chen",
+    "url": "https://blog.example.com",
+    "root": "/",
+    "language": "en",
+    "theme": "fluid",
+    "description": "A blog about web development and design",
+    "keywords": ["javascript", "web", "development"],
+    "date_format": "YYYY-MM-DD",
+    "pagination_dir": "page",
+    "index_generator": {
+      "order_by": "-date"
+    }
   }
 }

@@ -1,1 +1,13 @@
-{}
+{
+  "pets": [
+    {
+      "name": "Buddy"
+    },
+    {
+      "name": "Whiskers"
+    },
+    {
+      "name": "Goldie"
+    }
+  ]
+}

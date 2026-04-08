@@ -1,6 +1,3 @@
 {
-  "include": {
-    "ejs": "sample-value"
-  },
-  "views": "sample-value"
+  "viewsText": "Welcome to the site"
 }

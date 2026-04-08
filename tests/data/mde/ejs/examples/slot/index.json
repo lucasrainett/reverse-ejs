@@ -1,11 +1,3 @@
 {
-  "layout": {
-    "ejs": "sample-value"
-  },
-  "body": {
-    "ejs": "sample-value"
-  },
-  "footer": {
-    "ejs": "sample-value"
-  }
+  "title": "My Application"
 }

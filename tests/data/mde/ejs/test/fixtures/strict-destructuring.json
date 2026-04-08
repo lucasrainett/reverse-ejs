@@ -1,4 +1,3 @@
 {
-  "isReallyStrict": false,
-  "foo": "sample-value"
+  "foo": "bar"
 }

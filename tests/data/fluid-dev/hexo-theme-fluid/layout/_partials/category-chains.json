@@ -1,18 +1,23 @@
 {
-  "render_category_chain": "sample-value",
-  "nextCats": {
-    "data": "sample-value",
-    "length": "sample-value"
-  },
   "categories": {
-    "find": "sample-value"
+    "find": "__function__",
+    "each": "__function__",
+    "length": 2
   },
   "config": {
+    "title": "Pixel & Code",
+    "subtitle": "A Developer's Journey",
+    "author": "Alice Chen",
+    "url": "https://blog.example.com",
+    "root": "/",
+    "language": "en",
+    "theme": "fluid",
+    "description": "A blog about web development and design",
+    "keywords": ["javascript", "web", "development"],
+    "date_format": "YYYY-MM-DD",
+    "pagination_dir": "page",
     "index_generator": {
-      "order_by": "sample-value"
+      "order_by": "-date"
     }
-  },
-  "catsFirst": {
-    "each": "sample-value"
   }
 }

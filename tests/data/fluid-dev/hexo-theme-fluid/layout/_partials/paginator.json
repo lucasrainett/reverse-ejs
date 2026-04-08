@@ -1,25 +1,26 @@
 {
-  "prev_text": "<p>Content here</p>",
-  "i": "sample-value",
-  "iconfont": "sample-value",
-  "arrowleft": "sample-value",
-  "next_text": "<p>Content here</p>",
-  "arrowright": "sample-value",
-  "mid_size": 1,
-  "end_size": 1,
-  "format": "sample-value",
-  "config": {
-    "pagination_dir": "sample-value"
+  "page": {
+    "total": 3
   },
-  "d": "sample-value",
   "theme": {
     "scroll_down_arrow": {
-      "scroll_after_turning_page": 1
+      "scroll_after_turning_page": true
     }
   },
-  "board": "sample-value",
-  "escape": "sample-value",
-  "page": {
-    "total": 1
+  "config": {
+    "title": "Pixel & Code",
+    "subtitle": "A Developer's Journey",
+    "author": "Alice Chen",
+    "url": "https://blog.example.com",
+    "root": "/",
+    "language": "en",
+    "theme": "fluid",
+    "description": "A blog about web development and design",
+    "keywords": ["javascript", "web", "development"],
+    "date_format": "YYYY-MM-DD",
+    "pagination_dir": "page",
+    "index_generator": {
+      "order_by": "-date"
+    }
   }
 }

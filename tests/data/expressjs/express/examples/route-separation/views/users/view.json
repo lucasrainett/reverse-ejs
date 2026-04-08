@@ -1,8 +1,7 @@
 {
-  "header": "sample-value",
+  "title": "User Profile",
   "user": {
-    "name": "Sample Title",
-    "email": "user@example.com"
-  },
-  "footer": "sample-value"
+    "name": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca"
+  }
 }

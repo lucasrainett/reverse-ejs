@@ -1,67 +1,59 @@
 {
-  "postLeft": "sample-value",
-  "page": {
-    "subtitle": "Sample Title",
-    "title": "Sample Title",
-    "updated": "2025-01-15",
-    "content": "<p>Content here</p>",
-    "custom": "sample-value",
-    "banner_img": "https://example.com/image.jpg",
-    "banner_img_height": "sample-value",
-    "banner_mask_alpha": "sample-value",
-    "date": "2025-01-15",
-    "encrypt": "sample-value",
-    "hide": "sample-value"
-  },
   "theme": {
     "post": {
+      "banner_img": "https://blog.example.com/img/post-bg.jpg",
+      "banner_img_height": 70,
+      "banner_mask_alpha": 0.3,
       "updated": {
-        "note_class": "default",
-        "relative": "sample-value",
-        "content": "<p>Content here</p>",
-        "date_format": "sample-value",
+        "enable": true,
+        "note_class": "info",
+        "relative": false,
+        "content": "",
+        "date_format": "YYYY-MM-DD"
+      },
+      "prev_next": {
         "enable": true
       },
       "custom": {
-        "content": "<p>Content here</p>",
-        "enable": true
+        "enable": false,
+        "content": ""
       },
-      "banner_img": "https://example.com/image.jpg",
-      "banner_img_height": "sample-value",
-      "banner_mask_alpha": "sample-value",
-      "prev_next": {
+      "comments": {
+        "type": "utterances",
         "enable": true
       }
     }
   },
-  "info": "sample-value",
-  "display": "sample-value",
-  "none": "sample-value",
-  "YYYY": "sample-value",
-  "MM": "sample-value",
-  "DDTHH": "sample-value",
-  "mm": "sample-value",
-  "ssZ": "sample-value",
-  "post": {
-    "updated": "2025-01-15",
-    "prev_post": "sample-value",
-    "next_post": "sample-value"
+  "page": {
+    "layout": "post",
+    "title": "Hello World",
+    "subtitle": "My First Post",
+    "banner_img": "https://blog.example.com/img/post-bg.jpg",
+    "banner_img_height": 70,
+    "banner_mask_alpha": 0.3,
+    "content": "<p>Welcome to my blog. This is my first post.</p>",
+    "date": "2025-01-15",
+    "updated": "2025-01-20",
+    "encrypt": false,
+    "hide": false,
+    "custom": false,
+    "path": "2025/01/15/hello-world/",
+    "comments": true
   },
-  "_partials": "sample-value",
-  "plugins": "sample-value",
-  "postMarkdownBegin": "sample-value",
-  "encrypt": "sample-value",
-  "postMarkdownEnd": "sample-value",
-  "postMetaBottom": "sample-value",
-  "postCopyright": "sample-value",
-  "prev": {
-    "path": "https://example.com/path",
-    "title": "Sample Title"
-  },
-  "next": {
-    "path": "https://example.com/path",
-    "title": "Sample Title"
-  },
-  "postComments": "sample-value",
-  "postRight": "sample-value"
+  "config": {
+    "title": "Pixel & Code",
+    "subtitle": "A Developer's Journey",
+    "author": "Alice Chen",
+    "url": "https://blog.example.com",
+    "root": "/",
+    "language": "en",
+    "theme": "fluid",
+    "description": "A blog about web development and design",
+    "keywords": ["javascript", "web", "development"],
+    "date_format": "YYYY-MM-DD",
+    "pagination_dir": "page",
+    "index_generator": {
+      "order_by": "-date"
+    }
+  }
 }

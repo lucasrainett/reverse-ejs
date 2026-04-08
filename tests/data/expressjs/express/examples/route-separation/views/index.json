@@ -1,5 +1,3 @@
 {
-  "header": "sample-value",
-  "title": "Sample Title",
-  "footer": "sample-value"
+  "title": "Route Separation Example"
 }

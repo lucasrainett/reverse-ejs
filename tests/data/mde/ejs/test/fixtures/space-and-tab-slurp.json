@@ -1,8 +1,13 @@
 {
-  "user": {
-    "name": "Sample Title"
-  },
-  "users": {
-    "forEach": "sample-value"
-  }
+  "users": [
+    {
+      "name": "Alice"
+    },
+    {
+      "name": "Bob"
+    },
+    {
+      "name": "Charlie"
+    }
+  ]
 }

@@ -1,198 +1,66 @@
 {
   "config": {
     "title": "My Blog",
-    "author": "Alice",
-    "url": "https://example.com",
+    "subtitle": "Exploring the world of web development",
+    "author": "Alice Chen",
+    "url": "https://blog.example.com",
     "root": "/",
     "language": "en",
-    "description": "A personal tech blog",
-    "keywords": "blog,tech,javascript",
+    "description": "A blog about modern web development, JavaScript, and software engineering",
     "date_format": "YYYY-MM-DD",
-    "relative_link": false,
     "per_page": 10,
-    "archive": 2,
-    "category": 2,
-    "tag": 2,
+    "keywords": "javascript,web development,programming",
     "archive_dir": "archives",
     "tag_dir": "tags",
-    "disqus_shortname": "",
-    "search": false,
+    "relative_link": false,
+    "cover": "/img/default-cover.jpg",
+    "search": {
+      "path": "search.xml"
+    },
+    "algolia": null,
     "feed": {
       "type": "atom",
       "path": "atom.xml"
     },
-    "algolia": null,
-    "highlightjs": false
-  },
-  "site": {
-    "posts": [
-      {
-        "title": "Hello World",
-        "slug": "hello-world",
-        "path": "2025/01/15/hello-world/",
-        "permalink": "https://example.com/2025/01/15/hello-world/",
-        "content": "<p>This is my first blog post.</p>",
-        "excerpt": "<p>First post excerpt.</p>",
-        "date": "2025-01-15",
-        "tags": [
-          {
-            "name": "JavaScript"
-          },
-          {
-            "name": "NodeJS"
-          }
-        ],
-        "categories": [
-          {
-            "name": "Technology"
-          }
-        ]
-      },
-      {
-        "title": "Learning TypeScript",
-        "slug": "learning-typescript",
-        "path": "2025/01/10/learning-typescript/",
-        "permalink": "https://example.com/2025/01/10/learning-typescript/",
-        "content": "<p>TypeScript is great.</p>",
-        "excerpt": "<p>TypeScript overview.</p>",
-        "date": "2025-01-10",
-        "tags": [
-          {
-            "name": "TypeScript"
-          }
-        ],
-        "categories": [
-          {
-            "name": "Technology"
-          }
-        ]
-      },
-      {
-        "title": "CSS Grid Layout",
-        "slug": "css-grid-layout",
-        "path": "2025/01/05/css-grid-layout/",
-        "permalink": "https://example.com/2025/01/05/css-grid-layout/",
-        "content": "<p>CSS Grid is powerful.</p>",
-        "excerpt": "<p>CSS Grid overview.</p>",
-        "date": "2025-01-05",
-        "tags": [
-          {
-            "name": "CSS"
-          }
-        ],
-        "categories": [
-          {
-            "name": "Design"
-          }
-        ]
-      }
-    ],
-    "tags": [
-      {
-        "name": "JavaScript",
-        "slug": "javascript",
-        "path": "tags/javascript/"
-      },
-      {
-        "name": "NodeJS",
-        "slug": "nodejs",
-        "path": "tags/nodejs/"
-      },
-      {
-        "name": "CSS",
-        "slug": "css",
-        "path": "tags/css/"
-      }
-    ],
-    "categories": [
-      {
-        "name": "Technology",
-        "slug": "technology",
-        "path": "categories/technology/"
-      },
-      {
-        "name": "Design",
-        "slug": "design",
-        "path": "categories/design/"
-      }
-    ]
-  },
-  "page": {
-    "title": "Post Title",
-    "content": "<p>Page content here.</p>",
-    "date": "2025-01-15",
-    "updated": "2025-01-20",
-    "tags": [
-      {
-        "name": "JavaScript"
-      },
-      {
-        "name": "NodeJS"
-      }
-    ],
-    "categories": [
-      {
-        "name": "Technology"
-      }
-    ],
-    "excerpt": "<p>Page excerpt.</p>",
-    "permalink": "https://example.com/page/",
-    "path": "page/index.html",
-    "total": 1,
-    "current": 1,
-    "prev": 0,
-    "next": 0,
-    "prev_link": "",
-    "next_link": "",
-    "year": 2025,
-    "month": 1,
-    "lang": "en"
+    "post_asset_folder": false,
+    "disqus_shortname": "myblog",
+    "highlightjs": false,
+    "rss": "/atom.xml"
   },
   "theme": {
-    "version": "1.0.0",
-    "favicon": "/img/favicon.png",
+    "keywords": "blog,obsidian,hexo",
+    "favicon": "/img/favicon.ico",
     "rss": "/atom.xml",
-    "keywords": "hexo,obsidian,blog",
-    "descriptionOne": "Welcome to my blog",
-    "descriptionTwo": "Enjoy reading",
-    "welcome_cover": "/img/cover.jpg",
-    "cover": "/img/cover.jpg",
-    "avatar": "/img/avatar.png",
-    "header_html": "",
-    "footer_html": "",
+    "google_analytics": "",
+    "mathjax": false,
     "menu": {
       "Home": "/",
       "Archives": "/archives",
       "Tags": "/tags",
-      "Categories": "/categories"
+      "Categories": "/categories",
+      "About": "/about"
     },
-    "socials": {
-      "github": "https://github.com/alice",
-      "twitter": "https://twitter.com/alice",
-      "stackoverflow": ""
+    "page_titles": {
+      "categories": "Categories",
+      "tags": "Tags",
+      "archives": "Archives"
     },
+    "welcome_cover": "/img/welcome-cover.jpg",
+    "cover": "/img/default-cover.jpg",
+    "avatar": "/img/avatar.png",
+    "descriptionOne": "Exploring the world of code",
+    "descriptionTwo": "One commit at a time",
     "symbols_count_time": {
-      "enable": false,
-      "wordCount": false,
-      "readCount": false,
+      "enable": true,
+      "wordCount": true,
+      "readCount": true,
       "awl": 4,
       "wpm": 275,
-      "suffix": "mins"
+      "suffix": "min"
     },
-    "html_truncate": {
+    "valine": {
       "enable": false,
-      "coverLength": 200,
-      "postLength": 500,
-      "ellipsis": "...",
-      "excludes": [],
-      "keepWhitespaces": true,
-      "reserveLastWord": true
-    },
-    "mathjax": false,
-    "google_analytics": "",
-    "aplayer": {
-      "enable": false,
-      "musiclist": ""
+      "visitor": false
     },
     "busuanzi": {
       "enable": false
@@ -208,32 +76,43 @@
       "distractionFreeMode": false,
       "proxy": ""
     },
-    "valine": {
-      "enable": false,
-      "app_id": "",
-      "app_key": "",
-      "notify": false,
-      "verify": false,
-      "avatar": "mp",
-      "placeholder": "Leave a comment",
-      "visitor": false
-    },
-    "codemirror": {
-      "modes": ["javascript", "css", "xml"]
-    },
     "sharejs": {
       "enable": false,
       "disabled": ""
     },
     "post_navigation": true,
-    "TOC": false,
-    "page_titles": {
-      "archives": "Archives",
-      "tags": "Tags",
-      "categories": "Categories"
+    "socials": {
+      "github": "https://github.com/alicechen",
+      "twitter": "https://twitter.com/alicechen",
+      "stackoverflow": ""
     },
+    "TOC": true,
+    "html_truncate": {
+      "enable": false,
+      "postLength": 500,
+      "coverLength": 200,
+      "ellipsis": "...",
+      "excludes": "",
+      "keepWhitespaces": false,
+      "reserveLastWord": true
+    },
+    "codemirror": {
+      "modes": ["javascript", "css", "python"]
+    },
+    "version": "1.5.2",
+    "beian": {
+      "enable": false
+    },
+    "police": {
+      "enable": false
+    },
+    "aplayer": {
+      "enable": false
+    },
+    "header_html": "",
+    "footer_html": "",
     "post": {
-      "show_updated": false
+      "show_updated": true
     },
     "posts_overview": {
       "sort_updated": false
@@ -241,42 +120,108 @@
     "archive": {
       "sort_updated": false
     },
-    "mp3": {},
-    "beian": {
-      "enable": false,
-      "beianloc": "",
-      "beianid": ""
-    },
-    "police": {
-      "enable": false,
-      "beianloc": "",
-      "beianid": "",
-      "beianicon": ""
-    },
-    "autoplay": "false"
+    "autoplay": false,
+    "mp3": {}
   },
-  "body": "<p>Page body content.</p>",
-  "post": {
+  "page": {
     "title": "Hello World",
-    "path": "2025/01/15/hello-world/",
-    "content": "<p>Content.</p>",
-    "cover": "/img/cover.jpg",
+    "content": "<p>Welcome to my blog. This is a place where I share my thoughts on web development.</p>",
     "date": "2025-01-15",
     "updated": "2025-01-20",
     "tags": [
       {
-        "name": "JavaScript"
+        "name": "javascript",
+        "slug": "javascript",
+        "path": "tags/javascript/",
+        "length": 5
+      },
+      {
+        "name": "programming",
+        "slug": "programming",
+        "path": "tags/programming/",
+        "length": 3
       }
     ],
     "categories": [
       {
-        "name": "Technology"
+        "name": "Tech",
+        "slug": "tech",
+        "path": "categories/Tech/",
+        "length": 8
+      }
+    ],
+    "excerpt": "<p>Welcome to my blog.</p>",
+    "permalink": "https://blog.example.com/hello-world/",
+    "path": "hello-world/",
+    "comments": true,
+    "prev_link": "page/1/",
+    "next_link": "page/3/",
+    "current": 2,
+    "total": 5,
+    "lang": "en",
+    "year": 2025,
+    "month": 1,
+    "description": "My personal blog about web development",
+    "keywords": "blog,web,dev"
+  },
+  "site": {
+    "posts": [
+      {
+        "title": "Understanding Modern JavaScript",
+        "path": "2025/01/15/understanding-modern-javascript/",
+        "date": "2025-01-15",
+        "excerpt": "<p>Post excerpt</p>",
+        "content": "<p>JavaScript has evolved significantly over the past decade. ES6 introduced arrow functions, destructuring, and template literals.</p>"
+      },
+      {
+        "title": "Building REST APIs with Express",
+        "path": "2025/01/12/building-rest-apis-express/",
+        "date": "2025-01-15",
+        "excerpt": "<p>Post excerpt</p>",
+        "content": "<p>Express.js is a minimal and flexible Node.js web application framework. It provides a robust set of features for web and mobile applications.</p>"
+      },
+      {
+        "title": "Introduction to TypeScript",
+        "path": "2024/12/20/introduction-to-typescript/",
+        "date": "2025-01-15",
+        "excerpt": "<p>Post excerpt</p>",
+        "content": "<p>TypeScript adds static typing to JavaScript, making your code more predictable and easier to debug.</p>"
+      }
+    ],
+    "tags": [
+      {
+        "name": "javascript",
+        "slug": "javascript",
+        "path": "tags/javascript/",
+        "length": 5
+      },
+      {
+        "name": "programming",
+        "slug": "programming",
+        "path": "tags/programming/",
+        "length": 3
+      },
+      {
+        "name": "typescript",
+        "slug": "typescript",
+        "path": "tags/typescript/",
+        "length": 2
+      }
+    ],
+    "categories": [
+      {
+        "name": "Tech",
+        "slug": "tech",
+        "path": "categories/Tech/",
+        "length": 8
+      },
+      {
+        "name": "Tutorials",
+        "slug": "tutorials",
+        "path": "categories/Tutorials/",
+        "length": 4
       }
     ]
   },
-  "index": true,
-  "class_name": "post-title",
-  "date_format": null,
-  "even": false,
-  "pagination": 2
+  "body": "<article><p>Welcome to my blog. This is the main content area.</p></article>"
 }

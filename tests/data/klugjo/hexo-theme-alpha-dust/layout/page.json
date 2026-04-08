@@ -1,181 +1,160 @@
 {
   "config": {
     "title": "My Blog",
-    "author": "Alice",
-    "url": "https://example.com",
+    "subtitle": "Exploring the world of web development",
+    "author": "Alice Chen",
+    "url": "https://blog.example.com",
     "root": "/",
     "language": "en",
-    "description": "A personal tech blog",
-    "keywords": "blog,tech,javascript",
+    "description": "A blog about modern web development, JavaScript, and software engineering",
     "date_format": "YYYY-MM-DD",
-    "relative_link": false,
     "per_page": 10,
-    "archive": 2,
-    "category": 2,
-    "tag": 2,
+    "keywords": "javascript,web development,programming",
     "archive_dir": "archives",
     "tag_dir": "tags",
-    "disqus_shortname": "",
-    "search": false,
+    "relative_link": false,
+    "cover": "/img/default-cover.jpg",
+    "search": {
+      "path": "search.xml"
+    },
+    "algolia": null,
     "feed": {
       "type": "atom",
       "path": "atom.xml"
     },
-    "algolia": null,
-    "highlightjs": false
-  },
-  "site": {
-    "posts": [
-      {
-        "title": "Hello World",
-        "slug": "hello-world",
-        "path": "2025/01/15/hello-world/",
-        "permalink": "https://example.com/2025/01/15/hello-world/",
-        "content": "<p>This is my first blog post.</p>",
-        "excerpt": "<p>First post excerpt.</p>",
-        "date": "2025-01-15",
-        "tags": [
-          {
-            "name": "JavaScript"
-          },
-          {
-            "name": "NodeJS"
-          }
-        ],
-        "categories": [
-          {
-            "name": "Technology"
-          }
-        ]
-      },
-      {
-        "title": "Learning TypeScript",
-        "slug": "learning-typescript",
-        "path": "2025/01/10/learning-typescript/",
-        "permalink": "https://example.com/2025/01/10/learning-typescript/",
-        "content": "<p>TypeScript is great.</p>",
-        "excerpt": "<p>TypeScript overview.</p>",
-        "date": "2025-01-10",
-        "tags": [
-          {
-            "name": "TypeScript"
-          }
-        ],
-        "categories": [
-          {
-            "name": "Technology"
-          }
-        ]
-      },
-      {
-        "title": "CSS Grid Layout",
-        "slug": "css-grid-layout",
-        "path": "2025/01/05/css-grid-layout/",
-        "permalink": "https://example.com/2025/01/05/css-grid-layout/",
-        "content": "<p>CSS Grid is powerful.</p>",
-        "excerpt": "<p>CSS Grid overview.</p>",
-        "date": "2025-01-05",
-        "tags": [
-          {
-            "name": "CSS"
-          }
-        ],
-        "categories": [
-          {
-            "name": "Design"
-          }
-        ]
-      }
-    ],
-    "tags": [
-      {
-        "name": "JavaScript",
-        "slug": "javascript",
-        "path": "tags/javascript/"
-      },
-      {
-        "name": "NodeJS",
-        "slug": "nodejs",
-        "path": "tags/nodejs/"
-      },
-      {
-        "name": "CSS",
-        "slug": "css",
-        "path": "tags/css/"
-      }
-    ],
-    "categories": [
-      {
-        "name": "Technology",
-        "slug": "technology",
-        "path": "categories/technology/"
-      },
-      {
-        "name": "Design",
-        "slug": "design",
-        "path": "categories/design/"
-      }
-    ]
-  },
-  "page": {
-    "title": "Post Title",
-    "content": "<p>Page content here.</p>",
-    "date": "2025-01-15",
-    "updated": "2025-01-20",
-    "tags": [
-      {
-        "name": "JavaScript"
-      },
-      {
-        "name": "NodeJS"
-      }
-    ],
-    "categories": [
-      {
-        "name": "Technology"
-      }
-    ],
-    "excerpt": "<p>Page excerpt.</p>",
-    "permalink": "https://example.com/page/",
-    "path": "page/index.html",
-    "total": 1,
-    "current": 1,
-    "prev": 0,
-    "next": 0,
-    "prev_link": "",
-    "next_link": "",
-    "year": 2025,
-    "month": 1,
-    "lang": "en",
-    "type": "",
-    "logoIcon": ""
+    "post_asset_folder": false,
+    "disqus_shortname": "myblog",
+    "highlightjs": false,
+    "rss": "/atom.xml"
   },
   "theme": {
-    "fa_logo": "fa-bookmark",
     "menu": {
       "Home": "/",
       "Archives": "/archives",
-      "Tags": "/tags"
-    },
-    "comments": {
-      "disqus_shortname": ""
+      "Tags": "/tags",
+      "Categories": "/categories"
     },
     "google_analytics": "",
-    "footer_about": "A personal tech blog about web development.",
-    "footer_copyright": "Copyright 2025 Alice. All rights reserved.",
+    "comments": {
+      "disqus_shortname": "myblog",
+      "facebook": null
+    },
     "default_post_title": "Untitled",
-    "archive_date_format": "MMM D, YYYY",
-    "github_url": "https://github.com/alice",
-    "twitter_url": "https://twitter.com/alice",
+    "archive_date_format": "MMM DD, YYYY",
+    "footer_about": "A blog about modern web development, design, and technology. Built with passion and caffeine.",
+    "footer_copyright": "&copy; 2025 Alice Chen. All rights reserved.",
+    "github_url": "https://github.com/alicechen",
+    "twitter_url": "https://twitter.com/alicechen",
     "facebook_url": "",
-    "instagram_url": "",
+    "instagram_url": "https://instagram.com/alicechen",
     "dribble_url": "",
     "telegram_url": "",
     "behance_url": "",
     "fivehundredpx_url": "",
-    "email_url": "",
+    "email_url": "alice@example.com",
     "rss_url": "/atom.xml",
-    "twitter_handle": "alice"
+    "fa_logo": "fa-code",
+    "twitter_handle": "alicechen"
   },
-  "body": "<p>Page body content.</p>"
+  "page": {
+    "title": "Hello World",
+    "content": "<p>Welcome to my blog. This is a place where I share my thoughts on web development.</p>",
+    "date": "2025-01-15",
+    "updated": "2025-01-20",
+    "tags": [
+      {
+        "name": "javascript",
+        "slug": "javascript",
+        "path": "tags/javascript/",
+        "length": 5
+      },
+      {
+        "name": "programming",
+        "slug": "programming",
+        "path": "tags/programming/",
+        "length": 3
+      }
+    ],
+    "categories": [
+      {
+        "name": "Tech",
+        "slug": "tech",
+        "path": "categories/Tech/",
+        "length": 8
+      }
+    ],
+    "excerpt": "<p>Welcome to my blog.</p>",
+    "permalink": "https://blog.example.com/hello-world/",
+    "path": "hello-world/",
+    "comments": true,
+    "prev_link": "page/1/",
+    "next_link": "page/3/",
+    "current": 2,
+    "total": 5,
+    "lang": "en",
+    "year": 2025,
+    "month": 1,
+    "description": "My personal blog about web development",
+    "keywords": "blog,web,dev"
+  },
+  "site": {
+    "posts": [
+      {
+        "title": "Understanding Modern JavaScript",
+        "path": "2025/01/15/understanding-modern-javascript/",
+        "date": "2025-01-15",
+        "excerpt": "<p>Post excerpt</p>",
+        "content": "<p>JavaScript has evolved significantly over the past decade. ES6 introduced arrow functions, destructuring, and template literals.</p>"
+      },
+      {
+        "title": "Building REST APIs with Express",
+        "path": "2025/01/12/building-rest-apis-express/",
+        "date": "2025-01-15",
+        "excerpt": "<p>Post excerpt</p>",
+        "content": "<p>Express.js is a minimal and flexible Node.js web application framework. It provides a robust set of features for web and mobile applications.</p>"
+      },
+      {
+        "title": "Introduction to TypeScript",
+        "path": "2024/12/20/introduction-to-typescript/",
+        "date": "2025-01-15",
+        "excerpt": "<p>Post excerpt</p>",
+        "content": "<p>TypeScript adds static typing to JavaScript, making your code more predictable and easier to debug.</p>"
+      }
+    ],
+    "tags": [
+      {
+        "name": "javascript",
+        "slug": "javascript",
+        "path": "tags/javascript/",
+        "length": 5
+      },
+      {
+        "name": "programming",
+        "slug": "programming",
+        "path": "tags/programming/",
+        "length": 3
+      },
+      {
+        "name": "typescript",
+        "slug": "typescript",
+        "path": "tags/typescript/",
+        "length": 2
+      }
+    ],
+    "categories": [
+      {
+        "name": "Tech",
+        "slug": "tech",
+        "path": "categories/Tech/",
+        "length": 8
+      },
+      {
+        "name": "Tutorials",
+        "slug": "tutorials",
+        "path": "categories/Tutorials/",
+        "length": 4
+      }
+    ]
+  },
+  "body": "<article><p>Welcome to my blog. This is the main content area.</p></article>"
 }

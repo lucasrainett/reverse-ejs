@@ -1,7 +1,3 @@
 {
-  "user": {
-    "name": "Sample Title",
-    "age": "sample-value",
-    "species": "sample-value"
-  }
+  "user": { "name": "Alice", "age": 28, "species": "human" }
 }

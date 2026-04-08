@@ -1,18 +1,38 @@
 {
-  "theme": {
-    "menu": "sample-value"
-  },
-  "key": "abc123",
-  "url": "https://example.com/path",
   "config": {
-    "language": "en",
-    "root": "sample-value"
+    "root": "/",
+    "language": "en"
   },
-  "zh": "sample-value",
-  "CN": "sample-value",
-  "menuMap": {},
-  "search": "sample-value",
-  "_partial": "sample-value",
-  "mobile": "sample-value",
-  "nav": "sample-value"
+  "theme": {
+    "menu": {
+      "Index": {
+        "url": "/",
+        "icon": "fas fa-home"
+      },
+      "Tags": {
+        "url": "/tags",
+        "icon": "fas fa-tags"
+      },
+      "Categories": {
+        "url": "/categories",
+        "icon": "fas fa-bookmark"
+      },
+      "Archives": {
+        "url": "/archives",
+        "icon": "fas fa-archive"
+      },
+      "About": {
+        "url": "/about",
+        "icon": "fas fa-address-card"
+      },
+      "Contact": {
+        "url": "/contact",
+        "icon": "fas fa-comments"
+      },
+      "Friends": {
+        "url": "/friends",
+        "icon": "fas fa-address-book"
+      }
+    }
+  }
 }

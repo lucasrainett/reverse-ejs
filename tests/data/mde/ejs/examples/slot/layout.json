@@ -1,5 +1,5 @@
 {
-  "title": "Sample Title",
-  "body": "<p>Content here</p>",
-  "footer": "sample-value"
+  "title": "My Application",
+  "body": "<div>body</div>\n",
+  "footer": "<div>footer</div>\n"
 }

@@ -1,15 +1,15 @@
 {
-  "gallery": "sample-value",
-  "photo": "https://example.com/image.jpg",
   "theme": {
     "jsDelivr": {
-      "url": "https://example.com/path"
+      "url": "https://cdn.jsdelivr.net/gh/user/blog@latest"
     },
     "myGallery": {
-      "data": "sample-value"
+      "enable": true,
+      "data": {
+        "Sunset View": "/medias/gallery/sunset.jpg",
+        "Mountain Peak": "/medias/gallery/mountain.jpg",
+        "City Night": "/medias/gallery/city-night.jpg"
+      }
     }
-  },
-  "_config": {
-    "yml": "sample-value"
   }
 }

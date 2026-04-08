@@ -1,43 +1,35 @@
 {
-  "banner_attrs": " parallax=true",
-  "banner_img": "https://example.com/image.jpg",
-  "banner_mask_alpha": null,
-  "subtitle": "Sample Title",
-  "postMetaTop": "sample-value",
-  "page": {
-    "banner_img": "https://example.com/image.jpg",
-    "banner_img_height": "sample-value",
-    "banner_mask_alpha": "sample-value",
-    "subtitle": "Sample Title",
-    "title": "Sample Title",
-    "layout": "sample-value"
-  },
   "theme": {
     "post": {
-      "banner_img": "https://example.com/image.jpg"
+      "banner_img": "https://blog.example.com/img/post-bg.jpg"
     },
     "index": {
-      "banner_img": "https://example.com/image.jpg",
-      "banner_img_height": "sample-value",
-      "banner_mask_alpha": "sample-value"
+      "banner_img": "https://blog.example.com/img/index-bg.jpg",
+      "banner_img_height": 100,
+      "banner_mask_alpha": 0.3
     },
     "banner": {
-      "random_img": "https://example.com/image.jpg",
-      "parallax": "sample-value"
+      "parallax": true,
+      "random_img": false
     },
-    "banner_img_list": {
-      "length": "sample-value"
-    },
+    "banner_img_list": [],
     "fun_features": {
       "typing": {
         "enable": true,
-        "scope": "sample-value"
+        "scope": ["home"]
       }
     },
     "scroll_down_arrow": {
       "enable": true,
-      "banner_height_limit": "sample-value"
+      "banner_height_limit": 90
     }
   },
-  "random_banner_list": []
+  "page": {
+    "layout": "index",
+    "banner_img": "https://blog.example.com/img/index-bg.jpg",
+    "banner_img_height": 100,
+    "banner_mask_alpha": 0.3,
+    "subtitle": "Welcome to Pixel & Code",
+    "title": "Pixel & Code"
+  }
 }

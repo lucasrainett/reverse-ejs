@@ -1,24 +1,20 @@
 {
-  "_partials": "sample-value",
-  "post": "sample-value",
-  "category": "sample-value",
-  "bar": "sample-value",
   "theme": {
     "post": {
       "toc": {
         "enable": true,
-        "placement": "sample-value"
+        "placement": "left"
       },
       "category_bar": {
         "enable": true,
-        "placement": "sample-value",
-        "specific": "sample-value"
+        "placement": "left",
+        "specific": false
       }
     }
   },
   "page": {
-    "toc": "sample-value",
-    "hide": "sample-value",
-    "category_bar": "sample-value"
+    "toc": true,
+    "hide": false,
+    "category_bar": false
   }
 }

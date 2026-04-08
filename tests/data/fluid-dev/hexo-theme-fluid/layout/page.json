@@ -1,24 +1,34 @@
 {
-  "page": {
-    "content": "<p>Content here</p>",
-    "layout": "sample-value",
-    "title": "Sample Title",
-    "subtitle": "Sample Title",
-    "banner_img": "https://example.com/image.jpg",
-    "banner_img_height": "sample-value",
-    "banner_mask_alpha": "sample-value"
-  },
-  "pageComments": "sample-value",
-  "_partials": "sample-value",
-  "plugins": "sample-value",
   "theme": {
     "page": {
-      "banner_img": "https://example.com/image.jpg",
-      "banner_img_height": "sample-value",
-      "banner_mask_alpha": "sample-value"
+      "banner_img": "https://blog.example.com/img/page-bg.jpg",
+      "banner_img_height": 70,
+      "banner_mask_alpha": 0.3
     }
   },
-  "gims": {
-    "test": "sample-value"
+  "page": {
+    "layout": "page",
+    "title": "Custom Page",
+    "subtitle": "A custom page",
+    "banner_img": "https://blog.example.com/img/page-bg.jpg",
+    "banner_img_height": 70,
+    "banner_mask_alpha": 0.3,
+    "content": "<p>This is a custom page with some content.</p>"
+  },
+  "config": {
+    "title": "Pixel & Code",
+    "subtitle": "A Developer's Journey",
+    "author": "Alice Chen",
+    "url": "https://blog.example.com",
+    "root": "/",
+    "language": "en",
+    "theme": "fluid",
+    "description": "A blog about web development and design",
+    "keywords": ["javascript", "web", "development"],
+    "date_format": "YYYY-MM-DD",
+    "pagination_dir": "page",
+    "index_generator": {
+      "order_by": "-date"
+    }
   }
 }

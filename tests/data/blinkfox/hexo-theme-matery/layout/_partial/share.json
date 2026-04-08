@@ -1,23 +1,15 @@
 {
   "theme": {
     "jsDelivr": {
-      "url": "https://example.com/path"
+      "url": "https://cdn.jsdelivr.net/gh/user/blog@latest"
     },
     "sharejs": {
-      "sites": "sample-value",
-      "enable": true
+      "enable": true,
+      "sites": "wechat,qq,weibo,tencent,twitter,facebook"
     },
     "addthis": {
-      "pubid": "abc123",
-      "enable": true
+      "enable": false,
+      "pubid": "ra-5c5c5c5c5c5c5c5c"
     }
-  },
-  "libs": "sample-value",
-  "share": {
-    "min": {
-      "css": "default",
-      "js": "sample-value"
-    }
-  },
-  "social": "sample-value"
+  }
 }

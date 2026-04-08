@@ -1,6 +1,3 @@
 {
-  "names": {
-    "length": "sample-value",
-    "forEach": "sample-value"
-  }
+  "names": ["Alice", "Bob", "Charlie"]
 }

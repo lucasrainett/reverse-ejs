@@ -1,53 +1,71 @@
 {
-  "keyWords": "sample-value",
   "config": {
-    "description": "A sample description",
-    "title": "Sample Title",
-    "keywords": "sample-value"
+    "title": "Pixel & Code",
+    "author": "Alice Chen",
+    "url": "https://blog.example.com",
+    "root": "/",
+    "language": "en",
+    "description": "A blog about web development and design",
+    "keywords": "blog, web, javascript, hexo",
+    "date_format": "YYYY-MM-DD",
+    "subtitle": "Thoughts on code and creativity"
   },
-  "_partial": "sample-value",
-  "google": "sample-value",
-  "analytics": "sample-value",
-  "pageTitle": "Sample Title | Sample Title",
-  "iconType": "sample-value",
   "theme": {
     "jsDelivr": {
-      "url": "https://example.com/path"
-    },
-    "favicon": {
-      "substr": "sample-value",
-      "lastIndexOf": "sample-value",
-      "length": "sample-value"
+      "url": "https://cdn.jsdelivr.net/gh/user/blog@latest"
     },
     "libs": {
       "css": {
-        "fontAwesome": "sample-value",
-        "materialize": "sample-value",
-        "aos": "sample-value",
-        "animate": "sample-value",
-        "lightgallery": "sample-value",
-        "matery": "sample-value",
-        "mycss": "default"
+        "fontAwesome": "/libs/awesome/css/all.min.css",
+        "materialize": "/libs/materialize/materialize.min.css",
+        "aos": "/libs/aos/aos.css",
+        "animate": "/libs/animate/animate.min.css",
+        "lightgallery": "/libs/lightGallery/css/lightgallery.min.css",
+        "matery": "/css/matery.css",
+        "mycss": "/css/my.css",
+        "gitalk": "/libs/gitalk/gitalk.css",
+        "aplayer": "/libs/aplayer/APlayer.min.css",
+        "dplayer": "/libs/dplayer/DPlayer.min.css",
+        "tocbot": "/libs/tocbot/tocbot.css",
+        "prism": "/libs/prism/prism.css",
+        "jqcloud": "/libs/jqcloud/jqcloud.min.css"
       },
       "js": {
-        "jquery": "sample-value"
+        "jquery": "/libs/jquery/jquery.min.js",
+        "materialize": "/libs/materialize/materialize.min.js",
+        "masonry": "/libs/masonry/masonry.pkgd.min.js",
+        "aos": "/libs/aos/aos.js",
+        "scrollProgress": "/libs/scrollprogress/scrollProgress.min.js",
+        "lightgallery": "/libs/lightGallery/js/lightgallery-all.min.js",
+        "matery": "/js/matery.js",
+        "clicklove": "/libs/others/clicklove.js",
+        "busuanzi": "/libs/others/busuanzi.pure.mini.js",
+        "canvas_nest": "/libs/others/canvas-nest.min.js",
+        "ribbon_dynamic": "/libs/others/ribbon-dynamic.js",
+        "instantpage": "/libs/others/instantpage.js",
+        "ribbon": "/libs/others/ribbon.min.js",
+        "ribbonRefresh": "/libs/others/ribbon-refresh.min.js",
+        "gitalk": "/libs/gitalk/gitalk.min.js",
+        "valine": "/libs/valine/Valine.min.js",
+        "tocbot": "/libs/tocbot/tocbot.min.js",
+        "aplayer": "/libs/aplayer/APlayer.min.js",
+        "dplayer": "/libs/dplayer/DPlayer.min.js",
+        "echarts": "/libs/echarts/echarts.min.js",
+        "jqcloud": "/libs/jqcloud/jqcloud.min.js",
+        "crypto": "/libs/crypto-js/crypto-js.min.js"
       }
+    },
+    "favicon": "/medias/favicon.png",
+    "googleAnalytics": {
+      "enable": true,
+      "id": "UA-12345678-1"
     }
   },
   "page": {
-    "title": "Sample Title",
-    "year": "sample-value",
-    "month": "sample-value",
-    "category": "sample-value",
-    "tag": "sample-value",
-    "keywords": "sample-value",
-    "summary": "A sample description",
-    "__post": "sample-value",
-    "content": "<p>Content here</p>"
-  },
-  "vnd": {
-    "microsoft": {
-      "icon": "https://example.com/image.jpg"
-    }
+    "title": "Hello World",
+    "keywords": "hexo, blog, javascript",
+    "summary": "A sample blog post.",
+    "__post": true,
+    "content": "<p>Full content here.</p>"
   }
 }

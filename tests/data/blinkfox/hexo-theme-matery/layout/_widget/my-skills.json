@@ -1,24 +1,235 @@
 {
-  "mySkills": "sample-value",
-  "skill": "sample-value",
-  "background": "sample-value",
-  "percent": "sample-value",
-  "otherSkills": "sample-value",
-  "_config": {
-    "yml": "sample-value"
-  },
   "theme": {
     "mySkills": {
-      "data": "sample-value"
+      "enable": true,
+      "data": {
+        "JavaScript": {
+          "background": "linear-gradient(to right, #FF5E3A, #FF2A68)",
+          "percent": "90%"
+        },
+        "CSS": {
+          "background": "linear-gradient(to right, #1AD6FD, #1D62F0)",
+          "percent": "85%"
+        },
+        "Node.js": {
+          "background": "linear-gradient(to right, #4cbf30, #0f9d58)",
+          "percent": "80%"
+        }
+      }
     }
   },
-  "topSkillArr": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"],
-  "arr": {
-    "length": "sample-value"
-  },
   "site": {
-    "tags": {
-      "map": "sample-value"
+    "posts": [
+      {
+        "title": "Getting Started with Hexo",
+        "path": "posts/getting-started-with-hexo/",
+        "img": "/medias/featureimages/1.jpg",
+        "date": "2025-01-11",
+        "updated": "2025-01-13",
+        "content": "<p>Getting Started with Hexo content goes here with detailed information.</p>",
+        "excerpt": "Getting Started with Hexo content goes here with detailed information.",
+        "summary": "A brief overview of Getting Started with Hexo.",
+        "author": "Alice Chen",
+        "cover": true,
+        "coverImg": "/medias/cover/featured.jpg",
+        "top": true,
+        "toc": true,
+        "password": "",
+        "mathjax": false,
+        "layout": "post",
+        "categories": [
+          {
+            "name": "JavaScript",
+            "path": "categories/javascript/",
+            "length": 5
+          },
+          {
+            "name": "Web Dev",
+            "path": "categories/web-dev/",
+            "length": 3
+          }
+        ],
+        "tags": [
+          {
+            "name": "Node.js",
+            "path": "tags/nodejs/",
+            "length": 4
+          },
+          {
+            "name": "Tutorial",
+            "path": "tags/tutorial/",
+            "length": 6
+          }
+        ]
+      },
+      {
+        "title": "Advanced CSS Tricks",
+        "path": "posts/advanced-css-tricks/",
+        "img": "/medias/featureimages/2.jpg",
+        "date": "2025-01-12",
+        "updated": "2025-01-14",
+        "content": "<p>Advanced CSS Tricks content goes here with detailed information.</p>",
+        "excerpt": "Advanced CSS Tricks content goes here with detailed information.",
+        "summary": "A brief overview of Advanced CSS Tricks.",
+        "author": "Alice Chen",
+        "cover": false,
+        "top": true,
+        "toc": true,
+        "password": "",
+        "mathjax": false,
+        "layout": "post",
+        "categories": [
+          {
+            "name": "JavaScript",
+            "path": "categories/javascript/",
+            "length": 5
+          },
+          {
+            "name": "Web Dev",
+            "path": "categories/web-dev/",
+            "length": 3
+          }
+        ],
+        "tags": [
+          {
+            "name": "Node.js",
+            "path": "tags/nodejs/",
+            "length": 4
+          },
+          {
+            "name": "Tutorial",
+            "path": "tags/tutorial/",
+            "length": 6
+          }
+        ]
+      },
+      {
+        "title": "React Hooks Deep Dive",
+        "path": "posts/react-hooks-deep-dive/",
+        "img": "/medias/featureimages/3.jpg",
+        "date": "2025-01-13",
+        "updated": "2025-01-15",
+        "content": "<p>React Hooks Deep Dive content goes here with detailed information.</p>",
+        "excerpt": "React Hooks Deep Dive content goes here with detailed information.",
+        "summary": "A brief overview of React Hooks Deep Dive.",
+        "author": "Alice Chen",
+        "cover": false,
+        "top": false,
+        "toc": true,
+        "password": "",
+        "mathjax": false,
+        "layout": "post",
+        "categories": [
+          {
+            "name": "JavaScript",
+            "path": "categories/javascript/",
+            "length": 5
+          },
+          {
+            "name": "Web Dev",
+            "path": "categories/web-dev/",
+            "length": 3
+          }
+        ],
+        "tags": [
+          {
+            "name": "Node.js",
+            "path": "tags/nodejs/",
+            "length": 4
+          },
+          {
+            "name": "Tutorial",
+            "path": "tags/tutorial/",
+            "length": 6
+          }
+        ]
+      }
+    ],
+    "tags": [
+      {
+        "name": "Node.js",
+        "path": "tags/nodejs/",
+        "length": 4
+      },
+      {
+        "name": "Tutorial",
+        "path": "tags/tutorial/",
+        "length": 6
+      },
+      {
+        "name": "CSS",
+        "path": "tags/css/",
+        "length": 3
+      }
+    ],
+    "categories": [
+      {
+        "name": "JavaScript",
+        "path": "categories/javascript/",
+        "length": 5
+      },
+      {
+        "name": "Web Dev",
+        "path": "categories/web-dev/",
+        "length": 3
+      },
+      {
+        "name": "Design",
+        "path": "categories/design/",
+        "length": 2
+      }
+    ],
+    "data": {
+      "friends": [
+        {
+          "name": "Bob Li",
+          "avatar": "/medias/avatars/bob.jpg",
+          "introduction": "Full-stack developer",
+          "url": "https://bob.example.com",
+          "title": "Visit Blog"
+        },
+        {
+          "name": "Carol Wang",
+          "avatar": "/medias/avatars/carol.jpg",
+          "introduction": "UI/UX designer",
+          "url": "https://carol.example.com",
+          "title": "Visit Blog"
+        }
+      ],
+      "recommends": [
+        {
+          "title": "Getting Started with Hexo",
+          "path": "posts/getting-started-with-hexo/",
+          "img": "/medias/featureimages/1.jpg",
+          "content": "<p>Getting started content.</p>",
+          "summary": "Learn how to set up Hexo.",
+          "categories": [
+            {
+              "name": "JavaScript",
+              "path": "categories/javascript/"
+            }
+          ],
+          "categoryName": "JavaScript",
+          "categoryPath": "categories/javascript/",
+          "top": true
+        },
+        {
+          "title": "Advanced CSS Tricks",
+          "path": "posts/advanced-css-tricks/",
+          "img": "/medias/featureimages/2.jpg",
+          "content": "<p>CSS tricks content.</p>",
+          "summary": "Master advanced CSS techniques.",
+          "categories": [
+            {
+              "name": "Web Dev",
+              "path": "categories/web-dev/"
+            }
+          ],
+          "categoryName": "Web Dev",
+          "categoryPath": "categories/web-dev/",
+          "top": true
+        }
+      ]
     }
   }
 }

@@ -1,70 +1,38 @@
 {
-  "depth": "sample-value",
-  "category": {
-    "more": "sample-value"
-  },
-  "sub": "sample-value",
-  "item": "sample-value",
-  "subitem": "sample-value",
-  "collapsed": "sample-value",
-  "cat": {
-    "name": {
-      "trim": "sample-value"
-    },
-    "posts": {
-      "length": "sample-value",
-      "sort": "sample-value"
-    },
-    "path": "https://example.com/path",
-    "_id": "abc123",
-    "length": "sample-value"
-  },
-  "md5": "sample-value",
-  "params": {
-    "type": "sample-value",
-    "filterIds": "sample-value",
-    "orderBy": "sample-value",
-    "postOrderBy": "sample-value",
-    "postLimit": "sample-value"
-  },
-  "post": {
-    "path": "https://example.com/path",
-    "title": "Sample Title",
-    "_id": "abc123"
-  },
-  "show": true,
-  "render_posts": "sample-value",
-  "filteredPosts": "sample-value",
-  "render_categories": "sample-value",
-  "subCats": {
-    "length": "sample-value"
-  },
-  "posts": {
-    "filter": "sample-value",
-    "length": "sample-value",
-    "data": "sample-value"
-  },
-  "includes": "sample-value",
-  "active": true,
   "curCats": {
-    "each": "sample-value"
+    "each": "__function__",
+    "length": 2
   },
-  "site": {
-    "categories": {
-      "find": "sample-value"
-    }
+  "params": {
+    "orderBy": "name",
+    "postLimit": 10,
+    "postOrderBy": "-date"
   },
   "theme": {
     "category": {
-      "collapse_depth": "sample-value"
+      "collapse_depth": 2
     }
   },
-  "p": {
+  "site": {
     "categories": {
-      "filter": "sample-value"
+      "find": "__function__",
+      "length": 3
     }
   },
-  "catOnPost": {
-    "parent": "sample-value"
+  "config": {
+    "title": "Pixel & Code",
+    "subtitle": "A Developer's Journey",
+    "author": "Alice Chen",
+    "url": "https://blog.example.com",
+    "root": "/",
+    "language": "en",
+    "theme": "fluid",
+    "description": "A blog about web development and design",
+    "keywords": ["javascript", "web", "development"],
+    "date_format": "YYYY-MM-DD",
+    "pagination_dir": "page",
+    "index_generator": {
+      "order_by": "-date"
+    }
   }
 }

@@ -1,55 +1,47 @@
 {
-  "config": {
-    "language": "en"
-  },
-  "colorSchema": "sample-value",
-  "data": "sample-value",
-  "color": "sample-value",
-  "scheme": "sample-value",
-  "_partials": "sample-value",
-  "head": {
-    "ejs": "sample-value"
-  },
-  "bodyBegin": "sample-value",
-  "header": "sample-value",
-  "body": "<p>Content here</p>",
-  "banner_img_height": null,
   "theme": {
-    "banner": {
-      "parallax": "sample-value"
-    },
-    "about": {
-      "avatar": "https://example.com/image.jpg"
-    },
-    "custom_html": "<p>Content here</p>",
     "index": {
-      "banner_img_height": "sample-value"
+      "banner_img_height": 100,
+      "banner_mask_alpha": 0.3
     },
     "dark_mode": {
       "enable": true,
-      "default": "sample-value"
+      "default": "light"
+    },
+    "about": {
+      "avatar": "/img/avatar.jpg"
     },
     "scroll_top_arrow": {
       "enable": true
     },
     "search": {
       "enable": true
+    },
+    "custom_html": "",
+    "banner": {
+      "parallax": true
     }
   },
-  "style": "default",
-  "margin": "sample-value",
-  "top": "sample-value",
-  "search": {
-    "ejs": "sample-value"
-  },
-  "footer": "sample-value",
-  "scripts": {
-    "ejs": "sample-value"
-  },
-  "bodyEnd": "sample-value",
-  "noscript_warning": "sample-value",
   "page": {
-    "banner_img_height": "sample-value",
-    "layout": "sample-value"
+    "layout": "index",
+    "banner_img_height": 100,
+    "banner_mask_alpha": 0.3
+  },
+  "body": "<article><p>Welcome to my blog.</p></article>",
+  "config": {
+    "title": "Pixel & Code",
+    "subtitle": "A Developer's Journey",
+    "author": "Alice Chen",
+    "url": "https://blog.example.com",
+    "root": "/",
+    "language": "en",
+    "theme": "fluid",
+    "description": "A blog about web development and design",
+    "keywords": ["javascript", "web", "development"],
+    "date_format": "YYYY-MM-DD",
+    "pagination_dir": "page",
+    "index_generator": {
+      "order_by": "-date"
+    }
   }
 }

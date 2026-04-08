@@ -1,33 +1,55 @@
 {
-  "comment": "sample-value",
-  "disqus": "sample-value",
-  "script": "sample-value",
-  "duoshuo": "sample-value",
-  "youyan": "sample-value",
-  "livere": "sample-value",
-  "facebook": "sample-value",
-  "isso": "sample-value",
-  "changyan": "sample-value",
-  "valine": "sample-value",
-  "gitalk": "sample-value",
   "theme": {
+    "customize": {
+      "thumbnail": true
+    },
     "comment": {
-      "disqus": "sample-value",
-      "duoshuo": "sample-value",
-      "youyan": "sample-value",
-      "livere": "sample-value",
-      "facebook": "sample-value",
-      "isso": {
-        "on": "sample-value"
-      },
+      "disqus": "",
+      "duoshuo": "",
+      "youyan": "",
+      "livere": "",
+      "facebook": "",
+      "isso": false,
       "changyan": {
-        "on": "sample-value"
+        "on": false,
+        "appid": "",
+        "conf": ""
       },
       "valine": {
-        "on": "sample-value"
+        "on": false,
+        "appId": "",
+        "appKey": "",
+        "notify": false,
+        "verify": false,
+        "visitor": false
       },
       "gitalk": {
-        "on": "sample-value"
+        "on": false,
+        "clientID": "",
+        "clientSecret": "",
+        "repo": "",
+        "owner": "",
+        "admin": []
+      }
+    },
+    "plugins": {
+      "lightgallery": false,
+      "justifiedgallery": false,
+      "google_analytics": "",
+      "baidu_analytics": "",
+      "mathjax": false,
+      "google_adsense": null,
+      "cookie_consent": false,
+      "statcounter": {
+        "on": false,
+        "sc_project": 12345678,
+        "sc_invisible": 1,
+        "sc_security": "abcdef12",
+        "public": false
+      },
+      "twitter_conversion_tracking": {
+        "enabled": false,
+        "pixel_id": "abc123"
       }
     }
   }

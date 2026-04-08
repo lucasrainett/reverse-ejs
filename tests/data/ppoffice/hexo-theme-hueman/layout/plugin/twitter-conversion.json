@@ -1,10 +1,10 @@
 {
-  "tct": {
-    "pixel_id": "abc123"
-  },
   "theme": {
     "plugins": {
-      "twitter_conversion_tracking": "sample-value"
+      "twitter_conversion_tracking": {
+        "enabled": true,
+        "pixel_id": "tw-abc123-xyz"
+      }
     }
   }
 }

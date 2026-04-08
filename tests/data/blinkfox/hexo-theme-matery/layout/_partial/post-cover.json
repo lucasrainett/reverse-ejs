@@ -1,22 +1,18 @@
 {
-  "featureimg": "https://example.com/image.jpg",
-  "page": {
-    "title": "Sample Title",
-    "img": "https://example.com/image.jpg"
-  },
-  "bg": {
-    "jpg": "sample-value"
-  },
-  "str": {
-    "length": "sample-value",
-    "charCodeAt": "sample-value"
-  },
   "theme": {
-    "featureImages": {
-      "length": "sample-value"
-    },
     "jsDelivr": {
-      "url": "https://example.com/path"
-    }
+      "url": "https://cdn.jsdelivr.net/gh/user/blog@latest"
+    },
+    "featureImages": [
+      "/medias/featureimages/0.jpg",
+      "/medias/featureimages/1.jpg",
+      "/medias/featureimages/2.jpg",
+      "/medias/featureimages/3.jpg"
+    ]
+  },
+  "page": {
+    "title": "Hello World",
+    "img": "/medias/featureimages/1.jpg",
+    "path": "posts/hello-world/"
   }
 }

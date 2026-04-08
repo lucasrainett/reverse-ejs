@@ -1,39 +1,51 @@
 {
-  "_partials": "sample-value",
-  "archive": "sample-value",
-  "list": {
-    "ejs": "sample-value"
-  },
-  "params": "sample-value",
-  "key": "abc123",
-  "page": {
-    "layout": "tag",
-    "title": "tag.title - sample-value",
-    "tag": "sample-value",
-    "subtitle": "tag.subtitle - sample-value",
-    "banner_img": "https://example.com/image.jpg",
-    "banner_img_height": "sample-value",
-    "banner_mask_alpha": "sample-value"
-  },
-  "postTotal": 1,
-  "tag": {
-    "posts": {
-      "length": "sample-value"
-    },
-    "title": "Sample Title",
-    "subtitle": "Sample Title",
-    "length": "sample-value"
-  },
   "theme": {
     "tag": {
-      "banner_img": "https://example.com/image.jpg",
-      "banner_img_height": "sample-value",
-      "banner_mask_alpha": "sample-value"
+      "banner_img": "https://blog.example.com/img/tag-bg.jpg",
+      "banner_img_height": 70,
+      "banner_mask_alpha": 0.3
     }
+  },
+  "page": {
+    "layout": "tag",
+    "tag": "JavaScript",
+    "title": "Tag - JavaScript",
+    "subtitle": "Tag - JavaScript",
+    "banner_img": "https://blog.example.com/img/tag-bg.jpg",
+    "banner_img_height": 70,
+    "banner_mask_alpha": 0.3,
+    "posts": {
+      "each": "__function__"
+    },
+    "total": 2
   },
   "site": {
     "tags": {
-      "find": "sample-value"
+      "find": "__function__",
+      "length": 5,
+      "data": [
+        {
+          "posts": {
+            "length": 3
+          }
+        }
+      ]
+    }
+  },
+  "config": {
+    "title": "Pixel & Code",
+    "subtitle": "A Developer's Journey",
+    "author": "Alice Chen",
+    "url": "https://blog.example.com",
+    "root": "/",
+    "language": "en",
+    "theme": "fluid",
+    "description": "A blog about web development and design",
+    "keywords": ["javascript", "web", "development"],
+    "date_format": "YYYY-MM-DD",
+    "pagination_dir": "page",
+    "index_generator": {
+      "order_by": "-date"
     }
   }
 }

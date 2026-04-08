@@ -1,9 +1,14 @@
 {
-  "header": "sample-value",
-  "title": "Sample Title",
-  "index": 1,
-  "footer": "sample-value",
-  "users": {
-    "forEach": "sample-value"
-  }
+  "title": "Users",
+  "users": [
+    {
+      "name": "TJ Holowaychuk"
+    },
+    {
+      "name": "Nathan Rajlich"
+    },
+    {
+      "name": "Wilson Page"
+    }
+  ]
 }

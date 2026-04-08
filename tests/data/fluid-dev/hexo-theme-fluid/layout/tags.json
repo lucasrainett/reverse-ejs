@@ -1,37 +1,42 @@
 {
-  "min_font": "sample-value",
-  "max_font": "sample-value",
-  "amount": 1,
-  "unit": "sample-value",
-  "color": "sample-value",
-  "start_color": "sample-value",
-  "end_color": "sample-value",
-  "page": {
-    "layout": "tags",
-    "title": "Sample Title",
-    "subtitle": "Sample Title",
-    "banner_img": "https://example.com/image.jpg",
-    "banner_img_height": "sample-value",
-    "banner_mask_alpha": "sample-value"
-  },
   "theme": {
     "tag": {
-      "title": "Sample Title",
-      "subtitle": "Sample Title",
-      "banner_img": "https://example.com/image.jpg",
-      "banner_img_height": "sample-value",
-      "banner_mask_alpha": "sample-value",
+      "title": "Tags",
+      "subtitle": "Browse by tag",
+      "banner_img": "https://blog.example.com/img/tags-bg.jpg",
+      "banner_img_height": 70,
+      "banner_mask_alpha": 0.3,
       "tagcloud": {
-        "min_font": "sample-value",
-        "max_font": "sample-value",
-        "unit": "sample-value",
-        "start_color": "sample-value",
-        "end_color": "sample-value"
+        "min_font": 15,
+        "max_font": 30,
+        "unit": "px",
+        "start_color": "#BBBBEE",
+        "end_color": "#337ab7"
       }
     }
   },
-  "tag": {
-    "title": "Sample Title",
-    "subtitle": "Sample Title"
+  "page": {
+    "layout": "tags",
+    "title": "Tags",
+    "subtitle": "Browse by tag",
+    "banner_img": "https://blog.example.com/img/tags-bg.jpg",
+    "banner_img_height": 70,
+    "banner_mask_alpha": 0.3
+  },
+  "config": {
+    "title": "Pixel & Code",
+    "subtitle": "A Developer's Journey",
+    "author": "Alice Chen",
+    "url": "https://blog.example.com",
+    "root": "/",
+    "language": "en",
+    "theme": "fluid",
+    "description": "A blog about web development and design",
+    "keywords": ["javascript", "web", "development"],
+    "date_format": "YYYY-MM-DD",
+    "pagination_dir": "page",
+    "index_generator": {
+      "order_by": "-date"
+    }
   }
 }

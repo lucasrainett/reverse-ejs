@@ -1,46 +1,40 @@
 {
-  "_partials": "sample-value",
-  "category": {
-    "title": "Sample Title",
-    "subtitle": "Sample Title"
-  },
-  "list": "sample-value",
-  "curCats": "sample-value",
-  "params": "sample-value",
-  "orderBy": "sample-value",
-  "postLimit": "sample-value",
   "theme": {
     "category": {
-      "post_limit": "sample-value",
-      "post_order_by": "sample-value",
-      "title": "Sample Title",
-      "subtitle": "Sample Title",
-      "banner_img": "https://example.com/image.jpg",
-      "banner_img_height": "sample-value",
-      "banner_mask_alpha": "sample-value",
-      "order_by": "sample-value"
-    }
-  },
-  "postOrderBy": "sample-value",
-  "config": {
-    "index_generator": {
-      "order_by": "sample-value"
+      "title": "Categories",
+      "subtitle": "Browse by category",
+      "banner_img": "https://blog.example.com/img/categories-bg.jpg",
+      "banner_img_height": 70,
+      "banner_mask_alpha": 0.3,
+      "order_by": "name",
+      "post_limit": 10,
+      "post_order_by": "-date",
+      "collapse_depth": 2
     }
   },
   "page": {
-    "layout": "categories",
-    "title": "Sample Title",
-    "subtitle": "Sample Title",
-    "banner_img": "https://example.com/image.jpg",
-    "banner_img_height": "sample-value",
-    "banner_mask_alpha": "sample-value"
+    "layout": "categories"
   },
   "site": {
     "categories": {
-      "find": "sample-value"
+      "find": "__function__",
+      "length": 3
     }
   },
-  "cat": {
-    "length": "sample-value"
+  "config": {
+    "title": "Pixel & Code",
+    "subtitle": "A Developer's Journey",
+    "author": "Alice Chen",
+    "url": "https://blog.example.com",
+    "root": "/",
+    "language": "en",
+    "theme": "fluid",
+    "description": "A blog about web development and design",
+    "keywords": ["javascript", "web", "development"],
+    "date_format": "YYYY-MM-DD",
+    "pagination_dir": "page",
+    "index_generator": {
+      "order_by": "-date"
+    }
   }
 }
