@@ -1,0 +1,5 @@
+export default {
+	"title": "My Application",
+	"body": "<div>body</div>\n",
+	"footer": "<div>footer</div>\n",
+};

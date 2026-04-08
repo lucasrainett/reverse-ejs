@@ -1,0 +1,13 @@
+import { createHexoHelpers } from "../../../../helpers";
+
+export default {
+	...createHexoHelpers(),
+	"page": {
+			"current": 2,
+			"total": 5,
+			"prev": 1,
+			"next": 3,
+			"prev_link": "/page/1/",
+			"next_link": "/page/3/"
+		},
+};

@@ -1,0 +1,16 @@
+import { createHexoHelpers } from "../../../../helpers";
+
+export default {
+	...createHexoHelpers(),
+	"theme": {
+			"jsDelivr": {
+				"url": "https://cdn.jsdelivr.net/gh/user/blog@latest"
+			},
+			"reward": {
+				"enable": true,
+				"title": "Buy me a coffee",
+				"alipay": "/medias/reward/alipay.png",
+				"wechat": "/medias/reward/wechat.png"
+			}
+		},
+};

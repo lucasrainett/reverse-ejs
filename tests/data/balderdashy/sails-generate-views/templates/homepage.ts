@@ -1,0 +1,11 @@
+export default {
+	"view": {
+		"pathFromApp": "views/homepage",
+		"ext": "ejs"
+	},
+	"sails": {
+		"config": {
+			"port": 1337
+		}
+	}
+};

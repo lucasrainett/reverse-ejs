@@ -1,0 +1,26 @@
+import { createHexoHelpers } from "../../../../helpers";
+
+export default {
+	...createHexoHelpers(),
+	"categories": [],
+		"config": {
+			"title": "Pixel & Code",
+			"subtitle": "A Developer's Journey",
+			"author": "Alice Chen",
+			"url": "https://blog.example.com",
+			"root": "/",
+			"language": "en",
+			"theme": "fluid",
+			"description": "A blog about web development and design",
+			"keywords": [
+				"javascript",
+				"web",
+				"development"
+			],
+			"date_format": "YYYY-MM-DD",
+			"pagination_dir": "page",
+			"index_generator": {
+				"order_by": "-date"
+			}
+		},
+};

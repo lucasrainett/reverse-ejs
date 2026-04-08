@@ -1,0 +1,14 @@
+export default {
+	"title": "Users",
+	"users": [
+		{
+			"name": "TJ Holowaychuk"
+		},
+		{
+			"name": "Nathan Rajlich"
+		},
+		{
+			"name": "Wilson Page"
+		}
+	]
+};

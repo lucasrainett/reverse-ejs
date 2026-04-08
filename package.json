@@ -32,7 +32,6 @@
     "lint": "eslint src",
     "test": "vitest run --coverage",
     "download-fixtures": "tsx scripts/download-fixtures.ts",
-    "generate-data": "tsx scripts/generate-data.ts",
     "render-fixtures": "tsx scripts/render-fixtures.ts",
     "prepare": "husky"
   },

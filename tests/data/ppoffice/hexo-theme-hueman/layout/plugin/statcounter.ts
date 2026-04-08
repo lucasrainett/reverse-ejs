@@ -1,0 +1,16 @@
+import { createHexoHelpers } from "../../../../helpers";
+
+export default {
+	...createHexoHelpers(),
+	"theme": {
+			"plugins": {
+				"statcounter": {
+					"on": true,
+					"sc_project": 12345678,
+					"sc_invisible": 1,
+					"sc_security": "abcdef12",
+					"public": false
+				}
+			}
+		},
+};

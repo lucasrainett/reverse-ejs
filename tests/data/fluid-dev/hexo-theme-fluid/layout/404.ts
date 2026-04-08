@@ -1,0 +1,43 @@
+import { createHexoHelpers } from "../../../helpers";
+
+export default {
+	...createHexoHelpers(),
+	"theme": {
+			"page404": {
+				"redirect_delay": 5000,
+				"title": "Page Not Found",
+				"subtitle": "Oops, nothing here",
+				"banner_img": "https://blog.example.com/img/404-bg.jpg",
+				"banner_img_height": 85,
+				"banner_mask_alpha": 0.3
+			}
+		},
+		"page": {
+			"layout": "404",
+			"title": "Page Not Found",
+			"subtitle": "Oops, nothing here",
+			"banner_img": "https://blog.example.com/img/404-bg.jpg",
+			"banner_img_height": 85,
+			"banner_mask_alpha": 0.3
+		},
+		"config": {
+			"title": "Pixel & Code",
+			"subtitle": "A Developer's Journey",
+			"author": "Alice Chen",
+			"url": "https://blog.example.com",
+			"root": "/",
+			"language": "en",
+			"theme": "fluid",
+			"description": "A blog about web development and design",
+			"keywords": [
+				"javascript",
+				"web",
+				"development"
+			],
+			"date_format": "YYYY-MM-DD",
+			"pagination_dir": "page",
+			"index_generator": {
+				"order_by": "-date"
+			}
+		},
+};

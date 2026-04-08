@@ -1,0 +1,18 @@
+import { createHexoHelpers } from "../../../../helpers";
+
+export default {
+	...createHexoHelpers(),
+	"theme": {
+			"jsDelivr": {
+				"url": "https://cdn.jsdelivr.net/gh/user/blog@latest"
+			},
+			"myGallery": {
+				"enable": true,
+				"data": {
+					"Sunset View": "/medias/gallery/sunset.jpg",
+					"Mountain Peak": "/medias/gallery/mountain.jpg",
+					"City Night": "/medias/gallery/city-night.jpg"
+				}
+			}
+		},
+};

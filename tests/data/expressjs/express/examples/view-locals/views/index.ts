@@ -1,0 +1,20 @@
+export default {
+	"title": "View Locals Example",
+	"users": [
+		{
+			"name": "Tobi",
+			"age": 3,
+			"species": "ferret"
+		},
+		{
+			"name": "Loki",
+			"age": 2,
+			"species": "ferret"
+		},
+		{
+			"name": "Jane",
+			"age": 6,
+			"species": "ferret"
+		}
+	]
+};

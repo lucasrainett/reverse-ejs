@@ -1,0 +1,9 @@
+export default {
+	"user": {
+		"name": {
+			"first": "Alice"
+		},
+		"age": 28,
+		"species": "human"
+	}
+};

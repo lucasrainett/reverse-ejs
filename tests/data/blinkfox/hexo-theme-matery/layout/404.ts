@@ -1,0 +1,16 @@
+import { createHexoHelpers } from "../../../helpers";
+
+export default {
+	...createHexoHelpers(),
+	"page": {
+			"description": "Oops! The page you requested was not found."
+		},
+		"theme": {
+			"jsDelivr": {
+				"url": "https://cdn.jsdelivr.net/gh/user/blog@latest"
+			},
+			"banner": {
+				"enable": true
+			}
+		},
+};

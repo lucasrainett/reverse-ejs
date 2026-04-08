@@ -1,0 +1,17 @@
+import { createHexoHelpers } from "../../../../helpers";
+
+export default {
+	...createHexoHelpers(),
+	"theme": {
+			"footer": {
+				"content": "<p>&copy; 2025 Pixel & Code. All rights reserved.</p>",
+				"statistics": {
+					"enable": true,
+					"source": "busuanzi"
+				},
+				"beian": {
+					"enable": false
+				}
+			}
+		},
+};

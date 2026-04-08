@@ -1,0 +1,23 @@
+import { createHexoHelpers } from "../../../../../helpers";
+
+export default {
+	...createHexoHelpers(),
+	"theme": {
+			"post": {
+				"toc": {
+					"enable": true,
+					"placement": "right"
+				},
+				"category_bar": {
+					"enable": true,
+					"placement": "right",
+					"specific": false
+				}
+			}
+		},
+		"page": {
+			"toc": true,
+			"hide": false,
+			"category_bar": false
+		},
+};

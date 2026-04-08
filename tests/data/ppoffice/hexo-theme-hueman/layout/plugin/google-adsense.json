@@ -1,9 +1,0 @@
-{
-  "theme": {
-    "plugins": {
-      "google_adsense": {
-        "publisher_id": "abc123"
-      }
-    }
-  }
-}

@@ -1,0 +1,13 @@
+export default {
+	"users": [
+		{
+			"name": "Alice"
+		},
+		{
+			"name": "Bob"
+		},
+		{
+			"name": "Charlie"
+		}
+	]
+};

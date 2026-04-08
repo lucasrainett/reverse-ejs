@@ -1,0 +1,7 @@
+export default {
+	"title": "Edit User",
+	"user": {
+		"name": "TJ Holowaychuk",
+		"email": "tj@vision-media.ca"
+	}
+};

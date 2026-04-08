@@ -1,0 +1,405 @@
+import { createHexoHelpers, createDate, createCollection } from "../../../../helpers";
+
+export default {
+	...createHexoHelpers(),
+	"config": {
+			"title": "My Blog",
+			"subtitle": "A developer blog",
+			"author": "Alice Chen",
+			"description": "A blog about web development and technology.",
+			"url": "https://blog.example.com",
+			"root": "/",
+			"language": "en",
+			"timezone": "UTC",
+			"relative_link": false,
+			"keywords": "blog,tech,javascript",
+			"favicon": "/img/favicon.ico",
+			"highlight": {
+				"enable": true,
+				"hljs": false
+			},
+			"archive_dir": "archives",
+			"feed": {
+				"path": "atom.xml"
+			},
+			"date_format": "YYYY-MM-DD",
+			"home_posts_tag": true
+		},
+		"theme": {
+			"menu": {
+				"Home": "/",
+				"Archives": "/archives",
+				"About": "/about"
+			},
+			"sidebar": "right",
+			"widgets": [
+				"recent_posts",
+				"category",
+				"tag",
+				"archive",
+				"tagcloud"
+			],
+			"excerpt_link": "Read More",
+			"fancybox": true,
+			"google_analytics": "",
+			"baidu_analytics": "",
+			"favicon": "img/favicon.ico",
+			"twitter": "",
+			"google_plus": "",
+			"fb_admins": "",
+			"fb_app_id": "",
+			"rss": "/atom.xml",
+			"keywords": "blog,tech,javascript",
+			"google_site_verification": "",
+			"baidu_site_verification": "",
+			"qihu_site_verification": "",
+			"comment_provider": "",
+			"disqus_shortname": "myblog",
+			"duoshuo_shortname": "",
+			"gentie_productKey": "",
+			"uyan_uid": "",
+			"wumii": "",
+			"livere_shortname": "",
+			"gitment": {
+				"client_secret": "",
+				"client_id": "",
+				"owner": "",
+				"repo": ""
+			},
+			"valine": {
+				"app_id": "",
+				"app_key": "",
+				"notify": false,
+				"verify": false,
+				"visitor": false,
+				"appid": "",
+				"appkey": "",
+				"placeholder": "",
+				"avatar": "",
+				"pageSize": 10
+			},
+			"donate": {
+				"enable": false,
+				"alipay": "",
+				"wechat": "",
+				"message": ""
+			},
+			"search": {
+				"type": "insight",
+				"swiftype": "abc123swiftype"
+			},
+			"customize": {
+				"theme_color": "#4a90d9"
+			},
+			"mathjax": false,
+			"busuanzi_analytics": {
+				"enable": false
+			},
+			"social": {
+				"github": "https://github.com/alice",
+				"twitter": ""
+			},
+			"progressBar": {
+				"enable": false,
+				"themeCSS": ""
+			},
+			"avatar": {
+				"enable": true,
+				"url": "img/avatar.png",
+				"width": 100,
+				"height": 100,
+				"bottom": 10
+			},
+			"about_big_image": "img/home-bg.jpg",
+			"ad": null,
+			"url": "https://blog.example.com"
+		},
+		"page": {
+			"title": "Hello World",
+			"content": "<p>This is a sample page content.</p>",
+			"date": "2025-01-15",
+			"updated": "2025-01-16",
+			"tags": {
+				"data": [
+					{
+						"name": "javascript",
+						"path": "tags/javascript"
+					}
+				],
+				"length": 1
+			},
+			"categories": {
+				"data": [
+					{
+						"name": "Tech",
+						"path": "categories/tech"
+					}
+				],
+				"length": 1
+			},
+			"excerpt": "<p>A short excerpt.</p>",
+			"permalink": "https://blog.example.com/2025/01/15/hello-world/",
+			"path": "2025/01/15/hello-world/",
+			"layout": "post",
+			"slug": "hello-world",
+			"link": "",
+			"lang": "en",
+			"language": "en",
+			"prev": null,
+			"next": null,
+			"photos": [],
+			"cover": "",
+			"category": "Tech",
+			"tag": "javascript",
+			"year": 2025,
+			"month": 1,
+			"current": 1,
+			"total": 1,
+			"keywords": "",
+			"description": "A sample post.",
+			"posts": {
+				"length": 3,
+				"data": [
+					{
+						"title": "Getting Started with JavaScript",
+						"date": "2025-01-15",
+						"path": "2025/01/15/getting-started/",
+						"permalink": "https://blog.example.com/2025/01/15/getting-started/",
+						"excerpt": "<p>An excerpt of Getting Started with JavaScript.</p>",
+						"content": "<p>Full content of Getting Started with JavaScript.</p>",
+						"tags": {
+							"data": [
+								{
+									"name": "javascript",
+									"path": "tags/javascript"
+								}
+							],
+							"length": 1
+						},
+						"categories": {
+							"data": [
+								{
+									"name": "Tech",
+									"path": "categories/tech"
+								}
+							],
+							"length": 1
+						},
+						"slug": "",
+						"layout": "post",
+						"photos": [
+							"https://blog.example.com/img/photo1.jpg"
+						],
+						"cover": "",
+						"subtitle": "A beginner guide",
+						"author": "Alice Chen",
+						"sticky": 1,
+						"hidden": false,
+						"link": "",
+						"updated": "2025-01-15"
+					},
+					{
+						"title": "Advanced Node.js Patterns",
+						"date": "2025-01-10",
+						"path": "2025/01/10/advanced-nodejs/",
+						"permalink": "https://blog.example.com/2025/01/10/advanced-nodejs/",
+						"excerpt": "<p>An excerpt of Advanced Node.js Patterns.</p>",
+						"content": "<p>Full content of Advanced Node.js Patterns.</p>",
+						"tags": {
+							"data": [
+								{
+									"name": "nodejs",
+									"path": "tags/nodejs"
+								}
+							],
+							"length": 1
+						},
+						"categories": {
+							"data": [
+								{
+									"name": "Tech",
+									"path": "categories/tech"
+								}
+							],
+							"length": 1
+						},
+						"slug": "",
+						"layout": "post",
+						"photos": [
+							"https://blog.example.com/img/photo1.jpg"
+						],
+						"cover": "",
+						"subtitle": "",
+						"author": "Alice Chen",
+						"sticky": false,
+						"hidden": false,
+						"link": "",
+						"updated": "2025-01-10"
+					},
+					{
+						"title": "CSS Grid Layout Tutorial",
+						"date": "2024-12-20",
+						"path": "2024/12/20/css-grid/",
+						"permalink": "https://blog.example.com/2024/12/20/css-grid/",
+						"excerpt": "<p>An excerpt of CSS Grid Layout Tutorial.</p>",
+						"content": "<p>Full content of CSS Grid Layout Tutorial.</p>",
+						"tags": {
+							"data": [
+								{
+									"name": "css",
+									"path": "tags/css"
+								}
+							],
+							"length": 1
+						},
+						"categories": {
+							"data": [
+								{
+									"name": "Design",
+									"path": "categories/design"
+								}
+							],
+							"length": 1
+						},
+						"slug": "",
+						"layout": "post",
+						"photos": [
+							"https://blog.example.com/img/photo1.jpg"
+						],
+						"cover": "",
+						"subtitle": "",
+						"author": "Alice Chen",
+						"sticky": false,
+						"hidden": false,
+						"link": "",
+						"updated": "2024-12-20"
+					}
+				]
+			}
+		},
+		"site": {
+			"posts": {
+				"length": 3,
+				"data": [
+					{
+						"title": "Getting Started with JavaScript",
+						"date": "2025-01-15",
+						"path": "2025/01/15/getting-started/",
+						"permalink": "https://blog.example.com/2025/01/15/getting-started/",
+						"excerpt": "<p>An excerpt of Getting Started with JavaScript.</p>",
+						"content": "<p>Full content of Getting Started with JavaScript.</p>",
+						"tags": {
+							"data": [
+								{
+									"name": "javascript",
+									"path": "tags/javascript"
+								}
+							],
+							"length": 1
+						},
+						"categories": {
+							"data": [
+								{
+									"name": "Tech",
+									"path": "categories/tech"
+								}
+							],
+							"length": 1
+						},
+						"slug": "",
+						"layout": "post",
+						"photos": [
+							"https://blog.example.com/img/photo1.jpg"
+						],
+						"cover": "",
+						"subtitle": "A beginner guide",
+						"author": "Alice Chen",
+						"sticky": 1,
+						"hidden": false,
+						"link": "",
+						"updated": "2025-01-15"
+					},
+					{
+						"title": "Advanced Node.js Patterns",
+						"date": "2025-01-10",
+						"path": "2025/01/10/advanced-nodejs/",
+						"permalink": "https://blog.example.com/2025/01/10/advanced-nodejs/",
+						"excerpt": "<p>An excerpt of Advanced Node.js Patterns.</p>",
+						"content": "<p>Full content of Advanced Node.js Patterns.</p>",
+						"tags": {
+							"data": [
+								{
+									"name": "nodejs",
+									"path": "tags/nodejs"
+								}
+							],
+							"length": 1
+						},
+						"categories": {
+							"data": [
+								{
+									"name": "Tech",
+									"path": "categories/tech"
+								}
+							],
+							"length": 1
+						},
+						"slug": "",
+						"layout": "post",
+						"photos": [
+							"https://blog.example.com/img/photo1.jpg"
+						],
+						"cover": "",
+						"subtitle": "",
+						"author": "Alice Chen",
+						"sticky": false,
+						"hidden": false,
+						"link": "",
+						"updated": "2025-01-10"
+					},
+					{
+						"title": "CSS Grid Layout Tutorial",
+						"date": "2024-12-20",
+						"path": "2024/12/20/css-grid/",
+						"permalink": "https://blog.example.com/2024/12/20/css-grid/",
+						"excerpt": "<p>An excerpt of CSS Grid Layout Tutorial.</p>",
+						"content": "<p>Full content of CSS Grid Layout Tutorial.</p>",
+						"tags": {
+							"data": [
+								{
+									"name": "css",
+									"path": "tags/css"
+								}
+							],
+							"length": 1
+						},
+						"categories": {
+							"data": [
+								{
+									"name": "Design",
+									"path": "categories/design"
+								}
+							],
+							"length": 1
+						},
+						"slug": "",
+						"layout": "post",
+						"photos": [
+							"https://blog.example.com/img/photo1.jpg"
+						],
+						"cover": "",
+						"subtitle": "",
+						"author": "Alice Chen",
+						"sticky": false,
+						"hidden": false,
+						"link": "",
+						"updated": "2024-12-20"
+					}
+				]
+			},
+			"tags": [],
+			"categories": []
+		},
+		"body": "<article><p>Page content rendered by layout.</p></article>",
+		"pagination": 1,
+};

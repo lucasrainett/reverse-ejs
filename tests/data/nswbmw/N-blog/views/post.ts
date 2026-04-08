@@ -1,0 +1,42 @@
+import { createDate } from "../../../helpers";
+
+export default {
+	"blog": {
+		"title": "My N-Blog",
+		"description": "A blog about web development"
+	},
+	"user": {
+		"_id": "u001",
+		"name": "Alice"
+	},
+	"post": {
+		"_id": "p001",
+		"title": "Getting Started with Node.js",
+		"content": "<p>Node.js is a JavaScript runtime built on Chrome's V8 engine.</p>",
+		"created_at": "2025-01-15",
+		"pv": 128,
+		"commentsCount": 5,
+		"author": {
+			"_id": "u001",
+			"name": "Alice",
+			"gender": "f",
+			"bio": "Full-stack developer",
+			"avatar": "alice.png"
+		},
+		"date": "2025-01-15"
+	},
+	"comments": [
+		{
+			"_id": "c001",
+			"author": {
+				"_id": "u001",
+				"name": "Alice",
+				"avatar": "alice.png"
+			},
+			"created_at": "2025-01-15 10:30",
+			"content": "Great article!"
+		}
+	],
+	"success": "",
+	"error": ""
+};

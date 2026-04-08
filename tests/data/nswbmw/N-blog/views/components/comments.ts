@@ -1,0 +1,31 @@
+export default {
+	"comments": [
+		{
+			"_id": "c001",
+			"author": {
+				"_id": "u001",
+				"name": "Alice",
+				"avatar": "alice.png"
+			},
+			"created_at": "2025-01-15 10:30",
+			"content": "Great article! Thanks for sharing."
+		},
+		{
+			"_id": "c002",
+			"author": {
+				"_id": "u002",
+				"name": "Bob",
+				"avatar": "bob.png"
+			},
+			"created_at": "2025-01-15 11:45",
+			"content": "Very helpful, learned a lot."
+		}
+	],
+	"user": {
+		"_id": "u001",
+		"name": "Alice"
+	},
+	"post": {
+		"_id": "p001"
+	}
+};

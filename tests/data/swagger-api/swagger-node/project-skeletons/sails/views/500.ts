@@ -1,0 +1,3 @@
+export default {
+	"data": "An internal server error occurred. Please try again later."
+};

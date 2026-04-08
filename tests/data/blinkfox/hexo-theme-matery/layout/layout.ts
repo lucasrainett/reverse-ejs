@@ -1,0 +1,110 @@
+import { createHexoHelpers } from "../../../helpers";
+
+export default {
+	...createHexoHelpers(),
+	"config": {
+			"language": "en"
+		},
+		"body": "<article><p>Main content of the page goes here.</p></article>",
+		"theme": {
+			"jsDelivr": {
+				"url": "https://cdn.jsdelivr.net/gh/user/blog@latest"
+			},
+			"libs": {
+				"css": {
+					"fontAwesome": "/libs/awesome/css/all.min.css",
+					"materialize": "/libs/materialize/materialize.min.css",
+					"aos": "/libs/aos/aos.css",
+					"animate": "/libs/animate/animate.min.css",
+					"lightgallery": "/libs/lightGallery/css/lightgallery.min.css",
+					"matery": "/css/matery.css",
+					"mycss": "/css/my.css",
+					"gitalk": "/libs/gitalk/gitalk.css",
+					"aplayer": "/libs/aplayer/APlayer.min.css",
+					"dplayer": "/libs/dplayer/DPlayer.min.css",
+					"tocbot": "/libs/tocbot/tocbot.css",
+					"prism": "/libs/prism/prism.css",
+					"jqcloud": "/libs/jqcloud/jqcloud.min.css"
+				},
+				"js": {
+					"jquery": "/libs/jquery/jquery.min.js",
+					"materialize": "/libs/materialize/materialize.min.js",
+					"masonry": "/libs/masonry/masonry.pkgd.min.js",
+					"aos": "/libs/aos/aos.js",
+					"scrollProgress": "/libs/scrollprogress/scrollProgress.min.js",
+					"lightgallery": "/libs/lightGallery/js/lightgallery-all.min.js",
+					"matery": "/js/matery.js",
+					"clicklove": "/libs/others/clicklove.js",
+					"busuanzi": "/libs/others/busuanzi.pure.mini.js",
+					"canvas_nest": "/libs/others/canvas-nest.min.js",
+					"ribbon_dynamic": "/libs/others/ribbon-dynamic.js",
+					"instantpage": "/libs/others/instantpage.js",
+					"ribbon": "/libs/others/ribbon.min.js",
+					"ribbonRefresh": "/libs/others/ribbon-refresh.min.js",
+					"gitalk": "/libs/gitalk/gitalk.min.js",
+					"valine": "/libs/valine/Valine.min.js",
+					"tocbot": "/libs/tocbot/tocbot.min.js",
+					"aplayer": "/libs/aplayer/APlayer.min.js",
+					"dplayer": "/libs/dplayer/DPlayer.min.js",
+					"echarts": "/libs/echarts/echarts.min.js",
+					"jqcloud": "/libs/jqcloud/jqcloud.min.js",
+					"crypto": "/libs/crypto-js/crypto-js.min.js"
+				}
+			},
+			"background": {
+				"enable": true,
+				"url": "/medias/bg.jpg"
+			},
+			"clicklove": {
+				"enable": true
+			},
+			"busuanziStatistics": {
+				"enable": true
+			},
+			"tidio": {
+				"enable": false,
+				"public_key": "abc123def456"
+			},
+			"daovoice": {
+				"enable": false,
+				"app_id": "dv_app_12345"
+			},
+			"tuxiaochao": {
+				"enable": false,
+				"productId": "123456"
+			},
+			"canvas_nest": {
+				"enable": true,
+				"color": "0,0,255",
+				"pointColor": "0,0,255",
+				"opacity": "0.5",
+				"zIndex": -1,
+				"count": 99
+			},
+			"ribbon": {
+				"enable": true,
+				"size": 90,
+				"alpha": "0.6",
+				"zIndex": -1,
+				"clickChange": true
+			},
+			"ribbon_dynamic": {
+				"enable": false
+			},
+			"instantpage": {
+				"enable": true
+			},
+			"toc": {
+				"showToggleBtn": true
+			},
+			"baiduAnalytics": {
+				"enable": true,
+				"id": "abc123def456789"
+			},
+			"baiduPush": true,
+			"googleAnalytics": {
+				"enable": true,
+				"id": "UA-12345678-1"
+			}
+		},
+};

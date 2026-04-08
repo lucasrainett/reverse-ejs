@@ -1,0 +1,21 @@
+import { createHexoHelpers } from "../../../../helpers";
+
+export default {
+	...createHexoHelpers(),
+	"config": {
+			"title": "Pixel & Code",
+			"author": "Alice Chen",
+			"url": "https://blog.example.com",
+			"root": "/",
+			"language": "en",
+			"description": "A blog about web development and design",
+			"keywords": "blog, web, javascript, hexo",
+			"date_format": "YYYY-MM-DD",
+			"subtitle": "Thoughts on code and creativity"
+		},
+		"theme": {
+			"jsDelivr": {
+				"url": "https://cdn.jsdelivr.net/gh/user/blog@latest"
+			}
+		},
+};

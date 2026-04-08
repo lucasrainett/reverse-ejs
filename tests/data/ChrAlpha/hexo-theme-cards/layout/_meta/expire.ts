@@ -1,0 +1,440 @@
+import { createHexoHelpers, createDate, createCollection } from "../../../../helpers";
+
+export default {
+	...createHexoHelpers(),
+	"config": {
+			"title": "My Hexo Blog",
+			"author": "Alice",
+			"url": "https://example.com",
+			"root": "/",
+			"language": "en",
+			"relative_link": false,
+			"description": "A blog about technology",
+			"subtitle": "Tech Blog",
+			"keywords": "blog, tech",
+			"timezone": "UTC",
+			"per_page": 10,
+			"highlight": {
+				"enable": true,
+				"hljs": false
+			},
+			"prismjs": {
+				"enable": false,
+				"line_number": false
+			}
+		},
+		"page": {
+			"title": "Getting Started with Hexo",
+			"content": "<p>This is the main content of the post.</p>",
+			"date": "2025-01-15",
+			"updated": "2025-01-16",
+			"tags": {
+				"length": 2,
+				"data": [
+					{
+						"name": "javascript",
+						"path": "tags/javascript/"
+					},
+					{
+						"name": "hexo",
+						"path": "tags/hexo/"
+					}
+				]
+			},
+			"categories": {
+				"length": 1,
+				"data": [
+					{
+						"name": "Technology",
+						"path": "categories/technology/"
+					}
+				]
+			},
+			"excerpt": "<p>A brief excerpt of the post.</p>",
+			"permalink": "https://example.com/2025/01/post-title/",
+			"path": "2025/01/post-title/",
+			"slug": "post-title",
+			"layout": "post",
+			"raw": "Post content in markdown",
+			"comments": true,
+			"link": "",
+			"photos": [],
+			"prev": null,
+			"next": null,
+			"sidebar": "default",
+			"mathjax": false,
+			"toc": true,
+			"year": 2025,
+			"month": 1,
+			"category": "Technology",
+			"tag": "javascript",
+			"current": 1,
+			"total": 3,
+			"lang": "en",
+			"description": "Post description",
+			"keywords": "post, blog",
+			"type": "post",
+			"cover": false,
+			"copyright": true,
+			"expire": true,
+			"author": {
+				"name": "Alice Johnson"
+			},
+			"artitalk": {
+				"appId": "abc123",
+				"appKey": "key456"
+			},
+			"gitalk": null
+		},
+		"site": {
+			"posts": {
+				"length": 2,
+				"data": [
+					{
+						"title": "First Post",
+						"date": "2025-01-10",
+						"path": "2025/01/first-post/",
+						"permalink": "https://example.com/2025/01/first-post/",
+						"excerpt": "<p>First post excerpt</p>",
+						"categories": {
+							"length": 0,
+							"data": []
+						},
+						"tags": {
+							"length": 0,
+							"data": []
+						}
+					},
+					{
+						"title": "Second Post",
+						"date": "2025-01-12",
+						"path": "2025/01/second-post/",
+						"permalink": "https://example.com/2025/01/second-post/",
+						"excerpt": "<p>Second post excerpt</p>",
+						"categories": {
+							"length": 0,
+							"data": []
+						},
+						"tags": {
+							"length": 0,
+							"data": []
+						}
+					}
+				]
+			},
+			"tags": {
+				"length": 0,
+				"data": []
+			},
+			"categories": {
+				"length": 0,
+				"data": []
+			}
+		},
+		"theme": {
+			"meta": {
+				"title": "Untitled",
+				"author": {
+					"name": "Alice Johnson"
+				},
+				"copyright": {
+					"enable": true,
+					"custom_text": [
+						"Licensed under CC BY 4.0"
+					]
+				},
+				"date": {
+					"title": "Published: ",
+					"format": "YYYY-MM-DD"
+				},
+				"expire": {
+					"enable": true,
+					"duration": 120
+				},
+				"thumbnail": {
+					"enable": true,
+					"default": "/img/default-thumbnail.jpg",
+					"relative": false
+				},
+				"updated": {
+					"title": "Last Updated: ",
+					"format": "YYYY-MM-DD"
+				},
+				"toc": {
+					"enable": true,
+					"list_number": false
+				}
+			},
+			"head": {
+				"custom": "<meta name='custom' content='value'>",
+				"favicon": "/favicon.ico",
+				"opengraph": {
+					"enable": true,
+					"type": "article",
+					"twitter_card": "summary_large_image",
+					"twitter_id": "@myblog",
+					"image": "https://example.com/og-image.png",
+					"fb_admins": "100001",
+					"fb_app_id": "app123"
+				}
+			},
+			"style": {
+				"card_elevation": 2,
+				"body_bg_color": "#f5f5f5",
+				"header_bg_color": "#1B5E20",
+				"header_text_color": "#fff",
+				"highlight": {
+					"default": "github",
+					"darkmode": "monokai"
+				},
+				"hljs": {
+					"default": "github",
+					"darkmode": "monokai-sublime"
+				},
+				"prismjs": {
+					"default": "prism",
+					"darkmode": "prism-dark"
+				}
+			},
+			"cover": {
+				"title": "Cards Blog",
+				"description": "A cards-style blog",
+				"logo": "/img/logo.png",
+				"navigation": {
+					"Home": "/",
+					"Archive": "/archives",
+					"About": "/about"
+				}
+			},
+			"navbar": {
+				"sitename": "My Cards Blog",
+				"menu": [
+					{
+						"name": "Home",
+						"url": "/"
+					},
+					{
+						"name": "Archives",
+						"url": "/archives"
+					},
+					{
+						"name": "About",
+						"url": "/about"
+					}
+				]
+			},
+			"footer": {
+				"since": 2020,
+				"custom_text": "Powered by Hexo",
+				"icon": {
+					"enable": false
+				},
+				"statistics": {
+					"use": "busuanzi",
+					"site_uv": {
+						"enable": true,
+						"before_text": "Visitors: ",
+						"after_text": " people",
+						"divider": " | "
+					},
+					"site_pv": {
+						"enable": true,
+						"before_text": "Views: ",
+						"after_text": " times",
+						"divider": ""
+					},
+					"page_pv": {
+						"enable": true,
+						"before_text": "Reads: ",
+						"after_text": " times"
+					},
+					"leancloud": {
+						"appId": "lc-app-id-123",
+						"appKey": "lc-app-key-456",
+						"serverURL": "https://lc.example.com"
+					}
+				}
+			},
+			"comments": {
+				"use": "disqus",
+				"disqus": {
+					"shortname": "myblog-disqus"
+				},
+				"disqusjs": {
+					"shortname": "myblog-disqusjs",
+					"api": "https://disqus-api.example.com/api/",
+					"apikey": "djs-api-key-789",
+					"admin": "admin-user",
+					"adminLabel": "Admin",
+					"nesting": 4
+				},
+				"valine": {
+					"appId": "valine-app-id",
+					"appKey": "valine-app-key",
+					"placeholder": "Leave a comment..."
+				},
+				"minivaline": {
+					"appId": "mv-app-id",
+					"appKey": "mv-app-key",
+					"placeholder": "Say something..."
+				},
+				"giscus": {
+					"repo": "user/repo",
+					"repoId": "R_abc123",
+					"category": "Announcements",
+					"categoryId": "DIC_abc",
+					"mapping": "pathname",
+					"strict": false,
+					"position": "top",
+					"theme": "light",
+					"lang": "en"
+				},
+				"gitalk": {
+					"clientID": "gitalk-client-id",
+					"clientSecret": "gitalk-client-secret",
+					"repo": "blog-comments",
+					"owner": "blogowner"
+				},
+				"gitment": {
+					"owner": "blogowner",
+					"repo": "blog-comments",
+					"client_id": "gitment-client-id",
+					"client_secret": "gitment-client-secret"
+				},
+				"artalk": {
+					"server": "https://artalk.example.com",
+					"site": "My Blog"
+				},
+				"livere": {
+					"livere_uid": "MTAyMC8xMjM0NQ=="
+				},
+				"changyan": {
+					"appid": "cy-app-id",
+					"conf": "cy-conf-key",
+					"thread_key_type": "path"
+				},
+				"wildfire": {
+					"database_provider": "firebase",
+					"wildfire_app_id": "wf-app-123"
+				},
+				"twikoo": {
+					"envId": "twikoo-env-id-123"
+				},
+				"utterances": {
+					"repo": "user/blog-comments",
+					"issueTerm": "pathname",
+					"theme": "github-light",
+					"label": "comment"
+				}
+			},
+			"vendors": {
+				"style": "css/style/main.css",
+				"custom_script": [
+					"<script src='/js/custom1.js'></script>",
+					"<script src='/js/custom2.js'></script>"
+				],
+				"jquery": "https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js",
+				"artitalk": "https://unpkg.com/artitalk",
+				"artalk": {
+					"js": "https://cdn.jsdelivr.net/npm/artalk@2.5.0/dist/Artalk.js",
+					"css": "https://cdn.jsdelivr.net/npm/artalk@2.5.0/dist/Artalk.css"
+				},
+				"fancybox": {
+					"css": "https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css",
+					"js": "https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"
+				},
+				"disqusjs": {
+					"js": "https://cdn.jsdelivr.net/npm/disqusjs@3.0/dist/browser/disqusjs.es2015.umd.min.js",
+					"css": "https://cdn.jsdelivr.net/npm/disqusjs@3.0/dist/browser/styles/disqusjs.min.css"
+				},
+				"valine": "https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js",
+				"minivaline": "https://cdn.jsdelivr.net/npm/minivaline@2.7.5/dist/MiniValine.min.js",
+				"twikoo": "https://cdn.jsdelivr.net/npm/twikoo@1.6.40/dist/twikoo.all.min.js",
+				"highlight": "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.0/build/styles/",
+				"hljs": "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.0/build/styles/",
+				"prismjs": "https://cdn.jsdelivr.net/npm/prismjs@1.21.0/themes/",
+				"mermaid": "https://cdn.jsdelivr.net/npm/mermaid@8.10.2/dist/mermaid.min.js",
+				"busuanzi": "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"
+			},
+			"darkmode": true,
+			"fancybox": {
+				"enable": true,
+				"auto": true
+			},
+			"lazyload": {
+				"enable": true
+			},
+			"mermaid": {
+				"enable": true,
+				"options": "{}"
+			},
+			"fold": {
+				"enable": true,
+				"motion": true
+			},
+			"search": {
+				"enable": true,
+				"use": "local-search",
+				"path": "/search.xml"
+			},
+			"analytics": {
+				"google_site_id": "",
+				"gtags_site_id": "",
+				"baidu_site_id": "",
+				"cnzz_site_id": "",
+				"cloudflare": "",
+				"umami": {
+					"src": "",
+					"id": ""
+				}
+			},
+			"links": [
+				{
+					"name": "Friend Blog",
+					"url": "https://friend.example.com",
+					"avatar": "/img/friend.png",
+					"bio": "A friend"
+				}
+			],
+			"tag_plugins": {
+				"note": {
+					"style": "flat"
+				},
+				"fold": {}
+			},
+			"opengraph": {
+				"enable": true
+			}
+		},
+		"post": {
+			"title": "Getting Started with Hexo",
+			"content": "<p>This is the main content of the post.</p>",
+			"date": "2025-01-15",
+			"updated": "2025-01-16",
+			"excerpt": "<p>A brief excerpt.</p>",
+			"permalink": "https://example.com/2025/01/post-title/",
+			"path": "2025/01/post-title/",
+			"slug": "post-title",
+			"layout": "post",
+			"link": "",
+			"photos": [],
+			"comments": true,
+			"mathjax": false,
+			"tags": [],
+			"categories": [],
+			"prev": {
+				"title": "Previous Post",
+				"path": "2025/01/prev-post/"
+			},
+			"next": {
+				"title": "Next Post",
+				"path": "2025/01/next-post/"
+			},
+			"sidebar": "default",
+			"thumbnail": "/img/post-thumb.jpg"
+		},
+		"body": "<p>Page content goes here.</p>",
+		"url": "https://example.com/current-page/",
+		"index": false,
+		"position": "page",
+};

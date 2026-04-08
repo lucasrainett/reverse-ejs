@@ -1,0 +1,4 @@
+export default {
+	"title": "Hackathon Starter",
+	"body": "<h1>Welcome</h1>",
+};

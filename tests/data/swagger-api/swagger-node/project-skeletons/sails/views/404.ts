@@ -1,0 +1,3 @@
+export default {
+	"data": "The requested resource was not found on this server."
+};
