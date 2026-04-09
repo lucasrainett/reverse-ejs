@@ -4,6 +4,25 @@ export function escapeRegex(str: string): string {
 	return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function escapeRegexFlexWs(str: string): string {
+	const escaped = escapeRegex(str);
+	if (/^\s+$/.test(str)) return "\\s*";
+	return escaped
+		.replace(/\s+/g, "\\s*")
+		.replace(/(>)(?!\\s\*)/g, "$1\\s*")
+		.replace(/(?<!\\s\*)(<)/g, "\\s*$1");
+}
+
+function stripWsLiterals(pattern: Pattern): Pattern {
+	if (pattern.type !== "sequence") return pattern;
+	const parts = pattern.parts.filter(
+		(p) => !(p.type === "literal" && /^\s+$/.test(p.value)),
+	);
+	if (parts.length === 0) return { type: "literal", value: "" };
+	if (parts.length === 1) return parts[0];
+	return { type: "sequence", parts };
+}
+
 export function toCaptureName(name: string): string {
 	return name.replace(/\./g, "__");
 }
@@ -22,10 +41,13 @@ export function buildRegex(
 	seen: Set<string> = new Set(),
 	branchSuffix?: string,
 	loopVar?: string,
+	flexWs?: boolean,
 ): string {
+	const esc = flexWs ? escapeRegexFlexWs : escapeRegex;
+
 	switch (pattern.type) {
 		case "literal":
-			return escapeRegex(pattern.value);
+			return esc(pattern.value);
 
 		case "variable": {
 			let captureName = pattern.name;
@@ -40,7 +62,7 @@ export function buildRegex(
 				} else if (bracketItem && captureName === bracketItem) {
 					captureName = itemName || captureName;
 				} else if (!itemName) {
-					// while loop — capture all variables
+					// while loop - capture all variables
 				} else {
 					return `[\\s\\S]+?`;
 				}
@@ -61,7 +83,8 @@ export function buildRegex(
 			if (itemName && arrayCaptureName.startsWith(itemName + ".")) {
 				arrayCaptureName = arrayCaptureName.slice(itemName.length + 1);
 			}
-			const bodyNoGroups = buildRegexNoGroups(pattern.body);
+			const body = flexWs ? stripWsLiterals(pattern.body) : pattern.body;
+			const bodyNoGroups = buildRegexNoGroups(body, flexWs);
 			return `(?<${toCaptureName(arrayCaptureName)}_LOOP>(?:${bodyNoGroups})*)`;
 		}
 
@@ -80,6 +103,7 @@ export function buildRegex(
 					thenSeen,
 					tSfx,
 					loopVar,
+					flexWs,
 				);
 				for (const k of thenSeen) seen.add(k);
 				seen.add(`_C${id}TS`);
@@ -93,6 +117,7 @@ export function buildRegex(
 				thenSeen,
 				tSfx,
 				loopVar,
+				flexWs,
 			);
 			const elseSeen = new Set<string>();
 			const elseRegex = buildRegex(
@@ -101,6 +126,7 @@ export function buildRegex(
 				elseSeen,
 				eSfx,
 				loopVar,
+				flexWs,
 			);
 			for (const k of thenSeen) seen.add(k);
 			for (const k of elseSeen) seen.add(k);
@@ -121,27 +147,38 @@ export function buildRegex(
 			}
 			return pattern.parts
 				.map((p) =>
-					buildRegex(p, itemName, seen, branchSuffix, loopVar),
+					buildRegex(
+						p,
+						itemName,
+						seen,
+						branchSuffix,
+						loopVar,
+						flexWs,
+					),
 				)
 				.join("");
 		}
 	}
 }
 
-export function buildRegexNoGroups(pattern: Pattern): string {
+export function buildRegexNoGroups(pattern: Pattern, flexWs?: boolean): string {
+	const esc = flexWs ? escapeRegexFlexWs : escapeRegex;
+
 	switch (pattern.type) {
 		case "literal":
-			return escapeRegex(pattern.value);
+			return esc(pattern.value);
 		case "variable":
 			return `[\\s\\S]*?`;
 		case "loop":
-			return `(?:${buildRegexNoGroups(pattern.body)})*`;
+			return `(?:${buildRegexNoGroups(pattern.body, flexWs)})*`;
 		case "conditional": {
-			const then = buildRegexNoGroups(pattern.thenBranch);
+			const then = buildRegexNoGroups(pattern.thenBranch, flexWs);
 			if (!pattern.elseBranch) return `(?:${then})?`;
-			return `(?:${then}|${buildRegexNoGroups(pattern.elseBranch)})`;
+			return `(?:${then}|${buildRegexNoGroups(pattern.elseBranch, flexWs)})`;
 		}
 		case "sequence":
-			return pattern.parts.map(buildRegexNoGroups).join("");
+			return pattern.parts
+				.map((p) => buildRegexNoGroups(p, flexWs))
+				.join("");
 	}
 }

@@ -38,6 +38,7 @@ export interface EjsOptions {
 	openDelimiter?: string;
 	closeDelimiter?: string;
 	rmWhitespace?: boolean;
+	flexibleWhitespace?: boolean;
 	unescape?: (s: string) => string;
 	partials?: Record<string, string>;
 }

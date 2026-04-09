@@ -140,6 +140,8 @@ interface ReverseEjsOptions {
 	closeDelimiter?: string;
 	/** Strip leading/trailing whitespace from template lines before matching. */
 	rmWhitespace?: boolean;
+	/** Ignore whitespace differences between template and rendered HTML. */
+	flexibleWhitespace?: boolean;
 	/** Custom HTML-unescape function for extracted values. */
 	unescape?: (s: string) => string;
 	/** Map of partial name to EJS source for include expansion. */
@@ -165,6 +167,27 @@ const unescape = (s: string) => s.replace(/&#(\d+);/g, (_, code) => String.fromC
 reverseEjs("<p><%= val %></p>", "<p>&#60;b&#62;bold&#60;/b&#62;</p>", { unescape });
 // => { val: "<b>bold</b>" }
 ```
+
+### Flexible whitespace
+
+When extracting data from web pages, the HTML formatting often differs from your template. Enable `flexibleWhitespace` to ignore whitespace differences:
+
+```ts
+const template = `<div>
+  <h1><%= title %></h1>
+  <p><%= body %></p>
+</div>`;
+
+// Works with minified HTML
+reverseEjs(template, "<div><h1>Hello</h1><p>World</p></div>", { flexibleWhitespace: true });
+// => { title: "Hello", body: "World" }
+
+// Works with differently indented HTML
+reverseEjs(template, "<div>\n\t<h1>Hello</h1>\n\t<p>World</p>\n</div>", { flexibleWhitespace: true });
+// => { title: "Hello", body: "World" }
+```
+
+Recommended for web data extraction where you don't control the source formatting.
 
 ## EJS Feature Support
 

@@ -104,4 +104,85 @@ describe("options", () => {
 			show: true,
 		});
 	});
+
+	it("should match minified HTML against pretty-printed template with flexibleWhitespace", () => {
+		const template =
+			"<div>\n" +
+			"  <h1><%= title %></h1>\n" +
+			"  <p><%= body %></p>\n" +
+			"</div>";
+		const final = "<div><h1>Hello</h1><p>World</p></div>";
+		expect(
+			reverseEjs(template, final, { flexibleWhitespace: true }),
+		).toEqual({ title: "Hello", body: "World" });
+	});
+
+	it("should match pretty-printed HTML against minified template with flexibleWhitespace", () => {
+		const template = "<div><h1><%= title %></h1><p><%= body %></p></div>";
+		const final =
+			"<div>\n" + "  <h1>Hello</h1>\n" + "  <p>World</p>\n" + "</div>";
+		expect(
+			reverseEjs(template, final, { flexibleWhitespace: true }),
+		).toEqual({ title: "Hello", body: "World" });
+	});
+
+	it("should match with different indentation levels with flexibleWhitespace", () => {
+		const template =
+			"<ul>\n" +
+			"    <% items.forEach(item => { %>\n" +
+			"    <li><%= item %></li>\n" +
+			"    <% }) %>\n" +
+			"</ul>";
+		const final = "<ul><li>Alpha</li><li>Beta</li></ul>";
+		expect(
+			reverseEjs(template, final, { flexibleWhitespace: true }),
+		).toEqual({ items: ["Alpha", "Beta"] });
+	});
+
+	it("should match extra newlines in rendered output with flexibleWhitespace", () => {
+		const template = "<h1><%= title %></h1><p><%= body %></p>";
+		const final = "<h1>Hello</h1>\n\n\n<p>World</p>";
+		expect(
+			reverseEjs(template, final, { flexibleWhitespace: true }),
+		).toEqual({ title: "Hello", body: "World" });
+	});
+
+	it("should preserve non-whitespace literal matching with flexibleWhitespace", () => {
+		const template = '<div class="product"><%= name %></div>';
+		const final = '<div class="product">Widget</div>';
+		expect(
+			reverseEjs(template, final, { flexibleWhitespace: true }),
+		).toEqual({ name: "Widget" });
+	});
+
+	it("should handle loops with different formatting with flexibleWhitespace", () => {
+		const template =
+			"<table>\n" +
+			"  <% rows.forEach(row => { %>\n" +
+			"  <tr>\n" +
+			"    <td><%= row.name %></td>\n" +
+			"    <td><%= row.value %></td>\n" +
+			"  </tr>\n" +
+			"  <% }) %>\n" +
+			"</table>";
+		const final =
+			"<table><tr><td>Alice</td><td>100</td></tr><tr><td>Bob</td><td>200</td></tr></table>";
+		expect(
+			reverseEjs(template, final, { flexibleWhitespace: true }),
+		).toEqual({
+			rows: [
+				{ name: "Alice", value: "100" },
+				{ name: "Bob", value: "200" },
+			],
+		});
+	});
+
+	it("should handle conditionals with different formatting with flexibleWhitespace", () => {
+		const template =
+			"<% if (show) { %>\n" + "  <p><%= message %></p>\n" + "<% } %>";
+		const final = "<p>Hello</p>";
+		expect(
+			reverseEjs(template, final, { flexibleWhitespace: true }),
+		).toEqual({ message: "Hello", show: true });
+	});
 });

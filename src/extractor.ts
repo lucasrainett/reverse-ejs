@@ -51,7 +51,15 @@ export function extract(
 	opts?: EjsOptions,
 ): ExtractedObject {
 	const unescape = opts?.unescape ?? unescapeHtml;
-	const regexStr = buildRegex(pattern);
+	const flexWs = opts?.flexibleWhitespace;
+	const regexStr = buildRegex(
+		pattern,
+		undefined,
+		new Set(),
+		undefined,
+		undefined,
+		flexWs,
+	);
 	const regex = new RegExp(`^${regexStr}$`, "s");
 	const match = regex.exec(finalString);
 
@@ -65,13 +73,14 @@ export function extract(
 
 	if (!match.groups) return {};
 
-	return groupsToObject(match.groups, pattern, unescape);
+	return groupsToObject(match.groups, pattern, unescape, flexWs);
 }
 
 function groupsToObject(
 	groups: Record<string, string | undefined>,
 	pattern: Pattern,
 	unescape: (s: string) => string,
+	flexWs?: boolean,
 ): ExtractedObject {
 	const result: ExtractedObject = {};
 
@@ -86,7 +95,7 @@ function groupsToObject(
 				setNested(
 					result,
 					arrayName,
-					extractLoopItems(loopPattern, value, unescape),
+					extractLoopItems(loopPattern, value, unescape, flexWs),
 				);
 			}
 		} else if (SENTINEL_RE.test(captureName)) {
@@ -111,6 +120,7 @@ function extractLoopItems(
 	loopPattern: LoopPattern,
 	loopSection: string,
 	unescape: (s: string) => string,
+	flexWs?: boolean,
 ): ExtractedItem[] {
 	if (!loopSection) return [];
 
@@ -120,6 +130,7 @@ function extractLoopItems(
 		new Set(),
 		undefined,
 		loopPattern.loopVar,
+		flexWs,
 	);
 	const bodyRegex = new RegExp(bodyRegexStr, "gs");
 
@@ -179,7 +190,7 @@ function extractLoopItems(
 					setNested(
 						item,
 						arrayName,
-						extractLoopItems(nested, content, unescape),
+						extractLoopItems(nested, content, unescape, flexWs),
 					);
 			}
 			items.push(item);
