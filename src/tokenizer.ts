@@ -277,7 +277,7 @@ function processScriptlet(
 		return;
 	}
 
-	// break; inside switch — ignore
+	// break; inside switch - ignore
 	if (/^break\s*;?$/.test(code)) {
 		return;
 	}

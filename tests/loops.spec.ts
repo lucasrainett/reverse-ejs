@@ -324,11 +324,11 @@ describe("loops", () => {
 	it("should extract loop with deeply nested item properties", () => {
 		const template =
 			"<% orders.forEach(order => { %>" +
-			"<div><%= order.customer.name %> — <%= order.customer.email %> — $<%= order.total %></div>" +
+			"<div><%= order.customer.name %> - <%= order.customer.email %> - $<%= order.total %></div>" +
 			"<% }) %>";
 		const final =
-			"<div>Alice — alice@example.com — $150.00</div>" +
-			"<div>Bob — bob@example.com — $89.99</div>";
+			"<div>Alice - alice@example.com - $150.00</div>" +
+			"<div>Bob - bob@example.com - $89.99</div>";
 		expect(reverseEjs(template, final)).toEqual({
 			orders: [
 				{

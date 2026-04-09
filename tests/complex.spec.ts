@@ -108,7 +108,7 @@ describe("complex scenarios", () => {
 			"<% departments.forEach(dept => { %>" +
 			"<section><h2><%= dept.name %></h2><ul>" +
 			"<% dept.members.forEach(m => { %>" +
-			"<li><%= m.name %> — <%= m.role %></li>" +
+			"<li><%= m.name %> - <%= m.role %></li>" +
 			"<% }) %></ul></section>" +
 			"<% }) %>" +
 			"<footer><%= footerText %></footer>";
@@ -117,11 +117,11 @@ describe("complex scenarios", () => {
 			"<h1>Dashboard: Alice</h1>" +
 			'<div class="admin-panel">System healthy</div>' +
 			"<section><h2>Engineering</h2><ul>" +
-			"<li>Bob — Lead</li>" +
-			"<li>Carol — Senior</li>" +
+			"<li>Bob - Lead</li>" +
+			"<li>Carol - Senior</li>" +
 			"</ul></section>" +
 			"<section><h2>Design</h2><ul>" +
-			"<li>Dave — Director</li>" +
+			"<li>Dave - Director</li>" +
 			"</ul></section>" +
 			"<footer>© 2025 Acme</footer>";
 
@@ -150,7 +150,7 @@ describe("complex scenarios", () => {
 			"<h1><%= storeName %></h1>" +
 			"<% products.forEach(p => { %>" +
 			'<div class="product">' +
-			"<span><%= p.name %></span> — $<%= p.price %>" +
+			"<span><%= p.name %></span> - $<%= p.price %>" +
 			"<% if (p.onSale) { %> <em>SALE</em><% } %>" +
 			"</div>" +
 			"<% }) %>" +
@@ -159,10 +159,10 @@ describe("complex scenarios", () => {
 		const final =
 			"<h1>TechShop</h1>" +
 			'<div class="product">' +
-			"<span>Keyboard</span> — $79.99" +
+			"<span>Keyboard</span> - $79.99" +
 			"</div>" +
 			'<div class="product">' +
-			"<span>Monitor</span> — $349.00 <em>SALE</em>" +
+			"<span>Monitor</span> - $349.00 <em>SALE</em>" +
 			"</div>" +
 			"<p>Showing 2 products</p>";
 

@@ -134,17 +134,17 @@ describe("conditionals", () => {
 	it("should resolve same variable names in both branches to one value each", () => {
 		const template =
 			"<% if (isPaid) { %>" +
-			"<%= firstName %> <%= lastName %> — Premium" +
+			"<%= firstName %> <%= lastName %> - Premium" +
 			"<% } else { %>" +
-			"<%= firstName %> <%= lastName %> — Free" +
+			"<%= firstName %> <%= lastName %> - Free" +
 			"<% } %>";
 
-		expect(reverseEjs(template, "Alice Smith — Premium")).toEqual({
+		expect(reverseEjs(template, "Alice Smith - Premium")).toEqual({
 			isPaid: true,
 			firstName: "Alice",
 			lastName: "Smith",
 		});
-		expect(reverseEjs(template, "Bob Jones — Free")).toEqual({
+		expect(reverseEjs(template, "Bob Jones - Free")).toEqual({
 			isPaid: false,
 			firstName: "Bob",
 			lastName: "Jones",

@@ -17,7 +17,7 @@ function expandIncludes(
 ): string {
 	if (depth > 20)
 		throw new Error(
-			"Include depth limit exceeded — possible circular include",
+			"Include depth limit exceeded - possible circular include",
 		);
 	return template.replace(INCLUDE_RE, (_match, name: string) => {
 		const partial = partials[name];

@@ -9,6 +9,8 @@ reverseEjs("Hello, <%= name %>!", "Hello, Alice!");
 // => { name: "Alice" }
 ```
 
+**[Try it in the browser](https://lucasrainett.github.io/reverse-ejs/)**
+
 ## Installation
 
 ```bash

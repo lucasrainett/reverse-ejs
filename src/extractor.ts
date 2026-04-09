@@ -99,7 +99,7 @@ function groupsToObject(
 				);
 			}
 		} else if (SENTINEL_RE.test(captureName)) {
-			// sentinel — handled by extractConditionBooleans
+			// sentinel - handled by extractConditionBooleans
 		} else {
 			const isRaw = RAW_RE.test(captureName);
 			const cleanName = captureName.replace(RAW_RE, "");

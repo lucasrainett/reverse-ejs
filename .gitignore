@@ -7,7 +7,7 @@ dist/
 # Test coverage
 coverage/
 
-# Downloaded test fixtures and generated outputs
+# Test fixtures (downloaded) and rendered outputs (generated)
 tests/fixtures/
 tests/rendered/
 
