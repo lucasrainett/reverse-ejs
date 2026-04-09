@@ -1,6 +1,6 @@
 export type Token =
 	| { type: "literal"; value: string }
-	| { type: "variable"; name: string }
+	| { type: "variable"; name: string; raw?: boolean }
 	| {
 			type: "loop_start";
 			arrayName: string;
@@ -15,7 +15,7 @@ export type Token =
 export type Pattern =
 	| { type: "sequence"; parts: Pattern[] }
 	| { type: "literal"; value: string }
-	| { type: "variable"; name: string }
+	| { type: "variable"; name: string; raw?: boolean }
 	| {
 			type: "loop";
 			arrayName: string;

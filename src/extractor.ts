@@ -16,8 +16,9 @@ function unescapeHtml(s: string): string {
 		.replace(/&#39;/g, "'");
 }
 
-const BRANCH_RE = /^(.+)_C(\d+)([TE])$/;
+const BRANCH_RE = /^(.+)_C(\d+)([TE])(?:_RAW)?$/;
 const SENTINEL_RE = /^_C\d+[TE]S$/;
+const RAW_RE = /_RAW$/;
 
 export function extract(
 	pattern: Pattern,
@@ -66,11 +67,17 @@ function groupsToObject(
 		} else if (SENTINEL_RE.test(captureName)) {
 			// sentinel — handled by extractConditionBooleans
 		} else {
-			const branchMatch = BRANCH_RE.exec(captureName);
+			const isRaw = RAW_RE.test(captureName);
+			const cleanName = captureName.replace(RAW_RE, "");
+			const branchMatch = BRANCH_RE.exec(cleanName);
 			if (branchMatch) {
-				result[fromCaptureName(branchMatch[1])] = unescape(value);
+				result[fromCaptureName(branchMatch[1])] = isRaw
+					? value
+					: unescape(value);
 			} else {
-				result[fromCaptureName(captureName)] = unescape(value);
+				result[fromCaptureName(cleanName)] = isRaw
+					? value
+					: unescape(value);
 			}
 		}
 	}
@@ -104,11 +111,20 @@ function extractLoopItems(
 		const simpleGroups: Record<string, string> = {};
 		const nestedLoops: Record<string, string> = {};
 
-		for (const key of Object.keys(match.groups)) {
-			const val = match.groups[key];
+		for (const rawKey of Object.keys(match.groups)) {
+			const val = match.groups[rawKey];
 			if (val == null) continue;
+			const key = rawKey.replace(RAW_RE, "");
+			if (SENTINEL_RE.test(key)) continue;
 			if (key.endsWith("_LOOP")) nestedLoops[key.slice(0, -5)] = val;
-			else simpleGroups[key] = val;
+			else {
+				const branchMatch = BRANCH_RE.exec(key);
+				if (branchMatch) {
+					simpleGroups[branchMatch[1]] = val;
+				} else {
+					simpleGroups[key] = val;
+				}
+			}
 		}
 
 		const allKeys = [

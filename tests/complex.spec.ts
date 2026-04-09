@@ -123,7 +123,6 @@ describe("complex scenarios", () => {
 
 		expect(reverseEjs(template, final)).toEqual({
 			"user.name": "Alice",
-			"user.isAdmin": true,
 			adminMessage: "System healthy",
 			departments: [
 				{

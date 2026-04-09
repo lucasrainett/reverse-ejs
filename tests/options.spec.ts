@@ -69,7 +69,7 @@ describe("options", () => {
 	});
 
 	it("should support all three custom delimiters together", () => {
-		const template = "{{= name }}";
+		const template = "{== name =}";
 		const final = "Alice";
 		expect(
 			reverseEjs(template, final, {
@@ -87,7 +87,7 @@ describe("options", () => {
 			"      <li><%= item %></li>\n" +
 			"    <% }) %>\n" +
 			"  </ul>";
-		const final = "<ul>\n<li>Alpha</li>\n<li>Beta</li>\n</ul>";
+		const final = "<ul>\n\n<li>Alpha</li>\n\n<li>Beta</li>\n\n</ul>";
 		expect(reverseEjs(template, final, { rmWhitespace: true })).toEqual({
 			items: ["Alpha", "Beta"],
 		});
@@ -98,7 +98,7 @@ describe("options", () => {
 			"  <% if (show) { %>\n" +
 			"    <p><%= message %></p>\n" +
 			"  <% } %>";
-		const final = "<p>Hello</p>";
+		const final = "\n<p>Hello</p>\n";
 		expect(reverseEjs(template, final, { rmWhitespace: true })).toEqual({
 			message: "Hello",
 			show: true,

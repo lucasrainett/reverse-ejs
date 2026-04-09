@@ -42,7 +42,11 @@ function parseSequence(
 			parts.push({ type: "literal", value: token.value });
 			i++;
 		} else if (token.type === "variable") {
-			parts.push({ type: "variable", name: token.name });
+			parts.push({
+				type: "variable",
+				name: token.name,
+				...(token.raw ? { raw: true } : {}),
+			});
 			i++;
 		} else if (token.type === "loop_start") {
 			const [body, endIdx] = parseSequence(tokens, i + 1);

@@ -46,12 +46,14 @@ export function buildRegex(
 				}
 			}
 
-			const key = toCaptureName(captureName) + (branchSuffix ?? "");
+			const rawSuffix = pattern.raw ? "_RAW" : "";
+			const key =
+				toCaptureName(captureName) + (branchSuffix ?? "") + rawSuffix;
 
 			if (!isValidCaptureName(key)) return `[\\s\\S]+?`;
 			if (seen.has(key)) return `\\k<${key}>`;
 			seen.add(key);
-			return `(?<${key}>[\\s\\S]+?)`;
+			return `(?<${key}>[\\s\\S]*?)`;
 		}
 
 		case "loop": {
@@ -131,7 +133,7 @@ export function buildRegexNoGroups(pattern: Pattern): string {
 		case "literal":
 			return escapeRegex(pattern.value);
 		case "variable":
-			return `[\\s\\S]+?`;
+			return `[\\s\\S]*?`;
 		case "loop":
 			return `(?:${buildRegexNoGroups(pattern.body)})*`;
 		case "conditional": {

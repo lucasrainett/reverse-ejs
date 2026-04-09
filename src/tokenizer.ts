@@ -38,9 +38,9 @@ function buildSegMap(o: string, d: string, c: string): Map<string, string> {
 }
 
 const FOR_EACH_RE =
-	/^([\w.]+)\.(forEach|map)\s*\(\s*\(?\s*(\w+)\s*(?:,\s*\w+\s*)?\)?\s*=>\s*\{/;
+	/^([\w.]+)\.(forEach|map)\s*\(\s*(?:function\s*\(\s*(\w+)\s*(?:,\s*\w+\s*)?\)\s*\{|\(?\s*(\w+)\s*(?:,\s*\w+\s*)?\)?\s*=>\s*\{)/;
 const CHAINED_RE =
-	/^(\w+)\b.*\.(forEach|map)\s*\(\s*\(?\s*(\w+)\s*(?:,\s*\w+\s*)?\)?\s*=>\s*\{/;
+	/^(\w+)\b.*\.(forEach|map)\s*\(\s*(?:function\s*\(\s*(\w+)\s*(?:,\s*\w+\s*)?\)\s*\{|\(?\s*(\w+)\s*(?:,\s*\w+\s*)?\)?\s*=>\s*\{)/;
 const FOR_OF_RE = /^for\s*\(\s*(?:const|let|var)\s+(\w+)\s+of\s+([\w.]+)\s*\)/;
 const FOR_CLASSIC_RE =
 	/^for\s*\(\s*(?:let|var|const)\s+(\w+)[^;]*;\s*(\w+)\s*<\s*([\w.]+)\.length/;
@@ -171,7 +171,7 @@ function emitRawVariable(tokens: Token[], raw: string): void {
 		);
 	}
 	const name = raw.startsWith("locals.") ? raw.slice("locals.".length) : raw;
-	if (name) tokens.push({ type: "variable", name });
+	if (name) tokens.push({ type: "variable", name, raw: true });
 }
 
 function processScriptlet(
@@ -187,7 +187,7 @@ function processScriptlet(
 		tokens.push({
 			type: "loop_start",
 			arrayName: feMatch[1],
-			itemName: feMatch[3],
+			itemName: feMatch[3] || feMatch[4],
 		});
 		return;
 	}
@@ -198,7 +198,7 @@ function processScriptlet(
 		tokens.push({
 			type: "loop_start",
 			arrayName: chainedMatch[1],
-			itemName: chainedMatch[3],
+			itemName: chainedMatch[3] || chainedMatch[4],
 		});
 		return;
 	}
@@ -252,6 +252,14 @@ function processScriptlet(
 
 	if (SWITCH_RE.test(code)) {
 		stack.push({ kind: "switch", caseSeen: false });
+		const inlineCase = /case[\s(]/.exec(code.slice(code.indexOf("{")));
+		if (inlineCase) {
+			const top = stack[stack.length - 1];
+			if (typeof top === "object" && top.kind === "switch") {
+				top.caseSeen = true;
+				tokens.push({ type: "if_start" });
+			}
+		}
 		return;
 	}
 
@@ -265,6 +273,33 @@ function processScriptlet(
 				tokens.push({ type: "else" });
 				tokens.push({ type: "if_start" });
 			}
+		}
+		return;
+	}
+
+	// break; inside switch — ignore
+	if (/^break\s*;?$/.test(code)) {
+		return;
+	}
+
+	// break; case ... or break; default: (combined scriptlet)
+	const breakCase =
+		/^break\s*;\s*(case[\s(].*)$/.exec(code) ||
+		/^break\s*;\s*(default\s*:.*)$/.exec(code);
+	if (breakCase) {
+		processScriptlet(breakCase[1], tokens, stack);
+		return;
+	}
+
+	// break; } (end of switch, combined)
+	if (/^break\s*;\s*\}/.test(code)) {
+		const ctx = stack.pop();
+		if (typeof ctx === "object" && ctx.kind === "switch") {
+			if (ctx.caseSeen) tokens.push({ type: "if_end" });
+		} else if (ctx === "loop") {
+			tokens.push({ type: "loop_end" });
+		} else if (ctx === "if") {
+			tokens.push({ type: "if_end" });
 		}
 		return;
 	}
