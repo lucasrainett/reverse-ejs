@@ -95,6 +95,29 @@ describe("loops", () => {
 		});
 	});
 
+	it("should extract nested departments and members (README example)", () => {
+		const template =
+			"<% departments.forEach(dept => { %>" +
+			"<h2><%= dept.name %></h2>" +
+			"<% dept.members.forEach(m => { %><li><%= m.name %></li><% }) %>" +
+			"<% }) %>";
+		const final =
+			"<h2>Engineering</h2><li>Alice</li><li>Bob</li>" +
+			"<h2>Design</h2><li>Carol</li>";
+		expect(reverseEjs(template, final)).toEqual({
+			departments: [
+				{
+					name: "Engineering",
+					members: [{ name: "Alice" }, { name: "Bob" }],
+				},
+				{
+					name: "Design",
+					members: [{ name: "Carol" }],
+				},
+			],
+		});
+	});
+
 	it("should parse CSV-style plain text from a loop", () => {
 		const template =
 			"<% rows.forEach(row => { %><%= row.name %>,<%= row.age %>,<%= row.city %>\n<% }) %>";
@@ -309,13 +332,11 @@ describe("loops", () => {
 		expect(reverseEjs(template, final)).toEqual({
 			orders: [
 				{
-					"customer.name": "Alice",
-					"customer.email": "alice@example.com",
+					customer: { name: "Alice", email: "alice@example.com" },
 					total: "150.00",
 				},
 				{
-					"customer.name": "Bob",
-					"customer.email": "bob@example.com",
+					customer: { name: "Bob", email: "bob@example.com" },
 					total: "89.99",
 				},
 			],

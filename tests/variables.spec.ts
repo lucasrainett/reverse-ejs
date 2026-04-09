@@ -8,6 +8,23 @@ describe("variables", () => {
 		expect(reverseEjs(template, final)).toEqual({ name: "John" });
 	});
 
+	it("should extract title and description (README example)", () => {
+		const template = "<h1><%= title %></h1><p><%= description %></p>";
+		const final = "<h1>My Page</h1><p>Welcome to the site</p>";
+		expect(reverseEjs(template, final)).toEqual({
+			title: "My Page",
+			description: "Welcome to the site",
+		});
+	});
+
+	it("should extract nested author properties (README example)", () => {
+		const template = '<a href="<%= author.url %>"><%= author.name %></a>';
+		const final = '<a href="https://example.com">Alice Chen</a>';
+		expect(reverseEjs(template, final)).toEqual({
+			author: { url: "https://example.com", name: "Alice Chen" },
+		});
+	});
+
 	it("should extract multiple variables", () => {
 		const template = "Hello, <%= firstName %> <%= lastName %>!";
 		const final = "Hello, John Doe!";
@@ -81,10 +98,12 @@ describe("variables", () => {
 			"<%= address.street %>, <%= address.city %>, <%= address.state %> <%= address.zip %>";
 		const final = "742 Evergreen Terrace, Portland, OR 97201";
 		expect(reverseEjs(template, final)).toEqual({
-			"address.street": "742 Evergreen Terrace",
-			"address.city": "Portland",
-			"address.state": "OR",
-			"address.zip": "97201",
+			address: {
+				street: "742 Evergreen Terrace",
+				city: "Portland",
+				state: "OR",
+				zip: "97201",
+			},
 		});
 	});
 
@@ -92,8 +111,10 @@ describe("variables", () => {
 		const template = "<%= company.ceo.name %> runs <%= company.name %>";
 		const final = "Alice Chen runs Acme Corp";
 		expect(reverseEjs(template, final)).toEqual({
-			"company.ceo.name": "Alice Chen",
-			"company.name": "Acme Corp",
+			company: {
+				ceo: { name: "Alice Chen" },
+				name: "Acme Corp",
+			},
 		});
 	});
 
@@ -104,8 +125,10 @@ describe("variables", () => {
 			"<h1>My Post</h1><p>By Alice Chen (alice@example.com)</p>";
 		expect(reverseEjs(template, final)).toEqual({
 			title: "My Post",
-			"author.name": "Alice Chen",
-			"author.email": "alice@example.com",
+			author: {
+				name: "Alice Chen",
+				email: "alice@example.com",
+			},
 		});
 	});
 

@@ -11,6 +11,22 @@ describe("includes", () => {
 		});
 	});
 
+	it("should extract from header and footer partials (README example)", () => {
+		const partials = {
+			header: "<h1><%= title %></h1>",
+			footer: "<footer><%= copyright %></footer>",
+		};
+		const template =
+			'<%- include("header") %><main><%= body %></main><%- include("footer") %>';
+		const final =
+			"<h1>Home</h1><main>Welcome</main><footer>2025 Acme</footer>";
+		expect(reverseEjs(template, final, { partials })).toEqual({
+			title: "Home",
+			body: "Welcome",
+			copyright: "2025 Acme",
+		});
+	});
+
 	it("should merge partial variables with parent template variables", () => {
 		const partials = { header: "<h1><%= title %></h1>" };
 		const template = '<%- include("header") %><main><%= body %></main>';

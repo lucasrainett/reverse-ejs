@@ -20,6 +20,31 @@ const BRANCH_RE = /^(.+)_C(\d+)([TE])(?:_RAW)?$/;
 const SENTINEL_RE = /^_C\d+[TE]S$/;
 const RAW_RE = /_RAW$/;
 
+function setNested(
+	obj: Record<string, unknown>,
+	dottedKey: string,
+	value: unknown,
+): void {
+	const parts = dottedKey.split(".");
+	if (parts.length === 1) {
+		obj[dottedKey] = value;
+		return;
+	}
+	let current = obj;
+	for (let i = 0; i < parts.length - 1; i++) {
+		const key = parts[i];
+		if (
+			current[key] == null ||
+			typeof current[key] !== "object" ||
+			Array.isArray(current[key])
+		) {
+			current[key] = {};
+		}
+		current = current[key] as Record<string, unknown>;
+	}
+	current[parts[parts.length - 1]] = value;
+}
+
 export function extract(
 	pattern: Pattern,
 	finalString: string,
@@ -58,10 +83,10 @@ function groupsToObject(
 			const arrayName = fromCaptureName(captureName.slice(0, -5));
 			const loopPattern = findLoop(pattern, arrayName);
 			if (loopPattern) {
-				result[arrayName] = extractLoopItems(
-					loopPattern,
-					value,
-					unescape,
+				setNested(
+					result,
+					arrayName,
+					extractLoopItems(loopPattern, value, unescape),
 				);
 			}
 		} else if (SENTINEL_RE.test(captureName)) {
@@ -70,15 +95,11 @@ function groupsToObject(
 			const isRaw = RAW_RE.test(captureName);
 			const cleanName = captureName.replace(RAW_RE, "");
 			const branchMatch = BRANCH_RE.exec(cleanName);
-			if (branchMatch) {
-				result[fromCaptureName(branchMatch[1])] = isRaw
-					? value
-					: unescape(value);
-			} else {
-				result[fromCaptureName(cleanName)] = isRaw
-					? value
-					: unescape(value);
-			}
+			const dottedKey = branchMatch
+				? fromCaptureName(branchMatch[1])
+				: fromCaptureName(cleanName);
+			const val = isRaw ? value : unescape(value);
+			setNested(result, dottedKey, val);
 		}
 	}
 
@@ -144,7 +165,7 @@ function extractLoopItems(
 		} else {
 			const item: Record<string, unknown> = {};
 			for (const [k, v] of Object.entries(simpleGroups)) {
-				item[fromCaptureName(k)] = unescape(v);
+				setNested(item, fromCaptureName(k), unescape(v));
 			}
 			for (const [encodedName, content] of Object.entries(nestedLoops)) {
 				const arrayName = fromCaptureName(encodedName);
@@ -155,10 +176,10 @@ function extractLoopItems(
 						`${loopPattern.itemName}.${arrayName}`,
 					);
 				if (nested)
-					item[arrayName] = extractLoopItems(
-						nested,
-						content,
-						unescape,
+					setNested(
+						item,
+						arrayName,
+						extractLoopItems(nested, content, unescape),
 					);
 			}
 			items.push(item);
@@ -178,8 +199,16 @@ function extractConditionBooleans(
 			const id = pattern.condId ?? 0;
 			const thenMatched = groups[`_C${id}TS`] !== undefined;
 			const elseMatched = groups[`_C${id}ES`] !== undefined;
-			if (thenMatched) result[pattern.condition] = true;
-			else if (elseMatched) result[pattern.condition] = false;
+			// Don't overwrite nested object with a boolean
+			const existing = result[pattern.condition];
+			const hasNestedData =
+				existing != null &&
+				typeof existing === "object" &&
+				!Array.isArray(existing);
+			if (!hasNestedData) {
+				if (thenMatched) result[pattern.condition] = true;
+				else if (elseMatched) result[pattern.condition] = false;
+			}
 		}
 		extractConditionBooleans(groups, pattern.thenBranch, result);
 		if (pattern.elseBranch)

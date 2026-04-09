@@ -83,15 +83,19 @@ describe("complex scenarios", () => {
 			'<li><a href="/api">API Reference</a></li></ul></aside>';
 
 		expect(reverseEjs(template, final)).toEqual({
-			"post.title": "Getting Started",
-			"post.author": "Alice",
-			"post.content": "<p>Welcome to the <em>guide</em>.</p>",
-			"post.tags": ["tutorial", "beginner"],
-			"sidebar.title": "Resources",
-			"sidebar.links": [
-				{ url: "/docs", label: "Documentation" },
-				{ url: "/api", label: "API Reference" },
-			],
+			post: {
+				title: "Getting Started",
+				author: "Alice",
+				content: "<p>Welcome to the <em>guide</em>.</p>",
+				tags: ["tutorial", "beginner"],
+			},
+			sidebar: {
+				title: "Resources",
+				links: [
+					{ url: "/docs", label: "Documentation" },
+					{ url: "/api", label: "API Reference" },
+				],
+			},
 		});
 	});
 
@@ -122,7 +126,7 @@ describe("complex scenarios", () => {
 			"<footer>© 2025 Acme</footer>";
 
 		expect(reverseEjs(template, final)).toEqual({
-			"user.name": "Alice",
+			user: { name: "Alice" },
 			adminMessage: "System healthy",
 			departments: [
 				{
@@ -169,6 +173,74 @@ describe("complex scenarios", () => {
 				{ name: "Monitor", price: "349.00" },
 			],
 			count: "2",
+		});
+	});
+
+	it("should extract product data from HTML (README web extraction example)", () => {
+		const template =
+			'<div class="product">\n' +
+			"  <h1><%= name %></h1>\n" +
+			'  <span class="price">$<%= price %></span>\n' +
+			'  <p class="description"><%= description %></p>\n' +
+			'  <div class="specs">\n' +
+			'    <span class="brand"><%= specs.brand %></span>\n' +
+			'    <span class="color"><%= specs.color %></span>\n' +
+			'    <span class="rating"><%= specs.rating %></span>\n' +
+			"  </div>\n" +
+			'  <ul class="reviews">\n' +
+			"    <% reviews.forEach(review => { %>\n" +
+			"    <li>\n" +
+			"      <strong><%= review.author %></strong>\n" +
+			"      <span><%= review.text %></span>\n" +
+			"    </li>\n" +
+			"    <% }) %>\n" +
+			"  </ul>\n" +
+			"</div>";
+
+		const final =
+			'<div class="product">\n' +
+			"  <h1>Sony WH-1000XM5</h1>\n" +
+			'  <span class="price">$348.00</span>\n' +
+			'  <p class="description">Industry-leading noise canceling headphones</p>\n' +
+			'  <div class="specs">\n' +
+			'    <span class="brand">Sony</span>\n' +
+			'    <span class="color">Black</span>\n' +
+			'    <span class="rating">4.7</span>\n' +
+			"  </div>\n" +
+			'  <ul class="reviews">\n' +
+			"    \n" +
+			"    <li>\n" +
+			"      <strong>Alice</strong>\n" +
+			"      <span>Best headphones I've ever owned. The noise canceling is incredible.</span>\n" +
+			"    </li>\n" +
+			"    \n" +
+			"    <li>\n" +
+			"      <strong>Bob</strong>\n" +
+			"      <span>Great sound quality, comfortable for long flights.</span>\n" +
+			"    </li>\n" +
+			"    \n" +
+			"  </ul>\n" +
+			"</div>";
+
+		expect(reverseEjs(template, final)).toEqual({
+			name: "Sony WH-1000XM5",
+			price: "348.00",
+			description: "Industry-leading noise canceling headphones",
+			specs: {
+				brand: "Sony",
+				color: "Black",
+				rating: "4.7",
+			},
+			reviews: [
+				{
+					author: "Alice",
+					text: "Best headphones I've ever owned. The noise canceling is incredible.",
+				},
+				{
+					author: "Bob",
+					text: "Great sound quality, comfortable for long flights.",
+				},
+			],
 		});
 	});
 

@@ -6,8 +6,7 @@ describe("conditionals", () => {
 		const template = "<% if (user) { %><h1><%= user.name %></h1><% } %>";
 		const final = "<h1>Alice</h1>";
 		expect(reverseEjs(template, final)).toEqual({
-			"user.name": "Alice",
-			user: true,
+			user: { name: "Alice" },
 		});
 	});
 
