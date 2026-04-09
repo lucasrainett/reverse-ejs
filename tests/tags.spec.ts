@@ -127,4 +127,16 @@ describe("EJS tags", () => {
 			active: true,
 		});
 	});
+
+	it("should handle <%% followed by closing %>", () => {
+		const template = "<p><%%></p><%= val %>";
+		const final = "<p><%></p>hello";
+		expect(reverseEjs(template, final)).toEqual({ val: "hello" });
+	});
+
+	it("should handle consecutive literal delimiters <%% and %%>", () => {
+		const template = "<%% x %%>%> <%= val %>";
+		const final = "<% x %>%> ok";
+		expect(reverseEjs(template, final)).toEqual({ val: "ok" });
+	});
 });

@@ -301,4 +301,15 @@ describe("includes", () => {
 			],
 		});
 	});
+
+	it("should throw on circular includes exceeding depth limit", () => {
+		const partials = {
+			a: '<%- include("b") %>',
+			b: '<%- include("a") %>',
+		};
+		const template = '<%- include("a") %>';
+		expect(() => reverseEjs(template, "anything", { partials })).toThrow(
+			"Include depth limit exceeded",
+		);
+	});
 });

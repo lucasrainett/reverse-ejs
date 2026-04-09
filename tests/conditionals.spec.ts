@@ -263,6 +263,36 @@ describe("conditionals", () => {
 		).toEqual({ label: "Regular" });
 	});
 
+	it("should handle if/else inside a loop body", () => {
+		const template =
+			"<% items.forEach(item => { %>" +
+			"<% if (item.featured) { %>" +
+			'<div class="featured"><%= item.name %></div>' +
+			"<% } else { %>" +
+			"<div><%= item.name %></div>" +
+			"<% } %>" +
+			"<% }) %>";
+		const final = '<div class="featured">Alpha</div><div>Beta</div>';
+		expect(reverseEjs(template, final)).toEqual({
+			items: [{ name: "Alpha" }, { name: "Beta" }],
+		});
+	});
+
+	it("should handle switch/case with break; } as combined scriptlet", () => {
+		const template =
+			'<% switch (level) { case "high": %>' +
+			"<span>High: <%= msg %></span>" +
+			'<% break; case "low": %>' +
+			"<span>Low: <%= msg %></span>" +
+			"<% break; } %>";
+		expect(reverseEjs(template, "<span>High: Alert</span>")).toEqual({
+			msg: "Alert",
+		});
+		expect(reverseEjs(template, "<span>Low: Info</span>")).toEqual({
+			msg: "Info",
+		});
+	});
+
 	it("should handle three-level nested conditionals", () => {
 		const template =
 			"<% if (a) { %>" +
