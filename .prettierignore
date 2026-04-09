@@ -1,0 +1,6 @@
+.idea/
+coverage/
+dist/
+node_modules/
+package.json
+pnpm-lock.yaml

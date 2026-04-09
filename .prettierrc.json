@@ -1,0 +1,23 @@
+{
+  "tabWidth": 4,
+  "singleQuote": false,
+  "useTabs": true,
+  "overrides": [
+    {
+      "files": ["*.json"],
+      "options": {
+        "parser": "json",
+        "useTabs": false,
+        "tabWidth": 2
+      }
+    },
+    {
+      "files": ["*.yaml", "*.yml"],
+      "options": {
+        "parser": "yaml",
+        "useTabs": false,
+        "tabWidth": 2
+      }
+    }
+  ]
+}

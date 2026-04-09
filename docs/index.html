@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>reverse-ejs - Extract structured data from HTML</title>
+		<meta
+			name="description"
+			content="Turn any web page into structured JSON. Paste your HTML, define an EJS template, and extract the data instantly in the browser."
+		/>
+		<style>
+			*,
+			*::before,
+			*::after {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			:root {
+				--bg: #0f1117;
+				--surface: #1a1d27;
+				--border: #2a2d3a;
+				--border-focus: #3a3d4a;
+				--text: #e1e4ed;
+				--text-muted: #8b8fa3;
+				--accent: #6c8cff;
+				--accent-hover: #8da6ff;
+				--green: #4ade80;
+				--red: #f87171;
+				--font-mono:
+					"SF Mono", "Fira Code", "JetBrains Mono", Consolas,
+					monospace;
+				--font-sans:
+					-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+					sans-serif;
+				--radius: 8px;
+			}
+
+			body {
+				font-family: var(--font-sans);
+				background: var(--bg);
+				color: var(--text);
+				line-height: 1.6;
+				min-height: 100vh;
+			}
+
+			a {
+				color: var(--accent);
+				text-decoration: none;
+			}
+			a:hover {
+				color: var(--accent-hover);
+			}
+
+			.container {
+				max-width: 1100px;
+				margin: 0 auto;
+				padding: 0 24px;
+			}
+
+			header {
+				padding: 48px 0 32px;
+				text-align: center;
+			}
+
+			header h1 {
+				font-size: 2.2rem;
+				font-weight: 700;
+				letter-spacing: -0.5px;
+				margin-bottom: 12px;
+			}
+
+			header h1 code {
+				font-family: var(--font-mono);
+				color: var(--accent);
+				font-weight: 600;
+			}
+
+			header p {
+				color: var(--text-muted);
+				font-size: 1.1rem;
+				max-width: 600px;
+				margin: 0 auto 20px;
+			}
+
+			.links {
+				display: flex;
+				gap: 16px;
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+
+			.links a {
+				display: inline-flex;
+				align-items: center;
+				gap: 6px;
+				padding: 8px 16px;
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				font-size: 0.9rem;
+				transition: border-color 0.2s;
+			}
+
+			.links a:hover {
+				border-color: var(--accent);
+			}
+
+			.steps {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+				gap: 16px;
+				margin: 32px 0 48px;
+			}
+
+			.step {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				padding: 20px;
+			}
+
+			.step-num {
+				display: inline-block;
+				width: 28px;
+				height: 28px;
+				line-height: 28px;
+				text-align: center;
+				border-radius: 50%;
+				background: var(--accent);
+				color: var(--bg);
+				font-weight: 700;
+				font-size: 0.85rem;
+				margin-bottom: 10px;
+			}
+
+			.step h3 {
+				font-size: 0.95rem;
+				margin-bottom: 6px;
+			}
+			.step p {
+				color: var(--text-muted);
+				font-size: 0.85rem;
+			}
+
+			.playground {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: 12px;
+				padding: 24px;
+				margin-bottom: 48px;
+			}
+
+			.playground h2 {
+				font-size: 1.2rem;
+				margin-bottom: 4px;
+			}
+			.playground .subtitle {
+				color: var(--text-muted);
+				font-size: 0.9rem;
+				margin-bottom: 20px;
+			}
+
+			.editors {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 16px;
+				margin-bottom: 16px;
+			}
+
+			@media (max-width: 700px) {
+				.editors {
+					grid-template-columns: 1fr;
+				}
+			}
+
+			.field-label {
+				display: block;
+				font-size: 0.8rem;
+				font-weight: 600;
+				text-transform: uppercase;
+				letter-spacing: 0.5px;
+				color: var(--text-muted);
+				margin-bottom: 6px;
+			}
+
+			textarea {
+				width: 100%;
+				height: 220px;
+				background: var(--bg);
+				color: var(--text);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				padding: 12px;
+				font-family: var(--font-mono);
+				font-size: 13px;
+				line-height: 1.5;
+				resize: vertical;
+				tab-size: 2;
+			}
+
+			textarea:focus {
+				outline: none;
+				border-color: var(--accent);
+			}
+
+			.actions {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				margin-bottom: 16px;
+			}
+
+			button#extract {
+				padding: 10px 24px;
+				background: var(--accent);
+				color: #fff;
+				border: none;
+				border-radius: var(--radius);
+				font-size: 0.95rem;
+				font-weight: 600;
+				cursor: pointer;
+				transition: background 0.2s;
+			}
+
+			button#extract:hover {
+				background: var(--accent-hover);
+			}
+
+			button.secondary {
+				padding: 10px 16px;
+				background: transparent;
+				color: var(--text-muted);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				font-size: 0.85rem;
+				cursor: pointer;
+				transition:
+					border-color 0.2s,
+					color 0.2s;
+			}
+
+			button.secondary:hover {
+				border-color: var(--text-muted);
+				color: var(--text);
+			}
+
+			#status {
+				font-size: 0.85rem;
+				font-family: var(--font-mono);
+			}
+			#status.ok {
+				color: var(--green);
+			}
+			#status.err {
+				color: var(--red);
+			}
+
+			/* Options panel */
+			.options-toggle {
+				display: inline-flex;
+				align-items: center;
+				gap: 4px;
+				background: none;
+				border: none;
+				color: var(--text-muted);
+				font-size: 0.85rem;
+				cursor: pointer;
+				padding: 0;
+				transition: color 0.2s;
+			}
+
+			.options-toggle:hover {
+				color: var(--text);
+			}
+
+			.options-toggle .arrow {
+				display: inline-block;
+				transition: transform 0.2s;
+				font-size: 0.7rem;
+			}
+
+			.options-toggle.open .arrow {
+				transform: rotate(90deg);
+			}
+
+			.options-panel {
+				display: none;
+				background: var(--bg);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				padding: 16px;
+				margin-bottom: 16px;
+			}
+
+			.options-panel.open {
+				display: block;
+			}
+
+			.options-grid {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 12px 24px;
+			}
+
+			@media (max-width: 700px) {
+				.options-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+
+			.option-row {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 12px;
+			}
+
+			.option-row label {
+				font-size: 0.85rem;
+				color: var(--text-muted);
+			}
+
+			.option-row .hint {
+				font-size: 0.75rem;
+				color: var(--text-muted);
+				opacity: 0.7;
+				margin-left: 4px;
+			}
+
+			.option-row input[type="text"] {
+				width: 80px;
+				background: var(--surface);
+				color: var(--text);
+				border: 1px solid var(--border);
+				border-radius: 4px;
+				padding: 4px 8px;
+				font-family: var(--font-mono);
+				font-size: 13px;
+				text-align: center;
+			}
+
+			.option-row input[type="text"]:focus {
+				outline: none;
+				border-color: var(--accent);
+			}
+
+			.option-row input[type="checkbox"] {
+				accent-color: var(--accent);
+				width: 16px;
+				height: 16px;
+				cursor: pointer;
+			}
+
+			.option-row textarea.partials-input {
+				width: 100%;
+				height: 80px;
+				background: var(--surface);
+				color: var(--text);
+				border: 1px solid var(--border);
+				border-radius: 4px;
+				padding: 8px;
+				font-family: var(--font-mono);
+				font-size: 12px;
+				line-height: 1.4;
+				resize: vertical;
+			}
+
+			.option-row textarea.partials-input:focus {
+				outline: none;
+				border-color: var(--accent);
+			}
+
+			.option-full {
+				grid-column: 1 / -1;
+				display: flex;
+				flex-direction: column;
+				gap: 6px;
+			}
+
+			.option-full label {
+				font-size: 0.85rem;
+				color: var(--text-muted);
+			}
+
+			pre#output {
+				background: var(--bg);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				padding: 16px;
+				font-family: var(--font-mono);
+				font-size: 13px;
+				line-height: 1.5;
+				min-height: 120px;
+				max-height: 400px;
+				overflow: auto;
+				white-space: pre-wrap;
+				word-break: break-word;
+			}
+
+			footer {
+				text-align: center;
+				padding: 32px 0 48px;
+				color: var(--text-muted);
+				font-size: 0.85rem;
+				border-top: 1px solid var(--border);
+			}
+
+			footer .spacer {
+				margin: 0 8px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<header>
+				<h1><code>reverse-ejs</code></h1>
+				<p>
+					Turn any web page into structured JSON. Define an EJS
+					template over the HTML and extract the data instantly.
+				</p>
+				<div class="links">
+					<a href="https://github.com/lucasrainett/reverse-ejs"
+						>GitHub</a
+					>
+					<a href="https://www.npmjs.com/package/reverse-ejs">npm</a>
+					<a
+						href="https://github.com/lucasrainett/reverse-ejs#web-data-extraction"
+						>Docs</a
+					>
+				</div>
+			</header>
+
+			<div class="steps">
+				<div class="step">
+					<div class="step-num">1</div>
+					<h3>Save the HTML</h3>
+					<p>
+						View source on any page and copy the HTML you want to
+						extract data from.
+					</p>
+				</div>
+				<div class="step">
+					<div class="step-num">2</div>
+					<h3>Create a template</h3>
+					<p>
+						Replace the values you care about with EJS tags like
+						<code>&lt;%= name %&gt;</code>.
+					</p>
+				</div>
+				<div class="step">
+					<div class="step-num">3</div>
+					<h3>Extract the data</h3>
+					<p>
+						Paste both below and get a clean JSON object with every
+						value extracted.
+					</p>
+				</div>
+			</div>
+
+			<div class="playground">
+				<h2>Playground</h2>
+				<p class="subtitle">
+					Paste your rendered HTML and EJS template, then hit Extract.
+				</p>
+
+				<div class="editors">
+					<div class="editor-group">
+						<label class="field-label">Rendered HTML</label>
+						<textarea
+							id="rendered"
+							spellcheck="false"
+							placeholder='<div class="product">
+  <h1>Sony WH-1000XM5</h1>
+  <span class="price">$348.00</span>
+  ...
+</div>'
+						></textarea>
+					</div>
+					<div class="editor-group">
+						<label class="field-label">EJS Template</label>
+						<textarea
+							id="template"
+							spellcheck="false"
+							placeholder='<div class="product">
+  <h1><%= name %></h1>
+  <span class="price">$<%= price %></span>
+  ...
+</div>'
+						></textarea>
+					</div>
+				</div>
+
+				<div class="actions">
+					<button id="extract">Extract Data</button>
+					<button class="secondary" id="example">Load Example</button>
+					<button class="options-toggle" id="optionsToggle">
+						<span class="arrow">&#9654;</span> Options
+					</button>
+					<span id="status"></span>
+				</div>
+
+				<div class="options-panel" id="optionsPanel">
+					<div class="options-grid">
+						<div class="option-row">
+							<label>flexibleWhitespace</label>
+							<input type="checkbox" id="opt-flexWs" checked />
+						</div>
+						<div class="option-row">
+							<label>rmWhitespace</label>
+							<input type="checkbox" id="opt-rmWs" />
+						</div>
+						<div class="option-row">
+							<label
+								>delimiter
+								<span class="hint">default: %</span></label
+							>
+							<input
+								type="text"
+								id="opt-delimiter"
+								value="%"
+								maxlength="3"
+							/>
+						</div>
+						<div class="option-row">
+							<label
+								>openDelimiter
+								<span class="hint">default: &lt;</span></label
+							>
+							<input
+								type="text"
+								id="opt-openDelim"
+								value="<"
+								maxlength="3"
+							/>
+						</div>
+						<div class="option-row">
+							<label
+								>closeDelimiter
+								<span class="hint">default: &gt;</span></label
+							>
+							<input
+								type="text"
+								id="opt-closeDelim"
+								value=">"
+								maxlength="3"
+							/>
+						</div>
+						<div class="option-full">
+							<label
+								>partials
+								<span class="hint"
+									>JSON object mapping partial names to EJS
+									source</span
+								></label
+							>
+							<textarea
+								class="partials-input"
+								id="opt-partials"
+								spellcheck="false"
+								placeholder='{ "header": "<h1><%= title %></h1>" }'
+							></textarea>
+						</div>
+					</div>
+				</div>
+
+				<div class="output-group">
+					<label class="field-label">Extracted Data</label>
+					<pre id="output"></pre>
+				</div>
+			</div>
+
+			<footer>
+				<span>MIT License</span>
+				<span class="spacer">|</span>
+				<a href="https://github.com/lucasrainett/reverse-ejs"
+					>Source on GitHub</a
+				>
+			</footer>
+		</div>
+
+		<script src="https://unpkg.com/reverse-ejs@latest/dist/index.global.js"></script>
+		<script>
+			(function () {
+				var templateEl = document.getElementById("template");
+				var renderedEl = document.getElementById("rendered");
+				var outputEl = document.getElementById("output");
+				var statusEl = document.getElementById("status");
+				var extractBtn = document.getElementById("extract");
+				var exampleBtn = document.getElementById("example");
+				var optionsToggle = document.getElementById("optionsToggle");
+				var optionsPanel = document.getElementById("optionsPanel");
+
+				var optFlexWs = document.getElementById("opt-flexWs");
+				var optRmWs = document.getElementById("opt-rmWs");
+				var optDelimiter = document.getElementById("opt-delimiter");
+				var optOpenDelim = document.getElementById("opt-openDelim");
+				var optCloseDelim = document.getElementById("opt-closeDelim");
+				var optPartials = document.getElementById("opt-partials");
+
+				optionsToggle.addEventListener("click", function () {
+					optionsToggle.classList.toggle("open");
+					optionsPanel.classList.toggle("open");
+				});
+
+				function getOptions() {
+					var opts = {};
+					if (optFlexWs.checked) opts.flexibleWhitespace = true;
+					if (optRmWs.checked) opts.rmWhitespace = true;
+					if (optDelimiter.value !== "%")
+						opts.delimiter = optDelimiter.value;
+					if (optOpenDelim.value !== "<")
+						opts.openDelimiter = optOpenDelim.value;
+					if (optCloseDelim.value !== ">")
+						opts.closeDelimiter = optCloseDelim.value;
+
+					var partialsStr = optPartials.value.trim();
+					if (partialsStr) {
+						try {
+							opts.partials = JSON.parse(partialsStr);
+						} catch (e) {
+							throw new Error(
+								"Invalid partials JSON: " + e.message,
+							);
+						}
+					}
+
+					return opts;
+				}
+
+				var exampleRendered =
+					'<div class="product">\n' +
+					"  <h1>Sony WH-1000XM5</h1>\n" +
+					'  <span class="price">$348.00</span>\n' +
+					'  <p class="description">Industry-leading noise canceling headphones</p>\n' +
+					'  <div class="specs">\n' +
+					'    <span class="brand">Sony</span>\n' +
+					'    <span class="color">Black</span>\n' +
+					'    <span class="rating">4.7</span>\n' +
+					"  </div>\n" +
+					'  <ul class="reviews">\n' +
+					"    <li>\n" +
+					"      <strong>Alice</strong>\n" +
+					"      <span>Best headphones I've ever owned. The noise canceling is incredible.</span>\n" +
+					"    </li>\n" +
+					"    <li>\n" +
+					"      <strong>Bob</strong>\n" +
+					"      <span>Great sound quality, comfortable for long flights.</span>\n" +
+					"    </li>\n" +
+					"  </ul>\n" +
+					"</div>";
+
+				var exampleTemplate =
+					'<div class="product">\n' +
+					"  <h1><%= name %></h1>\n" +
+					'  <span class="price">$<%= price %></span>\n' +
+					'  <p class="description"><%= description %></p>\n' +
+					'  <div class="specs">\n' +
+					'    <span class="brand"><%= specs.brand %></span>\n' +
+					'    <span class="color"><%= specs.color %></span>\n' +
+					'    <span class="rating"><%= specs.rating %></span>\n' +
+					"  </div>\n" +
+					'  <ul class="reviews">\n' +
+					"    <% reviews.forEach(review => { %>\n" +
+					"    <li>\n" +
+					"      <strong><%= review.author %></strong>\n" +
+					"      <span><%= review.text %></span>\n" +
+					"    </li>\n" +
+					"    <% }) %>\n" +
+					"  </ul>\n" +
+					"</div>";
+
+				function extract() {
+					var template = templateEl.value;
+					var rendered = renderedEl.value;
+
+					if (!template || !rendered) {
+						statusEl.className = "err";
+						statusEl.textContent = "Both fields are required";
+						outputEl.textContent = "";
+						return;
+					}
+
+					try {
+						var opts = getOptions();
+						var result = ReverseEjs.reverseEjs(
+							template,
+							rendered,
+							opts,
+						);
+						outputEl.textContent = JSON.stringify(result, null, 2);
+						statusEl.className = "ok";
+						statusEl.textContent =
+							"Extracted " +
+							Object.keys(result).length +
+							" top-level keys";
+					} catch (e) {
+						statusEl.className = "err";
+						statusEl.textContent = "Error";
+						outputEl.textContent = e.message;
+					}
+				}
+
+				extractBtn.addEventListener("click", extract);
+
+				exampleBtn.addEventListener("click", function () {
+					renderedEl.value = exampleRendered;
+					templateEl.value = exampleTemplate;
+					extract();
+				});
+
+				document.addEventListener("keydown", function (e) {
+					if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+						e.preventDefault();
+						extract();
+					}
+				});
+			})();
+		</script>
+	</body>
+</html>
