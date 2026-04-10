@@ -604,23 +604,75 @@ The library converts an EJS template into a regular expression with named captur
 
 ## Error handling
 
-Match failures throw a `ReverseEjsError` (subclass of `Error`):
+reverse-ejs throws in two situations:
+
+1. **Match failures** - the rendered text doesn't fit the template. Throws a `ReverseEjsError`.
+2. **Template-author errors** - the template itself is invalid. Throws a plain `Error`. Examples: `<%- include(varName) %>` (dynamic include filenames are not supported, use a quoted string), a partial name that wasn't provided via `options.partials`, or an include chain deeper than 20 levels (circular include).
+
+### Catching match failures
+
+`ReverseEjsError` is a subclass of `Error`:
 
 ```ts
 import { reverseEjs, ReverseEjsError } from "reverse-ejs";
 
 try {
-	reverseEjs(template, html);
+	reverseEjs(template, rendered);
 } catch (e) {
 	if (e instanceof ReverseEjsError) {
-		console.error(e.message); // human-readable
+		console.error(e.message); // human-readable, points at the variable that failed
 		console.error(e.details.regex); // the compiled regex
 		console.error(e.details.input); // the input string
 	}
 }
 ```
 
-The error message identifies the variable that failed to match and shows an excerpt of the rendered string near the failure point. The full regex and input are on `error.details` so they don't pollute the message.
+The message identifies the last variable the matcher reached before giving up (including variables inside loop bodies and conditional branches) and shows an excerpt of the rendered text near the failure point, e.g.:
+
+```
+Could not match variable "author.name" - unexpected content near "<h1>Hello</h1><p>By Alice". (Access error.details for the full regex and input string.)
+```
+
+Long inputs are truncated to a head and tail excerpt joined by `...` so the message stays readable.
+
+The full regex and input live on `e.details` so they don't pollute logs, but they're available when you need to debug a tricky template in a REPL.
+
+### Avoiding exceptions: `safe: true`
+
+If you'd rather branch on a `null` result than wrap every call in `try/catch` - useful when scraping untrusted input or processing log files where you expect some lines to miss - pass `safe: true`:
+
+```ts
+const data = reverseEjs(template, rendered, { safe: true });
+if (data === null) {
+	console.warn("Text did not match the template");
+} else {
+	// data is the extracted object, fully typed
+}
+```
+
+### Batch processing with partial failures
+
+For a stream of inputs where some are expected to fail, combine `reverseEjsAll` with `safe: true`. Failing entries become `null` in the output array instead of aborting the whole batch:
+
+```ts
+import { reverseEjsAll } from "reverse-ejs";
+
+const logs = ["[INFO] 2026-04-10 app: ready", "garbage line", "[ERROR] 2026-04-10 app: connection refused"];
+
+const parsed = reverseEjsAll("[<%= level %>] <%= date %> <%= service %>: <%= message %>", logs, { safe: true });
+
+// parsed[0] = { level: "INFO", date: "2026-04-10", service: "app", message: "ready" }
+// parsed[1] = null
+// parsed[2] = { level: "ERROR", date: "2026-04-10", service: "app", message: "connection refused" }
+
+const successes = parsed.filter((row) => row !== null);
+```
+
+Without `safe: true`, the first mismatch throws and the remaining inputs are skipped.
+
+### Template-author errors are not catchable in safe mode
+
+`safe: true` only affects match failures. Template-author errors (dynamic includes, missing partials, circular includes) still throw a plain `Error` - they indicate a bug in your template, not a runtime mismatch, so they surface immediately regardless of mode.
 
 ## Contributing
 
