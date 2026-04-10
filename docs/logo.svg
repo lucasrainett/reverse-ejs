@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+	<rect width="64" height="64" rx="12" fill="#1a1d27"/>
+	<rect x="1" y="1" width="62" height="62" rx="11" stroke="#2a2d3a" stroke-width="2"/>
+
+	<!-- Left bracket: < -->
+	<path d="M 22 22 L 14 32 L 22 42"
+		stroke="#6c8cff"
+		stroke-width="3.5"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		fill="none"/>
+
+	<!-- Right bracket: > -->
+	<path d="M 42 22 L 50 32 L 42 42"
+		stroke="#6c8cff"
+		stroke-width="3.5"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		fill="none"/>
+
+	<!-- Reverse arrow in the middle (left-pointing) -->
+	<path d="M 36 32 L 28 32 M 28 32 L 31 29 M 28 32 L 31 35"
+		stroke="#6c8cff"
+		stroke-width="3"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		fill="none"/>
+</svg>
