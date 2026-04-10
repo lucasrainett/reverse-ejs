@@ -157,10 +157,22 @@ function emitLiteral(tokens: Token[], text: string, truncate: boolean): void {
 	if (value) tokens.push({ type: "literal", value });
 }
 
+// A "plain variable" is a simple identifier or dotted path (e.g. `name`, `user.name`),
+// optionally with a single trailing bracket index access (e.g. `names[i]`),
+// optionally preceded by `locals.`. Anything else (operators, method calls,
+// nested brackets, ternaries, etc.) is treated as an expression and skipped.
+const PLAIN_VAR_RE =
+	/^[a-zA-Z_$][\w$]*(?:\.[a-zA-Z_$][\w$]*)*(?:\[[a-zA-Z_$][\w$]*\])?$/;
+
 function emitVariable(tokens: Token[], raw: string): void {
 	if (!raw) return;
 	const name = raw.startsWith("locals.") ? raw.slice("locals.".length) : raw;
-	if (name) tokens.push({ type: "variable", name });
+	if (!name) return;
+	if (PLAIN_VAR_RE.test(name)) {
+		tokens.push({ type: "variable", name });
+	} else {
+		tokens.push({ type: "expression_skipped", expression: raw });
+	}
 }
 
 function emitRawVariable(tokens: Token[], raw: string): void {
@@ -171,7 +183,12 @@ function emitRawVariable(tokens: Token[], raw: string): void {
 		);
 	}
 	const name = raw.startsWith("locals.") ? raw.slice("locals.".length) : raw;
-	if (name) tokens.push({ type: "variable", name, raw: true });
+	if (!name) return;
+	if (PLAIN_VAR_RE.test(name)) {
+		tokens.push({ type: "variable", name, raw: true });
+	} else {
+		tokens.push({ type: "expression_skipped", expression: raw, raw: true });
+	}
 }
 
 function processScriptlet(

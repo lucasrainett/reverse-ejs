@@ -82,15 +82,15 @@ describe("variables", () => {
 	it("should throw when the string does not match the template", () => {
 		const template = "Hello, <%= name %>!";
 		const final = "Goodbye, John!";
-		expect(() => reverseEjs(template, final)).toThrow("does not match");
+		expect(() => reverseEjs(template, final)).toThrow(
+			'Could not match variable "name"',
+		);
 	});
 
 	it("should throw for adjacent variables with no separator", () => {
 		const template = "<%= firstName %><%= lastName %>";
 		const final = "AliceSmith";
-		expect(() => reverseEjs(template, final)).toThrow(
-			"Adjacent variables with no literal separator are ambiguous",
-		);
+		expect(() => reverseEjs(template, final)).toThrow("Adjacent variables");
 	});
 
 	it("should extract deeply nested property access", () => {

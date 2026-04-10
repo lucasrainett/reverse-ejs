@@ -4,7 +4,8 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>
-			reverse-ejs - Extract JSON Data from HTML & Web Pages | Free Online Tool
+			reverse-ejs - Extract JSON Data from HTML & Web Pages | Free Online
+			Tool
 		</title>
 		<meta
 			name="description"
@@ -16,12 +17,18 @@
 		/>
 		<meta name="author" content="Lucas Rainett" />
 		<meta name="robots" content="index, follow" />
-		<link rel="canonical" href="https://lucasrainett.github.io/reverse-ejs/" />
+		<link
+			rel="canonical"
+			href="https://lucasrainett.github.io/reverse-ejs/"
+		/>
 		<link rel="icon" type="image/svg+xml" href="logo.svg" />
 
 		<!-- Open Graph -->
 		<meta property="og:type" content="website" />
-		<meta property="og:url" content="https://lucasrainett.github.io/reverse-ejs/" />
+		<meta
+			property="og:url"
+			content="https://lucasrainett.github.io/reverse-ejs/"
+		/>
 		<meta
 			property="og:title"
 			content="reverse-ejs - Extract JSON Data from HTML & Web Pages"
@@ -596,8 +603,8 @@
 						<div class="step-num">2</div>
 						<h3>Create a template</h3>
 						<p>
-							Replace the values you care about with EJS tags
-							like <code>&lt;%= name %&gt;</code>.
+							Replace the values you care about with EJS tags like
+							<code>&lt;%= name %&gt;</code>.
 						</p>
 					</div>
 					<div class="step">
@@ -628,6 +635,20 @@
 						template
 					</li>
 					<li>
+						<strong>Type coercion</strong> - convert extracted
+						strings to numbers, booleans, or dates via the
+						<code>types</code> option
+					</li>
+					<li>
+						<strong>Compiled templates</strong> -
+						<code>compileTemplate()</code> and
+						<code>reverseEjsAll()</code> for fast batch extraction
+					</li>
+					<li>
+						<strong>Safe mode</strong> - return
+						<code>null</code> on no-match instead of throwing
+					</li>
+					<li>
 						<strong>HTML entity unescaping</strong> -
 						<code>&amp;amp;</code>, <code>&amp;lt;</code>,
 						<code>&amp;quot;</code> automatically decoded
@@ -637,8 +658,12 @@
 						fragments across pages
 					</li>
 					<li>
+						<strong>Full TypeScript types</strong> - hover docs
+						in your editor for every option
+					</li>
+					<li>
 						<strong>Zero dependencies</strong> - 20KB, runs in any
-						browser, Node.js, Bun, or Deno
+						browser, Node.js 20+, Bun, or Deno
 					</li>
 					<li>
 						<strong>Privacy-first</strong> - the playground runs
@@ -701,6 +726,14 @@
 							<input type="checkbox" id="opt-rmWs" />
 						</div>
 						<div class="option-row">
+							<label>safe</label>
+							<input type="checkbox" id="opt-safe" />
+						</div>
+						<div class="option-row">
+							<label>silent</label>
+							<input type="checkbox" id="opt-silent" />
+						</div>
+						<div class="option-row">
 							<label
 								>delimiter
 								<span class="hint">default: %</span></label
@@ -751,6 +784,21 @@
 								placeholder='{ "header": "<h1><%= title %></h1>" }'
 							></textarea>
 						</div>
+						<div class="option-full">
+							<label
+								>types
+								<span class="hint"
+									>JSON object mapping variable name to type
+									(string, number, boolean, date)</span
+								></label
+							>
+							<textarea
+								class="partials-input"
+								id="opt-types"
+								spellcheck="false"
+								placeholder='{ "age": "number", "active": "boolean" }'
+							></textarea>
+						</div>
 					</div>
 				</div>
 
@@ -797,10 +845,13 @@
 
 				var optFlexWs = document.getElementById("opt-flexWs");
 				var optRmWs = document.getElementById("opt-rmWs");
+				var optSafe = document.getElementById("opt-safe");
+				var optSilent = document.getElementById("opt-silent");
 				var optDelimiter = document.getElementById("opt-delimiter");
 				var optOpenDelim = document.getElementById("opt-openDelim");
 				var optCloseDelim = document.getElementById("opt-closeDelim");
 				var optPartials = document.getElementById("opt-partials");
+				var optTypes = document.getElementById("opt-types");
 
 				// ── Analytics tracking ──────────────────────────────────────
 				var trackedOnce = {};
@@ -835,6 +886,8 @@
 					var opts = {};
 					if (optFlexWs.checked) opts.flexibleWhitespace = true;
 					if (optRmWs.checked) opts.rmWhitespace = true;
+					if (optSafe.checked) opts.safe = true;
+					if (optSilent.checked) opts.silent = true;
 					if (optDelimiter.value !== "%")
 						opts.delimiter = optDelimiter.value;
 					if (optOpenDelim.value !== "<")
@@ -850,6 +903,15 @@
 							throw new Error(
 								"Invalid partials JSON: " + e.message,
 							);
+						}
+					}
+
+					var typesStr = optTypes.value.trim();
+					if (typesStr) {
+						try {
+							opts.types = JSON.parse(typesStr);
+						} catch (e) {
+							throw new Error("Invalid types JSON: " + e.message);
 						}
 					}
 
@@ -920,6 +982,19 @@
 							rendered,
 							opts,
 						);
+						if (result === null) {
+							outputEl.textContent = "null";
+							statusEl.className = "err";
+							statusEl.textContent =
+								"No match (safe mode)";
+							track(
+								"extract-safe-null",
+								"Safe mode returned null (" +
+									(source || "click") +
+									")",
+							);
+							return;
+						}
 						outputEl.textContent = JSON.stringify(result, null, 2);
 						statusEl.className = "ok";
 						statusEl.textContent =
@@ -958,7 +1033,10 @@
 				copyBtn.addEventListener("click", function () {
 					var text = outputEl.textContent;
 					if (!text) {
-						track("copy-button-empty", "Copy clicked with empty result");
+						track(
+							"copy-button-empty",
+							"Copy clicked with empty result",
+						);
 						return;
 					}
 					var done = function () {
@@ -978,10 +1056,7 @@
 							copyBtn.textContent = "Copy";
 						}, 1500);
 					};
-					if (
-						navigator.clipboard &&
-						navigator.clipboard.writeText
-					) {
+					if (navigator.clipboard && navigator.clipboard.writeText) {
 						navigator.clipboard
 							.writeText(text)
 							.then(done)
@@ -1055,6 +1130,19 @@
 							(optRmWs.checked ? "enabled" : "disabled"),
 					);
 				});
+				optSafe.addEventListener("change", function () {
+					track(
+						"opt-safe-" + (optSafe.checked ? "on" : "off"),
+						"safe " + (optSafe.checked ? "enabled" : "disabled"),
+					);
+				});
+				optSilent.addEventListener("change", function () {
+					track(
+						"opt-silent-" + (optSilent.checked ? "on" : "off"),
+						"silent " +
+							(optSilent.checked ? "enabled" : "disabled"),
+					);
+				});
 				optDelimiter.addEventListener("change", function () {
 					if (optDelimiter.value !== "%") {
 						trackOnce(
@@ -1081,6 +1169,9 @@
 				});
 				optPartials.addEventListener("input", function () {
 					trackOnce("opt-partials-used", "partials option used");
+				});
+				optTypes.addEventListener("input", function () {
+					trackOnce("opt-types-used", "types option used");
 				});
 
 				// ── Outbound link clicks ────────────────────────────────────
