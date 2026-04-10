@@ -28,12 +28,15 @@ jobs:
           node-version: 20
           cache: pnpm
           registry-url: https://registry.npmjs.org
+          always-auth: false
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
 
       - name: Publish if version changed
         run: |
+          # Remove fake auth token injected by setup-node so OIDC takes over
+          rm -f ~/.npmrc
           NAME=$(node -p "require('./package.json').name")
           VERSION=$(node -p "require('./package.json').version")
           TAG="${NAME}@${VERSION}"
