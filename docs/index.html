@@ -3,11 +3,83 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>reverse-ejs - Extract structured data from HTML</title>
+		<title>
+			reverse-ejs - Extract JSON Data from HTML & Web Pages | Free Online Tool
+		</title>
 		<meta
 			name="description"
-			content="Turn any web page into structured JSON. Paste your HTML, define an EJS template, and extract the data instantly in the browser."
+			content="Free browser tool to extract structured JSON data from any HTML or web page. Paste your HTML, define an EJS template, and get clean JSON instantly. No signup, no server, runs entirely in your browser."
 		/>
+		<meta
+			name="keywords"
+			content="HTML to JSON, web scraping, data extraction, EJS template, reverse template, HTML parser, structured data, JSON converter, web data extraction, scrape HTML, parse HTML"
+		/>
+		<meta name="author" content="Lucas Rainett" />
+		<meta name="robots" content="index, follow" />
+		<link rel="canonical" href="https://lucasrainett.github.io/reverse-ejs/" />
+		<link rel="icon" type="image/svg+xml" href="logo.svg" />
+
+		<!-- Open Graph -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://lucasrainett.github.io/reverse-ejs/" />
+		<meta
+			property="og:title"
+			content="reverse-ejs - Extract JSON Data from HTML & Web Pages"
+		/>
+		<meta
+			property="og:description"
+			content="Free browser tool to extract structured JSON data from any HTML or web page. Define an EJS template and get clean JSON instantly."
+		/>
+		<meta
+			property="og:image"
+			content="https://lucasrainett.github.io/reverse-ejs/logo.svg"
+		/>
+		<meta property="og:site_name" content="reverse-ejs" />
+
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta
+			name="twitter:title"
+			content="reverse-ejs - Extract JSON Data from HTML & Web Pages"
+		/>
+		<meta
+			name="twitter:description"
+			content="Free browser tool to extract structured JSON data from any HTML or web page using EJS templates."
+		/>
+		<meta
+			name="twitter:image"
+			content="https://lucasrainett.github.io/reverse-ejs/logo.svg"
+		/>
+
+		<!-- Performance hints -->
+		<link rel="preconnect" href="https://unpkg.com" crossorigin />
+		<link rel="preconnect" href="https://gc.zgo.at" crossorigin />
+
+		<!-- Structured data -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "SoftwareApplication",
+				"name": "reverse-ejs",
+				"description": "Free browser tool to extract structured JSON data from any HTML or web page using EJS templates.",
+				"url": "https://lucasrainett.github.io/reverse-ejs/",
+				"applicationCategory": "DeveloperApplication",
+				"operatingSystem": "Any",
+				"offers": {
+					"@type": "Offer",
+					"price": "0",
+					"priceCurrency": "USD"
+				},
+				"author": {
+					"@type": "Person",
+					"name": "Lucas Rainett",
+					"url": "https://github.com/lucasrainett"
+				},
+				"softwareVersion": "2.0.0",
+				"license": "https://opensource.org/licenses/MIT",
+				"codeRepository": "https://github.com/lucasrainett/reverse-ejs"
+			}
+		</script>
 		<style>
 			*,
 			*::before,
@@ -64,6 +136,13 @@
 				text-align: center;
 			}
 
+			header .logo {
+				width: 72px;
+				height: 72px;
+				margin: 0 auto 16px;
+				display: block;
+			}
+
 			header h1 {
 				font-size: 2.2rem;
 				font-weight: 700;
@@ -106,11 +185,49 @@
 				border-color: var(--accent);
 			}
 
+			.section-heading {
+				font-size: 1.5rem;
+				font-weight: 700;
+				margin: 32px 0 16px;
+				letter-spacing: -0.3px;
+			}
+
+			.features {
+				list-style: none;
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+				gap: 12px;
+				margin-bottom: 48px;
+			}
+
+			.features li {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				padding: 16px;
+				font-size: 0.9rem;
+				color: var(--text-muted);
+			}
+
+			.features li strong {
+				color: var(--text);
+				display: block;
+				margin-bottom: 4px;
+			}
+
+			.features li code {
+				font-family: var(--font-mono);
+				font-size: 0.85em;
+				background: var(--bg);
+				padding: 1px 5px;
+				border-radius: 3px;
+			}
+
 			.steps {
 				display: grid;
 				grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 				gap: 16px;
-				margin: 32px 0 48px;
+				margin: 0 0 32px;
 			}
 
 			.step {
@@ -414,49 +531,100 @@
 	<body>
 		<div class="container">
 			<header>
+				<img src="logo.svg" alt="reverse-ejs logo" class="logo" />
 				<h1><code>reverse-ejs</code></h1>
 				<p>
 					Turn any web page into structured JSON. Define an EJS
 					template over the HTML and extract the data instantly.
 				</p>
 				<div class="links">
-					<a href="https://github.com/lucasrainett/reverse-ejs"
+					<a
+						href="https://github.com/lucasrainett/reverse-ejs"
+						target="_blank"
+						rel="noopener noreferrer"
 						>GitHub</a
 					>
-					<a href="https://www.npmjs.com/package/reverse-ejs">npm</a>
+					<a
+						href="https://www.npmjs.com/package/reverse-ejs"
+						target="_blank"
+						rel="noopener noreferrer"
+						>npm</a
+					>
 					<a
 						href="https://github.com/lucasrainett/reverse-ejs#web-data-extraction"
+						target="_blank"
+						rel="noopener noreferrer"
 						>Docs</a
 					>
 				</div>
 			</header>
 
-			<div class="steps">
-				<div class="step">
-					<div class="step-num">1</div>
-					<h3>Save the HTML</h3>
-					<p>
-						View source on any page and copy the HTML you want to
-						extract data from.
-					</p>
+			<section>
+				<h2 class="section-heading">How it works</h2>
+				<div class="steps">
+					<div class="step">
+						<div class="step-num">1</div>
+						<h3>Save the HTML</h3>
+						<p>
+							View source on any page and copy the HTML you want
+							to extract data from.
+						</p>
+					</div>
+					<div class="step">
+						<div class="step-num">2</div>
+						<h3>Create a template</h3>
+						<p>
+							Replace the values you care about with EJS tags
+							like <code>&lt;%= name %&gt;</code>.
+						</p>
+					</div>
+					<div class="step">
+						<div class="step-num">3</div>
+						<h3>Extract the data</h3>
+						<p>
+							Paste both below and get a clean JSON object with
+							every value extracted.
+						</p>
+					</div>
 				</div>
-				<div class="step">
-					<div class="step-num">2</div>
-					<h3>Create a template</h3>
-					<p>
-						Replace the values you care about with EJS tags like
-						<code>&lt;%= name %&gt;</code>.
-					</p>
-				</div>
-				<div class="step">
-					<div class="step-num">3</div>
-					<h3>Extract the data</h3>
-					<p>
-						Paste both below and get a clean JSON object with every
-						value extracted.
-					</p>
-				</div>
-			</div>
+			</section>
+
+			<section>
+				<h2 class="section-heading">Features</h2>
+				<ul class="features">
+					<li>
+						<strong>Loops & nested data</strong> - extract arrays
+						and nested objects from repeating HTML sections
+					</li>
+					<li>
+						<strong>Conditionals</strong> - if/else, switch/case,
+						and boolean detection
+					</li>
+					<li>
+						<strong>Flexible whitespace</strong> - matches
+						pretty-printed and minified HTML against the same
+						template
+					</li>
+					<li>
+						<strong>HTML entity unescaping</strong> -
+						<code>&amp;amp;</code>, <code>&amp;lt;</code>,
+						<code>&amp;quot;</code> automatically decoded
+					</li>
+					<li>
+						<strong>Includes / partials</strong> - reuse template
+						fragments across pages
+					</li>
+					<li>
+						<strong>Zero dependencies</strong> - 20KB, runs in any
+						browser, Node.js, Bun, or Deno
+					</li>
+					<li>
+						<strong>Privacy-first</strong> - the playground runs
+						entirely in your browser, your HTML never leaves your
+						device
+					</li>
+				</ul>
+			</section>
 
 			<div class="playground">
 				<h2>Playground</h2>
@@ -573,7 +741,10 @@
 			<footer>
 				<span>MIT License</span>
 				<span class="spacer">|</span>
-				<a href="https://github.com/lucasrainett/reverse-ejs"
+				<a
+					href="https://github.com/lucasrainett/reverse-ejs"
+					target="_blank"
+					rel="noopener noreferrer"
 					>Source on GitHub</a
 				>
 			</footer>
@@ -598,9 +769,33 @@
 				var optCloseDelim = document.getElementById("opt-closeDelim");
 				var optPartials = document.getElementById("opt-partials");
 
+				// ── Analytics tracking ──────────────────────────────────────
+				var trackedOnce = {};
+				function track(name, title) {
+					if (window.goatcounter && window.goatcounter.count) {
+						window.goatcounter.count({
+							path: name,
+							title: title || name,
+							event: true,
+						});
+					}
+				}
+				function trackOnce(name, title) {
+					if (trackedOnce[name]) return;
+					trackedOnce[name] = true;
+					track(name, title);
+				}
+
 				optionsToggle.addEventListener("click", function () {
+					var willOpen = !optionsToggle.classList.contains("open");
 					optionsToggle.classList.toggle("open");
 					optionsPanel.classList.toggle("open");
+					track(
+						willOpen ? "options-opened" : "options-closed",
+						willOpen
+							? "Options panel opened"
+							: "Options panel closed",
+					);
 				});
 
 				function getOptions() {
@@ -670,7 +865,7 @@
 					"  </ul>\n" +
 					"</div>";
 
-				function extract() {
+				function extract(source) {
 					var template = templateEl.value;
 					var rendered = renderedEl.value;
 
@@ -678,6 +873,10 @@
 						statusEl.className = "err";
 						statusEl.textContent = "Both fields are required";
 						outputEl.textContent = "";
+						track(
+							"extract-empty",
+							"Extract clicked with empty fields",
+						);
 						return;
 					}
 
@@ -694,27 +893,128 @@
 							"Extracted " +
 							Object.keys(result).length +
 							" top-level keys";
+						track(
+							"extract-success",
+							"Extraction succeeded (" +
+								(source || "click") +
+								")",
+						);
 					} catch (e) {
 						statusEl.className = "err";
 						statusEl.textContent = "Error";
 						outputEl.textContent = e.message;
+						track(
+							"extract-error",
+							"Extraction failed (" + (source || "click") + ")",
+						);
 					}
 				}
 
-				extractBtn.addEventListener("click", extract);
+				extractBtn.addEventListener("click", function () {
+					track("extract-clicked", "Extract button clicked");
+					extract("click");
+				});
 
 				exampleBtn.addEventListener("click", function () {
+					track("example-loaded", "Load Example clicked");
 					renderedEl.value = exampleRendered;
 					templateEl.value = exampleTemplate;
-					extract();
+					extract("example");
 				});
 
 				document.addEventListener("keydown", function (e) {
 					if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
 						e.preventDefault();
-						extract();
+						track("extract-shortcut", "Extract via Ctrl/Cmd+Enter");
+						extract("shortcut");
 					}
 				});
+
+				// ── Textarea interactions ───────────────────────────────────
+				renderedEl.addEventListener("paste", function () {
+					track("paste-rendered", "Pasted into Rendered HTML");
+				});
+				templateEl.addEventListener("paste", function () {
+					track("paste-template", "Pasted into Template");
+				});
+				renderedEl.addEventListener("input", function () {
+					trackOnce("type-rendered", "Typed in Rendered HTML");
+				});
+				templateEl.addEventListener("input", function () {
+					trackOnce("type-template", "Typed in Template");
+				});
+				renderedEl.addEventListener("focus", function () {
+					trackOnce("focus-rendered", "Focused Rendered HTML");
+				});
+				templateEl.addEventListener("focus", function () {
+					trackOnce("focus-template", "Focused Template");
+				});
+
+				// ── Output interactions ─────────────────────────────────────
+				outputEl.addEventListener("copy", function () {
+					track("copy-result", "Copied result");
+				});
+				outputEl.addEventListener("mousedown", function () {
+					trackOnce("select-result", "Selected result");
+				});
+
+				// ── Option changes ──────────────────────────────────────────
+				optFlexWs.addEventListener("change", function () {
+					track(
+						"opt-flexWs-" + (optFlexWs.checked ? "on" : "off"),
+						"flexibleWhitespace " +
+							(optFlexWs.checked ? "enabled" : "disabled"),
+					);
+				});
+				optRmWs.addEventListener("change", function () {
+					track(
+						"opt-rmWs-" + (optRmWs.checked ? "on" : "off"),
+						"rmWhitespace " +
+							(optRmWs.checked ? "enabled" : "disabled"),
+					);
+				});
+				optDelimiter.addEventListener("change", function () {
+					if (optDelimiter.value !== "%") {
+						trackOnce(
+							"opt-delimiter-changed",
+							"delimiter changed from default",
+						);
+					}
+				});
+				optOpenDelim.addEventListener("change", function () {
+					if (optOpenDelim.value !== "<") {
+						trackOnce(
+							"opt-openDelim-changed",
+							"openDelimiter changed from default",
+						);
+					}
+				});
+				optCloseDelim.addEventListener("change", function () {
+					if (optCloseDelim.value !== ">") {
+						trackOnce(
+							"opt-closeDelim-changed",
+							"closeDelimiter changed from default",
+						);
+					}
+				});
+				optPartials.addEventListener("input", function () {
+					trackOnce("opt-partials-used", "partials option used");
+				});
+
+				// ── Outbound link clicks ────────────────────────────────────
+				var links = document.querySelectorAll(".links a, footer a");
+				for (var i = 0; i < links.length; i++) {
+					(function (link) {
+						link.addEventListener("click", function () {
+							var label = link.textContent.trim() || link.href;
+							track(
+								"link-" +
+									label.toLowerCase().replace(/\s+/g, "-"),
+								"Clicked: " + label,
+							);
+						});
+					})(links[i]);
+				}
 			})();
 		</script>
 
