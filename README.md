@@ -258,30 +258,34 @@ Recommended for web data extraction where you don't control the source formattin
 
 ## EJS Feature Support
 
-| Feature                                           | Status                              |
-| ------------------------------------------------- | ----------------------------------- |
-| `<%= var %>` escaped output                       | Supported                           |
-| `<%- var %>` raw output                           | Supported                           |
-| `<%# comment %>`                                  | Supported (ignored)                 |
-| `<%%` / `%%>` literal delimiters                  | Supported                           |
-| `-%>` newline slurp                               | Supported                           |
-| `<%_` / `_%>` whitespace slurp                    | Supported                           |
-| `forEach` / `map` (arrow + function syntax)       | Supported                           |
-| `for...of` / `for...in` / classic `for` / `while` | Supported                           |
-| `.filter().forEach()` chained                     | Supported                           |
-| Nested loops (any depth)                          | Supported                           |
-| `if` / `if...else` / `else if` chains             | Supported                           |
-| `switch` / `case` / `default`                     | Supported                           |
-| `<%- include("file") %>` partials                 | Supported                           |
-| Nested includes                                   | Supported                           |
-| `locals.varName` prefix stripping                 | Supported                           |
-| Repeated variables (backreference)                | Supported                           |
-| Custom delimiters                                 | Supported                           |
-| `rmWhitespace` option                             | Supported                           |
-| Custom `unescape` function                        | Supported                           |
-| JS expressions (ternary, method calls)            | Matched anonymously (not extracted) |
-| Adjacent variables with no separator              | Throws descriptive error            |
-| Dynamic `include(varName)`                        | Throws descriptive error            |
+| Feature                                           | Status                                 |
+| ------------------------------------------------- | -------------------------------------- |
+| `<%= var %>` escaped output                       | Supported                              |
+| `<%- var %>` raw output                           | Supported                              |
+| `<%# comment %>`                                  | Supported (ignored)                    |
+| `<%%` / `%%>` literal delimiters                  | Supported                              |
+| `-%>` newline slurp                               | Supported                              |
+| `<%_` / `_%>` whitespace slurp                    | Supported                              |
+| `forEach` / `map` (arrow + function syntax)       | Supported                              |
+| `for...of` / `for...in` / classic `for` / `while` | Supported                              |
+| `.filter().forEach()` chained                     | Supported                              |
+| Nested loops (any depth)                          | Supported                              |
+| `if` / `if...else` / `else if` chains             | Supported                              |
+| `switch` / `case` / `default`                     | Supported                              |
+| `<%- include("file") %>` partials                 | Supported                              |
+| Nested includes                                   | Supported                              |
+| `locals.varName` prefix stripping                 | Supported                              |
+| Repeated variables (backreference)                | Supported                              |
+| Custom delimiters                                 | Supported                              |
+| `rmWhitespace` option                             | Supported                              |
+| Custom `unescape` function                        | Supported                              |
+| JS expressions (ternary, method calls)            | Matched anonymously, warns             |
+| Adjacent variables with no separator              | Throws `ReverseEjsError` with location |
+| Dynamic `include(varName)`                        | Throws descriptive error               |
+| Type coercion (number / boolean / date)           | Via `types` option                     |
+| Compiled templates (`compileTemplate`)            | For repeated extractions               |
+| Batch extraction (`reverseEjsAll`)                | Multiple inputs, one template          |
+| Safe mode (`safe: true`)                          | Returns `null` instead of throwing     |
 
 ## Web Data Extraction
 

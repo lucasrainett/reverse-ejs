@@ -232,27 +232,3 @@ export function collectExpressions(pattern: Pattern, out: string[]): void {
 		if (pattern.elseBranch) collectExpressions(pattern.elseBranch, out);
 	}
 }
-
-// Walks the pattern tree to find the last named variable that should have been
-// captured but wasn't. Used for error messages on match failure.
-export function findLastVariableBefore(
-	pattern: Pattern,
-	failureRegexStr: string,
-): string | null {
-	const names: string[] = [];
-	function walk(p: Pattern): void {
-		if (p.type === "variable") {
-			names.push(p.name);
-		} else if (p.type === "sequence") {
-			for (const part of p.parts) walk(part);
-		} else if (p.type === "loop") {
-			walk(p.body);
-		} else if (p.type === "conditional") {
-			walk(p.thenBranch);
-			if (p.elseBranch) walk(p.elseBranch);
-		}
-	}
-	walk(pattern);
-	void failureRegexStr;
-	return names[names.length - 1] ?? null;
-}
