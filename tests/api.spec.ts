@@ -122,6 +122,14 @@ describe("reverseEjs - types coercion", () => {
 		});
 	});
 
+	it("should coerce values nested under a dotted path", () => {
+		expect(
+			reverseEjs("Age: <%= user.age %>", "Age: 30", {
+				types: { age: "number" },
+			}),
+		).toEqual({ user: { age: 30 } });
+	});
+
 	it("should warn and keep original when number coercion fails", () => {
 		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
 		const result = reverseEjs("Age: <%= age %>", "Age: thirty", {
@@ -196,6 +204,28 @@ describe("ReverseEjsError", () => {
 		// Adjacent variables now get captured as a joined key.
 		const result = reverseEjs("Foo <%= a %><%= b %> bar", "Foo XY bar");
 		expect(result).toEqual({ "a + b": "XY" });
+	});
+
+	it("should name a loop-body variable in the error message", () => {
+		const template =
+			"<ul><% items.forEach(i => { %><li><%= i.name %></li><% }) %></ul>";
+		try {
+			reverseEjs(template, "<section>garbage</section>");
+			expect.fail("should have thrown");
+		} catch (e) {
+			// The last variable walked into the loop body is `i.name`.
+			expect((e as Error).message).toContain("i.name");
+		}
+	});
+
+	it("should name a conditional-branch variable in the error message", () => {
+		const template = "<% if (isAdmin) { %><h1><%= title %></h1><% } %>";
+		try {
+			reverseEjs(template, "<h2>nope</h2>");
+			expect.fail("should have thrown");
+		} catch (e) {
+			expect((e as Error).message).toContain("title");
+		}
 	});
 });
 

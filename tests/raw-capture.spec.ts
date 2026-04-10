@@ -164,6 +164,55 @@ describe("raw expression capture", () => {
 			"content.toUpperCase()": "HELLO",
 		});
 	});
+
+	it("should reuse the same capture for repeated complex expressions", () => {
+		const template =
+			"<title><%= title.toUpperCase() %></title>" +
+			"<h1><%= title.toUpperCase() %></h1>";
+		expect(
+			reverseEjs(template, "<title>HELLO</title><h1>HELLO</h1>"),
+		).toEqual({ "title.toUpperCase()": "HELLO" });
+		// When the two occurrences disagree, the backreference prevents a match.
+		expect(() =>
+			reverseEjs(template, "<title>HELLO</title><h1>BYE</h1>"),
+		).toThrow();
+	});
+
+	it("should strip the locals. prefix from an expression key", () => {
+		expect(
+			reverseEjs("<%= locals.title.toUpperCase() %>", "HELLO"),
+		).toEqual({ "title.toUpperCase()": "HELLO" });
+	});
+
+	it("should capture an expression only in the matching conditional branch", () => {
+		const template =
+			"<% if (isAdmin) { %>" +
+			"<h1><%= title.toUpperCase() %></h1>" +
+			"<% } else { %>" +
+			"<p><%= subtitle %></p>" +
+			"<% } %>";
+		expect(reverseEjs(template, "<h1>HELLO</h1>")).toEqual({
+			isAdmin: true,
+			"title.toUpperCase()": "HELLO",
+		});
+		expect(reverseEjs(template, "<p>world</p>")).toEqual({
+			isAdmin: false,
+			subtitle: "world",
+		});
+	});
+
+	it("should capture a raw expression inside a loop with prefix stripping", () => {
+		const template =
+			"<% tags.forEach(t => { %>" +
+			"<span><%- t.label.toUpperCase() %></span>" +
+			"<% }) %>";
+		const final = "<span>ALPHA</span><span>BETA</span>";
+		const result = reverseEjs(template, final);
+		const tags = result.tags as Array<Record<string, unknown>>;
+		expect(tags).toHaveLength(2);
+		expect(tags[0]["label.toUpperCase()"]).toBe("ALPHA");
+		expect(tags[1]["label.toUpperCase()"]).toBe("BETA");
+	});
 });
 
 describe("adjacent variable capture", () => {
@@ -313,5 +362,24 @@ describe("complex condition capture", () => {
 		const r2 = reverseEjs(template, "<p>editor</p>");
 		expect(r2['role === "admin"']).toBe(false);
 		expect(r2['role === "editor"']).toBe(true);
+	});
+
+	it("should handle complex conditions containing escaped quotes", () => {
+		const template = '<% if (name === "a\\"b") { %><p>yes</p><% } %>';
+		const result = reverseEjs(template, "<p>yes</p>");
+		expect(result['name === "a\\"b"']).toBe(true);
+	});
+
+	it("should capture a complex condition wrapping a loop", () => {
+		const template =
+			"<% if (items.length > 0) { %>" +
+			"<ul><% items.forEach(i => { %><li><%= i %></li><% }) %></ul>" +
+			"<% } %>";
+		expect(
+			reverseEjs(template, "<ul><li>alpha</li><li>beta</li></ul>"),
+		).toEqual({
+			"items.length > 0": true,
+			items: ["alpha", "beta"],
+		});
 	});
 });
