@@ -2,6 +2,8 @@
 
 The inverse of `ejs.render()`. Given an EJS template and the rendered output it produced, extract the data object that was used to render it.
 
+Works with **any text format**: HTML, Markdown, plain text, log lines, emails, CSV rows, config files - anything you can describe with an EJS template. Most tools in this space only handle HTML; reverse-ejs just sees text, so the same library parses a product page, a shipping confirmation email, and a structured log line with the same API.
+
 ```ts
 import { reverseEjs } from "reverse-ejs";
 
@@ -431,6 +433,157 @@ Output:
 ```
 
 One template works for every product page with the same HTML structure. When the page updates with new data, run it again - same template, fresh data.
+
+## Beyond HTML
+
+HTML is the obvious use case, but reverse-ejs never assumes its input is HTML. It just matches text against a template, so you can point it at Markdown, logs, emails, CSV rows, CLI output, or any other templated text. Most HTML-specific scraping tools stop at the DOM; reverse-ejs keeps going.
+
+### Markdown
+
+Extract post frontmatter and body structure from Markdown documents:
+
+```ts
+const template = `# <%= title %>
+
+**Author:** <%= author %>
+**Published:** <%= date %>
+
+<%= summary %>
+
+## Tags
+
+<% tags.forEach(tag => { %>- <%= tag %>
+<% }) %>`;
+
+const rendered = `# My First Post
+
+**Author:** Alice Chen
+**Published:** 2026-04-10
+
+A short post about reverse-ejs.
+
+## Tags
+
+- javascript
+- typescript
+- parsing
+`;
+
+reverseEjs(template, rendered);
+// => {
+//   title: "My First Post",
+//   author: "Alice Chen",
+//   date: "2026-04-10",
+//   summary: "A short post about reverse-ejs.",
+//   tags: ["javascript", "typescript", "parsing"],
+// }
+```
+
+### Structured log lines
+
+Turn application logs into queryable objects:
+
+```ts
+const template = "[<%= level %>] <%= timestamp %> <%= service %>: <%= message %>";
+const rendered = "[ERROR] 2026-04-10T17:00:00Z api-gateway: upstream connection refused";
+
+reverseEjs(template, rendered);
+// => {
+//   level: "ERROR",
+//   timestamp: "2026-04-10T17:00:00Z",
+//   service: "api-gateway",
+//   message: "upstream connection refused",
+// }
+```
+
+Combine with `reverseEjsAll` to process a whole log file line-by-line, or with `safe: true` to skip lines that don't match.
+
+### Transactional emails
+
+Pull order details out of the plain-text body of a confirmation email:
+
+```ts
+const template = `Hi <%= customer %>,
+
+Your order <%= orderId %> has shipped!
+
+<% items.forEach(item => { %>  - <%= item.qty %>x <%= item.name %> ($<%= item.price %>)
+<% }) %>
+Total: $<%= total %>
+
+Tracking: <%= trackingUrl %>
+`;
+
+const email = `Hi Alice,
+
+Your order #A-1234 has shipped!
+
+  - 2x Widget ($9.99)
+  - 1x Gadget ($24.50)
+
+Total: $44.48
+
+Tracking: https://ship.example.com/track/ZZ1234
+`;
+
+reverseEjs(template, email, {
+	types: { qty: "number", price: "number", total: "number" },
+});
+// => {
+//   customer: "Alice",
+//   orderId: "#A-1234",
+//   items: [
+//     { qty: 2, name: "Widget", price: 9.99 },
+//     { qty: 1, name: "Gadget", price: 24.50 },
+//   ],
+//   total: 44.48,
+//   trackingUrl: "https://ship.example.com/track/ZZ1234",
+// }
+```
+
+### CSV-like or delimited rows
+
+Parse fixed-shape delimited data without bringing in a CSV library:
+
+```ts
+const template = "<% rows.forEach(r => { %><%= r.name %>,<%= r.score %>\n<% }) %>";
+const rendered = "Alice,95\nBob,87\nCarol,72\n";
+
+reverseEjs(template, rendered, { types: { score: "number" } });
+// => {
+//   rows: [
+//     { name: "Alice", score: 95 },
+//     { name: "Bob", score: 87 },
+//     { name: "Carol", score: 72 },
+//   ],
+// }
+```
+
+### CLI output
+
+Parse the output of `git`, `npm`, or any other tool with a stable text format. Here's `git log --oneline`:
+
+```ts
+const template = "<% commits.forEach(c => { %><%= c.hash %> <%= c.message %>\n<% }) %>";
+const rendered = "abc1234 Fix authentication bug\n" + "def5678 Add CSV export feature\n" + "9012345 Bump dependencies\n";
+
+reverseEjs(template, rendered);
+// => {
+//   commits: [
+//     { hash: "abc1234", message: "Fix authentication bug" },
+//     { hash: "def5678", message: "Add CSV export feature" },
+//     { hash: "9012345", message: "Bump dependencies" },
+//   ],
+// }
+```
+
+Avoid padded/aligned formats like `docker ps` or `ls -l` - the varying whitespace between columns isn't something an EJS template can describe. Prefer formats with consistent delimiters (single space, comma, pipe, tab).
+
+### Tips for non-HTML sources
+
+- HTML entity unescaping (`&amp;` → `&`, etc.) still runs by default. If your source is plain text or Markdown, pass `unescape: (s) => s` to disable it.
+- `flexibleWhitespace: true` is tuned for HTML (collapses whitespace around `<` and `>`). For non-HTML formats where whitespace is significant (logs, CSV), leave it off.
+- For log-file or email processing over many inputs, use `compileTemplate()` once and reuse the matcher.
 
 ## How It Works
 

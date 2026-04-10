@@ -4,16 +4,16 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>
-			reverse-ejs - Extract JSON Data from HTML & Web Pages | Free Online
-			Tool
+			reverse-ejs - Extract JSON from HTML, Markdown & Plain Text | Free
+			Online Tool
 		</title>
 		<meta
 			name="description"
-			content="Free browser tool to extract structured JSON data from any HTML or web page. Paste your HTML, define an EJS template, and get clean JSON instantly. No signup, no server, runs entirely in your browser."
+			content="Free browser tool to extract structured JSON from any templated text - HTML, Markdown, logs, emails, plain text. Define an EJS template and get clean JSON instantly. No signup, no server, runs entirely in your browser."
 		/>
 		<meta
 			name="keywords"
-			content="HTML to JSON, web scraping, data extraction, EJS template, reverse template, HTML parser, structured data, JSON converter, web data extraction, scrape HTML, parse HTML"
+			content="text to JSON, HTML to JSON, Markdown to JSON, log parsing, data extraction, EJS template, reverse template, structured data, JSON converter, text parser, web scraping, email parsing"
 		/>
 		<meta name="author" content="Lucas Rainett" />
 		<meta name="robots" content="index, follow" />
@@ -31,11 +31,11 @@
 		/>
 		<meta
 			property="og:title"
-			content="reverse-ejs - Extract JSON Data from HTML & Web Pages"
+			content="reverse-ejs - Extract JSON from HTML, Markdown & Plain Text"
 		/>
 		<meta
 			property="og:description"
-			content="Free browser tool to extract structured JSON data from any HTML or web page. Define an EJS template and get clean JSON instantly."
+			content="Free browser tool to extract structured JSON from any templated text - HTML, Markdown, logs, emails. Define an EJS template and get clean JSON instantly."
 		/>
 		<meta
 			property="og:image"
@@ -47,11 +47,11 @@
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta
 			name="twitter:title"
-			content="reverse-ejs - Extract JSON Data from HTML & Web Pages"
+			content="reverse-ejs - Extract JSON from HTML, Markdown & Plain Text"
 		/>
 		<meta
 			name="twitter:description"
-			content="Free browser tool to extract structured JSON data from any HTML or web page using EJS templates."
+			content="Free browser tool to extract structured JSON from any templated text - HTML, Markdown, logs, emails - using EJS templates."
 		/>
 		<meta
 			name="twitter:image"
@@ -68,7 +68,7 @@
 				"@context": "https://schema.org",
 				"@type": "SoftwareApplication",
 				"name": "reverse-ejs",
-				"description": "Free browser tool to extract structured JSON data from any HTML or web page using EJS templates.",
+				"description": "Free browser tool to extract structured JSON from any templated text - HTML, Markdown, logs, emails - using EJS templates.",
 				"url": "https://lucasrainett.github.io/reverse-ejs/",
 				"applicationCategory": "DeveloperApplication",
 				"operatingSystem": "Any",
@@ -335,6 +335,45 @@
 				margin-bottom: 16px;
 			}
 
+			.examples-row {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				gap: 8px;
+				margin-bottom: 16px;
+				padding: 10px 12px;
+				background: var(--bg-code, rgba(127, 127, 127, 0.08));
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+			}
+
+			.examples-label {
+				font-size: 0.85rem;
+				color: var(--text-muted);
+				margin-right: 4px;
+			}
+
+			button.example-btn {
+				padding: 6px 12px;
+				background: transparent;
+				color: var(--text);
+				border: 1px solid var(--border);
+				border-radius: 999px;
+				font-size: 0.8rem;
+				font-weight: 500;
+				cursor: pointer;
+				transition:
+					background 0.15s,
+					border-color 0.15s,
+					color 0.15s;
+			}
+
+			button.example-btn:hover {
+				background: var(--accent);
+				border-color: var(--accent);
+				color: #fff;
+			}
+
 			button#extract {
 				padding: 10px 24px;
 				background: var(--accent);
@@ -563,8 +602,9 @@
 				<img src="logo.svg" alt="reverse-ejs logo" class="logo" />
 				<h1><code>reverse-ejs</code></h1>
 				<p>
-					Turn any web page into structured JSON. Define an EJS
-					template over the HTML and extract the data instantly.
+					Turn any templated text into structured JSON. Works with
+					HTML, Markdown, logs, emails, plain text - anything you
+					can describe with an EJS template.
 				</p>
 				<div class="links">
 					<a
@@ -593,10 +633,11 @@
 				<div class="steps">
 					<div class="step">
 						<div class="step-num">1</div>
-						<h3>Save the HTML</h3>
+						<h3>Grab the text</h3>
 						<p>
-							View source on any page and copy the HTML you want
-							to extract data from.
+							Copy the HTML page, Markdown document, log line,
+							email, or any other templated text you want to
+							extract data from.
 						</p>
 					</div>
 					<div class="step">
@@ -622,8 +663,13 @@
 				<h2 class="section-heading">Features</h2>
 				<ul class="features">
 					<li>
+						<strong>Works with any text format</strong> - HTML,
+						Markdown, logs, emails, CSV-like data, plain text -
+						anything you can describe with an EJS template
+					</li>
+					<li>
 						<strong>Loops & nested data</strong> - extract arrays
-						and nested objects from repeating HTML sections
+						and nested objects from any repeating section
 					</li>
 					<li>
 						<strong>Conditionals</strong> - if/else, switch/case,
@@ -683,12 +729,58 @@
 			<div class="playground">
 				<h2>Playground</h2>
 				<p class="subtitle">
-					Paste your rendered HTML and EJS template, then hit Extract.
+					Paste your rendered text and EJS template, then hit Extract.
 				</p>
+
+				<div class="examples-row">
+					<span class="examples-label">Try an example:</span>
+					<button
+						type="button"
+						class="example-btn"
+						data-example="html"
+					>
+						HTML
+					</button>
+					<button
+						type="button"
+						class="example-btn"
+						data-example="markdown"
+					>
+						Markdown
+					</button>
+					<button
+						type="button"
+						class="example-btn"
+						data-example="log"
+					>
+						Log line
+					</button>
+					<button
+						type="button"
+						class="example-btn"
+						data-example="email"
+					>
+						Email
+					</button>
+					<button
+						type="button"
+						class="example-btn"
+						data-example="csv"
+					>
+						CSV
+					</button>
+					<button
+						type="button"
+						class="example-btn"
+						data-example="cli"
+					>
+						CLI
+					</button>
+				</div>
 
 				<div class="editors">
 					<div class="editor-group">
-						<label class="field-label">Rendered HTML</label>
+						<label class="field-label">Rendered text</label>
 						<textarea
 							id="rendered"
 							spellcheck="false"
@@ -715,7 +807,6 @@
 
 				<div class="actions">
 					<button id="extract">Extract Data</button>
-					<button class="secondary" id="example">Load Example</button>
 					<button class="options-toggle" id="optionsToggle">
 						<span class="arrow">&#9654;</span> Options
 					</button>
@@ -845,7 +936,7 @@
 				var outputEl = document.getElementById("output");
 				var statusEl = document.getElementById("status");
 				var extractBtn = document.getElementById("extract");
-				var exampleBtn = document.getElementById("example");
+				var exampleBtns = document.querySelectorAll(".example-btn");
 				var copyBtn = document.getElementById("copyResult");
 				var optionsToggle = document.getElementById("optionsToggle");
 				var optionsPanel = document.getElementById("optionsPanel");
@@ -925,47 +1016,139 @@
 					return opts;
 				}
 
-				var exampleRendered =
-					'<div class="product">\n' +
-					"  <h1>Sony WH-1000XM5</h1>\n" +
-					'  <span class="price">$348.00</span>\n' +
-					'  <p class="description">Industry-leading noise canceling headphones</p>\n' +
-					'  <div class="specs">\n' +
-					'    <span class="brand">Sony</span>\n' +
-					'    <span class="color">Black</span>\n' +
-					'    <span class="rating">4.7</span>\n' +
-					"  </div>\n" +
-					'  <ul class="reviews">\n' +
-					"    <li>\n" +
-					"      <strong>Alice</strong>\n" +
-					"      <span>Best headphones I've ever owned. The noise canceling is incredible.</span>\n" +
-					"    </li>\n" +
-					"    <li>\n" +
-					"      <strong>Bob</strong>\n" +
-					"      <span>Great sound quality, comfortable for long flights.</span>\n" +
-					"    </li>\n" +
-					"  </ul>\n" +
-					"</div>";
-
-				var exampleTemplate =
-					'<div class="product">\n' +
-					"  <h1><%= name %></h1>\n" +
-					'  <span class="price">$<%= price %></span>\n' +
-					'  <p class="description"><%= description %></p>\n' +
-					'  <div class="specs">\n' +
-					'    <span class="brand"><%= specs.brand %></span>\n' +
-					'    <span class="color"><%= specs.color %></span>\n' +
-					'    <span class="rating"><%= specs.rating %></span>\n' +
-					"  </div>\n" +
-					'  <ul class="reviews">\n' +
-					"    <% reviews.forEach(review => { %>\n" +
-					"    <li>\n" +
-					"      <strong><%= review.author %></strong>\n" +
-					"      <span><%= review.text %></span>\n" +
-					"    </li>\n" +
-					"    <% }) %>\n" +
-					"  </ul>\n" +
-					"</div>";
+				// Each example provides:
+				//   template       - the EJS template string
+				//   rendered       - the rendered text to extract from
+				//   flexWs         - whether to pre-check the flexibleWhitespace option
+				//   types          - JSON string to drop into the types option textarea
+				var EXAMPLES = {
+					html: {
+						flexWs: true,
+						types: "",
+						rendered:
+							'<div class="product">\n' +
+							"  <h1>Sony WH-1000XM5</h1>\n" +
+							'  <span class="price">$348.00</span>\n' +
+							'  <p class="description">Industry-leading noise canceling headphones</p>\n' +
+							'  <div class="specs">\n' +
+							'    <span class="brand">Sony</span>\n' +
+							'    <span class="color">Black</span>\n' +
+							'    <span class="rating">4.7</span>\n' +
+							"  </div>\n" +
+							'  <ul class="reviews">\n' +
+							"    <li>\n" +
+							"      <strong>Alice</strong>\n" +
+							"      <span>Best headphones I've ever owned. The noise canceling is incredible.</span>\n" +
+							"    </li>\n" +
+							"    <li>\n" +
+							"      <strong>Bob</strong>\n" +
+							"      <span>Great sound quality, comfortable for long flights.</span>\n" +
+							"    </li>\n" +
+							"  </ul>\n" +
+							"</div>",
+						template:
+							'<div class="product">\n' +
+							"  <h1><%= name %></h1>\n" +
+							'  <span class="price">$<%= price %></span>\n' +
+							'  <p class="description"><%= description %></p>\n' +
+							'  <div class="specs">\n' +
+							'    <span class="brand"><%= specs.brand %></span>\n' +
+							'    <span class="color"><%= specs.color %></span>\n' +
+							'    <span class="rating"><%= specs.rating %></span>\n' +
+							"  </div>\n" +
+							'  <ul class="reviews">\n' +
+							"    <% reviews.forEach(review => { %>\n" +
+							"    <li>\n" +
+							"      <strong><%= review.author %></strong>\n" +
+							"      <span><%= review.text %></span>\n" +
+							"    </li>\n" +
+							"    <% }) %>\n" +
+							"  </ul>\n" +
+							"</div>",
+					},
+					markdown: {
+						flexWs: false,
+						types: "",
+						rendered:
+							"# My First Post\n" +
+							"\n" +
+							"**Author:** Alice Chen\n" +
+							"**Published:** 2026-04-10\n" +
+							"\n" +
+							"A short post about reverse-ejs.\n" +
+							"\n" +
+							"## Tags\n" +
+							"\n" +
+							"- javascript\n" +
+							"- typescript\n" +
+							"- parsing\n",
+						template:
+							"# <%= title %>\n" +
+							"\n" +
+							"**Author:** <%= author %>\n" +
+							"**Published:** <%= date %>\n" +
+							"\n" +
+							"<%= summary %>\n" +
+							"\n" +
+							"## Tags\n" +
+							"\n" +
+							"<% tags.forEach(tag => { %>- <%= tag %>\n" +
+							"<% }) %>",
+					},
+					log: {
+						flexWs: false,
+						types: "",
+						rendered:
+							"[ERROR] 2026-04-10T17:00:00Z api-gateway: upstream connection refused",
+						template:
+							"[<%= level %>] <%= timestamp %> <%= service %>: <%= message %>",
+					},
+					email: {
+						flexWs: false,
+						types:
+							'{\n  "qty": "number",\n' +
+							'  "price": "number",\n' +
+							'  "total": "number"\n}',
+						rendered:
+							"Hi Alice,\n" +
+							"\n" +
+							"Your order #A-1234 has shipped!\n" +
+							"\n" +
+							"  - 2x Widget ($9.99)\n" +
+							"  - 1x Gadget ($24.50)\n" +
+							"\n" +
+							"Total: $44.48\n" +
+							"\n" +
+							"Tracking: https://ship.example.com/track/ZZ1234\n",
+						template:
+							"Hi <%= customer %>,\n" +
+							"\n" +
+							"Your order <%= orderId %> has shipped!\n" +
+							"\n" +
+							"<% items.forEach(item => { %>  - <%= item.qty %>x <%= item.name %> ($<%= item.price %>)\n" +
+							"<% }) %>\n" +
+							"Total: $<%= total %>\n" +
+							"\n" +
+							"Tracking: <%= trackingUrl %>\n",
+					},
+					csv: {
+						flexWs: false,
+						types: '{\n  "score": "number"\n}',
+						rendered: "Alice,95\nBob,87\nCarol,72\n",
+						template:
+							"<% rows.forEach(r => { %><%= r.name %>,<%= r.score %>\n<% }) %>",
+					},
+					cli: {
+						flexWs: false,
+						types: "",
+						rendered:
+							"abc1234 Fix authentication bug\n" +
+							"def5678 Add CSV export feature\n" +
+							"9012345 Bump dependencies\n",
+						template:
+							"<% commits.forEach(c => { %><%= c.hash %> <%= c.message %>\n<% }) %>",
+					},
+				};
 
 				function extract(source) {
 					var template = templateEl.value;
@@ -1029,12 +1212,26 @@
 					extract("click");
 				});
 
-				exampleBtn.addEventListener("click", function () {
-					track("example-loaded", "Load Example clicked");
-					renderedEl.value = exampleRendered;
-					templateEl.value = exampleTemplate;
-					extract("example");
-				});
+				function loadExample(key) {
+					var ex = EXAMPLES[key];
+					if (!ex) return;
+					renderedEl.value = ex.rendered;
+					templateEl.value = ex.template;
+					// Tune flexibleWhitespace to what the format needs:
+					// HTML benefits from it, everything else should stay strict.
+					optFlexWs.checked = !!ex.flexWs;
+					optTypes.value = ex.types || "";
+					track("example-" + key, "Loaded " + key + " example");
+					extract("example-" + key);
+				}
+
+				for (var i = 0; i < exampleBtns.length; i++) {
+					(function (btn) {
+						btn.addEventListener("click", function () {
+							loadExample(btn.getAttribute("data-example"));
+						});
+					})(exampleBtns[i]);
+				}
 
 				copyBtn.addEventListener("click", function () {
 					var text = outputEl.textContent;
