@@ -500,6 +500,28 @@
 				color: var(--text-muted);
 			}
 
+			.output-header {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				margin-bottom: 6px;
+				gap: 12px;
+			}
+
+			.output-header .field-label {
+				margin-bottom: 0;
+			}
+
+			button#copyResult {
+				padding: 6px 14px;
+				font-size: 0.8rem;
+			}
+
+			button#copyResult.copied {
+				color: var(--green);
+				border-color: var(--green);
+			}
+
 			pre#output {
 				background: var(--bg);
 				border: 1px solid var(--border);
@@ -733,7 +755,17 @@
 				</div>
 
 				<div class="output-group">
-					<label class="field-label">Extracted Data</label>
+					<div class="output-header">
+						<label class="field-label">Extracted Data</label>
+						<button
+							type="button"
+							class="secondary"
+							id="copyResult"
+							aria-label="Copy result to clipboard"
+						>
+							Copy
+						</button>
+					</div>
 					<pre id="output"></pre>
 				</div>
 			</div>
@@ -759,6 +791,7 @@
 				var statusEl = document.getElementById("status");
 				var extractBtn = document.getElementById("extract");
 				var exampleBtn = document.getElementById("example");
+				var copyBtn = document.getElementById("copyResult");
 				var optionsToggle = document.getElementById("optionsToggle");
 				var optionsPanel = document.getElementById("optionsPanel");
 
@@ -920,6 +953,55 @@
 					renderedEl.value = exampleRendered;
 					templateEl.value = exampleTemplate;
 					extract("example");
+				});
+
+				copyBtn.addEventListener("click", function () {
+					var text = outputEl.textContent;
+					if (!text) {
+						track("copy-button-empty", "Copy clicked with empty result");
+						return;
+					}
+					var done = function () {
+						track("copy-button-success", "Copy button succeeded");
+						var original = copyBtn.textContent;
+						copyBtn.textContent = "Copied!";
+						copyBtn.classList.add("copied");
+						setTimeout(function () {
+							copyBtn.textContent = original;
+							copyBtn.classList.remove("copied");
+						}, 1500);
+					};
+					var fail = function () {
+						track("copy-button-error", "Copy button failed");
+						copyBtn.textContent = "Failed";
+						setTimeout(function () {
+							copyBtn.textContent = "Copy";
+						}, 1500);
+					};
+					if (
+						navigator.clipboard &&
+						navigator.clipboard.writeText
+					) {
+						navigator.clipboard
+							.writeText(text)
+							.then(done)
+							.catch(fail);
+					} else {
+						// Fallback for older browsers
+						try {
+							var ta = document.createElement("textarea");
+							ta.value = text;
+							ta.style.position = "fixed";
+							ta.style.opacity = "0";
+							document.body.appendChild(ta);
+							ta.select();
+							document.execCommand("copy");
+							document.body.removeChild(ta);
+							done();
+						} catch (e) {
+							fail();
+						}
+					}
 				});
 
 				document.addEventListener("keydown", function (e) {
