@@ -33,10 +33,11 @@ describe("compileTemplate", () => {
 		});
 	});
 
-	it("should throw at compile time for adjacent variables", () => {
-		expect(() => compileTemplate("<%= a %><%= b %>")).toThrow(
-			ReverseEjsError,
-		);
+	it("should compile adjacent variables and capture them as a joined key", () => {
+		const compiled = compileTemplate("<%= a %><%= b %>");
+		expect(compiled.match("AliceBob")).toEqual({
+			"a + b": "AliceBob",
+		});
 	});
 
 	it("should throw on match failure by default", () => {
@@ -121,6 +122,14 @@ describe("reverseEjs - types coercion", () => {
 		});
 	});
 
+	it("should coerce values nested under a dotted path", () => {
+		expect(
+			reverseEjs("Age: <%= user.age %>", "Age: 30", {
+				types: { age: "number" },
+			}),
+		).toEqual({ user: { age: 30 } });
+	});
+
 	it("should warn and keep original when number coercion fails", () => {
 		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
 		const result = reverseEjs("Age: <%= age %>", "Age: thirty", {
@@ -191,21 +200,36 @@ describe("ReverseEjsError", () => {
 		}
 	});
 
-	it("should include adjacent variable names and position", () => {
+	it("should not throw a ReverseEjsError for adjacent variables", () => {
+		// Adjacent variables now get captured as a joined key.
+		const result = reverseEjs("Foo <%= a %><%= b %> bar", "Foo XY bar");
+		expect(result).toEqual({ "a + b": "XY" });
+	});
+
+	it("should name a loop-body variable in the error message", () => {
+		const template =
+			"<ul><% items.forEach(i => { %><li><%= i.name %></li><% }) %></ul>";
 		try {
-			reverseEjs("Foo <%= a %><%= b %> bar", "Foo something bar");
+			reverseEjs(template, "<section>garbage</section>");
 			expect.fail("should have thrown");
 		} catch (e) {
-			expect(e).toBeInstanceOf(ReverseEjsError);
-			const msg = (e as Error).message;
-			expect(msg).toContain('"<%= a %>"');
-			expect(msg).toContain('"<%= b %>"');
-			expect(msg).toContain("position");
+			// The last variable walked into the loop body is `i.name`.
+			expect((e as Error).message).toContain("i.name");
+		}
+	});
+
+	it("should name a conditional-branch variable in the error message", () => {
+		const template = "<% if (isAdmin) { %><h1><%= title %></h1><% } %>";
+		try {
+			reverseEjs(template, "<h2>nope</h2>");
+			expect.fail("should have thrown");
+		} catch (e) {
+			expect((e as Error).message).toContain("title");
 		}
 	});
 });
 
-describe("expression skipping warnings", () => {
+describe("expression capture (no warnings)", () => {
 	let warnSpy: ReturnType<typeof vi.spyOn>;
 
 	beforeEach(() => {
@@ -216,23 +240,21 @@ describe("expression skipping warnings", () => {
 		warnSpy.mockRestore();
 	});
 
-	it("should warn when a method call expression is skipped", () => {
-		reverseEjs("<h1><%= title.toUpperCase() %></h1>", "<h1>HELLO</h1>");
-		expect(warnSpy).toHaveBeenCalled();
-		const call = warnSpy.mock.calls[0][0] as string;
-		expect(call).toContain("title.toUpperCase()");
-		expect(call).toContain("skipped");
+	it("should not warn when a method call expression is captured", () => {
+		const result = reverseEjs(
+			"<h1><%= title.toUpperCase() %></h1>",
+			"<h1>HELLO</h1>",
+		);
+		expect(result).toEqual({ "title.toUpperCase()": "HELLO" });
+		expect(warnSpy).not.toHaveBeenCalled();
 	});
 
-	it("should warn when a ternary expression is skipped", () => {
-		reverseEjs('<p><%= active ? "yes" : "no" %></p>', "<p>yes</p>");
-		expect(warnSpy).toHaveBeenCalled();
-	});
-
-	it("should suppress warnings when silent is true", () => {
-		reverseEjs("<h1><%= title.toUpperCase() %></h1>", "<h1>HELLO</h1>", {
-			silent: true,
-		});
+	it("should not warn when a ternary expression is captured", () => {
+		const result = reverseEjs(
+			'<p><%= active ? "yes" : "no" %></p>',
+			"<p>yes</p>",
+		);
+		expect(result).toEqual({ 'active ? "yes" : "no"': "yes" });
 		expect(warnSpy).not.toHaveBeenCalled();
 	});
 

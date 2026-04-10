@@ -87,10 +87,12 @@ describe("variables", () => {
 		);
 	});
 
-	it("should throw for adjacent variables with no separator", () => {
+	it("should capture adjacent variables as a joined key", () => {
 		const template = "<%= firstName %><%= lastName %>";
 		const final = "AliceSmith";
-		expect(() => reverseEjs(template, final)).toThrow("Adjacent variables");
+		expect(reverseEjs(template, final)).toEqual({
+			"firstName + lastName": "AliceSmith",
+		});
 	});
 
 	it("should extract deeply nested property access", () => {

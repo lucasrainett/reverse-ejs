@@ -1,7 +1,6 @@
 import { tokenize } from "./tokenizer";
 import { buildPattern } from "./patternBuilder";
 import { extract } from "./extractor";
-import { buildRegex } from "./regexBuilder";
 import type { EjsOptions, Pattern } from "./types";
 import { ExtractedObject } from "./types";
 import { ReverseEjsError } from "./errors";
@@ -66,8 +65,6 @@ export interface CompiledTemplate {
  * @param template - The EJS template source.
  * @param options - Optional configuration. See {@link ReverseEjsOptions}.
  * @returns A {@link CompiledTemplate} with a `match()` method.
- * @throws {ReverseEjsError} If the template contains adjacent variables with
- *         no separator (caught at compile time, not match time).
  *
  * @example
  * import { compileTemplate } from "reverse-ejs";
@@ -86,24 +83,6 @@ export function compileTemplate(
 
 	const tokens = tokenize(expanded, options);
 	const pattern: Pattern = buildPattern(tokens);
-
-	// Pre-validate the pattern by building the regex once.
-	// This surfaces adjacent-variable errors at compile time, not match time.
-	try {
-		buildRegex(
-			pattern,
-			undefined,
-			new Set(),
-			undefined,
-			undefined,
-			options?.flexibleWhitespace,
-			{ template: expanded },
-		);
-	} catch (e) {
-		// Re-throw with template context attached.
-		if (e instanceof ReverseEjsError) throw e;
-		throw e;
-	}
 
 	return {
 		match(finalString: string): ExtractedObject | null {

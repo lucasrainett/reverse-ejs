@@ -5,6 +5,7 @@ type StopReason = "loop_end" | "if_end" | "else" | "end";
 export function buildPattern(tokens: Token[]): Pattern {
 	const [pattern] = parseSequence(tokens, 0);
 	assignCondIds({ n: 0 }, pattern);
+	assignExprIds({ n: 0, map: new Map() }, pattern);
 	return pattern;
 }
 
@@ -17,6 +18,29 @@ function assignCondIds(ctx: { n: number }, p: Pattern): void {
 		p.parts.forEach((c) => assignCondIds(ctx, c));
 	} else if (p.type === "loop") {
 		assignCondIds(ctx, p.body);
+	}
+}
+
+function assignExprIds(
+	ctx: { n: number; map: Map<string, number> },
+	p: Pattern,
+): void {
+	if (p.type === "expression") {
+		const existing = ctx.map.get(p.expression);
+		if (existing !== undefined) {
+			(p as { exprId: number }).exprId = existing;
+		} else {
+			const id = ctx.n++;
+			ctx.map.set(p.expression, id);
+			(p as { exprId: number }).exprId = id;
+		}
+	} else if (p.type === "sequence") {
+		p.parts.forEach((c) => assignExprIds(ctx, c));
+	} else if (p.type === "loop") {
+		assignExprIds(ctx, p.body);
+	} else if (p.type === "conditional") {
+		assignExprIds(ctx, p.thenBranch);
+		if (p.elseBranch) assignExprIds(ctx, p.elseBranch);
 	}
 }
 
@@ -48,10 +72,11 @@ function parseSequence(
 				...(token.raw ? { raw: true } : {}),
 			});
 			i++;
-		} else if (token.type === "expression_skipped") {
+		} else if (token.type === "expression") {
 			parts.push({
-				type: "expression_skipped",
+				type: "expression",
 				expression: token.expression,
+				...(token.raw ? { raw: true } : {}),
 			});
 			i++;
 		} else if (token.type === "loop_start") {
@@ -95,8 +120,54 @@ function parseSequence(
 	return [wrap(parts), i, "end"];
 }
 
+/**
+ * Merge runs of consecutive variable/expression nodes into a single expression
+ * node. The merged expression text joins each part with " + " (mirroring JS
+ * string concatenation), so `<%= a %><%= b %>` collapses to a single
+ * expression with text `"a + b"`.
+ */
+function mergeAdjacent(parts: Pattern[]): Pattern[] {
+	const result: Pattern[] = [];
+	let buffer: Pattern[] = [];
+	const flush = (): void => {
+		if (buffer.length === 0) return;
+		if (buffer.length === 1) {
+			result.push(buffer[0]);
+		} else {
+			const exprText = buffer
+				.map((p) =>
+					p.type === "variable"
+						? p.name
+						: (p as { expression: string }).expression,
+				)
+				.join(" + ");
+			const anyRaw = buffer.some(
+				(p) =>
+					(p.type === "variable" || p.type === "expression") && p.raw,
+			);
+			result.push({
+				type: "expression",
+				expression: exprText,
+				...(anyRaw ? { raw: true } : {}),
+			});
+		}
+		buffer = [];
+	};
+	for (const p of parts) {
+		if (p.type === "variable" || p.type === "expression") {
+			buffer.push(p);
+		} else {
+			flush();
+			result.push(p);
+		}
+	}
+	flush();
+	return result;
+}
+
 function wrap(parts: Pattern[]): Pattern {
-	if (parts.length === 0) return { type: "literal", value: "" };
-	if (parts.length === 1) return parts[0];
-	return { type: "sequence", parts };
+	const merged = mergeAdjacent(parts);
+	if (merged.length === 0) return { type: "literal", value: "" };
+	if (merged.length === 1) return merged[0];
+	return { type: "sequence", parts: merged };
 }

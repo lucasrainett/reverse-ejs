@@ -8,10 +8,11 @@ import type {
 } from "./types";
 import {
 	buildRegex,
-	collectExpressions,
+	buildExprIdMap,
 	fromCaptureName,
 	toCaptureName,
 } from "./regexBuilder";
+import { stripItemPrefix } from "./normalize";
 import { ReverseEjsError } from "./errors";
 
 function unescapeHtml(s: string): string {
@@ -26,6 +27,7 @@ function unescapeHtml(s: string): string {
 const BRANCH_RE = /^(.+)_C(\d+)([TE])(?:_RAW)?$/;
 const SENTINEL_RE = /^_C\d+[TE]S$/;
 const RAW_RE = /_RAW$/;
+const EXPR_RE = /^_E(\d+)(?:_C\d+[TE])?(?:_RAW)?$/;
 
 function setNested(
 	obj: Record<string, unknown>,
@@ -129,17 +131,6 @@ function applyCoercions(
 	}
 }
 
-function warnSkippedExpressions(pattern: Pattern, silent?: boolean): void {
-	if (silent) return;
-	const exprs: string[] = [];
-	collectExpressions(pattern, exprs);
-	for (const expr of exprs) {
-		console.warn(
-			`[reverse-ejs] Expression "<%= ${expr} %>" was skipped - only plain variable names can be extracted.`,
-		);
-	}
-}
-
 function findLastVariableName(pattern: Pattern): string | null {
 	const names: string[] = [];
 	function walk(p: Pattern): void {
@@ -191,8 +182,6 @@ export function extract(
 	const silent = opts?.silent;
 	const safe = opts?.safe;
 
-	warnSkippedExpressions(pattern, silent);
-
 	const regexStr = buildRegex(
 		pattern,
 		undefined,
@@ -209,8 +198,9 @@ export function extract(
 		throw buildMatchError(pattern, regexStr, finalString);
 	}
 
+	const exprMap = buildExprIdMap(pattern);
 	const result: ExtractedObject = match.groups
-		? groupsToObject(match.groups, pattern, unescape, flexWs)
+		? groupsToObject(match.groups, pattern, exprMap, unescape, flexWs)
 		: {};
 
 	if (opts?.types) {
@@ -223,6 +213,7 @@ export function extract(
 function groupsToObject(
 	groups: Record<string, string | undefined>,
 	pattern: Pattern,
+	exprMap: Map<number, string>,
 	unescape: (s: string) => string,
 	flexWs?: boolean,
 ): ExtractedObject {
@@ -239,12 +230,27 @@ function groupsToObject(
 				setNested(
 					result,
 					arrayName,
-					extractLoopItems(loopPattern, value, unescape, flexWs),
+					extractLoopItems(
+						loopPattern,
+						value,
+						exprMap,
+						unescape,
+						flexWs,
+					),
 				);
 			}
 		} else if (SENTINEL_RE.test(captureName)) {
 			// sentinel - handled by extractConditionBooleans
 		} else {
+			const exprMatch = EXPR_RE.exec(captureName);
+			if (exprMatch) {
+				const exprText = exprMap.get(Number(exprMatch[1]));
+				if (exprText) {
+					const isRaw = RAW_RE.test(captureName);
+					result[exprText] = isRaw ? value : unescape(value);
+				}
+				continue;
+			}
 			const isRaw = RAW_RE.test(captureName);
 			const cleanName = captureName.replace(RAW_RE, "");
 			const branchMatch = BRANCH_RE.exec(cleanName);
@@ -263,6 +269,7 @@ function groupsToObject(
 function extractLoopItems(
 	loopPattern: LoopPattern,
 	loopSection: string,
+	exprMap: Map<number, string>,
 	unescape: (s: string) => string,
 	flexWs?: boolean,
 ): ExtractedItem[] {
@@ -286,12 +293,30 @@ function extractLoopItems(
 
 		const simpleGroups: Record<string, string> = {};
 		const nestedLoops: Record<string, string> = {};
+		const exprValues: Record<string, { value: string; raw: boolean }> = {};
 
 		for (const rawKey of Object.keys(match.groups)) {
 			const val = match.groups[rawKey];
 			if (val == null) continue;
+			if (SENTINEL_RE.test(rawKey.replace(RAW_RE, ""))) continue;
+
+			const exprMatch = EXPR_RE.exec(rawKey);
+			if (exprMatch) {
+				const exprText = exprMap.get(Number(exprMatch[1]));
+				if (exprText) {
+					const stripped = stripItemPrefix(
+						exprText,
+						loopPattern.itemName,
+					);
+					exprValues[stripped] = {
+						value: val,
+						raw: RAW_RE.test(rawKey),
+					};
+				}
+				continue;
+			}
+
 			const key = rawKey.replace(RAW_RE, "");
-			if (SENTINEL_RE.test(key)) continue;
 			if (key.endsWith("_LOOP")) nestedLoops[key.slice(0, -5)] = val;
 			else {
 				const branchMatch = BRANCH_RE.exec(key);
@@ -306,6 +331,7 @@ function extractLoopItems(
 		const allKeys = [
 			...Object.keys(simpleGroups),
 			...Object.keys(nestedLoops),
+			...Object.keys(exprValues),
 		];
 
 		const expectedItemKey = loopPattern.itemName
@@ -313,6 +339,7 @@ function extractLoopItems(
 			: null;
 		const isSimple =
 			allKeys.length === 1 &&
+			Object.keys(simpleGroups).length === 1 &&
 			(!expectedItemKey || allKeys[0] === expectedItemKey);
 
 		if (isSimple) {
@@ -334,8 +361,19 @@ function extractLoopItems(
 					setNested(
 						item,
 						arrayName,
-						extractLoopItems(nested, content, unescape, flexWs),
+						extractLoopItems(
+							nested,
+							content,
+							exprMap,
+							unescape,
+							flexWs,
+						),
 					);
+			}
+			for (const [exprKey, { value, raw }] of Object.entries(
+				exprValues,
+			)) {
+				item[exprKey] = raw ? value : unescape(value);
 			}
 			items.push(item);
 		}
@@ -361,9 +399,13 @@ function extractConditionBooleans(
 				typeof existing === "object" &&
 				!Array.isArray(existing) &&
 				!(existing instanceof Date);
+			// Complex conditions (anything beyond a bare identifier) emit a
+			// boolean even when the if-without-else branch did not match.
+			const isComplex = !/^[a-zA-Z_$][\w$]*$/.test(pattern.condition);
 			if (!hasNestedData) {
 				if (thenMatched) result[pattern.condition] = true;
 				else if (elseMatched) result[pattern.condition] = false;
+				else if (isComplex) result[pattern.condition] = false;
 			}
 		}
 		extractConditionBooleans(groups, pattern.thenBranch, result);

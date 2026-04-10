@@ -1,5 +1,4 @@
 import type { Pattern } from "./types";
-import { ReverseEjsError } from "./errors";
 
 export function escapeRegex(str: string): string {
 	return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -55,8 +54,14 @@ export function buildRegex(
 		case "literal":
 			return esc(pattern.value);
 
-		case "expression_skipped":
-			return `[\\s\\S]+?`;
+		case "expression": {
+			const id = pattern.exprId ?? 0;
+			const rawSuffix = pattern.raw ? "_RAW" : "";
+			const key = `_E${id}` + (branchSuffix ?? "") + rawSuffix;
+			if (seen.has(key)) return `\\k<${key}>`;
+			seen.add(key);
+			return `(?<${key}>[\\s\\S]*?)`;
+		}
 
 		case "variable": {
 			let captureName = pattern.name;
@@ -148,13 +153,6 @@ export function buildRegex(
 		}
 
 		case "sequence": {
-			for (let i = 0; i < pattern.parts.length - 1; i++) {
-				const curr = pattern.parts[i];
-				const next = pattern.parts[i + 1];
-				if (curr.type === "variable" && next.type === "variable") {
-					throwAdjacentVariablesError(curr.name, next.name, ctx);
-				}
-			}
 			return pattern.parts
 				.map((p) =>
 					buildRegex(
@@ -172,30 +170,6 @@ export function buildRegex(
 	}
 }
 
-function throwAdjacentVariablesError(
-	firstName: string,
-	secondName: string,
-	ctx?: BuildContext,
-): never {
-	const tag1 = `<%= ${firstName} %>`;
-	const tag2 = `<%= ${secondName} %>`;
-	let position = "";
-	if (ctx?.template) {
-		// Find any tag mentioning the first variable name
-		const re = new RegExp(
-			`<%[=-]\\s*${firstName.replace(/\./g, "\\.")}\\s*%>`,
-		);
-		const match = re.exec(ctx.template);
-		if (match) {
-			position = ` at template position ${match.index}`;
-		}
-	}
-	throw new ReverseEjsError(
-		`Adjacent variables "${tag1}" and "${tag2}"${position} have no literal separator - extraction is ambiguous. Add static text between them.`,
-		{ regex: "", input: "" },
-	);
-}
-
 export function buildRegexNoGroups(pattern: Pattern, flexWs?: boolean): string {
 	const esc = flexWs ? escapeRegexFlexWs : escapeRegex;
 
@@ -204,8 +178,8 @@ export function buildRegexNoGroups(pattern: Pattern, flexWs?: boolean): string {
 			return esc(pattern.value);
 		case "variable":
 			return `[\\s\\S]*?`;
-		case "expression_skipped":
-			return `[\\s\\S]+?`;
+		case "expression":
+			return `[\\s\\S]*?`;
 		case "loop":
 			return `(?:${buildRegexNoGroups(pattern.body, flexWs)})*`;
 		case "conditional": {
@@ -220,15 +194,23 @@ export function buildRegexNoGroups(pattern: Pattern, flexWs?: boolean): string {
 	}
 }
 
-export function collectExpressions(pattern: Pattern, out: string[]): void {
-	if (pattern.type === "expression_skipped") {
-		out.push(pattern.expression);
+/**
+ * Build a Map from exprId to the original expression text. Used by the
+ * extractor to recover the human-readable key for an expression capture.
+ */
+export function buildExprIdMap(
+	pattern: Pattern,
+	map: Map<number, string> = new Map(),
+): Map<number, string> {
+	if (pattern.type === "expression" && pattern.exprId !== undefined) {
+		map.set(pattern.exprId, pattern.expression);
 	} else if (pattern.type === "sequence") {
-		for (const p of pattern.parts) collectExpressions(p, out);
+		for (const p of pattern.parts) buildExprIdMap(p, map);
 	} else if (pattern.type === "loop") {
-		collectExpressions(pattern.body, out);
+		buildExprIdMap(pattern.body, map);
 	} else if (pattern.type === "conditional") {
-		collectExpressions(pattern.thenBranch, out);
-		if (pattern.elseBranch) collectExpressions(pattern.elseBranch, out);
+		buildExprIdMap(pattern.thenBranch, map);
+		if (pattern.elseBranch) buildExprIdMap(pattern.elseBranch, map);
 	}
+	return map;
 }
