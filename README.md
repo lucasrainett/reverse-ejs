@@ -130,6 +130,49 @@ reverseEjs("<title><%= name %></title><h1><%= name %></h1>", "<title>Alice</titl
 // => { name: "Alice" }
 ```
 
+### JavaScript expressions
+
+Tags containing arbitrary JavaScript (method calls, arithmetic, ternaries, template literals, etc.) are captured under their raw expression text as the key:
+
+```ts
+reverseEjs("<h1><%= title.toUpperCase() %></h1>", "<h1>HELLO</h1>");
+// => { "title.toUpperCase()": "HELLO" }
+
+reverseEjs("<td><%= price * qty %></td>", "<td>30</td>");
+// => { "price * qty": "30" }
+
+reverseEjs('<p><%= active ? "Online" : "Offline" %></p>', "<p>Online</p>");
+// => { 'active ? "Online" : "Offline"': "Online" }
+```
+
+Whitespace inside the expression is normalized so `<%= price*qty %>` and `<%= price * qty %>` produce the same key. Inside a loop body the loop item prefix is stripped, so `<%= item.price * item.qty %>` becomes `"price * qty"` on each item.
+
+### Adjacent variables
+
+Two or more variables with no literal text between them are captured under a single joined key:
+
+```ts
+reverseEjs("<%= firstName %><%= lastName %>", "AliceSmith");
+// => { "firstName + lastName": "AliceSmith" }
+```
+
+The individual values are not separable (the split point is ambiguous), so the library returns them as one combined value.
+
+### Complex conditions
+
+Conditions beyond a bare identifier (comparisons, logical operators, method calls) are captured as booleans under their raw text as the key:
+
+```ts
+const template = "<% if (items.length > 0) { %><ul>...</ul><% } %>";
+reverseEjs(template, "<ul>...</ul>");
+// => { "items.length > 0": true }
+
+reverseEjs(template, "");
+// => { "items.length > 0": false }
+```
+
+Bare-identifier conditions (`if (isAdmin)`) keep producing a clean `{ isAdmin: true }` key as before.
+
 ## Compiled templates
 
 When processing many rendered strings against the same template, compile it once for better performance:
@@ -196,7 +239,7 @@ interface ReverseEjsOptions {
 	partials?: Record<string, string>;
 	/** Return null instead of throwing on match failure. */
 	safe?: boolean;
-	/** Suppress console warnings (skipped expressions, failed coercions). */
+	/** Suppress console warnings from failed type coercions. */
 	silent?: boolean;
 	/** Map of variable name to coercion type. */
 	types?: Record<string, "string" | "number" | "boolean" | "date">;
@@ -213,7 +256,7 @@ interface ReverseEjsOptions {
 | `unescape`           | function | XML unescape | Custom HTML-unescape function         |
 | `partials`           | object   | `{}`         | Map of partial names to EJS source    |
 | `safe`               | boolean  | `false`      | Return `null` instead of throwing     |
-| `silent`             | boolean  | `false`      | Suppress console warnings             |
+| `silent`             | boolean  | `false`      | Suppress coercion warnings            |
 | `types`              | object   | `{}`         | Type coercion map                     |
 
 ### Custom delimiters
@@ -258,34 +301,35 @@ Recommended for web data extraction where you don't control the source formattin
 
 ## EJS Feature Support
 
-| Feature                                           | Status                                 |
-| ------------------------------------------------- | -------------------------------------- |
-| `<%= var %>` escaped output                       | Supported                              |
-| `<%- var %>` raw output                           | Supported                              |
-| `<%# comment %>`                                  | Supported (ignored)                    |
-| `<%%` / `%%>` literal delimiters                  | Supported                              |
-| `-%>` newline slurp                               | Supported                              |
-| `<%_` / `_%>` whitespace slurp                    | Supported                              |
-| `forEach` / `map` (arrow + function syntax)       | Supported                              |
-| `for...of` / `for...in` / classic `for` / `while` | Supported                              |
-| `.filter().forEach()` chained                     | Supported                              |
-| Nested loops (any depth)                          | Supported                              |
-| `if` / `if...else` / `else if` chains             | Supported                              |
-| `switch` / `case` / `default`                     | Supported                              |
-| `<%- include("file") %>` partials                 | Supported                              |
-| Nested includes                                   | Supported                              |
-| `locals.varName` prefix stripping                 | Supported                              |
-| Repeated variables (backreference)                | Supported                              |
-| Custom delimiters                                 | Supported                              |
-| `rmWhitespace` option                             | Supported                              |
-| Custom `unescape` function                        | Supported                              |
-| JS expressions (ternary, method calls)            | Matched anonymously, warns             |
-| Adjacent variables with no separator              | Throws `ReverseEjsError` with location |
-| Dynamic `include(varName)`                        | Throws descriptive error               |
-| Type coercion (number / boolean / date)           | Via `types` option                     |
-| Compiled templates (`compileTemplate`)            | For repeated extractions               |
-| Batch extraction (`reverseEjsAll`)                | Multiple inputs, one template          |
-| Safe mode (`safe: true`)                          | Returns `null` instead of throwing     |
+| Feature                                           | Status                             |
+| ------------------------------------------------- | ---------------------------------- |
+| `<%= var %>` escaped output                       | Supported                          |
+| `<%- var %>` raw output                           | Supported                          |
+| `<%# comment %>`                                  | Supported (ignored)                |
+| `<%%` / `%%>` literal delimiters                  | Supported                          |
+| `-%>` newline slurp                               | Supported                          |
+| `<%_` / `_%>` whitespace slurp                    | Supported                          |
+| `forEach` / `map` (arrow + function syntax)       | Supported                          |
+| `for...of` / `for...in` / classic `for` / `while` | Supported                          |
+| `.filter().forEach()` chained                     | Supported                          |
+| Nested loops (any depth)                          | Supported                          |
+| `if` / `if...else` / `else if` chains             | Supported                          |
+| `switch` / `case` / `default`                     | Supported                          |
+| `<%- include("file") %>` partials                 | Supported                          |
+| Nested includes                                   | Supported                          |
+| `locals.varName` prefix stripping                 | Supported                          |
+| Repeated variables (backreference)                | Supported                          |
+| Custom delimiters                                 | Supported                          |
+| `rmWhitespace` option                             | Supported                          |
+| Custom `unescape` function                        | Supported                          |
+| JS expressions (ternary, method calls)            | Captured under raw expression key  |
+| Adjacent variables with no separator              | Captured as joined `"a + b"` key   |
+| Complex conditions (`a > b`, `role === "x"`)      | Captured as boolean under raw key  |
+| Dynamic `include(varName)`                        | Throws descriptive error           |
+| Type coercion (number / boolean / date)           | Via `types` option                 |
+| Compiled templates (`compileTemplate`)            | For repeated extractions           |
+| Batch extraction (`reverseEjsAll`)                | Multiple inputs, one template      |
+| Safe mode (`safe: true`)                          | Returns `null` instead of throwing |
 
 ## Web Data Extraction
 
@@ -399,10 +443,10 @@ The library converts an EJS template into a regular expression with named captur
 
 ## Limitations
 
-- **JS expressions** like `<%= price * qty %>` or `<%= name.toUpperCase() %>` are matched but not extracted. The library logs a warning so you know the expression was skipped (suppress with `silent: true`).
-- **Complex conditions** like `<% if (a > b) { %>` are matched but the condition is not extracted. Only simple identifier conditions like `<% if (isAdmin) { %>` produce boolean results.
+- **JS expressions** like `<%= price * qty %>` or `<%= name.toUpperCase() %>` are captured under the raw expression text as the key (e.g. `{ "price * qty": "30" }`). The library does not evaluate them or split out the component variables.
+- **Adjacent variables** like `<%= a %><%= b %>` with no literal separator are captured as a single joined key (`{ "a + b": "AliceSmith" }`). The individual values are not recoverable because the split point is ambiguous - add static text between them if you need them separate.
+- **Complex conditions** like `<% if (a > b) { %>` are captured as booleans under the raw condition text (`{ "a > b": true }`). Bare-identifier conditions still produce clean keys. Pure dotted-path conditions (`if (items.length)`) are ignored.
 - **Variable names containing `__`** (double underscore) will be incorrectly treated as nested properties. A variable named `my__var` would be returned as `{ my: { var: "..." } }` instead of `{ my__var: "..." }`.
-- **Adjacent variables** like `<%= a %><%= b %>` with no literal separator between them are ambiguous and throw a `ReverseEjsError` with the variable names and template position.
 - **Date coercion** uses `new Date(value)`. The result is a plain JavaScript `Date` object - no timezone or format library is used.
 
 ## Error handling

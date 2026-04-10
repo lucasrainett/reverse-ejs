@@ -33,10 +33,11 @@ describe("compileTemplate", () => {
 		});
 	});
 
-	it("should throw at compile time for adjacent variables", () => {
-		expect(() => compileTemplate("<%= a %><%= b %>")).toThrow(
-			ReverseEjsError,
-		);
+	it("should compile adjacent variables and capture them as a joined key", () => {
+		const compiled = compileTemplate("<%= a %><%= b %>");
+		expect(compiled.match("AliceBob")).toEqual({
+			"a + b": "AliceBob",
+		});
 	});
 
 	it("should throw on match failure by default", () => {
@@ -191,21 +192,14 @@ describe("ReverseEjsError", () => {
 		}
 	});
 
-	it("should include adjacent variable names and position", () => {
-		try {
-			reverseEjs("Foo <%= a %><%= b %> bar", "Foo something bar");
-			expect.fail("should have thrown");
-		} catch (e) {
-			expect(e).toBeInstanceOf(ReverseEjsError);
-			const msg = (e as Error).message;
-			expect(msg).toContain('"<%= a %>"');
-			expect(msg).toContain('"<%= b %>"');
-			expect(msg).toContain("position");
-		}
+	it("should not throw a ReverseEjsError for adjacent variables", () => {
+		// Adjacent variables now get captured as a joined key.
+		const result = reverseEjs("Foo <%= a %><%= b %> bar", "Foo XY bar");
+		expect(result).toEqual({ "a + b": "XY" });
 	});
 });
 
-describe("expression skipping warnings", () => {
+describe("expression capture (no warnings)", () => {
 	let warnSpy: ReturnType<typeof vi.spyOn>;
 
 	beforeEach(() => {
@@ -216,23 +210,21 @@ describe("expression skipping warnings", () => {
 		warnSpy.mockRestore();
 	});
 
-	it("should warn when a method call expression is skipped", () => {
-		reverseEjs("<h1><%= title.toUpperCase() %></h1>", "<h1>HELLO</h1>");
-		expect(warnSpy).toHaveBeenCalled();
-		const call = warnSpy.mock.calls[0][0] as string;
-		expect(call).toContain("title.toUpperCase()");
-		expect(call).toContain("skipped");
+	it("should not warn when a method call expression is captured", () => {
+		const result = reverseEjs(
+			"<h1><%= title.toUpperCase() %></h1>",
+			"<h1>HELLO</h1>",
+		);
+		expect(result).toEqual({ "title.toUpperCase()": "HELLO" });
+		expect(warnSpy).not.toHaveBeenCalled();
 	});
 
-	it("should warn when a ternary expression is skipped", () => {
-		reverseEjs('<p><%= active ? "yes" : "no" %></p>', "<p>yes</p>");
-		expect(warnSpy).toHaveBeenCalled();
-	});
-
-	it("should suppress warnings when silent is true", () => {
-		reverseEjs("<h1><%= title.toUpperCase() %></h1>", "<h1>HELLO</h1>", {
-			silent: true,
-		});
+	it("should not warn when a ternary expression is captured", () => {
+		const result = reverseEjs(
+			'<p><%= active ? "yes" : "no" %></p>',
+			"<p>yes</p>",
+		);
+		expect(result).toEqual({ 'active ? "yes" : "no"': "yes" });
 		expect(warnSpy).not.toHaveBeenCalled();
 	});
 

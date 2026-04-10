@@ -1,6 +1,7 @@
 // Ported from https://github.com/mde/ejs (Apache License 2.0)
 
 import type { Token, EjsOptions } from "./types";
+import { normalizeExpression } from "./normalize";
 
 function esc(s: string): string {
 	return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -160,7 +161,8 @@ function emitLiteral(tokens: Token[], text: string, truncate: boolean): void {
 // A "plain variable" is a simple identifier or dotted path (e.g. `name`, `user.name`),
 // optionally with a single trailing bracket index access (e.g. `names[i]`),
 // optionally preceded by `locals.`. Anything else (operators, method calls,
-// nested brackets, ternaries, etc.) is treated as an expression and skipped.
+// nested brackets, ternaries, etc.) is kept as an expression and captured
+// under its raw text as the result key.
 const PLAIN_VAR_RE =
 	/^[a-zA-Z_$][\w$]*(?:\.[a-zA-Z_$][\w$]*)*(?:\[[a-zA-Z_$][\w$]*\])?$/;
 
@@ -171,7 +173,10 @@ function emitVariable(tokens: Token[], raw: string): void {
 	if (PLAIN_VAR_RE.test(name)) {
 		tokens.push({ type: "variable", name });
 	} else {
-		tokens.push({ type: "expression_skipped", expression: raw });
+		tokens.push({
+			type: "expression",
+			expression: normalizeExpression(name),
+		});
 	}
 }
 
@@ -187,7 +192,11 @@ function emitRawVariable(tokens: Token[], raw: string): void {
 	if (PLAIN_VAR_RE.test(name)) {
 		tokens.push({ type: "variable", name, raw: true });
 	} else {
-		tokens.push({ type: "expression_skipped", expression: raw, raw: true });
+		tokens.push({
+			type: "expression",
+			expression: normalizeExpression(name),
+			raw: true,
+		});
 	}
 }
 
@@ -323,15 +332,23 @@ function processScriptlet(
 
 	if (IF_RE.test(code)) {
 		stack.push("if");
-		const condMatch = /^if\s*\(\s*(\w+)\s*\)/.exec(code);
-		tokens.push({ type: "if_start", condition: condMatch?.[1] });
+		const m = /^if\s*\(/.exec(code);
+		const cond = m ? readBalancedCondition(code, m[0].length) : null;
+		tokens.push({
+			type: "if_start",
+			condition: classifyCondition(cond),
+		});
 		return;
 	}
 
 	if (ELSE_IF_RE.test(code)) {
 		tokens.push({ type: "else" });
-		const condMatch = /^\}\s*else\s+if\s*\(\s*(\w+)\s*\)/.exec(code);
-		tokens.push({ type: "if_start", condition: condMatch?.[1] });
+		const m = /^\}\s*else\s+if\s*\(/.exec(code);
+		const cond = m ? readBalancedCondition(code, m[0].length) : null;
+		tokens.push({
+			type: "if_start",
+			condition: classifyCondition(cond),
+		});
 		return;
 	}
 
@@ -351,4 +368,55 @@ function processScriptlet(
 		}
 		return;
 	}
+}
+
+/**
+ * Decide how to handle the text inside an `if (...)` condition.
+ *
+ * - Bare identifiers (`isAdmin`) are kept and produce a clean boolean key.
+ * - Pure dotted paths (`user.isAdmin`, `items.length`) are dropped, matching
+ *   the historical behavior where only `\w+` conditions were captured.
+ * - Anything more complex (operators, parens, brackets, comparisons, ...) is
+ *   kept verbatim so the extractor can use the raw expression text as a key.
+ */
+function classifyCondition(cond: string | null): string | undefined {
+	if (!cond) return undefined;
+	if (/^[a-zA-Z_$][\w$]*$/.test(cond)) return cond; // bare identifier
+	if (/^[a-zA-Z_$][\w$]*(?:\.[a-zA-Z_$][\w$]*)*$/.test(cond)) {
+		return undefined; // dotted path - preserve legacy ignore
+	}
+	return cond; // complex
+}
+
+/**
+ * Read the contents of a balanced parenthesis group starting at `start`
+ * (which should point to the character right after the opening `(`).
+ * Returns the inner text (trimmed and whitespace-normalized) or null if
+ * the parens never balance.
+ */
+function readBalancedCondition(code: string, start: number): string | null {
+	let depth = 1;
+	let i = start;
+	let inString: string | null = null;
+	let escape = false;
+	while (i < code.length) {
+		const ch = code[i];
+		if (escape) {
+			escape = false;
+		} else if (inString) {
+			if (ch === "\\") escape = true;
+			else if (ch === inString) inString = null;
+		} else {
+			if (ch === '"' || ch === "'" || ch === "`") inString = ch;
+			else if (ch === "(") depth++;
+			else if (ch === ")") {
+				depth--;
+				if (depth === 0) {
+					return normalizeExpression(code.slice(start, i));
+				}
+			}
+		}
+		i++;
+	}
+	return null;
 }

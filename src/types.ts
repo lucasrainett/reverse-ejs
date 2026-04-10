@@ -1,7 +1,7 @@
 export type Token =
 	| { type: "literal"; value: string }
 	| { type: "variable"; name: string; raw?: boolean }
-	| { type: "expression_skipped"; expression: string; raw?: boolean }
+	| { type: "expression"; expression: string; raw?: boolean }
 	| {
 			type: "loop_start";
 			arrayName: string;
@@ -17,7 +17,7 @@ export type Pattern =
 	| { type: "sequence"; parts: Pattern[] }
 	| { type: "literal"; value: string }
 	| { type: "variable"; name: string; raw?: boolean }
-	| { type: "expression_skipped"; expression: string }
+	| { type: "expression"; expression: string; exprId?: number; raw?: boolean }
 	| {
 			type: "loop";
 			arrayName: string;
@@ -128,9 +128,7 @@ export interface EjsOptions {
 	safe?: boolean;
 
 	/**
-	 * Suppress all `console.warn` output from the library:
-	 * - Skipped expression warnings (`<%= name.toUpperCase() %>`)
-	 * - Failed type coercion warnings
+	 * Suppress `console.warn` output from failed type coercions.
 	 */
 	silent?: boolean;
 

@@ -1,79 +1,102 @@
 import { describe, it, expect } from "vitest";
 import { reverseEjs } from "../src/index";
 
-// All tests in this file deliberately use expressions that get skipped.
-// Pass `silent: true` so the test output stays clean.
-const opts = { silent: true } as const;
+// Under the unified-capture model, expressions are no longer skipped.
+// They are captured with the raw expression text as the key.
 
 describe("expressions", () => {
-	it("should match ternary anonymously - not added to result", () => {
+	it("should capture a ternary expression", () => {
 		const template = '<p><%= active ? "Online" : "Offline" %></p>';
 		const final = "<p>Online</p>";
-		expect(reverseEjs(template, final, opts)).toEqual({});
+		expect(reverseEjs(template, final)).toEqual({
+			'active ? "Online" : "Offline"': "Online",
+		});
 	});
 
-	it("should match method call anonymously - not added to result", () => {
+	it("should capture a method call expression", () => {
 		const template = "<h1><%= title.toUpperCase() %></h1>";
 		const final = "<h1>HELLO WORLD</h1>";
-		expect(reverseEjs(template, final, opts)).toEqual({});
+		expect(reverseEjs(template, final)).toEqual({
+			"title.toUpperCase()": "HELLO WORLD",
+		});
 	});
 
-	it("should skip arithmetic but still extract plain variables", () => {
+	it("should capture an arithmetic expression alongside plain variables", () => {
 		const template = "<td><%= price * qty %></td><td>$<%= price %></td>";
 		const final = "<td>15</td><td>$5</td>";
-		expect(reverseEjs(template, final, opts)).toEqual({ price: "5" });
+		expect(reverseEjs(template, final)).toEqual({
+			"price * qty": "15",
+			price: "5",
+		});
 	});
 
-	it("should match bracket access in loop body anonymously", () => {
+	it("should capture a numeric bracket access in loop body", () => {
 		const template =
 			"<% posts.forEach(post => { %>" +
 			"<li><%= post.title %> [<%= post.tags[0] %>]</li>" +
 			"<% }) %>";
 		const final = "<li>Hello [ejs]</li><li>World [js]</li>";
-		expect(reverseEjs(template, final, opts)).toEqual({
-			posts: [{ title: "Hello" }, { title: "World" }],
-		});
+		const result = reverseEjs(template, final);
+		const posts = result.posts as Array<Record<string, unknown>>;
+		expect(posts.length).toBe(2);
+		expect(posts[0].title).toBe("Hello");
+		expect(posts[0]["tags[0]"]).toBe("ejs");
+		expect(posts[1].title).toBe("World");
+		expect(posts[1]["tags[0]"]).toBe("js");
 	});
 
-	it("should skip nullish coalescing but extract surrounding plain vars", () => {
+	it("should capture nullish coalescing as the raw key", () => {
 		const template = "<%= nickname ?? username %> - <%= username %>";
 		const final = "alice - alice";
-		expect(reverseEjs(template, final, opts)).toEqual({
+		expect(reverseEjs(template, final)).toEqual({
+			"nickname ?? username": "alice",
 			username: "alice",
 		});
 	});
 
-	it("should skip logical OR expression but extract plain vars", () => {
+	it("should capture a logical OR expression as the raw key", () => {
 		const template = "<p><%= fallback || name %></p><p><%= name %></p>";
 		const final = "<p>Alice</p><p>Alice</p>";
-		expect(reverseEjs(template, final, opts)).toEqual({ name: "Alice" });
+		expect(reverseEjs(template, final)).toEqual({
+			"fallback || name": "Alice",
+			name: "Alice",
+		});
 	});
 
-	it("should skip template literal expression", () => {
+	it("should capture a template literal expression as the raw key", () => {
 		const template = "<%= `Hello ${name}` %>";
 		const final = "Hello Alice";
-		expect(reverseEjs(template, final, opts)).toEqual({});
+		expect(reverseEjs(template, final)).toEqual({
+			"`Hello ${name}`": "Hello Alice",
+		});
 	});
 
-	it("should skip string concatenation expression", () => {
+	it("should capture string concatenation alongside a plain variable", () => {
 		const template = '<p><%= first + " " + last %></p><p><%= first %></p>';
 		const final = "<p>Alice Chen</p><p>Alice</p>";
-		expect(reverseEjs(template, final, opts)).toEqual({ first: "Alice" });
+		expect(reverseEjs(template, final)).toEqual({
+			'first + " " + last': "Alice Chen",
+			first: "Alice",
+		});
 	});
 
-	it("should skip array.join() expression", () => {
+	it("should capture array.join() expression as the raw key", () => {
 		const template = "<p><%= items.join(', ') %></p>";
 		const final = "<p>a, b, c</p>";
-		expect(reverseEjs(template, final, opts)).toEqual({});
+		expect(reverseEjs(template, final)).toEqual({
+			"items.join(', ')": "a, b, c",
+		});
 	});
 
-	it("should skip chained method calls", () => {
+	it("should capture chained method calls as the raw key", () => {
 		const template = "<p><%= text.trim().toLowerCase() %></p>";
 		const final = "<p>hello</p>";
-		expect(reverseEjs(template, final, opts)).toEqual({});
+		expect(reverseEjs(template, final)).toEqual({
+			"text.trim().toLowerCase()": "hello",
+		});
 	});
 
-	it("should extract plain variables alongside multiple expressions", () => {
+	it("should capture multiple expressions and plain variables together", () => {
 		const template =
 			"<h1><%= title.toUpperCase() %></h1>" +
 			"<p><%= author %></p>" +
@@ -81,8 +104,10 @@ describe("expressions", () => {
 			"<footer><%= footer %></footer>";
 		const final =
 			"<h1>HELLO</h1><p>Alice</p><span>10</span><footer>End</footer>";
-		expect(reverseEjs(template, final, opts)).toEqual({
+		expect(reverseEjs(template, final)).toEqual({
+			"title.toUpperCase()": "HELLO",
 			author: "Alice",
+			"count * 2": "10",
 			footer: "End",
 		});
 	});

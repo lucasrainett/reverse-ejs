@@ -1,7 +1,6 @@
 /**
  * Error thrown by `reverseEjs()` when the template cannot be matched against
- * the rendered string, or when the template itself contains an issue (such as
- * adjacent variables with no separator).
+ * the rendered string.
  *
  * The `message` is human-readable and identifies the problematic variable
  * when possible. The full regex and input string are stored on `details` so

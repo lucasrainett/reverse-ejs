@@ -161,14 +161,21 @@ describe("conditionals", () => {
 			'<p class="user"><%= name %></p>' +
 			"<% } %>";
 
+		// Complex conditions also get captured under their raw text key.
 		expect(reverseEjs(template, '<p class="admin">Alice</p>')).toEqual({
 			name: "Alice",
+			'role === "admin"': true,
+			'role === "mod"': false,
 		});
 		expect(reverseEjs(template, '<p class="mod">Bob</p>')).toEqual({
 			name: "Bob",
+			'role === "admin"': false,
+			'role === "mod"': true,
 		});
 		expect(reverseEjs(template, '<p class="user">Carol</p>')).toEqual({
 			name: "Carol",
+			'role === "admin"': false,
+			'role === "mod"': false,
 		});
 	});
 

@@ -627,7 +627,14 @@
 					</li>
 					<li>
 						<strong>Conditionals</strong> - if/else, switch/case,
-						and boolean detection
+						and boolean detection (including complex conditions like
+						<code>a &gt; b</code>)
+					</li>
+					<li>
+						<strong>JS expression capture</strong> - tags like
+						<code>&lt;%= price * qty %&gt;</code> or
+						<code>&lt;%= name.toUpperCase() %&gt;</code> are
+						captured under the raw expression text as the key
 					</li>
 					<li>
 						<strong>Flexible whitespace</strong> - matches
@@ -645,8 +652,8 @@
 						<code>reverseEjsAll()</code> for fast batch extraction
 					</li>
 					<li>
-						<strong>Safe mode</strong> - return
-						<code>null</code> on no-match instead of throwing
+						<strong>Safe mode</strong> - return <code>null</code> on
+						no-match instead of throwing
 					</li>
 					<li>
 						<strong>HTML entity unescaping</strong> -
@@ -658,8 +665,8 @@
 						fragments across pages
 					</li>
 					<li>
-						<strong>Full TypeScript types</strong> - hover docs
-						in your editor for every option
+						<strong>Full TypeScript types</strong> - hover docs in
+						your editor for every option
 					</li>
 					<li>
 						<strong>Zero dependencies</strong> - 20KB, runs in any
@@ -985,8 +992,7 @@
 						if (result === null) {
 							outputEl.textContent = "null";
 							statusEl.className = "err";
-							statusEl.textContent =
-								"No match (safe mode)";
+							statusEl.textContent = "No match (safe mode)";
 							track(
 								"extract-safe-null",
 								"Safe mode returned null (" +
