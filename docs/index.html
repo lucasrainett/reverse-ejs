@@ -8,6 +8,7 @@
 			name="description"
 			content="Turn any web page into structured JSON. Paste your HTML, define an EJS template, and extract the data instantly in the browser."
 		/>
+		<link rel="icon" type="image/svg+xml" href="logo.svg" />
 		<style>
 			*,
 			*::before,
@@ -62,6 +63,13 @@
 			header {
 				padding: 48px 0 32px;
 				text-align: center;
+			}
+
+			header .logo {
+				width: 72px;
+				height: 72px;
+				margin: 0 auto 16px;
+				display: block;
 			}
 
 			header h1 {
@@ -414,18 +422,29 @@
 	<body>
 		<div class="container">
 			<header>
+				<img src="logo.svg" alt="reverse-ejs logo" class="logo" />
 				<h1><code>reverse-ejs</code></h1>
 				<p>
 					Turn any web page into structured JSON. Define an EJS
 					template over the HTML and extract the data instantly.
 				</p>
 				<div class="links">
-					<a href="https://github.com/lucasrainett/reverse-ejs"
+					<a
+						href="https://github.com/lucasrainett/reverse-ejs"
+						target="_blank"
+						rel="noopener noreferrer"
 						>GitHub</a
 					>
-					<a href="https://www.npmjs.com/package/reverse-ejs">npm</a>
+					<a
+						href="https://www.npmjs.com/package/reverse-ejs"
+						target="_blank"
+						rel="noopener noreferrer"
+						>npm</a
+					>
 					<a
 						href="https://github.com/lucasrainett/reverse-ejs#web-data-extraction"
+						target="_blank"
+						rel="noopener noreferrer"
 						>Docs</a
 					>
 				</div>
@@ -573,7 +592,10 @@
 			<footer>
 				<span>MIT License</span>
 				<span class="spacer">|</span>
-				<a href="https://github.com/lucasrainett/reverse-ejs"
+				<a
+					href="https://github.com/lucasrainett/reverse-ejs"
+					target="_blank"
+					rel="noopener noreferrer"
 					>Source on GitHub</a
 				>
 			</footer>
@@ -598,9 +620,33 @@
 				var optCloseDelim = document.getElementById("opt-closeDelim");
 				var optPartials = document.getElementById("opt-partials");
 
+				// ── Analytics tracking ──────────────────────────────────────
+				var trackedOnce = {};
+				function track(name, title) {
+					if (window.goatcounter && window.goatcounter.count) {
+						window.goatcounter.count({
+							path: name,
+							title: title || name,
+							event: true,
+						});
+					}
+				}
+				function trackOnce(name, title) {
+					if (trackedOnce[name]) return;
+					trackedOnce[name] = true;
+					track(name, title);
+				}
+
 				optionsToggle.addEventListener("click", function () {
+					var willOpen = !optionsToggle.classList.contains("open");
 					optionsToggle.classList.toggle("open");
 					optionsPanel.classList.toggle("open");
+					track(
+						willOpen ? "options-opened" : "options-closed",
+						willOpen
+							? "Options panel opened"
+							: "Options panel closed",
+					);
 				});
 
 				function getOptions() {
@@ -670,7 +716,7 @@
 					"  </ul>\n" +
 					"</div>";
 
-				function extract() {
+				function extract(source) {
 					var template = templateEl.value;
 					var rendered = renderedEl.value;
 
@@ -678,6 +724,10 @@
 						statusEl.className = "err";
 						statusEl.textContent = "Both fields are required";
 						outputEl.textContent = "";
+						track(
+							"extract-empty",
+							"Extract clicked with empty fields",
+						);
 						return;
 					}
 
@@ -694,27 +744,128 @@
 							"Extracted " +
 							Object.keys(result).length +
 							" top-level keys";
+						track(
+							"extract-success",
+							"Extraction succeeded (" +
+								(source || "click") +
+								")",
+						);
 					} catch (e) {
 						statusEl.className = "err";
 						statusEl.textContent = "Error";
 						outputEl.textContent = e.message;
+						track(
+							"extract-error",
+							"Extraction failed (" + (source || "click") + ")",
+						);
 					}
 				}
 
-				extractBtn.addEventListener("click", extract);
+				extractBtn.addEventListener("click", function () {
+					track("extract-clicked", "Extract button clicked");
+					extract("click");
+				});
 
 				exampleBtn.addEventListener("click", function () {
+					track("example-loaded", "Load Example clicked");
 					renderedEl.value = exampleRendered;
 					templateEl.value = exampleTemplate;
-					extract();
+					extract("example");
 				});
 
 				document.addEventListener("keydown", function (e) {
 					if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
 						e.preventDefault();
-						extract();
+						track("extract-shortcut", "Extract via Ctrl/Cmd+Enter");
+						extract("shortcut");
 					}
 				});
+
+				// ── Textarea interactions ───────────────────────────────────
+				renderedEl.addEventListener("paste", function () {
+					track("paste-rendered", "Pasted into Rendered HTML");
+				});
+				templateEl.addEventListener("paste", function () {
+					track("paste-template", "Pasted into Template");
+				});
+				renderedEl.addEventListener("input", function () {
+					trackOnce("type-rendered", "Typed in Rendered HTML");
+				});
+				templateEl.addEventListener("input", function () {
+					trackOnce("type-template", "Typed in Template");
+				});
+				renderedEl.addEventListener("focus", function () {
+					trackOnce("focus-rendered", "Focused Rendered HTML");
+				});
+				templateEl.addEventListener("focus", function () {
+					trackOnce("focus-template", "Focused Template");
+				});
+
+				// ── Output interactions ─────────────────────────────────────
+				outputEl.addEventListener("copy", function () {
+					track("copy-result", "Copied result");
+				});
+				outputEl.addEventListener("mousedown", function () {
+					trackOnce("select-result", "Selected result");
+				});
+
+				// ── Option changes ──────────────────────────────────────────
+				optFlexWs.addEventListener("change", function () {
+					track(
+						"opt-flexWs-" + (optFlexWs.checked ? "on" : "off"),
+						"flexibleWhitespace " +
+							(optFlexWs.checked ? "enabled" : "disabled"),
+					);
+				});
+				optRmWs.addEventListener("change", function () {
+					track(
+						"opt-rmWs-" + (optRmWs.checked ? "on" : "off"),
+						"rmWhitespace " +
+							(optRmWs.checked ? "enabled" : "disabled"),
+					);
+				});
+				optDelimiter.addEventListener("change", function () {
+					if (optDelimiter.value !== "%") {
+						trackOnce(
+							"opt-delimiter-changed",
+							"delimiter changed from default",
+						);
+					}
+				});
+				optOpenDelim.addEventListener("change", function () {
+					if (optOpenDelim.value !== "<") {
+						trackOnce(
+							"opt-openDelim-changed",
+							"openDelimiter changed from default",
+						);
+					}
+				});
+				optCloseDelim.addEventListener("change", function () {
+					if (optCloseDelim.value !== ">") {
+						trackOnce(
+							"opt-closeDelim-changed",
+							"closeDelimiter changed from default",
+						);
+					}
+				});
+				optPartials.addEventListener("input", function () {
+					trackOnce("opt-partials-used", "partials option used");
+				});
+
+				// ── Outbound link clicks ────────────────────────────────────
+				var links = document.querySelectorAll(".links a, footer a");
+				for (var i = 0; i < links.length; i++) {
+					(function (link) {
+						link.addEventListener("click", function () {
+							var label = link.textContent.trim() || link.href;
+							track(
+								"link-" +
+									label.toLowerCase().replace(/\s+/g, "-"),
+								"Clicked: " + label,
+							);
+						});
+					})(links[i]);
+				}
 			})();
 		</script>
 
