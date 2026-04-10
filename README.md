@@ -130,6 +130,52 @@ reverseEjs("<title><%= name %></title><h1><%= name %></h1>", "<title>Alice</titl
 // => { name: "Alice" }
 ```
 
+## Compiled templates
+
+When processing many rendered strings against the same template, compile it once for better performance:
+
+```ts
+import { compileTemplate } from "reverse-ejs";
+
+const compiled = compileTemplate("<%= name %> is <%= age %> years old.");
+
+compiled.match("Alice is 30 years old."); // { name: "Alice", age: "30" }
+compiled.match("Bob is 25 years old."); // { name: "Bob", age: "25" }
+```
+
+## Batch extraction
+
+For arrays of rendered strings, use `reverseEjsAll` to compile once and process all:
+
+```ts
+import { reverseEjsAll } from "reverse-ejs";
+
+const rows = reverseEjsAll("<tr><td><%= name %></td><td><%= score %></td></tr>", ["<tr><td>Alice</td><td>95</td></tr>", "<tr><td>Bob</td><td>87</td></tr>"], { types: { score: "number" } });
+// => [{ name: "Alice", score: 95 }, { name: "Bob", score: 87 }]
+```
+
+## Type coercion
+
+By default all extracted values come back as strings. Use the `types` option to coerce them:
+
+```ts
+reverseEjs("Age: <%= age %>, Active: <%= active %>", "Age: 30, Active: true", { types: { age: "number", active: "boolean" } });
+// => { age: 30, active: true }
+```
+
+Supported types: `"string"` (default), `"number"`, `"boolean"`, `"date"`. Failed coercions log a warning and keep the original string. Suppress with `silent: true`.
+
+## Safe mode
+
+By default, a match failure throws. Use `safe: true` to get `null` instead:
+
+```ts
+const result = reverseEjs(template, html, { safe: true });
+if (result === null) {
+	console.warn("HTML did not match template");
+}
+```
+
 ## Options
 
 ```ts
@@ -148,8 +194,27 @@ interface ReverseEjsOptions {
 	unescape?: (s: string) => string;
 	/** Map of partial name to EJS source for include expansion. */
 	partials?: Record<string, string>;
+	/** Return null instead of throwing on match failure. */
+	safe?: boolean;
+	/** Suppress console warnings (skipped expressions, failed coercions). */
+	silent?: boolean;
+	/** Map of variable name to coercion type. */
+	types?: Record<string, "string" | "number" | "boolean" | "date">;
 }
 ```
+
+| Option               | Type     | Default      | Description                           |
+| -------------------- | -------- | ------------ | ------------------------------------- |
+| `delimiter`          | string   | `"%"`        | Inner delimiter character             |
+| `openDelimiter`      | string   | `"<"`        | Opening delimiter character           |
+| `closeDelimiter`     | string   | `">"`        | Closing delimiter character           |
+| `rmWhitespace`       | boolean  | `false`      | Strip line whitespace before matching |
+| `flexibleWhitespace` | boolean  | `false`      | Ignore whitespace differences         |
+| `unescape`           | function | XML unescape | Custom HTML-unescape function         |
+| `partials`           | object   | `{}`         | Map of partial names to EJS source    |
+| `safe`               | boolean  | `false`      | Return `null` instead of throwing     |
+| `silent`             | boolean  | `false`      | Suppress console warnings             |
+| `types`              | object   | `{}`         | Type coercion map                     |
 
 ### Custom delimiters
 
@@ -330,10 +395,35 @@ The library converts an EJS template into a regular expression with named captur
 
 ## Limitations
 
-- **JS expressions** like `<%= price * qty %>` or `<%= name.toUpperCase() %>` are matched but not extracted. Reversing arbitrary expressions is not possible.
+- **JS expressions** like `<%= price * qty %>` or `<%= name.toUpperCase() %>` are matched but not extracted. The library logs a warning so you know the expression was skipped (suppress with `silent: true`).
 - **Complex conditions** like `<% if (a > b) { %>` are matched but the condition is not extracted. Only simple identifier conditions like `<% if (isAdmin) { %>` produce boolean results.
 - **Variable names containing `__`** (double underscore) will be incorrectly treated as nested properties. A variable named `my__var` would be returned as `{ my: { var: "..." } }` instead of `{ my__var: "..." }`.
-- **Adjacent variables** like `<%= a %><%= b %>` with no literal separator between them are ambiguous and throw an error.
+- **Adjacent variables** like `<%= a %><%= b %>` with no literal separator between them are ambiguous and throw a `ReverseEjsError` with the variable names and template position.
+- **Date coercion** uses `new Date(value)`. The result is a plain JavaScript `Date` object - no timezone or format library is used.
+
+## Error handling
+
+Match failures throw a `ReverseEjsError` (subclass of `Error`):
+
+```ts
+import { reverseEjs, ReverseEjsError } from "reverse-ejs";
+
+try {
+	reverseEjs(template, html);
+} catch (e) {
+	if (e instanceof ReverseEjsError) {
+		console.error(e.message); // human-readable
+		console.error(e.details.regex); // the compiled regex
+		console.error(e.details.input); // the input string
+	}
+}
+```
+
+The error message identifies the variable that failed to match and shows an excerpt of the rendered string near the failure point. The full regex and input are on `error.details` so they don't pollute the message.
+
+## Contributing
+
+Issues, pull requests, and discussions are welcome at [github.com/lucasrainett/reverse-ejs](https://github.com/lucasrainett/reverse-ejs).
 
 ## License
 

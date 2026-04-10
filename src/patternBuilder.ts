@@ -48,6 +48,12 @@ function parseSequence(
 				...(token.raw ? { raw: true } : {}),
 			});
 			i++;
+		} else if (token.type === "expression_skipped") {
+			parts.push({
+				type: "expression_skipped",
+				expression: token.expression,
+			});
+			i++;
 		} else if (token.type === "loop_start") {
 			const [body, endIdx] = parseSequence(tokens, i + 1);
 			parts.push({

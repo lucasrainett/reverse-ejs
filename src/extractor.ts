@@ -4,8 +4,15 @@ import type {
 	ExtractedObject,
 	ExtractedItem,
 	EjsOptions,
+	CoercionType,
 } from "./types";
-import { buildRegex, fromCaptureName, toCaptureName } from "./regexBuilder";
+import {
+	buildRegex,
+	collectExpressions,
+	fromCaptureName,
+	toCaptureName,
+} from "./regexBuilder";
+import { ReverseEjsError } from "./errors";
 
 function unescapeHtml(s: string): string {
 	return s
@@ -45,13 +52,147 @@ function setNested(
 	current[parts[parts.length - 1]] = value;
 }
 
+function coerceValue(
+	value: string,
+	type: CoercionType,
+	keyForWarning: string,
+	silent?: boolean,
+): unknown {
+	if (type === "string") return value;
+	if (type === "number") {
+		const n = Number(value);
+		if (Number.isNaN(n)) {
+			if (!silent) {
+				console.warn(
+					`[reverse-ejs] Could not coerce "${value}" to number for key "${keyForWarning}" - keeping original string.`,
+				);
+			}
+			return value;
+		}
+		return n;
+	}
+	if (type === "boolean") {
+		const lower = value.toLowerCase();
+		if (lower === "true") return true;
+		if (lower === "false") return false;
+		if (!silent) {
+			console.warn(
+				`[reverse-ejs] Could not coerce "${value}" to boolean for key "${keyForWarning}" - keeping original string.`,
+			);
+		}
+		return value;
+	}
+	if (type === "date") {
+		const d = new Date(value);
+		if (Number.isNaN(d.getTime())) {
+			if (!silent) {
+				console.warn(
+					`[reverse-ejs] Could not coerce "${value}" to date for key "${keyForWarning}" - keeping original string.`,
+				);
+			}
+			return value;
+		}
+		return d;
+	}
+	return value;
+}
+
+function applyCoercions(
+	obj: Record<string, unknown>,
+	types: Record<string, CoercionType>,
+	silent?: boolean,
+): void {
+	for (const [key, value] of Object.entries(obj)) {
+		if (Array.isArray(value)) {
+			for (const item of value) {
+				if (
+					item &&
+					typeof item === "object" &&
+					!(item instanceof Date)
+				) {
+					applyCoercions(
+						item as Record<string, unknown>,
+						types,
+						silent,
+					);
+				}
+			}
+		} else if (
+			value &&
+			typeof value === "object" &&
+			!(value instanceof Date)
+		) {
+			applyCoercions(value as Record<string, unknown>, types, silent);
+		} else if (typeof value === "string" && types[key] !== undefined) {
+			obj[key] = coerceValue(value, types[key], key, silent);
+		}
+	}
+}
+
+function warnSkippedExpressions(pattern: Pattern, silent?: boolean): void {
+	if (silent) return;
+	const exprs: string[] = [];
+	collectExpressions(pattern, exprs);
+	for (const expr of exprs) {
+		console.warn(
+			`[reverse-ejs] Expression "<%= ${expr} %>" was skipped - only plain variable names can be extracted.`,
+		);
+	}
+}
+
+function findLastVariableName(pattern: Pattern): string | null {
+	const names: string[] = [];
+	function walk(p: Pattern): void {
+		if (p.type === "variable") {
+			names.push(p.name);
+		} else if (p.type === "sequence") {
+			for (const part of p.parts) walk(part);
+		} else if (p.type === "loop") {
+			walk(p.body);
+		} else if (p.type === "conditional") {
+			walk(p.thenBranch);
+			if (p.elseBranch) walk(p.elseBranch);
+		}
+	}
+	walk(pattern);
+	return names[names.length - 1] ?? null;
+}
+
+function buildMatchError(
+	pattern: Pattern,
+	regexStr: string,
+	finalString: string,
+): ReverseEjsError {
+	const lastVar = findLastVariableName(pattern);
+	const excerpt =
+		finalString.length > 80
+			? finalString.slice(0, 40) + "..." + finalString.slice(-40)
+			: finalString;
+	const varPart = lastVar
+		? `Could not match variable "${lastVar}" - `
+		: "Template does not match the rendered string - ";
+	const message =
+		varPart +
+		`unexpected content near "${excerpt}". ` +
+		`(Access error.details for the full regex and input string.)`;
+	return new ReverseEjsError(message, {
+		regex: regexStr,
+		input: finalString,
+	});
+}
+
 export function extract(
 	pattern: Pattern,
 	finalString: string,
 	opts?: EjsOptions,
-): ExtractedObject {
+): ExtractedObject | null {
 	const unescape = opts?.unescape ?? unescapeHtml;
 	const flexWs = opts?.flexibleWhitespace;
+	const silent = opts?.silent;
+	const safe = opts?.safe;
+
+	warnSkippedExpressions(pattern, silent);
+
 	const regexStr = buildRegex(
 		pattern,
 		undefined,
@@ -64,16 +205,19 @@ export function extract(
 	const match = regex.exec(finalString);
 
 	if (!match) {
-		throw new Error(
-			`Template does not match the final string.\n` +
-				`Regex: ${regexStr}\n` +
-				`String: ${finalString}`,
-		);
+		if (safe) return null;
+		throw buildMatchError(pattern, regexStr, finalString);
 	}
 
-	if (!match.groups) return {};
+	const result: ExtractedObject = match.groups
+		? groupsToObject(match.groups, pattern, unescape, flexWs)
+		: {};
 
-	return groupsToObject(match.groups, pattern, unescape, flexWs);
+	if (opts?.types) {
+		applyCoercions(result as Record<string, unknown>, opts.types, silent);
+	}
+
+	return result;
 }
 
 function groupsToObject(
@@ -215,7 +359,8 @@ function extractConditionBooleans(
 			const hasNestedData =
 				existing != null &&
 				typeof existing === "object" &&
-				!Array.isArray(existing);
+				!Array.isArray(existing) &&
+				!(existing instanceof Date);
 			if (!hasNestedData) {
 				if (thenMatched) result[pattern.condition] = true;
 				else if (elseMatched) result[pattern.condition] = false;

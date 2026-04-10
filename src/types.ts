@@ -1,6 +1,7 @@
 export type Token =
 	| { type: "literal"; value: string }
 	| { type: "variable"; name: string; raw?: boolean }
+	| { type: "expression_skipped"; expression: string; raw?: boolean }
 	| {
 			type: "loop_start";
 			arrayName: string;
@@ -16,6 +17,7 @@ export type Pattern =
 	| { type: "sequence"; parts: Pattern[] }
 	| { type: "literal"; value: string }
 	| { type: "variable"; name: string; raw?: boolean }
+	| { type: "expression_skipped"; expression: string }
 	| {
 			type: "loop";
 			arrayName: string;
@@ -33,6 +35,8 @@ export type Pattern =
 
 export type LoopPattern = Extract<Pattern, { type: "loop" }>;
 
+export type CoercionType = "string" | "number" | "boolean" | "date";
+
 export interface EjsOptions {
 	delimiter?: string;
 	openDelimiter?: string;
@@ -41,8 +45,16 @@ export interface EjsOptions {
 	flexibleWhitespace?: boolean;
 	unescape?: (s: string) => string;
 	partials?: Record<string, string>;
+	safe?: boolean;
+	silent?: boolean;
+	types?: Record<string, CoercionType>;
 }
 
-export type ExtractedItem = string | Record<string, unknown>;
-export type ExtractedValue = string | boolean | ExtractedItem[];
+export type ExtractedItem =
+	| string
+	| number
+	| boolean
+	| Date
+	| Record<string, unknown>;
+export type ExtractedValue = string | number | boolean | Date | ExtractedItem[];
 export type ExtractedObject = Record<string, ExtractedValue>;

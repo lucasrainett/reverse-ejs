@@ -1,4 +1,5 @@
 import type { Pattern } from "./types";
+import { ReverseEjsError } from "./errors";
 
 export function escapeRegex(str: string): string {
 	return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -35,6 +36,10 @@ function isValidCaptureName(name: string): boolean {
 	return /^[a-zA-Z_$][\w$]*$/.test(name);
 }
 
+export interface BuildContext {
+	template?: string;
+}
+
 export function buildRegex(
 	pattern: Pattern,
 	itemName?: string,
@@ -42,12 +47,16 @@ export function buildRegex(
 	branchSuffix?: string,
 	loopVar?: string,
 	flexWs?: boolean,
+	ctx?: BuildContext,
 ): string {
 	const esc = flexWs ? escapeRegexFlexWs : escapeRegex;
 
 	switch (pattern.type) {
 		case "literal":
 			return esc(pattern.value);
+
+		case "expression_skipped":
+			return `[\\s\\S]+?`;
 
 		case "variable": {
 			let captureName = pattern.name;
@@ -104,6 +113,7 @@ export function buildRegex(
 					tSfx,
 					loopVar,
 					flexWs,
+					ctx,
 				);
 				for (const k of thenSeen) seen.add(k);
 				seen.add(`_C${id}TS`);
@@ -118,6 +128,7 @@ export function buildRegex(
 				tSfx,
 				loopVar,
 				flexWs,
+				ctx,
 			);
 			const elseSeen = new Set<string>();
 			const elseRegex = buildRegex(
@@ -127,6 +138,7 @@ export function buildRegex(
 				eSfx,
 				loopVar,
 				flexWs,
+				ctx,
 			);
 			for (const k of thenSeen) seen.add(k);
 			for (const k of elseSeen) seen.add(k);
@@ -140,9 +152,7 @@ export function buildRegex(
 				const curr = pattern.parts[i];
 				const next = pattern.parts[i + 1];
 				if (curr.type === "variable" && next.type === "variable") {
-					throw new Error(
-						"Adjacent variables with no literal separator are ambiguous",
-					);
+					throwAdjacentVariablesError(curr.name, next.name, ctx);
 				}
 			}
 			return pattern.parts
@@ -154,11 +164,36 @@ export function buildRegex(
 						branchSuffix,
 						loopVar,
 						flexWs,
+						ctx,
 					),
 				)
 				.join("");
 		}
 	}
+}
+
+function throwAdjacentVariablesError(
+	firstName: string,
+	secondName: string,
+	ctx?: BuildContext,
+): never {
+	const tag1 = `<%= ${firstName} %>`;
+	const tag2 = `<%= ${secondName} %>`;
+	let position = "";
+	if (ctx?.template) {
+		// Find any tag mentioning the first variable name
+		const re = new RegExp(
+			`<%[=-]\\s*${firstName.replace(/\./g, "\\.")}\\s*%>`,
+		);
+		const match = re.exec(ctx.template);
+		if (match) {
+			position = ` at template position ${match.index}`;
+		}
+	}
+	throw new ReverseEjsError(
+		`Adjacent variables "${tag1}" and "${tag2}"${position} have no literal separator - extraction is ambiguous. Add static text between them.`,
+		{ regex: "", input: "" },
+	);
 }
 
 export function buildRegexNoGroups(pattern: Pattern, flexWs?: boolean): string {
@@ -169,6 +204,8 @@ export function buildRegexNoGroups(pattern: Pattern, flexWs?: boolean): string {
 			return esc(pattern.value);
 		case "variable":
 			return `[\\s\\S]*?`;
+		case "expression_skipped":
+			return `[\\s\\S]+?`;
 		case "loop":
 			return `(?:${buildRegexNoGroups(pattern.body, flexWs)})*`;
 		case "conditional": {
@@ -181,4 +218,41 @@ export function buildRegexNoGroups(pattern: Pattern, flexWs?: boolean): string {
 				.map((p) => buildRegexNoGroups(p, flexWs))
 				.join("");
 	}
+}
+
+export function collectExpressions(pattern: Pattern, out: string[]): void {
+	if (pattern.type === "expression_skipped") {
+		out.push(pattern.expression);
+	} else if (pattern.type === "sequence") {
+		for (const p of pattern.parts) collectExpressions(p, out);
+	} else if (pattern.type === "loop") {
+		collectExpressions(pattern.body, out);
+	} else if (pattern.type === "conditional") {
+		collectExpressions(pattern.thenBranch, out);
+		if (pattern.elseBranch) collectExpressions(pattern.elseBranch, out);
+	}
+}
+
+// Walks the pattern tree to find the last named variable that should have been
+// captured but wasn't. Used for error messages on match failure.
+export function findLastVariableBefore(
+	pattern: Pattern,
+	failureRegexStr: string,
+): string | null {
+	const names: string[] = [];
+	function walk(p: Pattern): void {
+		if (p.type === "variable") {
+			names.push(p.name);
+		} else if (p.type === "sequence") {
+			for (const part of p.parts) walk(part);
+		} else if (p.type === "loop") {
+			walk(p.body);
+		} else if (p.type === "conditional") {
+			walk(p.thenBranch);
+			if (p.elseBranch) walk(p.elseBranch);
+		}
+	}
+	walk(pattern);
+	void failureRegexStr;
+	return names[names.length - 1] ?? null;
 }
