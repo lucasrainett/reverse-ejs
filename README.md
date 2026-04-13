@@ -11,6 +11,8 @@ reverseEjs("Hello, <%= name %>!", "Hello, Alice!");
 // => { name: "Alice" }
 ```
 
+> **Read the article:** [What if you could reverse a template engine?](https://dev.to/lucasrainett/what-if-you-could-reverse-a-template-engine-5nk)
+
 **[Try it in the browser](https://lucasrainett.github.io/reverse-ejs/)**
 
 ## Installation
