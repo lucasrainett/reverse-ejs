@@ -169,6 +169,117 @@ describe("capture-only fast path", () => {
 		expect(template.length).toBeGreaterThan(2_000_000);
 		expect(reverseEjs(template, rendered)).toEqual({ who: "Alice" });
 	});
+
+	// Hybrid cases — outer walker handles literals/captures, inner regex
+	// handles the loop/conditional body on a small sliced section.
+	it("loop surrounded by literals", () => {
+		expect(
+			reverseEjs(
+				"<ul><% items.forEach(i => { %><li><%= i %></li><% }) %></ul>",
+				"<ul><li>a</li><li>b</li></ul>",
+			),
+		).toEqual({ items: ["a", "b"] });
+	});
+
+	it("loop of objects with two fields", () => {
+		expect(
+			reverseEjs(
+				"<% users.forEach(u => { %><li><%= u.name %>(<%= u.role %>)</li><% }) %>end",
+				"<li>A(admin)</li><li>B(user)</li>end",
+			),
+		).toEqual({
+			users: [
+				{ name: "A", role: "admin" },
+				{ name: "B", role: "user" },
+			],
+		});
+	});
+
+	it("conditional (simple identifier, then matched → true)", () => {
+		expect(
+			reverseEjs(
+				"<% if (admin) { %><em>ADMIN</em><% } %>end",
+				"<em>ADMIN</em>end",
+			),
+		).toEqual({ admin: true });
+	});
+
+	it("conditional (simple identifier, then absent → key omitted)", () => {
+		// Simple identifiers without an else branch don't emit a boolean
+		// key when the branch didn't match — matches the regex path's
+		// behavior (complex/dotted conditions do emit false).
+		expect(
+			reverseEjs("<% if (admin) { %><em>ADMIN</em><% } %>end", "end"),
+		).toEqual({});
+	});
+
+	it("conditional (complex condition, then absent → false)", () => {
+		expect(
+			reverseEjs(
+				"<% if (user.isAdmin) { %><em>ADMIN</em><% } %>end",
+				"end",
+			),
+		).toEqual({ "user.isAdmin": false });
+	});
+
+	it("outer captures combined with an opaque loop (deep-merge under same key)", () => {
+		// Outer captures `sidebar.title`; inner loop captures
+		// `sidebar.links` as an array. Both must survive — the merge
+		// has to be deep, not shallow Object.assign.
+		const template =
+			"<aside><h2><%= sidebar.title %></h2><ul>" +
+			"<% sidebar.links.forEach(link => { %>" +
+			'<li><a href="<%= link.url %>"><%= link.label %></a></li>' +
+			"<% }) %></ul></aside>";
+		const rendered =
+			"<aside><h2>Resources</h2><ul>" +
+			'<li><a href="/docs">Docs</a></li>' +
+			'<li><a href="/api">API</a></li>' +
+			"</ul></aside>";
+		expect(reverseEjs(template, rendered)).toEqual({
+			sidebar: {
+				title: "Resources",
+				links: [
+					{ url: "/docs", label: "Docs" },
+					{ url: "/api", label: "API" },
+				],
+			},
+		});
+	});
+
+	it("opaque not followed by a literal → falls back to regex path", () => {
+		// Two back-to-back loops with no literal between them. The plan
+		// builder rejects this (ambiguous boundary), so the regex path
+		// handles it. If the regex path ever refuses, the error bubbles
+		// up — which is what we want; we're only verifying semantic
+		// equivalence here.
+		const template =
+			"<% as.forEach(a => { %>[<%= a %>]<% }) %>" +
+			"<% bs.forEach(b => { %>{<%= b %>}<% }) %>";
+		expect(reverseEjs(template, "[x][y]{1}{2}")).toEqual({
+			as: ["x", "y"],
+			bs: ["1", "2"],
+		});
+	});
+
+	it("scales to 5MB of literal around a loop", () => {
+		// Real-world-ish shape: huge static HTML page wrapping a single
+		// dynamic loop. Before the hybrid walker, this would fail at
+		// ~40KB of surrounding HTML because the whole template goes
+		// into one regex.
+		const pad = "<article>Filler paragraph for size.</article>\n".repeat(
+			60_000,
+		);
+		const template =
+			pad +
+			"<ul><% items.forEach(i => { %><li><%= i %></li><% }) %></ul>" +
+			pad;
+		const rendered = pad + "<ul><li>a</li><li>b</li><li>c</li></ul>" + pad;
+		expect(template.length).toBeGreaterThan(5_000_000);
+		expect(reverseEjs(template, rendered)).toEqual({
+			items: ["a", "b", "c"],
+		});
+	});
 });
 
 describe("reverseEjs - safe option", () => {
