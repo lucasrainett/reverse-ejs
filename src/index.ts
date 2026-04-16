@@ -5,6 +5,26 @@ import type { EjsOptions, Pattern } from "./types";
 import { ExtractedObject } from "./types";
 import { ReverseEjsError } from "./errors";
 
+// Return the concatenated literal text if `pattern` contains zero captures,
+// zero loops, and zero conditionals. Returns null otherwise.
+//
+// Used to bypass regex compilation for templates that are pure literals —
+// the common "paste the HTML page, add <%= %> tags later" starting state.
+// V8's regex compiler caps around ~40KB of literal regex source, which is
+// far below the 10MB+ pages users actually want to work with.
+function pureLiteralValue(pattern: Pattern): string | null {
+	if (pattern.type === "literal") return pattern.value;
+	if (pattern.type === "sequence") {
+		let out = "";
+		for (const part of pattern.parts) {
+			if (part.type !== "literal") return null;
+			out += part.value;
+		}
+		return out;
+	}
+	return null;
+}
+
 /**
  * Options accepted by `reverseEjs`, `compileTemplate`, and `reverseEjsAll`.
  *
@@ -128,6 +148,38 @@ export function compileTemplate(
 	options?: ReverseEjsOptions,
 ): CompiledTemplate {
 	const pattern = getCachedPattern(template, options);
+
+	// Pure-literal fast path: if the template has zero captures/loops/
+	// conditionals, a regex round-trip is wasteful and, more importantly,
+	// fails at ~40KB of template due to V8's regex compiler cap. Plain
+	// string equality has none of those limits. flexibleWhitespace still
+	// takes the regex path (its whitespace-collapsing semantics aren't
+	// a trivial string compare).
+	if (!options?.flexibleWhitespace) {
+		const literal = pureLiteralValue(pattern);
+		if (literal !== null) {
+			return {
+				match(finalString: string): ExtractedObject | null {
+					if (finalString === literal) return {};
+					if (options?.safe) return null;
+					const excerpt =
+						finalString.length > 80
+							? finalString.slice(0, 40) +
+								"..." +
+								finalString.slice(-40)
+							: finalString;
+					// The fast path never built a regex — `details.regex` is
+					// empty to reflect that, not because of a lost value.
+					throw new ReverseEjsError(
+						`Template does not match the rendered string - ` +
+							`unexpected content near "${excerpt}".`,
+						{ regex: "", input: finalString },
+					);
+				},
+			};
+		}
+	}
+
 	return {
 		match(finalString: string): ExtractedObject | null {
 			return extract(pattern, finalString, options);

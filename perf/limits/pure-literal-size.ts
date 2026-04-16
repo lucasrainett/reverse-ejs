@@ -29,12 +29,16 @@ export async function run(): Promise<LimitScenario> {
 		description:
 			"Template with zero EJS tags (pure HTML literal); finds the size " +
 			"cliff for the 'paste raw HTML first, add tags later' workflow",
-		// BLOCK is ~130 bytes of template → ~130 bytes of regex source per
-		// repetition (every character becomes literal regex text). V8's
-		// regex compiler caps well below V8's string cap for this shape —
-		// empirically the cliff lands around 33–40KB of regex source,
-		// equivalent to roughly a 33KB raw HTML page.
-		sizes: [100, 150, 200, 250, 300, 350, 400, 450, 500, 750, 1_000],
+		// BLOCK is ~194 bytes. With the pure-literal fast path in place
+		// (compileTemplate swaps the regex for a plain string equality
+		// check when the pattern has zero captures/loops/conditionals),
+		// there is no regex cap to hit — scaling is linear in template
+		// size. Before the fast path, the cliff was ~40KB of regex source
+		// (roughly N=200 with this block).
+		//
+		// Sweep covers up to ~10MB to confirm the common "paste a big HTML
+		// page, add tags later" workflow works at realistic page sizes.
+		sizes: [100, 1_000, 10_000, 50_000],
 		iterations: 1,
 		build(n) {
 			const page = BLOCK.repeat(n);
