@@ -1,6 +1,6 @@
 {
   "name": "reverse-ejs",
-  "version": "3.0.3",
+  "version": "3.1.0",
   "description": "Extract data objects from rendered EJS templates",
   "sideEffects": false,
   "engines": {

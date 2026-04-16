@@ -56,6 +56,26 @@ result.spec.ts`) carries explicit type annotations that would fail
 
 ### Fixed
 
+- **Catastrophic backtracking on `<% if (x) { %>...<% } %>` inside a
+  `forEach` body.** The generated regex was `^(?:(?:then)?)*$` — a
+  textbook nested-quantifier shape that V8's engine explored
+  exponentially, OOMing the process on trivial input. The loop case in
+  `buildRegex` now unwraps a conditional-without-else body to its
+  then-branch (`^(?:then)*$`), preserving semantics since the outer
+  `*` already permits zero iterations.
+- **Custom date parser now catches exceptions** instead of crashing the
+  whole extraction. Documented behavior is "warn and fall back to
+  string" when the parser produces an invalid Date; a parser that
+  throws (e.g. on malformed input) now hits the same fallback with a
+  warning that includes the parser's error message.
+- **`strict: true` throws a plain `Error`** instead of `ReverseEjsError`.
+  Template-author errors (missing partial, circular include, and now
+  strict-mode rejection) are a different category from runtime match
+  failures — the `Error` class convention matches the existing treatment
+  and makes `catch (e) { if (e instanceof ReverseEjsError) ... }` blocks
+  not log empty `details.regex` strings.
+- **Fixed broken sentence in README "Security considerations" section**
+  about `re2` / `unescape`.
 - **Back-reference mismatch now names the actual inconsistent variable.**
   When a variable appeared twice in a template (or once in each of two
   partials) and the rendered text had different values at those positions,

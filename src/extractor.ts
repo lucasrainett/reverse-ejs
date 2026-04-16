@@ -126,7 +126,21 @@ function coerceValue(
 	// refuses (non-ISO strings, locale dates, epoch seconds, ...).
 	if (typeof spec === "object") {
 		if (spec.type === "date") {
-			const d = spec.parse(value);
+			let d: Date;
+			try {
+				d = spec.parse(value);
+			} catch (err) {
+				// A throwing parser (e.g. one that assumes ISO but gets
+				// garbage, or hits a TypeError on a bad regex) shouldn't
+				// crash the whole extraction. Fall back to string with
+				// the same shape as the "invalid Date" path.
+				if (!silent) {
+					console.warn(
+						`[reverse-ejs] Custom date parser threw for "${value}" (key "${keyForWarning}") - keeping original string. Parser error: ${(err as Error).message}`,
+					);
+				}
+				return value;
+			}
 			if (!(d instanceof Date) || Number.isNaN(d.getTime())) {
 				if (!silent) {
 					console.warn(
@@ -250,6 +264,11 @@ function buildMatchError(
 	finalString: string,
 	nameCtx: NameContext,
 ): ReverseEjsError {
+	// Note: this helper only runs on the throw path — `safe: true`
+	// short-circuits upstream and never constructs this error. Keep it
+	// that way so the diagnostic's extra regex compile + exec doesn't
+	// penalize the happy `safe: true` flow.
+	//
 	// Before falling back to the generic "Could not match variable X"
 	// message, check whether the failure is due to a back-reference
 	// mismatch — a variable used more than once whose occurrences don't
@@ -312,12 +331,15 @@ function diagnoseBackrefMismatch(
 	);
 	if (repeated.size === 0) return null;
 
-	// Rewrite `\k<key>` into `(?<key_bk{N}>.*?)` so each back-reference
-	// becomes its own capture. The `_bk{N}` suffix is stripped below to
-	// map values back to the shared original name.
+	// Rewrite `\k<key>` into `(?<key__rebk_{N}>.*?)` so each back-reference
+	// becomes its own capture. Double-underscore `__rebk_` can't appear in
+	// legitimate capture names (the library uses bare alphanumerics + `_`
+	// plus reserved suffixes like `_LOOP` / `_C{id}T` / `_RAW`), so the
+	// strip step below won't collide with a user variable that happens to
+	// end in a digit.
 	let counter = 0;
 	const noBackref = regexStr.replace(/\\k<([^>]+)>/g, (_, key: string) => {
-		return `(?<${key}_bk${counter++}>.*?)`;
+		return `(?<${key}__rebk_${counter++}>.*?)`;
 	});
 
 	let match: RegExpExecArray | null;
@@ -331,8 +353,8 @@ function diagnoseBackrefMismatch(
 	const valuesByOriginalName = new Map<string, string[]>();
 	for (const [rawKey, value] of Object.entries(match.groups)) {
 		if (value == null) continue;
-		// Strip the `_bk{N}` suffix used to disambiguate back-references.
-		const coreKey = rawKey.replace(/_bk\d+$/, "");
+		// Strip the `__rebk_{N}` suffix used to disambiguate back-refs.
+		const coreKey = rawKey.replace(/__rebk_\d+$/, "");
 		// Skip sentinels and expression captures — we only care about
 		// variable captures for this diagnosis.
 		if (SENTINEL_RE.test(coreKey.replace(RAW_RE, ""))) continue;
@@ -848,9 +870,20 @@ function extractLoopItems(
 
 	// Loop body regex is independent of the outer regex — it gets its own
 	// NameContext so short names don't collide across regex boundaries.
+	//
+	// Same catastrophic-backtracking guard as buildRegex's loop case: if
+	// the body is a conditional-without-else, running it through
+	// `new RegExp(..., "gs")` creates a regex that matches zero-width at
+	// every position, and the `exec` loop below never advances. Unwrap
+	// to the then-branch; a branch that didn't match just produces
+	// nothing (a non-iteration), same as before.
+	const effectiveBody =
+		loopPattern.body.type === "conditional" && !loopPattern.body.elseBranch
+			? loopPattern.body.thenBranch
+			: loopPattern.body;
 	const bodyNameCtx = createNameContext();
 	const bodyRegexStr = buildRegex(
-		loopPattern.body,
+		effectiveBody,
 		loopPattern.itemName || undefined,
 		new Set(),
 		undefined,

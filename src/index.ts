@@ -86,11 +86,14 @@ function assertStrict(pattern: Pattern): void {
 	}
 	walk(pattern);
 	if (fallbacks.length > 0) {
-		throw new ReverseEjsError(
+		// Template-author error (like "missing partial" / "circular
+		// include") — throw a plain Error, not ReverseEjsError. The
+		// ReverseEjsError class is reserved for runtime match failures
+		// whose `details.regex` / `details.input` are meaningful.
+		throw new Error(
 			`strict mode: template contains raw-key fallbacks that won't produce ` +
 				`structured output: ${fallbacks.join(", ")}. Remove them from the ` +
 				`template or run without \`strict: true\`.`,
-			{ regex: "", input: "" },
 		);
 	}
 }
@@ -104,18 +107,24 @@ function assertStrict(pattern: Pattern): void {
  */
 function warnConditionsInsideLoops(pattern: Pattern): void {
 	const drops: string[] = [];
-	function walk(p: Pattern, insideLoop: boolean): void {
+	function walk(p: Pattern, loopName: string | null): void {
 		if (p.type === "conditional") {
-			if (insideLoop && p.condition) drops.push(p.condition);
-			walk(p.thenBranch, insideLoop);
-			if (p.elseBranch) walk(p.elseBranch, insideLoop);
+			if (loopName && p.condition) {
+				drops.push(`"${p.condition}" inside ${loopName}`);
+			}
+			walk(p.thenBranch, loopName);
+			if (p.elseBranch) walk(p.elseBranch, loopName);
 		} else if (p.type === "sequence") {
-			for (const part of p.parts) walk(part, insideLoop);
+			for (const part of p.parts) walk(part, loopName);
 		} else if (p.type === "loop") {
-			walk(p.body, true);
+			// Use the array name + `.forEach` so the identifier matches what
+			// the user wrote in the template. Inner nested loops keep the
+			// outermost name — that's the one the user is most likely to
+			// grep for.
+			walk(p.body, loopName ?? `${p.arrayName}.forEach`);
 		}
 	}
-	walk(pattern, false);
+	walk(pattern, null);
 	if (drops.length > 0) {
 		console.warn(
 			`[reverse-ejs] Conditions inside loop bodies are not captured ` +

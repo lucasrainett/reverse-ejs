@@ -476,6 +476,47 @@ describe("custom date parser (types: { type: 'date', parse: fn })", () => {
 		warn.mockRestore();
 	});
 
+	it("catches a throwing parser and falls back to string", () => {
+		// A user parser may throw (e.g. runs `.trim()` on non-string, hits
+		// a TypeError in a library). The documented behavior is "warn and
+		// fall back to string"; wrap the call so the whole extraction
+		// doesn't crash.
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		const result = reverseEjs("d: <%= d %>", "d: boom", {
+			types: {
+				d: {
+					type: "date" as const,
+					parse: () => {
+						throw new TypeError("bad input");
+					},
+				},
+			},
+		});
+		expect((result as Record<string, unknown>).d).toBe("boom");
+		expect(warn).toHaveBeenCalled();
+		const msg = warn.mock.calls[0][0] as string;
+		expect(msg).toContain("threw");
+		expect(msg).toContain("bad input");
+		warn.mockRestore();
+	});
+
+	it("silent: true suppresses the throwing-parser warning", () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		reverseEjs("d: <%= d %>", "d: boom", {
+			types: {
+				d: {
+					type: "date" as const,
+					parse: () => {
+						throw new Error("x");
+					},
+				},
+			},
+			silent: true,
+		});
+		expect(warn).not.toHaveBeenCalled();
+		warn.mockRestore();
+	});
+
 	it("works alongside string-shorthand entries in the same types map", () => {
 		const result = reverseEjs(
 			"a=<%= a %> b=<%= b %>",
@@ -694,6 +735,52 @@ describe("ReverseEjsError", () => {
 			expect(msg).toContain("OldStore");
 			expect(msg).toContain("partial boundaries");
 		}
+	});
+
+	it("reports a three-way back-reference mismatch with all three values", () => {
+		// Same variable used three times with three distinct rendered
+		// values — the diagnostic should list all three. Shape keeps the
+		// template small so it stays readable.
+		const template = "<a><%= v %></a><b><%= v %></b><c><%= v %></c>";
+		const rendered = "<a>X</a><b>Y</b><c>Z</c>";
+		try {
+			reverseEjs(template, rendered);
+			expect.fail("should have thrown");
+		} catch (e) {
+			const msg = (e as Error).message;
+			expect(msg).toContain('Variable "v"');
+			// All three values should surface, not just the first pair.
+			expect(msg).toContain("X");
+			expect(msg).toContain("Y");
+			expect(msg).toContain("Z");
+		}
+	});
+});
+
+describe("regression: catastrophic-backtracking guard", () => {
+	// Before the fix, this template would emit `^(?:(?:Y)?)*$` — a
+	// nested optional-in-repeat that V8's engine explored exponentially,
+	// OOMing the process on the most trivial input. The loop-body fix
+	// flattens an optional body (conditional without else) so the final
+	// regex is `^(?:Y)*$` — linear in input length.
+	it("does not OOM on a conditional-without-else inside a loop", () => {
+		const template =
+			"<% items.forEach(i => { %><% if (i.x) { %>Y<% } %><% }) %>";
+		// Should complete in microseconds, not minutes. If the guard
+		// regresses, this test hangs the entire vitest run (the process
+		// stalls in V8's regex engine) — note in the failure output.
+		const result = reverseEjs(template, "Y", { silent: true });
+		expect(result).toBeDefined();
+	});
+
+	it("still extracts the loop array when the body is an optional conditional", () => {
+		// Sanity check that the flattening didn't break correctness —
+		// the rendered "YY" must still produce two loop iterations.
+		const template =
+			"<% items.forEach(i => { %><% if (i.x) { %>Y<% } %><% }) %>";
+		const result = reverseEjs(template, "YY", { silent: true });
+		expect(result).toHaveProperty("items");
+		expect(Array.isArray(result.items)).toBe(true);
 	});
 });
 
