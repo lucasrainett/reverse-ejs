@@ -30,7 +30,7 @@
     "build": "tsup",
     "clean": "rm -rf dist",
     "format": "prettier --write --ignore-unknown .",
-    "lint": "eslint src",
+    "lint": "eslint src docs",
     "test": "vitest run --coverage",
     "prepare": "husky"
   },
