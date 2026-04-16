@@ -1,14 +1,16 @@
 // Regex limit, dimension: loop body width.
 //
-// Wide loop bodies expand the regex source — `(?:body)*` repeats the inner
-// regex once. With many variables per loop body, a small iteration count can
-// still produce a huge regex. This script holds iteration count fixed and
-// sweeps the body width (number of variables per iteration).
+// Loops always compile into a regex (hybrid walker keeps the outer
+// structure in code but scopes the loop body to a regex). With many
+// variables per loop body, a small iteration count can still produce
+// a huge inner regex. This sweep holds iteration count fixed and
+// sweeps the body width (variables per iteration) to find the regex
+// compiler's cliff on loop bodies.
 
 import { runSweep } from "../lib/runner";
 import type { LimitScenario } from "../lib/types";
 
-export const id = "regex-by-loop-body";
+export const id = "loop-body-width";
 
 const ITERATIONS = 10; // rendered loop iteration count, kept small
 

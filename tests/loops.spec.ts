@@ -375,4 +375,85 @@ describe("loops", () => {
 			],
 		});
 	});
+
+	// Type coercion inside loop items — exercises applyCoercions' recursion
+	// into array items (bug-prone area: items inside loops are a different
+	// code path from top-level keys).
+	it("should coerce number types on loop item fields", () => {
+		const result = reverseEjs(
+			"<% rows.forEach(r => { %><tr><td><%= r.name %></td><td><%= r.score %></td></tr><% }) %>",
+			"<tr><td>Alice</td><td>95</td></tr><tr><td>Bob</td><td>87</td></tr>",
+			{ types: { score: "number" } },
+		);
+		expect(result).toEqual({
+			rows: [
+				{ name: "Alice", score: 95 },
+				{ name: "Bob", score: 87 },
+			],
+		});
+	});
+
+	it("should coerce boolean types on loop item fields", () => {
+		const result = reverseEjs(
+			"<% users.forEach(u => { %><tr><td><%= u.name %></td><td><%= u.active %></td></tr><% }) %>",
+			"<tr><td>Alice</td><td>true</td></tr><tr><td>Bob</td><td>false</td></tr>",
+			{ types: { active: "boolean" } },
+		);
+		expect(result).toEqual({
+			users: [
+				{ name: "Alice", active: true },
+				{ name: "Bob", active: false },
+			],
+		});
+	});
+
+	it("should coerce date types on loop item fields", () => {
+		const result = reverseEjs(
+			"<% events.forEach(e => { %><li><%= e.name %>@<%= e.at %></li><% }) %>",
+			"<li>launch@2024-01-15</li><li>retro@2024-02-20</li>",
+			{ types: { at: "date" } },
+		);
+		expect(Array.isArray(result.events)).toBe(true);
+		const events = result.events as Array<{ name: string; at: Date }>;
+		expect(events[0].name).toBe("launch");
+		expect(events[0].at).toBeInstanceOf(Date);
+		expect(events[0].at.getFullYear()).toBe(2024);
+	});
+
+	it("should return empty array when loop section is empty even with types option", () => {
+		expect(
+			reverseEjs(
+				"<ul><% items.forEach(i => { %><li><%= i.score %></li><% }) %></ul>",
+				"<ul></ul>",
+				{ types: { score: "number" } },
+			),
+		).toEqual({ items: [] });
+	});
+
+	it("should preserve unicode and emoji values inside loop items", () => {
+		expect(
+			reverseEjs(
+				"<% items.forEach(i => { %><li><%= i %></li><% }) %>",
+				"<li>你好</li><li>😀</li><li>café</li>",
+			),
+		).toEqual({ items: ["你好", "😀", "café"] });
+	});
+
+	it("should extract a loop of HTML-escaped values (entities are unescaped)", () => {
+		expect(
+			reverseEjs(
+				"<% items.forEach(i => { %><li><%= i %></li><% }) %>",
+				"<li>A &amp; B</li><li>1 &lt; 2</li>",
+			),
+		).toEqual({ items: ["A & B", "1 < 2"] });
+	});
+
+	it("should extract a raw loop of HTML snippets without unescaping", () => {
+		expect(
+			reverseEjs(
+				"<% blocks.forEach(b => { %><div><%- b %></div><% }) %>",
+				"<div><p>A</p></div><div><p>B</p></div>",
+			),
+		).toEqual({ blocks: ["<p>A</p>", "<p>B</p>"] });
+	});
 });

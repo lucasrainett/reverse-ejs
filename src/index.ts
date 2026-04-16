@@ -1,6 +1,6 @@
 import { tokenize } from "./tokenizer";
 import { buildPattern } from "./patternBuilder";
-import { extract } from "./extractor";
+import { extract, buildFastPathPlan, extractFastPath } from "./extractor";
 import type { EjsOptions, Pattern } from "./types";
 import { ExtractedObject } from "./types";
 import { ReverseEjsError } from "./errors";
@@ -128,6 +128,26 @@ export function compileTemplate(
 	options?: ReverseEjsOptions,
 ): CompiledTemplate {
 	const pattern = getCachedPattern(template, options);
+
+	// Fast path: walk the outer pattern with a cursor, delegate loop and
+	// conditional sub-sections to the regex-based extract on just their
+	// sliced byte range. The regex never sees the outer literal mass, so
+	// V8's ~40KB literal-in-regex cap doesn't apply. Subsumes pure-literal
+	// and capture-only shapes. See `buildFastPathPlan` for the rules that
+	// determine qualification. flexibleWhitespace stays on the regex path
+	// because its whitespace-collapsing semantics don't map cleanly to a
+	// cursor walk.
+	if (!options?.flexibleWhitespace) {
+		const plan = buildFastPathPlan(pattern);
+		if (plan) {
+			return {
+				match(finalString: string): ExtractedObject | null {
+					return extractFastPath(plan, finalString, options);
+				},
+			};
+		}
+	}
+
 	return {
 		match(finalString: string): ExtractedObject | null {
 			return extract(pattern, finalString, options);

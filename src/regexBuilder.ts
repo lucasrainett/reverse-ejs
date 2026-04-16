@@ -1,4 +1,5 @@
 import type { Pattern } from "./types";
+import { ReverseEjsError } from "./errors";
 
 export function escapeRegex(str: string): string {
 	return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -23,17 +24,10 @@ function stripWsLiterals(pattern: Pattern): Pattern {
 	return { type: "sequence", parts };
 }
 
-export function toCaptureName(name: string): string {
-	return name.replace(/\./g, "__");
-}
-
-export function fromCaptureName(name: string): string {
-	return name.replace(/__/g, ".");
-}
-
-function isValidCaptureName(name: string): boolean {
-	return /^[a-zA-Z_$][\w$]*$/.test(name);
-}
+// Variable / loop-array names that should produce a capture. Bare
+// identifiers and pure dotted paths only — anything exotic (brackets,
+// dynamic access) falls through to non-capturing.
+const REASONABLE_VAR_RE = /^[a-zA-Z_$][\w$]*(?:\.[a-zA-Z_$][\w$]*)*$/;
 
 /**
  * Tracks the mapping between the short capture names emitted into the regex
@@ -129,16 +123,19 @@ export function buildRegex(
 			}
 
 			const rawSuffix = pattern.raw ? "_RAW" : "";
-			const originalBase = toCaptureName(captureName);
 
-			// Original-name validity check (e.g. bracket-access like
-			// `items[0]` isn't a valid JS identifier). Preserve the old
-			// behavior of falling back to non-capturing for these cases.
-			const originalFull =
-				originalBase + (branchSuffix ?? "") + rawSuffix;
-			if (!isValidCaptureName(originalFull)) return `.+?`;
+			// We only capture "reasonable" variable names — bare identifiers
+			// or pure dotted paths. Things like `items[0]` fall through to
+			// non-capturing so the user's result object doesn't get weird
+			// keys they can't sensibly access.
+			if (!REASONABLE_VAR_RE.test(captureName)) return `.+?`;
 
-			const shortBase = internName(nameCtx, originalBase);
+			// Intern the ORIGINAL dotted name directly (no `__` encoding).
+			// Earlier versions encoded dots as `__` for capture-name validity,
+			// but that collided with user variables legitimately named
+			// `my__var`. Now the emitted capture name is just `c{N}` (always
+			// valid) and the original string lives in the NameContext map.
+			const shortBase = internName(nameCtx, captureName);
 			const key = shortBase + (branchSuffix ?? "") + rawSuffix;
 
 			if (seen.has(key)) return `\\k<${key}>`;
@@ -151,11 +148,29 @@ export function buildRegex(
 			if (itemName && arrayCaptureName.startsWith(itemName + ".")) {
 				arrayCaptureName = arrayCaptureName.slice(itemName.length + 1);
 			}
-			const originalBase = toCaptureName(arrayCaptureName);
-			const shortBase = internName(nameCtx, originalBase);
+			// Store the dotted name directly — no `__` encoding (see the
+			// variable case for the rationale).
+			const shortBase = internName(nameCtx, arrayCaptureName);
+			const loopKey = `${shortBase}_LOOP`;
+			// Iterating the same array twice in a single template produces
+			// two `(?<shortBase_LOOP>...)` captures — a duplicate-name regex
+			// error. Detect it here and throw a clear library error; the
+			// semantics of double-iterating are ambiguous anyway (merge
+			// results? separate arrays? last wins?), so refusing is correct.
+			if (seen.has(loopKey)) {
+				throw new ReverseEjsError(
+					`Array "${pattern.arrayName}" is iterated more than once in the ` +
+						`same template. Each loop emits its own capture group; two ` +
+						`loops over the same array would produce a duplicate-name ` +
+						`regex. Either rename one of the iterations to use a distinct ` +
+						`variable, or factor the repeated block into a partial.`,
+					{ regex: "", input: "" },
+				);
+			}
+			seen.add(loopKey);
 			const body = flexWs ? stripWsLiterals(pattern.body) : pattern.body;
 			const bodyNoGroups = buildRegexNoGroups(body, flexWs);
-			return `(?<${shortBase}_LOOP>(?:${bodyNoGroups})*)`;
+			return `(?<${loopKey}>(?:${bodyNoGroups})*)`;
 		}
 
 		case "conditional": {

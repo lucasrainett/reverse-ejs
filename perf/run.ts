@@ -14,13 +14,23 @@ import type { LimitScenario, BenchmarkResult, Results } from "./lib/types";
 // ── Limit scenarios ─────────────────────────────────────────────
 
 const limitModules = [
-	() => import("./limits/regex-by-variable-count"),
-	() => import("./limits/regex-by-loop-body"),
-	() => import("./limits/regex-by-loop-nesting"),
-	() => import("./limits/regex-by-conditionals"),
-	() => import("./limits/capture-group-cap"),
+	// Shape stress — template shapes that still compile to regex
+	() => import("./limits/variable-count"),
+	() => import("./limits/loop-body-width"),
+	() => import("./limits/loop-nesting-depth"),
+	() => import("./limits/conditional-count"),
+	// Input-size stress — how big can the template / rendered text be
 	() => import("./limits/rendered-size-sweep"),
+	() => import("./limits/pure-literal-size"),
+	() => import("./limits/literal-with-capture-size"),
+	() => import("./limits/literal-with-loop-size"),
+	// Recursion / depth limits
 	() => import("./limits/include-depth"),
+	// Output-shape / post-process extremes
+	() => import("./limits/max-object-depth"),
+	() => import("./limits/max-loop-iterations"),
+	() => import("./limits/max-partial-breadth"),
+	() => import("./limits/max-coercion-types"),
 ];
 
 // ── Benchmarks ──────────────────────────────────────────────────
@@ -31,11 +41,25 @@ const benchmarkModules: Array<
 		run: () => BenchmarkResult | Promise<BenchmarkResult>;
 	}>
 > = [
-	() => import("./bench/compile"),
-	() => import("./bench/extract"),
-	() => import("./bench/reuse"),
+	// Pipeline isolation — paired so ratios are computable
+	() => import("./bench/compile"), // cache-cold compile cost
+	() => import("./bench/match-only"), // pre-compiled match+extract
+	() => import("./bench/extract"), // full reverseEjs (cache hit)
+	// Option-overhead (compare against extract-product-page for delta)
 	() => import("./bench/flexws"),
 	() => import("./bench/coercion"),
+	// Dedicated optimization-regression benches
+	() => import("./bench/unescape-paths"),
+	// Realistic workloads — catch regressions the synthetic bench misses
+	() => import("./bench/log-lines"),
+	() => import("./bench/csv-rows"),
+	() => import("./bench/email"),
+	() => import("./bench/large-page-hybrid"),
+	// Shape / scaling stress — dimensions the synthetic bench doesn't cover
+	() => import("./bench/batch-100-rows"),
+	() => import("./bench/deep-nested"),
+	() => import("./bench/backref-fallback"),
+	() => import("./bench/partial-expansion"),
 ];
 
 // ── Main ────────────────────────────────────────────────────────
@@ -83,7 +107,14 @@ async function main() {
 		benchmarks,
 	};
 
-	const path = resolve("perf/results.json");
+	// CI writes to the committed `perf/results.json` (the canonical file
+	// that drives PR comparison comments). Local runs write to
+	// `perf/results.local.json` so they don't dirty the tracked file —
+	// `.gitignore` can't stop modifications to an already-tracked file,
+	// so we side-step the issue by using a different path.
+	const path = resolve(
+		process.env.CI ? "perf/results.json" : "perf/results.local.json",
+	);
 	writeFileSync(path, JSON.stringify(out, null, 2) + "\n");
 	console.log(`\n✔ wrote ${path}`);
 }

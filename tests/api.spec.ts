@@ -53,6 +53,235 @@ describe("compileTemplate", () => {
 	});
 });
 
+// Fast path: walks the pattern's top-level sequence with a cursor over
+// the rendered string (no regex at the outer level). Subsumes pure
+// literals, capture-only templates, and — via the hybrid walker —
+// templates whose loops/conditionals are anchored by literals. Lifts
+// the ~40KB literal-in-regex cliff for the shapes users hit in
+// practice: product pages, form fields, log lines, plain-text emails,
+// HTML pages with a loop or two inside static boilerplate.
+describe("fast path (capture-only and hybrid)", () => {
+	it("pure-literal: matches an identical string and returns {}", () => {
+		const html = '<div class="x">Hello (world).</div>';
+		expect(reverseEjs(html, html)).toEqual({});
+	});
+
+	it("pure-literal: throws ReverseEjsError on mismatch", () => {
+		expect(() => reverseEjs("<p>a</p>", "<p>b</p>")).toThrow(
+			ReverseEjsError,
+		);
+	});
+
+	it("pure-literal: returns null on mismatch when safe is true", () => {
+		expect(reverseEjs("<p>a</p>", "<p>b</p>", { safe: true })).toBeNull();
+	});
+
+	it("pure-literal: scales to 1MB without hitting the regex cap", () => {
+		// ~1MB of literal HTML — would fail regex compilation at ~40KB
+		// without the fast path. Unit tests stay at 1MB for speed; the
+		// perf sweep covers 10MB+.
+		const page = "<article>Body text goes here.</article>\n".repeat(30_000);
+		expect(page.length).toBeGreaterThan(1_000_000);
+		expect(reverseEjs(page, page)).toEqual({});
+	});
+
+	it("single variable with no surrounding literal", () => {
+		expect(reverseEjs("<%= x %>", "hello")).toEqual({ x: "hello" });
+	});
+
+	it("variable with prefix only", () => {
+		expect(reverseEjs("pre:<%= x %>", "pre:hello")).toEqual({ x: "hello" });
+	});
+
+	it("variable with suffix only", () => {
+		expect(reverseEjs("<%= x %>:end", "hello:end")).toEqual({ x: "hello" });
+	});
+
+	it("multiple variables separated by literals", () => {
+		expect(
+			reverseEjs("<%= a %>|<%= b %>|<%= c %>", "one|two|three"),
+		).toEqual({ a: "one", b: "two", c: "three" });
+	});
+
+	it("dotted-path variable nests under the path", () => {
+		expect(reverseEjs("<%= user.name %>", "Alice")).toEqual({
+			user: { name: "Alice" },
+		});
+	});
+
+	it("expression gets a flat key", () => {
+		expect(
+			reverseEjs("<h1><%= title.toUpperCase() %></h1>", "<h1>HELLO</h1>"),
+		).toEqual({ "title.toUpperCase()": "HELLO" });
+	});
+
+	it("raw variable skips HTML unescape", () => {
+		expect(reverseEjs("<div><%- x %></div>", "<div>A&amp;B</div>")).toEqual(
+			{ x: "A&amp;B" },
+		);
+	});
+
+	it("non-raw variable applies HTML unescape", () => {
+		expect(reverseEjs("<div><%= x %></div>", "<div>A&amp;B</div>")).toEqual(
+			{ x: "A&B" },
+		);
+	});
+
+	it("types coercion still applies", () => {
+		expect(
+			reverseEjs("Age: <%= age %>", "Age: 30", {
+				types: { age: "number" },
+			}),
+		).toEqual({ age: 30 });
+	});
+
+	it("includes the last variable name in the mismatch error", () => {
+		try {
+			reverseEjs("Hello, <%= name %>!", "Goodbye!");
+			expect.fail("should have thrown");
+		} catch (e) {
+			expect((e as Error).message).toContain('"name"');
+			expect((e as ReverseEjsError).details.regex).toContain("Hello");
+		}
+	});
+
+	it("repeated capture keys defer to the regex path (back-reference preserved)", () => {
+		// The regex emits `\k<name>` for the second occurrence — both slots
+		// must hold the same value. The walker doesn't have back-refs, so
+		// the plan builder refuses and the regex path handles it.
+		expect(() =>
+			reverseEjs(
+				"<title><%= t %></title><h1><%= t %></h1>",
+				"<title>HI</title><h1>BYE</h1>",
+			),
+		).toThrow(ReverseEjsError);
+	});
+
+	it("scales to 1MB of literal around a single capture", () => {
+		// The shape this increment directly targets: massive literal
+		// surrounding a small capture. Previously would fail regex
+		// compilation at ~40KB of literal.
+		const pad = "<article>Filler paragraph for size.</article>\n".repeat(
+			30_000,
+		);
+		const template = `${pad}<name><%= who %></name>${pad}`;
+		const rendered = `${pad}<name>Alice</name>${pad}`;
+		expect(template.length).toBeGreaterThan(2_000_000);
+		expect(reverseEjs(template, rendered)).toEqual({ who: "Alice" });
+	});
+
+	// Hybrid cases — outer walker handles literals/captures, inner regex
+	// handles the loop/conditional body on a small sliced section.
+	it("loop surrounded by literals", () => {
+		expect(
+			reverseEjs(
+				"<ul><% items.forEach(i => { %><li><%= i %></li><% }) %></ul>",
+				"<ul><li>a</li><li>b</li></ul>",
+			),
+		).toEqual({ items: ["a", "b"] });
+	});
+
+	it("loop of objects with two fields", () => {
+		expect(
+			reverseEjs(
+				"<% users.forEach(u => { %><li><%= u.name %>(<%= u.role %>)</li><% }) %>end",
+				"<li>A(admin)</li><li>B(user)</li>end",
+			),
+		).toEqual({
+			users: [
+				{ name: "A", role: "admin" },
+				{ name: "B", role: "user" },
+			],
+		});
+	});
+
+	it("conditional (simple identifier, then matched → true)", () => {
+		expect(
+			reverseEjs(
+				"<% if (admin) { %><em>ADMIN</em><% } %>end",
+				"<em>ADMIN</em>end",
+			),
+		).toEqual({ admin: true });
+	});
+
+	it("conditional (simple identifier, then absent → key omitted)", () => {
+		// Simple identifiers without an else branch don't emit a boolean
+		// key when the branch didn't match — matches the regex path's
+		// behavior (complex/dotted conditions do emit false).
+		expect(
+			reverseEjs("<% if (admin) { %><em>ADMIN</em><% } %>end", "end"),
+		).toEqual({});
+	});
+
+	it("conditional (complex condition, then absent → false)", () => {
+		expect(
+			reverseEjs(
+				"<% if (user.isAdmin) { %><em>ADMIN</em><% } %>end",
+				"end",
+			),
+		).toEqual({ "user.isAdmin": false });
+	});
+
+	it("outer captures combined with an opaque loop (deep-merge under same key)", () => {
+		// Outer captures `sidebar.title`; inner loop captures
+		// `sidebar.links` as an array. Both must survive — the merge
+		// has to be deep, not shallow Object.assign.
+		const template =
+			"<aside><h2><%= sidebar.title %></h2><ul>" +
+			"<% sidebar.links.forEach(link => { %>" +
+			'<li><a href="<%= link.url %>"><%= link.label %></a></li>' +
+			"<% }) %></ul></aside>";
+		const rendered =
+			"<aside><h2>Resources</h2><ul>" +
+			'<li><a href="/docs">Docs</a></li>' +
+			'<li><a href="/api">API</a></li>' +
+			"</ul></aside>";
+		expect(reverseEjs(template, rendered)).toEqual({
+			sidebar: {
+				title: "Resources",
+				links: [
+					{ url: "/docs", label: "Docs" },
+					{ url: "/api", label: "API" },
+				],
+			},
+		});
+	});
+
+	it("opaque not followed by a literal → falls back to regex path", () => {
+		// Two back-to-back loops with no literal between them. The plan
+		// builder rejects this (ambiguous boundary), so the regex path
+		// handles it. If the regex path ever refuses, the error bubbles
+		// up — which is what we want; we're only verifying semantic
+		// equivalence here.
+		const template =
+			"<% as.forEach(a => { %>[<%= a %>]<% }) %>" +
+			"<% bs.forEach(b => { %>{<%= b %>}<% }) %>";
+		expect(reverseEjs(template, "[x][y]{1}{2}")).toEqual({
+			as: ["x", "y"],
+			bs: ["1", "2"],
+		});
+	});
+
+	it("scales to 5MB of literal around a loop", () => {
+		// Real-world-ish shape: huge static HTML page wrapping a single
+		// dynamic loop. Before the hybrid walker, this would fail at
+		// ~40KB of surrounding HTML because the whole template goes
+		// into one regex.
+		const pad = "<article>Filler paragraph for size.</article>\n".repeat(
+			60_000,
+		);
+		const template =
+			pad +
+			"<ul><% items.forEach(i => { %><li><%= i %></li><% }) %></ul>" +
+			pad;
+		const rendered = pad + "<ul><li>a</li><li>b</li><li>c</li></ul>" + pad;
+		expect(template.length).toBeGreaterThan(5_000_000);
+		expect(reverseEjs(template, rendered)).toEqual({
+			items: ["a", "b", "c"],
+		});
+	});
+});
+
 describe("reverseEjs - safe option", () => {
 	it("should return null on match failure when safe is true", () => {
 		const result = reverseEjs("Hello, <%= name %>!", "Bye!", {
@@ -328,6 +557,80 @@ describe("reverseEjsAll", () => {
 		expect(results.length).toBe(3);
 		expect(results[0]).toEqual({ n: "a" });
 	});
+
+	it("should stop and throw on first failure when safe is not set", () => {
+		// Without safe:true the first mismatch throws — callers opt into
+		// the null-on-failure behavior explicitly.
+		expect(() =>
+			reverseEjsAll("Hello, <%= name %>!", [
+				"Hello, Alice!",
+				"NOT HELLO",
+				"Hello, Bob!",
+			]),
+		).toThrow(ReverseEjsError);
+	});
+
+	it("should apply types coercion per-row in reverseEjsAll", () => {
+		expect(
+			reverseEjsAll("Age: <%= age %>", ["Age: 30", "Age: 25"], {
+				types: { age: "number" },
+			}),
+		).toEqual([{ age: 30 }, { age: 25 }]);
+	});
+});
+
+// These options traverse both the fast path and regex path. The tests
+// below pin behavior that depends on fast-path <-> regex-path parity.
+describe("fast-path / regex-path parity", () => {
+	it("should honor a custom unescape function on the fast path", () => {
+		// Numeric-only unescaper — not the default. If the fast path used
+		// the default instead of this function, the result would differ.
+		const numericOnly = (s: string): string =>
+			s.replace(/&#(\d+);/g, (_, c: string) =>
+				String.fromCharCode(Number(c)),
+			);
+		expect(
+			reverseEjs("<p><%= x %></p>", "<p>A&#123;B</p>", {
+				unescape: numericOnly,
+			}),
+		).toEqual({ x: "A{B" });
+	});
+
+	it("should honor a custom unescape function inside a hybrid loop", () => {
+		const numericOnly = (s: string): string =>
+			s.replace(/&#(\d+);/g, (_, c: string) =>
+				String.fromCharCode(Number(c)),
+			);
+		expect(
+			reverseEjs(
+				"<% items.forEach(i => { %><li><%= i %></li><% }) %>",
+				"<li>&#65;</li><li>&#66;</li>",
+				{ unescape: numericOnly },
+			),
+		).toEqual({ items: ["A", "B"] });
+	});
+
+	it("should capture a very-long value via the fast path", () => {
+		// 500KB value inside a capture — would have tripped V8 way before
+		// this without the fast path. Confirms the walker just slices
+		// without copying until capture, then unescapes once.
+		const big = "x".repeat(500_000);
+		expect(reverseEjs("pre:<%= v %>:post", `pre:${big}:post`)).toEqual({
+			v: big,
+		});
+	});
+
+	it("should handle a whitespace-only capture value", () => {
+		expect(reverseEjs("[<%= x %>]", "[   \n\t  ]")).toEqual({
+			x: "   \n\t  ",
+		});
+	});
+
+	it("should preserve unicode and emoji in a capture", () => {
+		expect(reverseEjs("<p><%= x %></p>", "<p>café 你好 😀</p>")).toEqual({
+			x: "café 你好 😀",
+		});
+	});
 });
 
 describe("internal pattern cache", () => {
@@ -380,16 +683,100 @@ describe("internal pattern cache", () => {
 	});
 });
 
+describe("regression: specific bugs surfaced by external review", () => {
+	// Iterating the same array twice in one template used to generate a
+	// regex with two `(?<name_LOOP>...)` captures — a duplicate-name
+	// syntax error that surfaced as a cryptic "V8 refused" message.
+	it("throws a clear error when the same array is iterated twice", () => {
+		const tmpl =
+			"<ul><% items.forEach(i => { %><li><%= i.name %></li><% }) %></ul>" +
+			"<table><% items.forEach(i => { %><tr><td><%= i.sku %></td></tr><% }) %></table>";
+		expect(() => reverseEjs(tmpl, "")).toThrow(/iterated more than once/);
+	});
+
+	// A top-level `items` array used to be shadowed by a nested `outer.items`
+	// loop because `findLoop` suffix-matched first. The top-level loop would
+	// match correctly in the regex but then the wrong loop pattern was
+	// returned, so extraction came back with `items: []`.
+	it("does not shadow a top-level array with a nested suffix-matching one", () => {
+		const tmpl =
+			"<% outer.items.forEach(x => { %>[<%= x %>]<% }) %>" +
+			"|<% items.forEach(y => { %>{<%= y %>}<% }) %>";
+		expect(reverseEjs(tmpl, "[a][b]|{c}{d}")).toEqual({
+			outer: { items: ["a", "b"] },
+			items: ["c", "d"],
+		});
+	});
+
+	// Dotted-path `if` conditions used to silently drop from the output.
+	// Users writing `if (user.isAdmin)` got empty results. Now they produce
+	// a boolean under the raw condition text.
+	it("emits a boolean key for dotted-path conditions (`if (items.length)`)", () => {
+		const tmpl =
+			"<% if (items.length) { %><div>yes</div><% } else { %><div>no</div><% } %>";
+		expect(reverseEjs(tmpl, "<div>yes</div>")).toEqual({
+			"items.length": true,
+		});
+		expect(reverseEjs(tmpl, "<div>no</div>")).toEqual({
+			"items.length": false,
+		});
+	});
+
+	// Variables with literal `__` used to be decoded as `.` because the
+	// library encoded dotted paths that way internally. Now the name map
+	// stores the original string directly, so `my__var` stays flat.
+	it("treats `my__var` as a flat key, not a nested path", () => {
+		expect(reverseEjs("<p><%= my__var %></p>", "<p>hi</p>")).toEqual({
+			my__var: "hi",
+		});
+	});
+
+	it("documents that V8 rejects duplicate named groups (our guard's premise)", () => {
+		// Our `assertNoDuplicateGroups` guard exists because V8 would throw
+		// an opaque "Invalid regular expression" error with 100+KB of regex
+		// dumped into the message. This test pins that premise: if a future
+		// engine change ever allowed duplicates, this test would fail first
+		// and we'd know the guard is now unnecessary.
+		// eslint-disable-next-line no-invalid-regexp
+		expect(() => new RegExp("(?<a>x)(?<a>y)")).toThrow();
+	});
+});
+
+describe("differential: reverseEjs() vs compileTemplate().match() are equivalent", () => {
+	const inputs: Array<{ template: string; rendered: string }> = [
+		{ template: "Hi <%= name %>", rendered: "Hi Alice" },
+		{
+			template: "<% items.forEach(i => { %><li><%= i %></li><% }) %>",
+			rendered: "<li>a</li><li>b</li>",
+		},
+		{
+			template:
+				"<% if (ok) { %><p>yes <%= n %></p><% } else { %><p>no</p><% } %>",
+			rendered: "<p>yes 1</p>",
+		},
+	];
+	for (const { template, rendered } of inputs) {
+		it(`produces the same object: ${template.slice(0, 40)}`, () => {
+			const fresh = reverseEjs(template, rendered);
+			const compiled = compileTemplate(template).match(rendered);
+			expect(compiled).toEqual(fresh);
+		});
+	}
+});
+
 describe("regex-too-large guard", () => {
 	it("throws a friendly ReverseEjsError instead of a V8 SyntaxError", () => {
-		// Build a pathologically large template — N=5000 vars puts the
-		// regex over V8's ~87KB cliff.
-		let template = "";
-		let rendered = "";
+		// The guard still applies to templates that exercise the regex
+		// path (anything with a loop or conditional). Wrap 5000 vars in
+		// a conditional so the capture-only fast path defers to regex.
+		let inner = "";
+		let renderedInner = "";
 		for (let i = 0; i < 5000; i++) {
-			template += `<a${i}><%= v${i} %></a${i}>`;
-			rendered += `<a${i}>val${i}</a${i}>`;
+			inner += `<a${i}><%= v${i} %></a${i}>`;
+			renderedInner += `<a${i}>val${i}</a${i}>`;
 		}
+		const template = `<% if (show) { %>${inner}<% } %>`;
+		const rendered = renderedInner;
 		let thrown: unknown = null;
 		try {
 			reverseEjs(template, rendered);

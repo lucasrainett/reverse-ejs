@@ -312,4 +312,50 @@ describe("includes", () => {
 			"Include depth limit exceeded",
 		);
 	});
+
+	it("should throw a clear error when a referenced partial is missing", () => {
+		expect(() =>
+			reverseEjs('<%- include("ghost") %>', "irrelevant", {
+				partials: {},
+			}),
+		).toThrow(/not found/i);
+	});
+
+	it("should apply types coercion across partial boundaries", () => {
+		const partials = {
+			row: "<tr><td><%= name %></td><td><%= age %></td></tr>",
+		};
+		const template = "<table><%- include('row') %></table>";
+		const final = "<table><tr><td>Alice</td><td>30</td></tr></table>";
+		expect(
+			reverseEjs(template, final, {
+				partials,
+				types: { age: "number" },
+			}),
+		).toEqual({ name: "Alice", age: 30 });
+	});
+
+	it("should return null in safe mode when a partial-expanded template does not match", () => {
+		const partials = { inner: "<p><%= title %></p>" };
+		const template = "<main><%- include('inner') %></main>";
+		expect(
+			reverseEjs(template, "<section>nope</section>", {
+				partials,
+				safe: true,
+			}),
+		).toBeNull();
+	});
+
+	it("should expand a partial containing a conditional", () => {
+		const partials = {
+			greet: "<% if (admin) { %>Hi, admin <%= name %>!<% } else { %>Hello, <%= name %>!<% } %>",
+		};
+		const template = "<p><%- include('greet') %></p>";
+		expect(
+			reverseEjs(template, "<p>Hi, admin Alice!</p>", { partials }),
+		).toEqual({ admin: true, name: "Alice" });
+		expect(
+			reverseEjs(template, "<p>Hello, Bob!</p>", { partials }),
+		).toEqual({ admin: false, name: "Bob" });
+	});
 });

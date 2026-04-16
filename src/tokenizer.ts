@@ -2,10 +2,7 @@
 
 import type { Token, EjsOptions } from "./types";
 import { normalizeExpression } from "./normalize";
-
-function esc(s: string): string {
-	return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
+import { escapeRegex } from "./regexBuilder";
 
 function buildEjsRe(o: string, d: string, c: string): RegExp {
 	const alts = [
@@ -19,7 +16,7 @@ function buildEjsRe(o: string, d: string, c: string): RegExp {
 		"-" + d + c,
 		"_" + d + c,
 		d + c,
-	].map(esc);
+	].map(escapeRegex);
 	return new RegExp(`(${alts.join("|")})`);
 }
 
@@ -70,9 +67,9 @@ export function tokenize(template: string, opts?: EjsOptions): Token[] {
 		text = text.replace(/[\r\n]+/g, "\n").replace(/^\s+|\s+$/gm, "");
 	}
 
-	const oe = esc(o),
-		de = esc(d),
-		ce = esc(c);
+	const oe = escapeRegex(o),
+		de = escapeRegex(d),
+		ce = escapeRegex(c);
 	const preprocessed = text
 		.replace(new RegExp(`[ \\t]*${oe + de}_`, "gm"), o + d + "_")
 		.replace(new RegExp(`_${de + ce}[ \\t]*`, "gm"), "_" + d + c);
@@ -166,9 +163,19 @@ function emitLiteral(tokens: Token[], text: string, truncate: boolean): void {
 const PLAIN_VAR_RE =
 	/^[a-zA-Z_$][\w$]*(?:\.[a-zA-Z_$][\w$]*)*(?:\[[a-zA-Z_$][\w$]*\])?$/;
 
+// EJS's `locals.x` is syntactic sugar for `x` — the runtime data object is
+// bound as `locals` but users usually reference keys directly. Strip the
+// prefix so both spellings produce the same capture key.
+const LOCALS_PREFIX = "locals.";
+function stripLocalsPrefix(raw: string): string {
+	return raw.startsWith(LOCALS_PREFIX)
+		? raw.slice(LOCALS_PREFIX.length)
+		: raw;
+}
+
 function emitVariable(tokens: Token[], raw: string): void {
 	if (!raw) return;
-	const name = raw.startsWith("locals.") ? raw.slice("locals.".length) : raw;
+	const name = stripLocalsPrefix(raw);
 	if (!name) return;
 	if (PLAIN_VAR_RE.test(name)) {
 		tokens.push({ type: "variable", name });
@@ -187,7 +194,7 @@ function emitRawVariable(tokens: Token[], raw: string): void {
 			'Dynamic include filenames are not supported. Use a quoted string: include("filename")',
 		);
 	}
-	const name = raw.startsWith("locals.") ? raw.slice("locals.".length) : raw;
+	const name = stripLocalsPrefix(raw);
 	if (!name) return;
 	if (PLAIN_VAR_RE.test(name)) {
 		tokens.push({ type: "variable", name, raw: true });
@@ -206,6 +213,20 @@ function processScriptlet(
 	stack: StackEntry[],
 ): void {
 	if (!code) return;
+
+	// Detect destructured parameters before the normal forEach/map match.
+	// The happy-path regex matches only `\w+` identifiers as the loop
+	// parameter, so `{id, name}` or `[a, b]` destructuring would silently
+	// fall through to "not a loop" — variables inside would escape to the
+	// top-level scope and produce wildly wrong output (one variable would
+	// swallow subsequent iterations via lazy matching). Throw loudly.
+	if (/^[\w.]+\.(forEach|map)\s*\(\s*(?:function\s*)?\(?\s*[{[]/.test(code)) {
+		throw new Error(
+			"Destructured parameters in forEach/map are not supported. Use a " +
+				"single identifier like `items.forEach(item => { ... })` and " +
+				"access fields via `item.field`.",
+		);
+	}
 
 	const feMatch = FOR_EACH_RE.exec(code);
 	if (feMatch) {
@@ -373,19 +394,19 @@ function processScriptlet(
 /**
  * Decide how to handle the text inside an `if (...)` condition.
  *
- * - Bare identifiers (`isAdmin`) are kept and produce a clean boolean key.
- * - Pure dotted paths (`user.isAdmin`, `items.length`) are dropped, matching
- *   the historical behavior where only `\w+` conditions were captured.
- * - Anything more complex (operators, parens, brackets, comparisons, ...) is
- *   kept verbatim so the extractor can use the raw expression text as a key.
+ * - Bare identifiers (`isAdmin`) produce a clean boolean key.
+ * - Everything else (dotted paths, operators, method calls, ...) is kept
+ *   verbatim so the extractor uses the raw expression text as a key.
+ *
+ * Earlier versions silently dropped dotted paths like `if (items.length)`,
+ * but that turned `if (user.isAdmin)` into a silent footgun — the user
+ * saw no key in the output and no indication which branch matched. Now
+ * dotted conditions produce a boolean keyed by the raw text, same as any
+ * other complex condition.
  */
 function classifyCondition(cond: string | null): string | undefined {
 	if (!cond) return undefined;
-	if (/^[a-zA-Z_$][\w$]*$/.test(cond)) return cond; // bare identifier
-	if (/^[a-zA-Z_$][\w$]*(?:\.[a-zA-Z_$][\w$]*)*$/.test(cond)) {
-		return undefined; // dotted path - preserve legacy ignore
-	}
-	return cond; // complex
+	return cond;
 }
 
 /**

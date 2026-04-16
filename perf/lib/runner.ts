@@ -28,6 +28,13 @@ export async function runSweep(cfg: SweepConfig): Promise<LimitScenario> {
 	let limit: Limit | null = null;
 	let lastSuccessfulN: number | null = null;
 
+	if (cfg.sizes.length === 0) {
+		throw new Error(
+			`Sweep "${cfg.description}" has an empty size list — this is a ` +
+				`harness bug, not a limit discovery.`,
+		);
+	}
+
 	for (const n of cfg.sizes) {
 		let stage: Limit["stage"] = "build";
 		try {
@@ -91,6 +98,19 @@ export async function runSweep(cfg: SweepConfig): Promise<LimitScenario> {
 			};
 			break;
 		}
+	}
+
+	// Sanity check: the smallest N must always succeed. If it didn't, we
+	// found a library regression or a harness bug, not a legitimate limit.
+	// Crash the whole perf run so the CI workflow fails loudly instead of
+	// quietly reporting a nonsense "limit = N_smallest".
+	if (samples.length === 0) {
+		throw new Error(
+			`Perf sanity failed: sweep "${cfg.description}" failed at the ` +
+				`smallest N=${cfg.sizes[0]}. This indicates either a library ` +
+				`regression or a harness bug — never a legitimate limit ` +
+				`discovery. Reason: ${limit?.reason ?? "(unknown)"}`,
+		);
 	}
 
 	return {
