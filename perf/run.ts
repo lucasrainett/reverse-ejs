@@ -24,6 +24,11 @@ const limitModules = [
 	() => import("./limits/literal-with-capture-size"),
 	() => import("./limits/literal-with-loop-size"),
 	() => import("./limits/include-depth"),
+	// Output-shape / post-process extremes — dimensions beyond regex size
+	() => import("./limits/max-object-depth"),
+	() => import("./limits/max-loop-iterations"),
+	() => import("./limits/max-partial-breadth"),
+	() => import("./limits/max-coercion-types"),
 ];
 
 // ── Benchmarks ──────────────────────────────────────────────────
