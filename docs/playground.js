@@ -638,9 +638,13 @@
 				},
 
 				// ── Examples ──────────────────────────────────────
-				loadExample(key) {
+				// `opts.silent` is used by the default-on-bare-URL path: it
+				// suppresses analytics noise and skips writing query params,
+				// so the URL stays clean for visitors landing on `/`.
+				loadExample(key, opts) {
 					var ex = EXAMPLES[key];
 					if (!ex) return;
+					var silent = opts && opts.silent;
 					this.rendered = ex.rendered;
 					this.template = ex.template;
 					this.options.flexWs = !!ex.flexWs;
@@ -648,9 +652,11 @@
 					this.options.partials = ex.partials || "";
 					if (ex.partials || ex.types) this.optionsOpen = true;
 					this.format = detectFormat(ex.rendered);
-					track("example-" + key, "Loaded " + key + " example");
-					this.extract("example-" + key);
-					this.saveStateToUrl();
+					if (!silent) {
+						track("example-" + key, "Loaded " + key + " example");
+					}
+					this.extract(silent ? "default" : "example-" + key);
+					if (!silent) this.saveStateToUrl();
 				},
 
 				// ── Reset ─────────────────────────────────────────
@@ -780,7 +786,14 @@
 						this.loadExample(exampleParam);
 						return;
 					}
-					if (!p.has("rendered") && !p.has("template")) return;
+					if (!p.has("rendered") && !p.has("template")) {
+						// Fresh visit with no template/rendered in the URL —
+						// preload the HTML example so the playground isn't
+						// blank, but keep the URL clean and don't fire the
+						// example-loaded analytics event.
+						this.loadExample("html", { silent: true });
+						return;
+					}
 
 					this.rendered = p.get("rendered") || "";
 					this.template = p.get("template") || "";
