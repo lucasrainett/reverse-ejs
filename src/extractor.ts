@@ -230,7 +230,35 @@ function buildMatchError(
 	pattern: Pattern,
 	regexStr: string,
 	finalString: string,
+	nameCtx: NameContext,
 ): ReverseEjsError {
+	// Before falling back to the generic "Could not match variable X"
+	// message, check whether the failure is due to a back-reference
+	// mismatch — a variable used more than once whose occurrences don't
+	// all hold the same value. The generic message would name the last
+	// variable in walk order, which is typically innocent; this path
+	// names the actually-inconsistent variable and shows its values.
+	const backref = diagnoseBackrefMismatch(
+		pattern,
+		regexStr,
+		finalString,
+		nameCtx,
+	);
+	if (backref) {
+		const formatted = backref.values
+			.map((v) => `"${truncateForMessage(v)}"`)
+			.join(" vs ");
+		const message =
+			`Variable "${backref.name}" has inconsistent values in the ` +
+			`rendered string — ${formatted}. Repeated variables ` +
+			`(including the same variable used across partial boundaries) ` +
+			`must hold the same value everywhere they appear. ` +
+			`(Access error.details for the full regex and input string.)`;
+		return new ReverseEjsError(message, {
+			regex: regexStr,
+			input: finalString,
+		});
+	}
 	const message = buildMismatchMessage(
 		findLastVariableName(pattern),
 		finalString,
@@ -240,6 +268,97 @@ function buildMatchError(
 		regex: regexStr,
 		input: finalString,
 	});
+}
+
+/**
+ * When a regex match fails and the pattern uses a variable more than
+ * once (directly or across partials), the failure is often a
+ * back-reference mismatch rather than a real template/rendered
+ * divergence. Try matching a version of the regex with each `\k<name>`
+ * expanded into a fresh capture; if that succeeds, the back-reference
+ * was the blocker, and the captured values tell us which variable had
+ * inconsistent occurrences.
+ *
+ * Returns `{ name, values }` for the first variable with differing
+ * occurrences, or null when the diagnosis doesn't apply.
+ */
+function diagnoseBackrefMismatch(
+	pattern: Pattern,
+	regexStr: string,
+	finalString: string,
+	nameCtx: NameContext,
+): { name: string; values: string[] } | null {
+	const counts = countVariableOccurrences(pattern);
+	const repeated = new Set(
+		[...counts.entries()].filter(([, n]) => n > 1).map(([name]) => name),
+	);
+	if (repeated.size === 0) return null;
+
+	// Rewrite `\k<key>` into `(?<key_bk{N}>.*?)` so each back-reference
+	// becomes its own capture. The `_bk{N}` suffix is stripped below to
+	// map values back to the shared original name.
+	let counter = 0;
+	const noBackref = regexStr.replace(/\\k<([^>]+)>/g, (_, key: string) => {
+		return `(?<${key}_bk${counter++}>.*?)`;
+	});
+
+	let match: RegExpExecArray | null;
+	try {
+		match = new RegExp(`^${noBackref}$`, "s").exec(finalString);
+	} catch {
+		return null;
+	}
+	if (!match?.groups) return null;
+
+	const valuesByOriginalName = new Map<string, string[]>();
+	for (const [rawKey, value] of Object.entries(match.groups)) {
+		if (value == null) continue;
+		// Strip the `_bk{N}` suffix used to disambiguate back-references.
+		const coreKey = rawKey.replace(/_bk\d+$/, "");
+		// Skip sentinels and expression captures — we only care about
+		// variable captures for this diagnosis.
+		if (SENTINEL_RE.test(coreKey.replace(RAW_RE, ""))) continue;
+		if (EXPR_RE.test(coreKey)) continue;
+		// Decode: strip `_RAW`, strip branch suffix, resolve short name.
+		const cleanKey = coreKey.replace(RAW_RE, "");
+		const branchMatch = BRANCH_RE.exec(cleanKey);
+		const shortBase = branchMatch ? branchMatch[1] : cleanKey;
+		const originalName = resolveBase(shortBase, nameCtx);
+		if (!repeated.has(originalName)) continue;
+		const list = valuesByOriginalName.get(originalName) ?? [];
+		list.push(value);
+		valuesByOriginalName.set(originalName, list);
+	}
+
+	for (const [name, values] of valuesByOriginalName) {
+		const distinct = new Set(values);
+		if (distinct.size > 1) return { name, values: [...distinct] };
+	}
+	return null;
+}
+
+function countVariableOccurrences(pattern: Pattern): Map<string, number> {
+	const counts = new Map<string, number>();
+	function walk(p: Pattern): void {
+		if (p.type === "variable") {
+			counts.set(p.name, (counts.get(p.name) ?? 0) + 1);
+		} else if (p.type === "sequence") {
+			for (const part of p.parts) walk(part);
+		} else if (p.type === "loop") {
+			walk(p.body);
+		} else if (p.type === "conditional") {
+			walk(p.thenBranch);
+			if (p.elseBranch) walk(p.elseBranch);
+		}
+	}
+	walk(pattern);
+	return counts;
+}
+
+function truncateForMessage(s: string): string {
+	const MAX = 60;
+	if (s.length <= MAX) return s;
+	return s.slice(0, MAX) + "…";
 }
 
 // ── Fast path: outer cursor walk ───────────────────────────────
@@ -621,7 +740,7 @@ export function extract(
 
 	if (!match) {
 		if (safe) return null;
-		throw buildMatchError(pattern, regexStr, finalString);
+		throw buildMatchError(pattern, regexStr, finalString, nameCtx);
 	}
 
 	const exprMap = buildExprIdMap(pattern);

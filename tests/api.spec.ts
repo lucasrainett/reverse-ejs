@@ -157,6 +157,32 @@ describe("fast path (capture-only and hybrid)", () => {
 		).toThrow(ReverseEjsError);
 	});
 
+	// Regression: when a captured value contains the delimiter literal,
+	// the walker's indexOf picks the first occurrence of the next literal,
+	// which may not leave room for the rest of the pattern to match. The
+	// regex path backtracks to a later occurrence; the compileTemplate
+	// wrapper falls back to regex when the walker returns null so these
+	// templates keep matching. See index.ts compileTemplate for the
+	// fallback logic.
+	it("falls back to regex when walker's first-literal-match doesn't leave room for the rest", () => {
+		// With rendered "abaab" and template "<%= x %>a<%= y %>b", the
+		// only valid match is x="" and y="baa" (the trailing "b" must
+		// anchor at position 4, not the first "b" at position 1).
+		expect(reverseEjs("<%= x %>a<%= y %>b", "abaab")).toEqual({
+			x: "",
+			y: "baa",
+		});
+	});
+
+	it("falls back to regex for capture containing the next delimiter", () => {
+		// Trailing literal "end" appears twice — walker's indexOf would
+		// pick the first, leaving "end" as trailing content; regex
+		// backtracks to the second occurrence so x = "hello end more".
+		expect(reverseEjs("<%= x %>end", "hello end moreend")).toEqual({
+			x: "hello end more",
+		});
+	});
+
 	it("scales to 1MB of literal around a single capture", () => {
 		// The shape this increment directly targets: massive literal
 		// surrounding a small capture. Previously would fail regex
@@ -454,6 +480,57 @@ describe("ReverseEjsError", () => {
 			expect.fail("should have thrown");
 		} catch (e) {
 			expect((e as Error).message).toContain("title");
+		}
+	});
+
+	// The error message used to blame the LAST variable in pattern-tree
+	// walk order when a back-reference mismatch was the real cause
+	// (e.g. a variable used in both the header and footer partials with
+	// different rendered values). Now the diagnostic identifies the
+	// actually-inconsistent variable and shows its values.
+	it("should name the inconsistent variable (not an innocent one) when a back-reference fails", () => {
+		// `name` appears twice; `footerNote` is innocent but used to be
+		// named in the error because it's walked last.
+		const template =
+			"<title><%= name %></title><h1><%= name %></h1><p><%= footerNote %></p>";
+		try {
+			reverseEjs(
+				template,
+				"<title>Alice</title><h1>Bob</h1><p>footer</p>",
+			);
+			expect.fail("should have thrown");
+		} catch (e) {
+			const msg = (e as Error).message;
+			expect(msg).toContain('Variable "name"');
+			expect(msg).toContain("inconsistent values");
+			expect(msg).toContain("Alice");
+			expect(msg).toContain("Bob");
+			// footerNote should NOT be blamed.
+			expect(msg).not.toContain('"footerNote"');
+		}
+	});
+
+	it("should diagnose a back-reference mismatch across partial boundaries", () => {
+		// Cross-partial repeat of `storeName` is the playground-store
+		// repro: change header only, footer still says the old value,
+		// error should name `storeName`.
+		const partials = {
+			header: "<header><h1><%= storeName %></h1></header>",
+			footer: "<footer><%= storeName %> &mdash; <%= note %></footer>",
+		};
+		const template =
+			'<%- include("header") %><main><%= body %></main><%- include("footer") %>';
+		const rendered =
+			"<header><h1>NewStore</h1></header><main>Hi</main><footer>OldStore &mdash; Thanks</footer>";
+		try {
+			reverseEjs(template, rendered, { partials });
+			expect.fail("should have thrown");
+		} catch (e) {
+			const msg = (e as Error).message;
+			expect(msg).toContain('Variable "storeName"');
+			expect(msg).toContain("NewStore");
+			expect(msg).toContain("OldStore");
+			expect(msg).toContain("partial boundaries");
 		}
 	});
 });

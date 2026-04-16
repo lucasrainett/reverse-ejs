@@ -8,6 +8,27 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- **Back-reference mismatch now names the actual inconsistent variable.**
+  When a variable appeared twice in a template (or once in each of two
+  partials) and the rendered text had different values at those positions,
+  the error used to point at the next variable in pattern-tree walk order
+  (e.g. `footerNote`) — always an innocent bystander. On mismatch, the
+  extractor now re-runs a no-back-reference variant of the regex, compares
+  the captured values per repeated name, and reports:
+  `Variable "storeName" has inconsistent values in the rendered string —
+"NewStore" vs "TechStore". Repeated variables (including the same
+variable used across partial boundaries) must hold the same value
+everywhere they appear.`
+- **Fast-path regression on boundary-ambiguity templates.** The walker's
+  `indexOf` takes the first occurrence of the next literal, while the
+  regex path uses non-greedy captures with end-anchored backtracking and
+  can push a capture past the first occurrence to let the rest of the
+  pattern match. For templates where a captured value happens to contain
+  the next literal (`<%= x %>a<%= y %>b` on `"abaab"` → `x=""`,
+  `y="baa"`), the fast path rejected inputs the regex handled correctly.
+  `compileTemplate` now falls back to the regex path when the walker
+  returns null, preserving exact semantics while keeping the 10MB+ scale
+  wins on the common cases.
 - **Iterating the same array twice in a single template** now throws a clear
   `ReverseEjsError` at compile time instead of the previous cryptic "V8 regex
   engine refused to compile" error. The library emitted a duplicate-named

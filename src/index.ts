@@ -137,12 +137,26 @@ export function compileTemplate(
 	// determine qualification. flexibleWhitespace stays on the regex path
 	// because its whitespace-collapsing semantics don't map cleanly to a
 	// cursor walk.
+	//
+	// The walker uses indexOf which takes the FIRST occurrence of the next
+	// literal. Regex with non-greedy captures + anchored end may need to
+	// BACKTRACK to a later occurrence so the rest of the pattern fits —
+	// e.g. `<%= x %>a<%= y %>b` against "abaab" requires y="baa" for the
+	// trailing "b" to match at position 4. The walker can't see past its
+	// next-literal window, so when it returns null we try the regex path
+	// as a fallback. The regex preserves exact semantics in those edge
+	// cases; the fast path still handles the common shapes cheaply.
 	if (!options?.flexibleWhitespace) {
 		const plan = buildFastPathPlan(pattern);
 		if (plan) {
 			return {
 				match(finalString: string): ExtractedObject | null {
-					return extractFastPath(plan, finalString, options);
+					const fast = extractFastPath(plan, finalString, {
+						...options,
+						safe: true,
+					});
+					if (fast !== null) return fast;
+					return extract(pattern, finalString, options);
 				},
 			};
 		}
