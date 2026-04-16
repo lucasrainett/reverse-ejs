@@ -1,3 +1,12 @@
+# Skip every pre-commit check in CI. The perf workflow legitimately
+# commits perf/results.json on master (it's the single authorized
+# writer), and the lint/test/build steps below are already covered by
+# dedicated CI workflows on PRs. Without this guard, our own automation
+# trips the perf/results.json check below.
+if [ "$CI" = "true" ]; then
+	exit 0
+fi
+
 # ── Reject staging of perf/results.json ─────────────────────────
 # This file is owned by the perf CI workflow on master. It is in
 # .gitignore so normal `pnpm perf` runs cannot stage it, but a
