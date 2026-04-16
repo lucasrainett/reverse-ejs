@@ -29,6 +29,9 @@ const HTML_ENTITY_MAP: Record<string, string> = {
 const HTML_ENTITY_RE = /&(?:amp|lt|gt|quot|#34|#39);/g;
 
 function unescapeHtml(s: string): string {
+	// Fast path: non-HTML workloads (log lines, CSV rows, plain emails)
+	// rarely contain `&`. Skip the regex scan + allocation for those.
+	if (s.indexOf("&") === -1) return s;
 	// Single regex pass instead of five sequential .replace() calls.
 	// For large values this is ~3-5x faster and the memory profile is
 	// one allocation instead of four intermediate strings.

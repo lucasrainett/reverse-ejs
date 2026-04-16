@@ -172,10 +172,16 @@ node-count limit, not a capture-name-table limit.
 ### Running
 
 ```bash
-pnpm perf                   # everything → writes perf/results.json
+pnpm perf                   # everything → writes perf/results.local.json
 pnpm perf:limits            # limits only (faster while iterating)
 pnpm perf:bench             # benchmarks only
 ```
+
+Local runs write to `perf/results.local.json` (gitignored). CI writes to
+`perf/results.json` (the tracked, canonical file). The two-path scheme
+prevents a local run from dirtying the CI-owned tracked file — `.gitignore`
+doesn't help there because the file is already tracked by git after CI's
+first commit.
 
 The output is a single `perf/results.json` with this shape (see
 `perf/lib/types.ts` for the full TypeScript definition):
@@ -209,12 +215,21 @@ deliberately, not by drift.
 
 ### Why local runs cannot pollute history
 
-`perf/results.json` is in `.gitignore`. Local `pnpm perf` invocations
-generate the file but git never sees it. CI bypasses the ignore with
-`git add -f perf/results.json` and is the only authorized writer.
-This guarantees the committed numbers always come from the same CI
-environment, so diffs in the file are real performance changes, not
-hardware variance.
+Three layers of protection, in order of where they catch:
+
+1. **Different output paths**: the orchestrator (`perf/run.ts`) checks for
+   `CI=true`. Local runs write to `perf/results.local.json` (gitignored).
+   Only CI writes to the tracked `perf/results.json`. Local runs cannot
+   dirty the canonical file at all.
+2. **Pre-commit hook** (`.husky/pre-commit`): if `perf/results.json` ever
+   does appear staged (e.g. via `git add -f`), the hook rejects the commit
+   with a remediation message. Skipped on CI (`CI=true`) so the workflow's
+   own legitimate auto-commit goes through.
+3. **PR guard** (`.github/workflows/perf.yml`): on every PR, the workflow's
+   first step checks for changes to `perf/results.json` in the diff. If a
+   contributor bypassed the hook (`--no-verify`), the PR fails here with
+   the same remediation message. Branch protection can gate merge on this
+   check, making the block absolute.
 
 Two more guards catch contributors who force-add the file on purpose
 (`git add -f perf/results.json && git commit`):

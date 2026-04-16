@@ -59,6 +59,13 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   roundtrip. This removes the `__` collision risk and drops a small amount
   of code.
 
+### Performance
+
+- **Fast-path HTML unescape**: skips the regex scan entirely when the
+  extracted value contains no `&`. Measurable speedup for non-HTML
+  batch workloads (logs, CSV, plain emails); no effect on HTML values
+  that actually contain entities.
+
 ## [3.0.2] — 2026-04-16
 
 ### Changed
