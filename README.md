@@ -123,7 +123,7 @@ reverseEjs(template, rendered, { partials });
 // => { title: "Home", body: "Welcome", copyright: "2025 Acme" }
 ```
 
-Nested includes, shared variables across partials, and includes inside loops are supported.
+Nested includes, shared variables across partials, and includes inside loops are supported. The [interactive playground](https://lucasrainett.github.io/reverse-ejs/?example=store) has a "Store (partials)" example with a header + footer partial driving a full storefront extraction.
 
 ### Repeated variables
 
@@ -679,6 +679,12 @@ Without `safe: true`, the first mismatch throws and the remaining inputs are ski
 ## Contributing
 
 Issues, pull requests, and discussions are welcome at [github.com/lucasrainett/reverse-ejs](https://github.com/lucasrainett/reverse-ejs).
+
+See **[CONTRIBUTING.md](./CONTRIBUTING.md)** for the development workflow, including:
+
+- The three test suites (unit, end-to-end, performance) and how to run them
+- Playwright e2e tests covering every interactive feature of the docs playground
+- The performance suite that tracks regex-engine limits and benchmark timings, with CI-driven comparison comments on every PR
 
 ## License
 

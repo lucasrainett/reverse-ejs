@@ -30,8 +30,14 @@
     "build": "tsup",
     "clean": "rm -rf dist",
     "format": "prettier --write --ignore-unknown .",
-    "lint": "eslint src",
+    "lint": "eslint src docs e2e perf playwright.config.ts",
     "test": "vitest run --coverage",
+    "e2e": "playwright test",
+    "e2e:headed": "PW_SLOW_MO=300 playwright test --headed --workers=1",
+    "e2e:debug": "playwright test --debug",
+    "perf": "tsx perf/run.ts",
+    "perf:limits": "tsx perf/run.ts --limits",
+    "perf:bench": "tsx perf/run.ts --bench",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -50,6 +56,8 @@
   "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^25.6.0",
     "@vitest/coverage-v8": "^4.1.1",
     "eslint": "^10.1.0",
     "husky": "^9.1.7",
@@ -57,6 +65,7 @@
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.1",
     "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.57.2",
     "vitest": "^4.1.1"

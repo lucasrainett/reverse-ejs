@@ -82,642 +82,26 @@
 					"name": "Lucas Rainett",
 					"url": "https://github.com/lucasrainett"
 				},
-				"softwareVersion": "3.0.0",
+				"softwareVersion": "3.0.1",
 				"license": "https://opensource.org/licenses/MIT",
 				"codeRepository": "https://github.com/lucasrainett/reverse-ejs"
 			}
 		</script>
-		<style>
-			*,
-			*::before,
-			*::after {
-				box-sizing: border-box;
-				margin: 0;
-				padding: 0;
-			}
 
-			:root {
-				--bg: #0f1117;
-				--surface: #1a1d27;
-				--border: #2a2d3a;
-				--border-focus: #3a3d4a;
-				--text: #e1e4ed;
-				--text-muted: #8b8fa3;
-				--accent: #6c8cff;
-				--accent-hover: #8da6ff;
-				--green: #4ade80;
-				--red: #f87171;
-				--font-mono:
-					"SF Mono", "Fira Code", "JetBrains Mono", Consolas,
-					monospace;
-				--font-sans:
-					-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-					sans-serif;
-				--radius: 8px;
-			}
-
-			body {
-				font-family: var(--font-sans);
-				background: var(--bg);
-				color: var(--text);
-				line-height: 1.6;
-				min-height: 100vh;
-			}
-
-			a {
-				color: var(--accent);
-				text-decoration: none;
-			}
-			a:hover {
-				color: var(--accent-hover);
-			}
-
-			.container {
-				max-width: 1100px;
-				margin: 0 auto;
-				padding: 0 24px;
-			}
-
-			header {
-				padding: 48px 0 32px;
-				text-align: center;
-			}
-
-			header .logo {
-				width: 72px;
-				height: 72px;
-				margin: 0 auto 16px;
-				display: block;
-			}
-
-			header h1 {
-				font-size: 2.2rem;
-				font-weight: 700;
-				letter-spacing: -0.5px;
-				margin-bottom: 12px;
-			}
-
-			header h1 code {
-				font-family: var(--font-mono);
-				color: var(--accent);
-				font-weight: 600;
-			}
-
-			header p {
-				color: var(--text-muted);
-				font-size: 1.1rem;
-				max-width: 600px;
-				margin: 0 auto 20px;
-			}
-
-			.links {
-				display: flex;
-				gap: 16px;
-				justify-content: center;
-				flex-wrap: wrap;
-			}
-
-			.links a {
-				display: inline-flex;
-				align-items: center;
-				gap: 6px;
-				padding: 8px 16px;
-				border: 1px solid var(--border);
-				border-radius: var(--radius);
-				font-size: 0.9rem;
-				transition: border-color 0.2s;
-			}
-
-			.links a:hover {
-				border-color: var(--accent);
-			}
-
-			.section-heading {
-				font-size: 1.5rem;
-				font-weight: 700;
-				margin: 32px 0 16px;
-				letter-spacing: -0.3px;
-			}
-
-			.features {
-				list-style: none;
-				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-				gap: 12px;
-				margin-bottom: 48px;
-			}
-
-			.features li {
-				background: var(--surface);
-				border: 1px solid var(--border);
-				border-radius: var(--radius);
-				padding: 16px;
-				font-size: 0.9rem;
-				color: var(--text-muted);
-			}
-
-			.features li strong {
-				color: var(--text);
-				display: block;
-				margin-bottom: 4px;
-			}
-
-			.features li code {
-				font-family: var(--font-mono);
-				font-size: 0.85em;
-				background: var(--bg);
-				padding: 1px 5px;
-				border-radius: 3px;
-			}
-
-			.steps {
-				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-				gap: 16px;
-				margin: 0 0 32px;
-			}
-
-			.step {
-				background: var(--surface);
-				border: 1px solid var(--border);
-				border-radius: var(--radius);
-				padding: 20px;
-			}
-
-			.step-num {
-				display: inline-block;
-				width: 28px;
-				height: 28px;
-				line-height: 28px;
-				text-align: center;
-				border-radius: 50%;
-				background: var(--accent);
-				color: var(--bg);
-				font-weight: 700;
-				font-size: 0.85rem;
-				margin-bottom: 10px;
-			}
-
-			.step h3 {
-				font-size: 0.95rem;
-				margin-bottom: 6px;
-			}
-			.step p {
-				color: var(--text-muted);
-				font-size: 0.85rem;
-			}
-
-			.playground {
-				background: var(--surface);
-				border: 1px solid var(--border);
-				border-radius: 12px;
-				padding: 24px;
-				margin-bottom: 48px;
-			}
-
-			.playground h2 {
-				font-size: 1.2rem;
-				margin-bottom: 4px;
-			}
-			.playground .subtitle {
-				color: var(--text-muted);
-				font-size: 0.9rem;
-				margin-bottom: 20px;
-			}
-
-			.editors {
-				display: grid;
-				grid-template-columns: 1fr 1fr;
-				gap: 16px;
-				margin-bottom: 16px;
-			}
-
-			@media (max-width: 700px) {
-				.editors {
-					grid-template-columns: 1fr;
-				}
-			}
-
-			.field-label {
-				display: block;
-				font-size: 0.8rem;
-				font-weight: 600;
-				text-transform: uppercase;
-				letter-spacing: 0.5px;
-				color: var(--text-muted);
-				margin-bottom: 6px;
-			}
-
-			textarea {
-				width: 100%;
-				height: 360px;
-				background: var(--bg);
-				color: var(--text);
-				border: 1px solid var(--border);
-				border-radius: var(--radius);
-				padding: 12px;
-				font-family: var(--font-mono);
-				font-size: 13px;
-				line-height: 1.5;
-				resize: vertical;
-				tab-size: 2;
-			}
-
-			textarea:focus {
-				outline: none;
-				border-color: var(--accent);
-			}
-
-			.actions {
-				display: flex;
-				align-items: center;
-				gap: 12px;
-				margin-bottom: 16px;
-			}
-
-			.examples-row {
-				display: flex;
-				flex-wrap: wrap;
-				align-items: center;
-				gap: 8px;
-				margin-bottom: 16px;
-				padding: 10px 12px;
-				background: var(--bg-code, rgba(127, 127, 127, 0.08));
-				border: 1px solid var(--border);
-				border-radius: var(--radius);
-			}
-
-			.examples-label {
-				font-size: 0.85rem;
-				color: var(--text-muted);
-				margin-right: 4px;
-			}
-
-			button.example-btn {
-				padding: 6px 12px;
-				background: transparent;
-				color: var(--text);
-				border: 1px solid var(--border);
-				border-radius: 999px;
-				font-size: 0.8rem;
-				font-weight: 500;
-				cursor: pointer;
-				transition:
-					background 0.15s,
-					border-color 0.15s,
-					color 0.15s;
-			}
-
-			button.example-btn:hover {
-				background: var(--accent);
-				border-color: var(--accent);
-				color: #fff;
-			}
-
-			button#extract {
-				padding: 10px 24px;
-				background: var(--accent);
-				color: #fff;
-				border: none;
-				border-radius: var(--radius);
-				font-size: 0.95rem;
-				font-weight: 600;
-				cursor: pointer;
-				transition: background 0.2s;
-			}
-
-			button#extract:hover {
-				background: var(--accent-hover);
-			}
-
-			button.secondary {
-				padding: 10px 16px;
-				background: transparent;
-				color: var(--text-muted);
-				border: 1px solid var(--border);
-				border-radius: var(--radius);
-				font-size: 0.85rem;
-				cursor: pointer;
-				transition:
-					border-color 0.2s,
-					color 0.2s;
-			}
-
-			button.secondary:hover {
-				border-color: var(--text-muted);
-				color: var(--text);
-			}
-
-			.auto-run-label {
-				display: inline-flex;
-				align-items: center;
-				gap: 5px;
-				font-size: 0.85rem;
-				color: var(--text-muted);
-				cursor: pointer;
-			}
-
-			.auto-run-label input {
-				accent-color: var(--accent);
-				width: 15px;
-				height: 15px;
-				cursor: pointer;
-			}
-
-			#status {
-				font-size: 0.85rem;
-				font-family: var(--font-mono);
-			}
-			#status.ok {
-				color: var(--green);
-			}
-			#status.err {
-				color: var(--red);
-			}
-
-			/* Options panel */
-			.options-toggle {
-				display: inline-flex;
-				align-items: center;
-				gap: 4px;
-				background: none;
-				border: none;
-				color: var(--text-muted);
-				font-size: 0.85rem;
-				cursor: pointer;
-				padding: 0;
-				transition: color 0.2s;
-			}
-
-			.options-toggle:hover {
-				color: var(--text);
-			}
-
-			.options-toggle .arrow {
-				display: inline-block;
-				transition: transform 0.2s;
-				font-size: 0.7rem;
-			}
-
-			.options-toggle.open .arrow {
-				transform: rotate(90deg);
-			}
-
-			.options-panel {
-				display: none;
-				background: var(--bg);
-				border: 1px solid var(--border);
-				border-radius: var(--radius);
-				padding: 16px;
-				margin-bottom: 16px;
-			}
-
-			.options-panel.open {
-				display: block;
-			}
-
-			.options-grid {
-				display: grid;
-				grid-template-columns: 1fr 1fr;
-				gap: 12px 24px;
-			}
-
-			@media (max-width: 700px) {
-				.options-grid {
-					grid-template-columns: 1fr;
-				}
-			}
-
-			.option-row {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				gap: 12px;
-			}
-
-			.option-row label {
-				font-size: 0.85rem;
-				color: var(--text-muted);
-			}
-
-			.option-row .hint {
-				font-size: 0.75rem;
-				color: var(--text-muted);
-				opacity: 0.7;
-				margin-left: 4px;
-			}
-
-			.option-row input[type="text"] {
-				width: 80px;
-				background: var(--surface);
-				color: var(--text);
-				border: 1px solid var(--border);
-				border-radius: 4px;
-				padding: 4px 8px;
-				font-family: var(--font-mono);
-				font-size: 13px;
-				text-align: center;
-			}
-
-			.option-row input[type="text"]:focus {
-				outline: none;
-				border-color: var(--accent);
-			}
-
-			.option-row input[type="checkbox"] {
-				accent-color: var(--accent);
-				width: 16px;
-				height: 16px;
-				cursor: pointer;
-			}
-
-			textarea.partials-input {
-				width: 100%;
-				height: 160px;
-				background: var(--surface);
-				color: var(--text);
-				border: 1px solid var(--border);
-				border-radius: 4px;
-				padding: 8px;
-				font-family: var(--font-mono);
-				font-size: 12px;
-				line-height: 1.4;
-				resize: vertical;
-			}
-
-			textarea.partials-input:focus {
-				outline: none;
-				border-color: var(--accent);
-			}
-
-			.option-textareas {
-				grid-column: 1 / -1;
-				display: grid;
-				grid-template-columns: 1fr 1fr;
-				gap: 12px 24px;
-			}
-
-			@media (max-width: 700px) {
-				.option-textareas {
-					grid-template-columns: 1fr;
-				}
-			}
-
-			.option-textarea {
-				display: flex;
-				flex-direction: column;
-				gap: 6px;
-			}
-
-			.option-textarea label {
-				font-size: 0.85rem;
-				color: var(--text-muted);
-			}
-
-			.option-textarea .editor-wrap {
-				margin-top: auto;
-			}
-
-			.output-header {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				margin-bottom: 6px;
-				gap: 12px;
-			}
-
-			.output-header .field-label {
-				margin-bottom: 0;
-			}
-
-			button#copyResult {
-				padding: 6px 14px;
-				font-size: 0.8rem;
-			}
-
-			button#copyResult.copied {
-				color: var(--green);
-				border-color: var(--green);
-			}
-
-			pre#output {
-				background: var(--bg);
-				border: 1px solid var(--border);
-				border-radius: var(--radius);
-				padding: 16px;
-				font-family: var(--font-mono);
-				font-size: 13px;
-				line-height: 1.5;
-				min-height: 180px;
-				max-height: 500px;
-				overflow: auto;
-				white-space: pre-wrap;
-				word-break: break-word;
-			}
-
-			footer {
-				text-align: center;
-				padding: 32px 0 48px;
-				color: var(--text-muted);
-				font-size: 0.85rem;
-				border-top: 1px solid var(--border);
-			}
-
-			footer .spacer {
-				margin: 0 8px;
-			}
-
-			/* Syntax highlighting - shared palette */
-			.json-key, .html-tag, .md-heading, .md-link-text,
-			.log-timestamp, .csv-header { color: var(--accent); }
-
-			.json-string, .html-attr, .md-code, .log-info,
-			.email-url { color: var(--green); }
-
-			.json-number, .html-string, .ejs-expr, .md-link-url,
-			.log-warn, .email-amount, .cli-hash { color: #f0a456; }
-
-			.json-bool, .ejs-tag, .md-italic, .md-list,
-			.log-service, .email-label { color: #c084fc; }
-
-			.json-null { color: var(--text-muted); }
-			.json-bracket { color: var(--text); }
-			.log-error { color: var(--red); }
-			.md-heading, .md-bold, .csv-header { font-weight: bold; }
-			.md-italic { font-style: italic; }
-			.csv-delim { color: var(--text-muted); }
-
-			/* Textarea syntax-highlight overlay */
-			.editor-wrap {
-				position: relative;
-			}
-
-			.highlight-overlay {
-				position: absolute;
-				top: 0;
-				left: 0;
-				right: 0;
-				bottom: 0;
-				background: var(--bg);
-				border: 1px solid transparent;
-				border-radius: var(--radius);
-				overflow: hidden;
-				pointer-events: none;
-			}
-
-			.highlight-inner {
-				padding: 12px;
-				font-family: var(--font-mono);
-				font-size: 13px;
-				line-height: 1.5;
-				tab-size: 2;
-				white-space: pre-wrap;
-				word-break: break-word;
-				color: var(--text);
-			}
-
-			.option-textarea .highlight-inner {
-				padding: 8px;
-				font-size: 12px;
-				line-height: 1.4;
-			}
-
-			.option-textarea .highlight-overlay {
-				background: var(--surface);
-			}
-
-			.editor-group textarea {
-				position: relative;
-				z-index: 1;
-				background: none;
-				-webkit-text-fill-color: transparent;
-				color: transparent;
-				caret-color: var(--text);
-			}
-
-			.editor-group textarea::selection {
-				background: rgba(108, 140, 255, 0.4);
-				color: transparent;
-			}
-
-			.editor-group textarea::placeholder {
-				color: var(--text-muted);
-				opacity: 0.5;
-			}
-
-			.md-bold { color: var(--text); }
-
-			/* Format badge */
-			.format-badge {
-				margin-left: 8px;
-				color: var(--text-muted);
-				font-size: 0.75rem;
-				text-transform: none;
-				font-weight: 400;
-				letter-spacing: 0;
-				opacity: 0.7;
-			}
-		</style>
+		<link rel="stylesheet" href="styles.css" />
+
+		<!-- Library + playground component, loaded with `defer` so they run in order
+		     and after the DOM is parsed. Alpine fires `alpine:init` once it loads,
+		     by which point `playground.js` has registered its listener. -->
+		<script
+			src="https://unpkg.com/reverse-ejs@latest/dist/index.global.js"
+			defer
+		></script>
+		<script src="playground.js" defer></script>
+		<script
+			src="https://unpkg.com/alpinejs@3.14.x/dist/cdn.min.js"
+			defer
+		></script>
 	</head>
 	<body>
 		<div class="container">
@@ -788,7 +172,12 @@
 				</div>
 			</section>
 
-			<div class="playground">
+			<div
+				class="playground"
+				data-testid="playground"
+				x-data="playground"
+				x-cloak
+			>
 				<h2>Playground</h2>
 				<p class="subtitle">
 					Paste your rendered text and EJS template, then hit Extract.
@@ -799,49 +188,56 @@
 					<button
 						type="button"
 						class="example-btn"
-						data-example="html"
+						data-testid="example-html"
+						@click="loadExample('html')"
 					>
 						HTML
 					</button>
 					<button
 						type="button"
 						class="example-btn"
-						data-example="markdown"
+						data-testid="example-markdown"
+						@click="loadExample('markdown')"
 					>
 						Markdown
 					</button>
 					<button
 						type="button"
 						class="example-btn"
-						data-example="log"
+						data-testid="example-log"
+						@click="loadExample('log')"
 					>
 						Log line
 					</button>
 					<button
 						type="button"
 						class="example-btn"
-						data-example="email"
+						data-testid="example-email"
+						@click="loadExample('email')"
 					>
 						Email
 					</button>
 					<button
 						type="button"
 						class="example-btn"
-						data-example="csv"
+						data-testid="example-csv"
+						@click="loadExample('csv')"
 					>
 						CSV
 					</button>
 					<button
 						type="button"
 						class="example-btn"
-						data-example="cli"
+						data-testid="example-cli"
+						@click="loadExample('cli')"
 					>
 						CLI
 					</button>
 					<button
 						type="button"
 						class="example-btn"
-						data-example="store"
+						data-testid="example-store"
+						@click="loadExample('store')"
 					>
 						Store (partials)
 					</button>
@@ -849,13 +245,32 @@
 
 				<div class="editors">
 					<div class="editor-group">
-						<label class="field-label">Rendered text
-							<span id="formatBadge" class="format-badge"></span>
+						<label class="field-label">
+							Rendered text
+							<span
+								class="format-badge"
+								data-testid="format-badge"
+								x-text="formatBadge"
+							></span>
 						</label>
 						<div class="editor-wrap">
-							<div class="highlight-overlay" id="rendered-highlight"><div class="highlight-inner"></div></div>
+							<div
+								class="highlight-overlay"
+								data-testid="rendered-overlay"
+								x-ref="renderedOverlay"
+							>
+								<div
+									class="highlight-inner"
+									x-html="renderedOverlayHtml"
+								></div>
+							</div>
 							<textarea
-								id="rendered"
+								data-testid="rendered-input"
+								x-model="rendered"
+								@input="onRenderedInput"
+								@paste="onPasteRendered"
+								@focus="onFocusRendered"
+								@scroll="syncScroll($event, 'renderedOverlay')"
 								spellcheck="false"
 								placeholder='<div class="product">
   <h1>Sony WH-1000XM5</h1>
@@ -868,9 +283,23 @@
 					<div class="editor-group">
 						<label class="field-label">EJS Template</label>
 						<div class="editor-wrap">
-							<div class="highlight-overlay" id="template-highlight"><div class="highlight-inner"></div></div>
+							<div
+								class="highlight-overlay"
+								data-testid="template-overlay"
+								x-ref="templateOverlay"
+							>
+								<div
+									class="highlight-inner"
+									x-html="templateOverlayHtml"
+								></div>
+							</div>
 							<textarea
-								id="template"
+								data-testid="template-input"
+								x-model="template"
+								@input="onTemplateInput"
+								@paste="onPasteTemplate"
+								@focus="onFocusTemplate"
+								@scroll="syncScroll($event, 'templateOverlay')"
 								spellcheck="false"
 								placeholder='<div class="product">
   <h1><%= name %></h1>
@@ -883,106 +312,208 @@
 				</div>
 
 				<div class="actions">
-					<button id="extract">Extract Data</button>
+					<button
+						id="extract"
+						data-testid="extract-btn"
+						@click="onExtractClick"
+					>
+						Extract Data
+					</button>
 					<label class="auto-run-label">
-						<input type="checkbox" id="opt-autoRun" />
+						<input
+							type="checkbox"
+							data-testid="opt-autoRun"
+							x-model="options.autoRun"
+							@change="onAutoRunChange"
+						/>
 						Auto-run
 					</label>
-					<button class="options-toggle" id="optionsToggle">
+					<button
+						class="options-toggle"
+						data-testid="options-toggle"
+						:class="{ open: optionsOpen }"
+						@click="toggleOptions"
+					>
 						<span class="arrow">&#9654;</span> Options
 					</button>
-					<button class="secondary" id="resetBtn">Reset</button>
-					<span id="status"></span>
+					<button
+						class="secondary"
+						data-testid="reset-btn"
+						@click="reset"
+					>
+						Reset
+					</button>
+					<span
+						id="status"
+						data-testid="status"
+						:class="statusKind"
+						x-text="statusText"
+					></span>
 				</div>
 
-				<div class="options-panel" id="optionsPanel">
+				<div
+					class="options-panel"
+					data-testid="options-panel"
+					:class="{ open: optionsOpen }"
+				>
 					<div class="options-grid">
 						<div class="option-row">
-							<label>Flexible whitespace
-								<span class="hint">match regardless of spacing</span></label>
-							<input type="checkbox" id="opt-flexWs" checked />
-						</div>
-						<div class="option-row">
-							<label>Strip whitespace
-								<span class="hint">remove leading/trailing whitespace per line</span></label>
-							<input type="checkbox" id="opt-rmWs" />
-						</div>
-						<div class="option-row">
-							<label>Safe mode
-								<span class="hint">return null instead of throwing on no match</span></label>
-							<input type="checkbox" id="opt-safe" />
-						</div>
-						<div class="option-row">
-							<label>Silent errors
-								<span class="hint">suppress template compilation warnings</span></label>
-							<input type="checkbox" id="opt-silent" />
-						</div>
-						<div class="option-row">
-							<label
-								>Delimiter
-								<span class="hint">default: %</span></label
-							>
+							<label>
+								Flexible whitespace
+								<span class="hint"
+									>match regardless of spacing</span
+								>
+							</label>
 							<input
-								type="text"
-								id="opt-delimiter"
-								value="%"
-								maxlength="3"
+								type="checkbox"
+								data-testid="opt-flexWs"
+								x-model="options.flexWs"
+								@change="onCheckboxChange('flexWs')"
 							/>
 						</div>
 						<div class="option-row">
-							<label
-								>Open delimiter
-								<span class="hint">default: &lt;</span></label
-							>
+							<label>
+								Strip whitespace
+								<span class="hint"
+									>remove leading/trailing whitespace per
+									line</span
+								>
+							</label>
 							<input
-								type="text"
-								id="opt-openDelim"
-								value="<"
-								maxlength="3"
+								type="checkbox"
+								data-testid="opt-rmWs"
+								x-model="options.rmWs"
+								@change="onCheckboxChange('rmWs')"
 							/>
 						</div>
 						<div class="option-row">
-							<label
-								>Close delimiter
-								<span class="hint">default: &gt;</span></label
-							>
+							<label>
+								Safe mode
+								<span class="hint"
+									>return null instead of throwing on no
+									match</span
+								>
+							</label>
+							<input
+								type="checkbox"
+								data-testid="opt-safe"
+								x-model="options.safe"
+								@change="onCheckboxChange('safe')"
+							/>
+						</div>
+						<div class="option-row">
+							<label>
+								Silent errors
+								<span class="hint"
+									>suppress template compilation
+									warnings</span
+								>
+							</label>
+							<input
+								type="checkbox"
+								data-testid="opt-silent"
+								x-model="options.silent"
+								@change="onCheckboxChange('silent')"
+							/>
+						</div>
+						<div class="option-row">
+							<label>
+								Delimiter
+								<span class="hint">default: %</span>
+							</label>
 							<input
 								type="text"
-								id="opt-closeDelim"
-								value=">"
 								maxlength="3"
+								data-testid="opt-delimiter"
+								x-model="options.delimiter"
+								@change="onDelimiterChange('delimiter', '%')"
+								@input="autoRun"
+							/>
+						</div>
+						<div class="option-row">
+							<label>
+								Open delimiter
+								<span class="hint">default: &lt;</span>
+							</label>
+							<input
+								type="text"
+								maxlength="3"
+								data-testid="opt-openDelim"
+								x-model="options.openDelim"
+								@change="onDelimiterChange('openDelim', '<')"
+								@input="autoRun"
+							/>
+						</div>
+						<div class="option-row">
+							<label>
+								Close delimiter
+								<span class="hint">default: &gt;</span>
+							</label>
+							<input
+								type="text"
+								maxlength="3"
+								data-testid="opt-closeDelim"
+								x-model="options.closeDelim"
+								@change="onDelimiterChange('closeDelim', '>')"
+								@input="autoRun"
 							/>
 						</div>
 						<div class="option-textareas">
 							<div class="option-textarea editor-group">
-								<label
-									>Partials (includes)
+								<label>
+									Partials (includes)
 									<span class="hint"
-										>reusable template fragments, as JSON: { "name": "&lt;ejs source&gt;" }</span
-									></label
-								>
+										>reusable template fragments, as JSON: {
+										"name": "&lt;ejs source&gt;" }</span
+									>
+								</label>
 								<div class="editor-wrap">
-									<div class="highlight-overlay" id="partials-highlight"><div class="highlight-inner"></div></div>
+									<div
+										class="highlight-overlay"
+										data-testid="partials-overlay"
+										x-ref="partialsOverlay"
+									>
+										<div
+											class="highlight-inner"
+											x-html="partialsOverlayHtml"
+										></div>
+									</div>
 									<textarea
 										class="partials-input"
-										id="opt-partials"
+										data-testid="opt-partials"
+										x-model="options.partials"
+										@input="onPartialsInput"
+										@scroll="syncScroll($event, 'partialsOverlay')"
 										spellcheck="false"
 										placeholder='{ "header": "<h1><%= title %></h1>" }'
 									></textarea>
 								</div>
 							</div>
 							<div class="option-textarea editor-group">
-								<label
-									>Type coercion
+								<label>
+									Type coercion
 									<span class="hint"
-										>convert extracted strings: { "age": "number", "active": "boolean" }</span
-									></label
-								>
+										>convert extracted strings: { "age":
+										"number", "active": "boolean" }</span
+									>
+								</label>
 								<div class="editor-wrap">
-									<div class="highlight-overlay" id="types-highlight"><div class="highlight-inner"></div></div>
+									<div
+										class="highlight-overlay"
+										data-testid="types-overlay"
+										x-ref="typesOverlay"
+									>
+										<div
+											class="highlight-inner"
+											x-html="typesOverlayHtml"
+										></div>
+									</div>
 									<textarea
 										class="partials-input"
-										id="opt-types"
+										data-testid="opt-types"
+										x-model="options.types"
+										@input="onTypesInput"
+										@scroll="syncScroll($event, 'typesOverlay')"
 										spellcheck="false"
 										placeholder='{ "age": "number", "active": "boolean" }'
 									></textarea>
@@ -997,14 +528,22 @@
 						<label class="field-label">Extracted Data</label>
 						<button
 							type="button"
-							class="secondary"
 							id="copyResult"
+							data-testid="copy-btn"
+							class="secondary"
+							:class="{ copied: copyState === 'copied' }"
+							@click="copy"
 							aria-label="Copy result to clipboard"
-						>
-							Copy
-						</button>
+							x-text="copyLabel"
+						></button>
 					</div>
-					<pre id="output"></pre>
+					<pre
+						id="output"
+						data-testid="output"
+						x-html="outputHtml"
+						@copy="onOutputCopy"
+						@mousedown="onOutputMouseDown"
+					></pre>
 				</div>
 			</div>
 
@@ -1013,8 +552,8 @@
 				<ul class="features">
 					<li>
 						<strong>Works with any text format</strong> - HTML,
-						Markdown, logs, emails, CSV, plain text - anything
-						you can describe with an EJS template
+						Markdown, logs, emails, CSV, plain text - anything you
+						can describe with an EJS template
 					</li>
 					<li>
 						<strong>Loops & nested data</strong> - extract arrays
@@ -1042,8 +581,8 @@
 						browser, Node.js, Bun, or Deno
 					</li>
 					<li>
-						<strong>Privacy-first</strong> - everything runs in
-						your browser, your data never leaves your device
+						<strong>Privacy-first</strong> - everything runs in your
+						browser, your data never leaves your device
 					</li>
 				</ul>
 			</section>
@@ -1060,689 +599,11 @@
 			</footer>
 		</div>
 
-		<script src="https://unpkg.com/reverse-ejs@latest/dist/index.global.js"></script>
-		<script>
-			(function () {
-				// ── DOM references ──────────────────────────────────────────
-				var $ = function (id) { return document.getElementById(id); };
-
-				var templateEl       = $("template");
-				var renderedEl       = $("rendered");
-				var outputEl         = $("output");
-				var statusEl         = $("status");
-				var extractBtn       = $("extract");
-				var copyBtn          = $("copyResult");
-				var resetBtn         = $("resetBtn");
-				var formatBadge      = $("formatBadge");
-				var optionsToggle    = $("optionsToggle");
-				var optionsPanel     = $("optionsPanel");
-
-				var optFlexWs        = $("opt-flexWs");
-				var optRmWs          = $("opt-rmWs");
-				var optSafe          = $("opt-safe");
-				var optSilent        = $("opt-silent");
-				var optDelimiter     = $("opt-delimiter");
-				var optOpenDelim     = $("opt-openDelim");
-				var optCloseDelim    = $("opt-closeDelim");
-				var optPartials      = $("opt-partials");
-				var optTypes         = $("opt-types");
-				var optAutoRun       = $("opt-autoRun");
-
-				// Highlight overlays (all needed before loadStateFromUrl)
-				var templateHighlight = $("template-highlight");
-				var renderedHighlight = $("rendered-highlight");
-				var partialsHighlight = $("partials-highlight");
-				var typesHighlight    = $("types-highlight");
-
-				var exampleBtns = document.querySelectorAll(".example-btn");
-
-				// Paired highlight configs: [textarea, overlay, highlightFn]
-				var highlights = [
-					[templateEl, templateHighlight, highlightEjs],
-					[renderedEl, renderedHighlight, highlightHtml],
-					[optPartials, partialsHighlight, highlightJson],
-					[optTypes,    typesHighlight,    highlightJson],
-				];
-
-				// ── Analytics ───────────────────────────────────────────────
-				var trackedOnce = {};
-
-				function track(name, title) {
-					if (window.goatcounter && window.goatcounter.count) {
-						window.goatcounter.count({ path: name, title: title || name, event: true });
-					}
-				}
-
-				function trackOnce(name, title) {
-					if (trackedOnce[name]) return;
-					trackedOnce[name] = true;
-					track(name, title);
-				}
-
-				// ── Syntax highlighting ─────────────────────────────────────
-				function escapeHtml(str) {
-					return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-				}
-
-				var HTML_TAG_RE = /(&lt;\/?)([\w][\w-]*)((?:\s+[\w-]+(?:=(?:&quot;[^&]*?&quot;|"[^"]*?"|'[^']*?'|[^\s&]+))?)*\s*\/?)(&gt;)/g;
-				var HTML_ATTR_RE = /([\w-]+)(=)(&quot;[^&]*?&quot;|"[^"]*?"|'[^']*?'|[^\s&]+)/g;
-
-				function highlightHtmlTags(escaped) {
-					return escaped.replace(HTML_TAG_RE, function (m, open, tagName, attrs, close) {
-						var out = '<span class="html-tag">' + open + tagName + '</span>';
-						if (attrs) {
-							out += attrs.replace(HTML_ATTR_RE,
-								'<span class="html-attr">$1</span>$2<span class="html-string">$3</span>');
-						}
-						return out + '<span class="html-tag">' + close + '</span>';
-					});
-				}
-
-				function highlightEjs(text) {
-					var escaped = escapeHtml(text);
-					var ejsParts = [];
-					escaped = escaped.replace(/(&lt;%[-=]?)([\s\S]*?)(%&gt;)/g, function (m, open, body, close) {
-						var html = (open.indexOf("=") !== -1 || open.indexOf("-") !== -1)
-							? '<span class="ejs-tag">' + open + '</span><span class="ejs-expr">' + body + '</span><span class="ejs-tag">' + close + '</span>'
-							: '<span class="ejs-tag">' + open + body + close + '</span>';
-						ejsParts.push(html);
-						return "\x00EJS" + (ejsParts.length - 1) + "\x00";
-					});
-					escaped = highlightHtmlTags(escaped);
-					return escaped.replace(/\x00EJS(\d+)\x00/g, function (m, idx) {
-						return ejsParts[parseInt(idx, 10)];
-					}) + "\n";
-				}
-
-				function highlightHtml(text) {
-					return highlightHtmlTags(escapeHtml(text)) + "\n";
-				}
-
-				function highlightJson(text) {
-					return escapeHtml(text)
-						.replace(/(")((?:[^"\\]|\\.)*)(")\s*:/g,
-							'<span class="json-key">$1$2$3</span>:')
-						.replace(/: (")((?:[^"\\]|\\.)*)(")/g,
-							': <span class="json-string">$1$2$3</span>')
-						.replace(/([\[,]\s*)\n?\s*(")((?:[^"\\]|\\.)*)(")/g,
-							'$1<span class="json-string">$2$3$4</span>')
-						.replace(/: (-?\d+\.?\d*)/g,
-							': <span class="json-number">$1</span>')
-						.replace(/: (true|false)/g,
-							': <span class="json-bool">$1</span>')
-						.replace(/: (null)/g,
-							': <span class="json-null">$1</span>')
-						.replace(/([{}\[\]])/g,
-							'<span class="json-bracket">$1</span>');
-				}
-
-				function highlightMarkdown(text) {
-					var s = escapeHtml(text);
-					s = s.replace(/^(#{1,6}\s.*)$/gm, '<span class="md-heading">$1</span>');
-					s = s.replace(/`([^`]+)`/g, '<span class="md-code">`$1`</span>');
-					s = s.replace(/\*\*(.+?)\*\*/g, '<span class="md-bold">**$1**</span>');
-					s = s.replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<span class="md-italic">*$1*</span>');
-					s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g,
-						'[<span class="md-link-text">$1</span>](<span class="md-link-url">$2</span>)');
-					s = s.replace(/^(\s*- )/gm, '<span class="md-list">$1</span>');
-					return s + "\n";
-				}
-
-				function highlightLog(text) {
-					var s = escapeHtml(text);
-					s = s.replace(/\[(INFO|WARN|ERROR)\]/g, function (m, level) {
-						var cls = level === "ERROR" ? "log-error" : level === "WARN" ? "log-warn" : "log-info";
-						return '[<span class="' + cls + '">' + level + '</span>]';
-					});
-					s = s.replace(/(\d{4}-\d{2}-\d{2}T[\d:]+Z)/g, '<span class="log-timestamp">$1</span>');
-					s = s.replace(/\s([\w-]+):/g, ' <span class="log-service">$1</span>:');
-					return s + "\n";
-				}
-
-				function highlightCsv(text) {
-					var lines = text.split("\n");
-					var result = [];
-					for (var i = 0; i < lines.length; i++) {
-						var line = escapeHtml(lines[i]);
-						if (i === 0 && line) {
-							line = '<span class="csv-header">' + line + '</span>';
-						} else {
-							line = line.replace(/,/g, '<span class="csv-delim">,</span>');
-						}
-						result.push(line);
-					}
-					return result.join("\n") + "\n";
-				}
-
-				function highlightEmail(text) {
-					var s = escapeHtml(text);
-					s = s.replace(/(https?:\/\/[^\s&]+)/g, '<span class="email-url">$1</span>');
-					s = s.replace(/(\$[\d,.]+)/g, '<span class="email-amount">$1</span>');
-					s = s.replace(/^(\w[\w\s]*:)(?=\s)/gm, '<span class="email-label">$1</span>');
-					return s + "\n";
-				}
-
-				function highlightCli(text) {
-					var s = escapeHtml(text);
-					s = s.replace(/^([0-9a-f]{7,})\s/gm, '<span class="cli-hash">$1</span> ');
-					return s + "\n";
-				}
-
-				function highlightPlain(text) {
-					return escapeHtml(text) + "\n";
-				}
-
-				var FORMAT_HIGHLIGHTERS = {
-					html: highlightHtml, markdown: highlightMarkdown,
-					log: highlightLog, email: highlightEmail,
-					csv: highlightCsv, cli: highlightCli, plain: highlightPlain,
-				};
-
-				function detectFormat(text) {
-					if (!text.trim()) return "plain";
-					if (/^\[(?:INFO|WARN|ERROR|DEBUG)\]/m.test(text)) return "log";
-					if (/^#{1,6}\s/m.test(text) || /\*\*.+\*\*/.test(text)) return "markdown";
-					var lines = text.split("\n").filter(function (l) { return l.trim(); });
-					if (lines.length > 1 && lines.every(function (l) { return l.indexOf(",") !== -1; })) return "csv";
-					if (/^[0-9a-f]{7,}\s/m.test(text) && lines.every(function (l) { return /^[0-9a-f]{7,}\s/.test(l); })) return "cli";
-					if (/^(Hi|Hello|Dear)\s/m.test(text)) return "email";
-					if (/<[a-zA-Z][\s\S]*>/.test(text)) return "html";
-					return "plain";
-				}
-
-				var currentFormat = "html";
-
-				function setRenderedFormat(fmt) {
-					currentFormat = fmt;
-					highlights[1][2] = FORMAT_HIGHLIGHTERS[fmt] || highlightHtml;
-					formatBadge.textContent = fmt === "cli" ? "CLI" : fmt === "csv" ? "CSV" : fmt.charAt(0).toUpperCase() + fmt.slice(1);
-				}
-
-				// ── Highlight overlay sync ──────────────────────────────────
-				function syncHighlight(textarea, overlay, highlightFn) {
-					var inner = overlay.firstElementChild;
-					inner.innerHTML = highlightFn(textarea.value);
-					inner.style.width = textarea.clientWidth + "px";
-					inner.style.transform = "translate(0," + (-textarea.scrollTop) + "px)";
-				}
-
-				function syncAllHighlights() {
-					for (var i = 0; i < highlights.length; i++) {
-						syncHighlight(highlights[i][0], highlights[i][1], highlights[i][2]);
-					}
-				}
-
-				function setupHighlight(entry) {
-					var textarea = entry[0], overlay = entry[1];
-					function sync() { syncHighlight(textarea, overlay, entry[2]); }
-					textarea.addEventListener("input", sync);
-					textarea.addEventListener("scroll", function () {
-						overlay.firstElementChild.style.transform =
-							"translate(0," + (-textarea.scrollTop) + "px)";
-					});
-					sync();
-				}
-
-				// ── Options panel ───────────────────────────────────────────
-				function openOptionsPanel() {
-					optionsToggle.classList.add("open");
-					optionsPanel.classList.add("open");
-				}
-
-				function openOptionsPanelIfNeeded() {
-					if (optPartials.value || optTypes.value || optRmWs.checked || optSafe.checked || optSilent.checked) {
-						openOptionsPanel();
-					}
-				}
-
-				function getOptions() {
-					var opts = {};
-					if (optFlexWs.checked) opts.flexibleWhitespace = true;
-					if (optRmWs.checked)   opts.rmWhitespace = true;
-					if (optSafe.checked)   opts.safe = true;
-					if (optSilent.checked) opts.silent = true;
-					if (optDelimiter.value  !== "%") opts.delimiter = optDelimiter.value;
-					if (optOpenDelim.value  !== "<") opts.openDelimiter = optOpenDelim.value;
-					if (optCloseDelim.value !== ">") opts.closeDelimiter = optCloseDelim.value;
-
-					var partialsStr = optPartials.value.trim();
-					if (partialsStr) {
-						try { opts.partials = JSON.parse(partialsStr); }
-						catch (e) { throw new Error("Invalid partials JSON: " + e.message); }
-					}
-					var typesStr = optTypes.value.trim();
-					if (typesStr) {
-						try { opts.types = JSON.parse(typesStr); }
-						catch (e) { throw new Error("Invalid types JSON: " + e.message); }
-					}
-					return opts;
-				}
-
-				// ── Extract ─────────────────────────────────────────────────
-				function extract(source) {
-					var template = templateEl.value;
-					var rendered = renderedEl.value;
-
-					if (!template || !rendered) {
-						statusEl.className = "err";
-						statusEl.textContent = "Both fields are required";
-						outputEl.innerHTML = "";
-						track("extract-empty", "Extract clicked with empty fields");
-						return;
-					}
-					try {
-						var opts = getOptions();
-						var result = ReverseEjs.reverseEjs(template, rendered, opts);
-						if (result === null) {
-							outputEl.textContent = "null";
-							statusEl.className = "err";
-							statusEl.textContent = "No match (safe mode)";
-							track("extract-safe-null", "Safe mode returned null (" + (source || "click") + ")");
-							return;
-						}
-						outputEl.innerHTML = highlightJson(JSON.stringify(result, null, 2));
-						statusEl.className = "ok";
-						statusEl.textContent = "Extracted " + Object.keys(result).length + " top-level keys";
-						track("extract-success", "Extraction succeeded (" + (source || "click") + ")");
-					} catch (e) {
-						statusEl.className = "err";
-						statusEl.textContent = "Error";
-						outputEl.textContent = e.message;
-						track("extract-error", "Extraction failed (" + (source || "click") + ")");
-					}
-				}
-
-				// ── Auto-run & URL state sync ───────────────────────────────
-				var urlTimer = null;
-				var autoRunTimer = null;
-
-				function saveStateToUrl() {
-					clearTimeout(urlTimer);
-					urlTimer = setTimeout(function () {
-						var p = new URLSearchParams();
-						if (renderedEl.value)            p.set("rendered", renderedEl.value);
-						if (templateEl.value)            p.set("template", templateEl.value);
-						if (!optFlexWs.checked)          p.set("flexWs", "0");
-						if (optRmWs.checked)             p.set("rmWs", "1");
-						if (optSafe.checked)             p.set("safe", "1");
-						if (optSilent.checked)           p.set("silent", "1");
-						if (optAutoRun.checked)          p.set("autoRun", "1");
-						if (currentFormat !== "html") p.set("format", currentFormat);
-						if (optDelimiter.value  !== "%") p.set("delimiter", optDelimiter.value);
-						if (optOpenDelim.value  !== "<") p.set("openDelim", optOpenDelim.value);
-						if (optCloseDelim.value !== ">") p.set("closeDelim", optCloseDelim.value);
-						if (optPartials.value.trim())    p.set("partials", optPartials.value);
-						if (optTypes.value.trim())       p.set("types", optTypes.value);
-						var qs = p.toString();
-						history.replaceState(null, "", qs ? "?" + qs : window.location.pathname);
-					}, 400);
-				}
-
-				function autoRun() {
-					saveStateToUrl();
-					if (!optAutoRun.checked) return;
-					clearTimeout(autoRunTimer);
-					autoRunTimer = setTimeout(function () { extract("auto"); }, 300);
-				}
-
-				function loadStateFromUrl() {
-					var p = new URLSearchParams(window.location.search);
-					var exampleParam = p.get("example");
-					if (exampleParam && EXAMPLES[exampleParam] && !p.has("rendered") && !p.has("template")) {
-						loadExample(exampleParam);
-						return;
-					}
-					if (!p.has("rendered") && !p.has("template")) return;
-
-					renderedEl.value    = p.get("rendered") || "";
-					templateEl.value    = p.get("template") || "";
-					optFlexWs.checked   = p.get("flexWs") !== "0";
-					optRmWs.checked     = p.get("rmWs") === "1";
-					optSafe.checked     = p.get("safe") === "1";
-					optSilent.checked   = p.get("silent") === "1";
-					optAutoRun.checked  = p.get("autoRun") === "1";
-					if (p.has("delimiter"))  optDelimiter.value = p.get("delimiter");
-					if (p.has("openDelim"))  optOpenDelim.value = p.get("openDelim");
-					if (p.has("closeDelim")) optCloseDelim.value = p.get("closeDelim");
-					optPartials.value   = p.get("partials") || "";
-					optTypes.value      = p.get("types") || "";
-
-					openOptionsPanelIfNeeded();
-					setRenderedFormat(detectFormat(renderedEl.value));
-					syncAllHighlights();
-					extract("url");
-				}
-
-				// ── Examples ────────────────────────────────────────────────
-				var EXAMPLES = {
-					html: {
-						flexWs: true,
-						types: '{\n  "price": "number",\n  "rating": "number"\n}',
-						rendered:
-							'<div class="product">\n' +
-							"  <h1>Sony WH-1000XM5</h1>\n" +
-							'  <span class="price">$348.00</span>\n' +
-							'  <p class="description">Industry-leading noise canceling headphones</p>\n' +
-							'  <div class="specs">\n' +
-							'    <span class="brand">Sony</span>\n' +
-							'    <span class="color">Black</span>\n' +
-							'    <span class="rating">4.7</span>\n' +
-							"  </div>\n" +
-							'  <ul class="reviews">\n' +
-							"    <li>\n" +
-							"      <strong>Alice</strong>\n" +
-							"      <span>Best headphones I've ever owned. The noise canceling is incredible.</span>\n" +
-							"    </li>\n" +
-							"    <li>\n" +
-							"      <strong>Bob</strong>\n" +
-							"      <span>Great sound quality, comfortable for long flights.</span>\n" +
-							"    </li>\n" +
-							"  </ul>\n" +
-							"</div>",
-						template:
-							'<div class="product">\n' +
-							"  <h1><%= name %></h1>\n" +
-							'  <span class="price">$<%= price %></span>\n' +
-							'  <p class="description"><%= description %></p>\n' +
-							'  <div class="specs">\n' +
-							'    <span class="brand"><%= specs.brand %></span>\n' +
-							'    <span class="color"><%= specs.color %></span>\n' +
-							'    <span class="rating"><%= specs.rating %></span>\n' +
-							"  </div>\n" +
-							'  <ul class="reviews">\n' +
-							"    <% reviews.forEach(review => { %>\n" +
-							"    <li>\n" +
-							"      <strong><%= review.author %></strong>\n" +
-							"      <span><%= review.text %></span>\n" +
-							"    </li>\n" +
-							"    <% }) %>\n" +
-							"  </ul>\n" +
-							"</div>",
-					},
-					markdown: {
-						flexWs: false,
-						rendered:
-							"# My First Post\n\n" +
-							"**Author:** Alice Chen\n" +
-							"**Published:** 2026-04-10\n\n" +
-							"A short post about reverse-ejs.\n\n" +
-							"## Tags\n\n" +
-							"- javascript\n- typescript\n- parsing\n",
-						template:
-							"# <%= title %>\n\n" +
-							"**Author:** <%= author %>\n" +
-							"**Published:** <%= date %>\n\n" +
-							"<%= summary %>\n\n" +
-							"## Tags\n\n" +
-							"<% tags.forEach(tag => { %>- <%= tag %>\n<% }) %>",
-					},
-					log: {
-						flexWs: false,
-						rendered:
-							"[INFO] 2026-04-10T16:58:00Z auth-service: user login successful\n" +
-							"[WARN] 2026-04-10T16:59:30Z api-gateway: response time exceeded 2000ms\n" +
-							"[ERROR] 2026-04-10T17:00:00Z api-gateway: upstream connection refused\n" +
-							"[INFO] 2026-04-10T17:00:05Z scheduler: retry attempt 1 for job 4f92a\n",
-						template:
-							"<% lines.forEach(l => { %>[<%= l.level %>] <%= l.timestamp %> <%= l.service %>: <%= l.message %>\n<% }) %>",
-					},
-					email: {
-						flexWs: false,
-						types: '{\n  "qty": "number",\n  "price": "number",\n  "total": "number"\n}',
-						rendered:
-							"Hi Alice,\n\n" +
-							"Your order #A-1234 has shipped!\n\n" +
-							"  - 2x Widget ($9.99)\n" +
-							"  - 1x Gadget ($24.50)\n\n" +
-							"Total: $44.48\n\n" +
-							"Tracking: https://ship.example.com/track/ZZ1234\n",
-						template:
-							"Hi <%= customer %>,\n\n" +
-							"Your order <%= orderId %> has shipped!\n\n" +
-							"<% items.forEach(item => { %>  - <%= item.qty %>x <%= item.name %> ($<%= item.price %>)\n" +
-							"<% }) %>\nTotal: $<%= total %>\n\n" +
-							"Tracking: <%= trackingUrl %>\n",
-					},
-					csv: {
-						flexWs: false,
-						types: '{\n  "score": "number"\n}',
-						rendered: "Name,Score\nAlice,95\nBob,87\nCarol,72\n",
-						template: "Name,Score\n<% rows.forEach(r => { %><%= r.name %>,<%= r.score %>\n<% }) %>",
-					},
-					cli: {
-						flexWs: false,
-						rendered:
-							"abc1234 Fix authentication bug\n" +
-							"def5678 Add CSV export feature\n" +
-							"9012345 Bump dependencies\n",
-						template: "<% commits.forEach(c => { %><%= c.hash %> <%= c.message %>\n<% }) %>",
-					},
-					store: {
-						flexWs: true,
-						types: '{\n  "price": "number",\n  "rating": "number",\n  "cartCount": "number",\n  "year": "number"\n}',
-						partials: '{\n  "header": "<header><h1><%= storeName %></h1><p class=\\"tagline\\"><%= tagline %></p><nav><a href=\\"<%= cartUrl %>\\">Cart (<%= cartCount %>)</a></nav></header>",\n  "footer": "<footer><p>&copy; <%= year %> <%= storeName %> &mdash; <%= footerNote %></p></footer>"\n}',
-						rendered:
-							"<!DOCTYPE html>\n<html>\n<body>\n" +
-							"<header>\n  <h1>TechStore</h1>\n" +
-							'  <p class="tagline">Best deals on electronics</p>\n' +
-							'  <nav><a href="/cart">Cart (3)</a></nav>\n</header>\n' +
-							"<main>\n  <h2>Weekend Deals</h2>\n" +
-							'  <div class="product-grid">\n' +
-							'    <article class="product-card">\n' +
-							'      <img src="/img/keyboard.jpg" alt="Mechanical Keyboard">\n' +
-							"      <h2>Mechanical Keyboard</h2>\n" +
-							'      <span class="badge">New</span>\n' +
-							"      <p>Cherry MX Brown switches, RGB backlit</p>\n" +
-							'      <div class="rating">4.8/5 stars</div>\n' +
-							'      <span class="price">$99</span>\n' +
-							"    </article>\n" +
-							'    <article class="product-card">\n' +
-							'      <img src="/img/monitor.jpg" alt="4K Monitor">\n' +
-							"      <h2>4K Monitor</h2>\n" +
-							'      <span class="badge">Best Seller</span>\n' +
-							"      <p>27-inch IPS, 144Hz, HDR600</p>\n" +
-							'      <div class="rating">4.6/5 stars</div>\n' +
-							'      <span class="price">$379</span>\n' +
-							"    </article>\n" +
-							'    <article class="product-card">\n' +
-							'      <img src="/img/mouse.jpg" alt="Wireless Mouse">\n' +
-							"      <h2>Wireless Mouse</h2>\n" +
-							'      <span class="badge">50% Off</span>\n' +
-							"      <p>Ergonomic design, 20K DPI sensor</p>\n" +
-							'      <div class="rating">4.3/5 stars</div>\n' +
-							'      <span class="price">$40</span>\n' +
-							"    </article>\n" +
-							"  </div>\n</main>\n" +
-							"<footer>\n  <p>&copy; 2026 TechStore &mdash; Free shipping over $50</p>\n</footer>\n" +
-							"</body>\n</html>",
-						template:
-							"<!DOCTYPE html>\n<html>\n<body>\n" +
-							'<%- include("header") %>\n' +
-							"<main>\n  <h2><%= sectionTitle %></h2>\n" +
-							'  <div class="product-grid">\n' +
-							"    <% products.forEach(p => { %>\n" +
-							'    <article class="product-card">\n' +
-							'      <img src="<%= p.image %>" alt="<%= p.name %>">\n' +
-							"      <h2><%= p.name %></h2>\n" +
-							'      <span class="badge"><%= p.badge %></span>\n' +
-							"      <p><%= p.description %></p>\n" +
-							'      <div class="rating"><%= p.rating %>/5 stars</div>\n' +
-							'      <span class="price">$<%= p.price %></span>\n' +
-							"    </article>\n    <% }) %>\n" +
-							"  </div>\n</main>\n" +
-							'<%- include("footer") %>\n' +
-							"</body>\n</html>",
-					},
-				};
-
-				function loadExample(key) {
-					var ex = EXAMPLES[key];
-					if (!ex) return;
-					renderedEl.value   = ex.rendered;
-					templateEl.value   = ex.template;
-					optFlexWs.checked  = !!ex.flexWs;
-					optTypes.value     = ex.types || "";
-					optPartials.value  = ex.partials || "";
-					if (ex.partials || ex.types) openOptionsPanel();
-					setRenderedFormat(detectFormat(ex.rendered));
-					syncAllHighlights();
-					track("example-" + key, "Loaded " + key + " example");
-					extract("example-" + key);
-					saveStateToUrl();
-				}
-
-				// ── Event listeners ─────────────────────────────────────────
-				extractBtn.addEventListener("click", function () {
-					track("extract-clicked", "Extract button clicked");
-					extract("click");
-				});
-
-				resetBtn.addEventListener("click", function () {
-					renderedEl.value    = "";
-					templateEl.value    = "";
-					optFlexWs.checked   = true;
-					optRmWs.checked     = false;
-					optSafe.checked     = false;
-					optSilent.checked   = false;
-					optAutoRun.checked  = false;
-					optDelimiter.value  = "%";
-					optOpenDelim.value  = "<";
-					optCloseDelim.value = ">";
-					optPartials.value   = "";
-					optTypes.value      = "";
-					outputEl.innerHTML  = "";
-					statusEl.className  = "";
-					statusEl.textContent = "";
-					optionsToggle.classList.remove("open");
-					optionsPanel.classList.remove("open");
-					setRenderedFormat("html");
-					syncAllHighlights();
-					saveStateToUrl();
-					track("reset", "Playground reset");
-				});
-
-				for (var i = 0; i < exampleBtns.length; i++) {
-					(function (btn) {
-						btn.addEventListener("click", function () {
-							loadExample(btn.getAttribute("data-example"));
-						});
-					})(exampleBtns[i]);
-				}
-
-				optionsToggle.addEventListener("click", function () {
-					var willOpen = !optionsToggle.classList.contains("open");
-					optionsToggle.classList.toggle("open");
-					optionsPanel.classList.toggle("open");
-					if (willOpen) syncAllHighlights();
-					track(willOpen ? "options-opened" : "options-closed",
-						willOpen ? "Options panel opened" : "Options panel closed");
-				});
-
-				document.addEventListener("keydown", function (e) {
-					if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-						e.preventDefault();
-						track("extract-shortcut", "Extract via Ctrl/Cmd+Enter");
-						extract("shortcut");
-					}
-				});
-
-				// Copy button
-				copyBtn.addEventListener("click", function () {
-					var text = outputEl.textContent;
-					if (!text) { track("copy-button-empty", "Copy clicked with empty result"); return; }
-					var done = function () {
-						track("copy-button-success", "Copy button succeeded");
-						var original = copyBtn.textContent;
-						copyBtn.textContent = "Copied!";
-						copyBtn.classList.add("copied");
-						setTimeout(function () { copyBtn.textContent = original; copyBtn.classList.remove("copied"); }, 1500);
-					};
-					var fail = function () {
-						track("copy-button-error", "Copy button failed");
-						copyBtn.textContent = "Failed";
-						setTimeout(function () { copyBtn.textContent = "Copy"; }, 1500);
-					};
-					if (navigator.clipboard && navigator.clipboard.writeText) {
-						navigator.clipboard.writeText(text).then(done).catch(fail);
-					} else {
-						try {
-							var ta = document.createElement("textarea");
-							ta.value = text;
-							ta.style.position = "fixed";
-							ta.style.opacity = "0";
-							document.body.appendChild(ta);
-							ta.select();
-							document.execCommand("copy");
-							document.body.removeChild(ta);
-							done();
-						} catch (e) { fail(); }
-					}
-				});
-
-				// Textarea input + paste tracking
-				renderedEl.addEventListener("paste", function () { track("paste-rendered", "Pasted into Rendered HTML"); });
-				templateEl.addEventListener("paste", function () { track("paste-template", "Pasted into Template"); });
-				renderedEl.addEventListener("input", function () {
-					trackOnce("type-rendered", "Typed in Rendered HTML");
-					setRenderedFormat(detectFormat(renderedEl.value));
-					autoRun();
-				});
-				templateEl.addEventListener("input", function () { trackOnce("type-template", "Typed in Template"); autoRun(); });
-				renderedEl.addEventListener("focus", function () { trackOnce("focus-rendered", "Focused Rendered HTML"); });
-				templateEl.addEventListener("focus", function () { trackOnce("focus-template", "Focused Template"); });
-				outputEl.addEventListener("copy", function () { track("copy-result", "Copied result"); });
-				outputEl.addEventListener("mousedown", function () { trackOnce("select-result", "Selected result"); });
-
-				// Option checkboxes — track + autoRun
-				[
-					[optFlexWs, "flexWs", "flexibleWhitespace"],
-					[optRmWs,   "rmWs",   "rmWhitespace"],
-					[optSafe,   "safe",   "safe"],
-					[optSilent, "silent", "silent"],
-				].forEach(function (cfg) {
-					cfg[0].addEventListener("change", function () {
-						track("opt-" + cfg[1] + "-" + (cfg[0].checked ? "on" : "off"),
-							cfg[2] + " " + (cfg[0].checked ? "enabled" : "disabled"));
-						autoRun();
-					});
-				});
-
-				// Delimiter text inputs — track on change, autoRun on both change+input
-				[
-					[optDelimiter,  "delimiter",  "%"],
-					[optOpenDelim,  "openDelim",  "<"],
-					[optCloseDelim, "closeDelim", ">"],
-				].forEach(function (cfg) {
-					cfg[0].addEventListener("change", function () {
-						if (cfg[0].value !== cfg[2]) trackOnce("opt-" + cfg[1] + "-changed", cfg[1] + " changed from default");
-						autoRun();
-					});
-					cfg[0].addEventListener("input", function () { autoRun(); });
-				});
-
-				// Partials + types textareas
-				optPartials.addEventListener("input", function () { trackOnce("opt-partials-used", "partials option used"); autoRun(); });
-				optTypes.addEventListener("input", function () { trackOnce("opt-types-used", "types option used"); autoRun(); });
-				optAutoRun.addEventListener("change", function () { saveStateToUrl(); });
-
-				// Outbound link clicks
-				var links = document.querySelectorAll(".links a, footer a");
-				for (var j = 0; j < links.length; j++) {
-					(function (link) {
-						link.addEventListener("click", function () {
-							var label = link.textContent.trim() || link.href;
-							track("link-" + label.toLowerCase().replace(/\s+/g, "-"), "Clicked: " + label);
-						});
-					})(links[j]);
-				}
-
-				// ── Initialize ──────────────────────────────────────────────
-				for (var k = 0; k < highlights.length; k++) {
-					setupHighlight(highlights[k]);
-				}
-				loadStateFromUrl();
-			})();
-		</script>
+		<style>
+			[x-cloak] {
+				display: none !important;
+			}
+		</style>
 
 		<script
 			data-goatcounter="https://reverse-ejs.goatcounter.com/count"
