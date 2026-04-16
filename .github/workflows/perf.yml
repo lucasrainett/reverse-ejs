@@ -5,6 +5,16 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
+  # Manual trigger for after-release re-runs or debugging.
+  # `gh workflow run Performance --ref master`
+  workflow_dispatch: {}
+
+# On master, share a concurrency group with publish.yml so the two
+# workflows serialize instead of racing at the `git push` step. PRs use
+# their own per-PR group so they never queue behind each other.
+concurrency:
+  group: ${{ github.event_name == 'push' && 'master-push' || format('perf-pr-{0}', github.event.pull_request.number) }}
+  cancel-in-progress: false
 
 jobs:
   perf:
@@ -87,6 +97,11 @@ jobs:
       # `perf/results.json` is gitignored so local `pnpm perf` runs never
       # leak into commits. CI is the single source of truth and bypasses
       # the ignore with `git add -f`.
+      #
+      # A merge to master can trigger BOTH publish.yml and this workflow in
+      # parallel. Publish pushes a `chore: release` commit; by the time we
+      # try to push, master may be ahead of our checkout. Rebase-and-retry
+      # up to 3 times before giving up.
       - name: Commit updated results to master
         if: github.event_name == 'push'
         run: |
@@ -99,7 +114,19 @@ jobs:
           fi
           # [skip ci] prevents the auto-commit from triggering this same workflow
           git commit -m "perf: update results [skip ci]"
-          git push
+          for attempt in 1 2 3; do
+            if git push origin HEAD:master; then
+              echo "Pushed on attempt $attempt"
+              exit 0
+            fi
+            echo "Push rejected on attempt $attempt — rebasing onto latest master and retrying"
+            git fetch origin master
+            # Our only change is perf/results.json; rebase should never conflict
+            # because no other workflow writes to this file.
+            git rebase origin/master
+          done
+          echo "::error::Push still rejected after 3 rebase attempts"
+          exit 1
 
       # ── PR: post / update a comment with before-vs-after ─────────
       - name: Generate PR comparison comment

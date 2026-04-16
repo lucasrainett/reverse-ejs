@@ -5,7 +5,9 @@ on:
     branches: [master]
 
 concurrency:
-  group: publish
+  # Shared group name with perf.yml — they both push to master and must
+  # not race. Whichever gets here first runs; the other queues.
+  group: master-push
   cancel-in-progress: false
 
 jobs:
