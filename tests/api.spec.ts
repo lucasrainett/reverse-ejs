@@ -53,33 +53,121 @@ describe("compileTemplate", () => {
 	});
 });
 
-// Pure-literal templates (zero captures/loops/conditionals) take a
-// compile-time fast path that bypasses regex construction. This lifts the
-// ~40KB cliff imposed by V8's regex compiler, so users can paste a full
-// HTML page into a .ejs file before adding any <%= %> tags.
-describe("pure-literal fast path", () => {
-	it("matches an identical string and returns {}", () => {
+// Capture-only fast path: templates made of literals + variables/
+// expressions (no loops, no conditionals, no repeated capture keys) are
+// matched by walking a cursor through the rendered string with
+// `startsWith` and `indexOf` — no regex. The pure-literal case (zero
+// captures) is subsumed. This lifts the ~40KB literal-in-regex cliff
+// for the most common template shape: product pages, form fields, log
+// lines, plain-text emails.
+describe("capture-only fast path", () => {
+	it("pure-literal: matches an identical string and returns {}", () => {
 		const html = '<div class="x">Hello (world).</div>';
 		expect(reverseEjs(html, html)).toEqual({});
 	});
 
-	it("throws ReverseEjsError on mismatch", () => {
+	it("pure-literal: throws ReverseEjsError on mismatch", () => {
 		expect(() => reverseEjs("<p>a</p>", "<p>b</p>")).toThrow(
 			ReverseEjsError,
 		);
 	});
 
-	it("returns null on mismatch when safe is true", () => {
+	it("pure-literal: returns null on mismatch when safe is true", () => {
 		expect(reverseEjs("<p>a</p>", "<p>b</p>", { safe: true })).toBeNull();
 	});
 
-	it("scales to a 1MB pure-literal template without hitting the regex cap", () => {
+	it("pure-literal: scales to 1MB without hitting the regex cap", () => {
 		// ~1MB of literal HTML — would fail regex compilation at ~40KB
-		// without the fast path. Kept at 1MB (not 10MB) to keep the unit
-		// test suite quick; the perf sweep covers 10MB+.
+		// without the fast path. Unit tests stay at 1MB for speed; the
+		// perf sweep covers 10MB+.
 		const page = "<article>Body text goes here.</article>\n".repeat(30_000);
 		expect(page.length).toBeGreaterThan(1_000_000);
 		expect(reverseEjs(page, page)).toEqual({});
+	});
+
+	it("single variable with no surrounding literal", () => {
+		expect(reverseEjs("<%= x %>", "hello")).toEqual({ x: "hello" });
+	});
+
+	it("variable with prefix only", () => {
+		expect(reverseEjs("pre:<%= x %>", "pre:hello")).toEqual({ x: "hello" });
+	});
+
+	it("variable with suffix only", () => {
+		expect(reverseEjs("<%= x %>:end", "hello:end")).toEqual({ x: "hello" });
+	});
+
+	it("multiple variables separated by literals", () => {
+		expect(
+			reverseEjs("<%= a %>|<%= b %>|<%= c %>", "one|two|three"),
+		).toEqual({ a: "one", b: "two", c: "three" });
+	});
+
+	it("dotted-path variable nests under the path", () => {
+		expect(reverseEjs("<%= user.name %>", "Alice")).toEqual({
+			user: { name: "Alice" },
+		});
+	});
+
+	it("expression gets a flat key", () => {
+		expect(
+			reverseEjs("<h1><%= title.toUpperCase() %></h1>", "<h1>HELLO</h1>"),
+		).toEqual({ "title.toUpperCase()": "HELLO" });
+	});
+
+	it("raw variable skips HTML unescape", () => {
+		expect(reverseEjs("<div><%- x %></div>", "<div>A&amp;B</div>")).toEqual(
+			{ x: "A&amp;B" },
+		);
+	});
+
+	it("non-raw variable applies HTML unescape", () => {
+		expect(reverseEjs("<div><%= x %></div>", "<div>A&amp;B</div>")).toEqual(
+			{ x: "A&B" },
+		);
+	});
+
+	it("types coercion still applies", () => {
+		expect(
+			reverseEjs("Age: <%= age %>", "Age: 30", {
+				types: { age: "number" },
+			}),
+		).toEqual({ age: 30 });
+	});
+
+	it("includes the last variable name in the mismatch error", () => {
+		try {
+			reverseEjs("Hello, <%= name %>!", "Goodbye!");
+			expect.fail("should have thrown");
+		} catch (e) {
+			expect((e as Error).message).toContain('"name"');
+			expect((e as ReverseEjsError).details.regex).toContain("Hello");
+		}
+	});
+
+	it("repeated capture keys defer to the regex path (back-reference preserved)", () => {
+		// The regex emits `\k<name>` for the second occurrence — both slots
+		// must hold the same value. The walker doesn't have back-refs, so
+		// the plan builder refuses and the regex path handles it.
+		expect(() =>
+			reverseEjs(
+				"<title><%= t %></title><h1><%= t %></h1>",
+				"<title>HI</title><h1>BYE</h1>",
+			),
+		).toThrow(ReverseEjsError);
+	});
+
+	it("scales to 1MB of literal around a single capture", () => {
+		// The shape this increment directly targets: massive literal
+		// surrounding a small capture. Previously would fail regex
+		// compilation at ~40KB of literal.
+		const pad = "<article>Filler paragraph for size.</article>\n".repeat(
+			30_000,
+		);
+		const template = `${pad}<name><%= who %></name>${pad}`;
+		const rendered = `${pad}<name>Alice</name>${pad}`;
+		expect(template.length).toBeGreaterThan(2_000_000);
+		expect(reverseEjs(template, rendered)).toEqual({ who: "Alice" });
 	});
 });
 
@@ -493,14 +581,17 @@ describe("differential: reverseEjs() vs compileTemplate().match() are equivalent
 
 describe("regex-too-large guard", () => {
 	it("throws a friendly ReverseEjsError instead of a V8 SyntaxError", () => {
-		// Build a pathologically large template — N=5000 vars puts the
-		// regex over V8's ~87KB cliff.
-		let template = "";
-		let rendered = "";
+		// The guard still applies to templates that exercise the regex
+		// path (anything with a loop or conditional). Wrap 5000 vars in
+		// a conditional so the capture-only fast path defers to regex.
+		let inner = "";
+		let renderedInner = "";
 		for (let i = 0; i < 5000; i++) {
-			template += `<a${i}><%= v${i} %></a${i}>`;
-			rendered += `<a${i}>val${i}</a${i}>`;
+			inner += `<a${i}><%= v${i} %></a${i}>`;
+			renderedInner += `<a${i}>val${i}</a${i}>`;
 		}
+		const template = `<% if (show) { %>${inner}<% } %>`;
+		const rendered = renderedInner;
 		let thrown: unknown = null;
 		try {
 			reverseEjs(template, rendered);

@@ -221,6 +221,195 @@ function buildMatchError(
 	});
 }
 
+// ── Capture-only fast path ─────────────────────────────────────
+//
+// Templates whose pattern tree contains only literals and captures (no
+// loops, no conditionals) can be matched without touching V8's regex
+// engine at all. The walk is a flat cursor scan over the rendered
+// string: prefix-match each literal with `startsWith`, find each next
+// literal with `indexOf`, slice the captured region between.
+//
+// This lifts the ~40KB literal-in-regex cap for this shape. The common
+// product-page / form / log-line / email-template workloads all qualify.
+// Loops and conditionals still take the regex path (for now).
+
+type CaptureSegment = {
+	type: "capture";
+	key: string;
+	raw: boolean;
+	isExpression: boolean;
+};
+type LiteralSegment = { type: "literal"; value: string };
+type Segment = CaptureSegment | LiteralSegment;
+
+export interface CaptureOnlyPlan {
+	segments: Segment[];
+	// The last variable (not expression) name encountered, used to reproduce
+	// the existing "Could not match variable X" shape on mismatch. Null when
+	// the template has no named variables (only expressions).
+	lastVarName: string | null;
+}
+
+/**
+ * Return a CaptureOnlyPlan when `pattern` qualifies for the fast path:
+ * literals + unique captures only, no loops, no conditionals, no repeated
+ * capture keys. Returns null otherwise. The caller falls back to the
+ * regex-based `extract` for non-qualifying patterns.
+ *
+ * Repeated keys are rejected because the regex path emits a back-reference
+ * for the second occurrence (`\k<name>`), which forces both slots to hold
+ * the same value. Walking captures one-by-one and overwriting the previous
+ * value would silently change semantics (no mismatch error on differing
+ * values), so those templates stay on the regex path.
+ */
+export function buildCaptureOnlyPlan(pattern: Pattern): CaptureOnlyPlan | null {
+	const segments: Segment[] = [];
+	const seenKeys = new Set<string>();
+	if (!collectCaptureOnly(pattern, segments, seenKeys)) return null;
+	let lastVarName: string | null = null;
+	for (const seg of segments) {
+		if (seg.type === "capture" && !seg.isExpression) lastVarName = seg.key;
+	}
+	return { segments, lastVarName };
+}
+
+function collectCaptureOnly(
+	p: Pattern,
+	out: Segment[],
+	seen: Set<string>,
+): boolean {
+	if (p.type === "literal") {
+		// Adjacent literals can collapse. `mergeAdjacent` in patternBuilder
+		// only merges captures, not literals, so this is worth doing here
+		// to keep the segment list tight.
+		const last = out[out.length - 1];
+		if (last && last.type === "literal") last.value += p.value;
+		else out.push({ type: "literal", value: p.value });
+		return true;
+	}
+	if (p.type === "variable") {
+		if (seen.has(p.name)) return false;
+		seen.add(p.name);
+		out.push({
+			type: "capture",
+			key: p.name,
+			raw: p.raw ?? false,
+			isExpression: false,
+		});
+		return true;
+	}
+	if (p.type === "expression") {
+		if (seen.has(p.expression)) return false;
+		seen.add(p.expression);
+		out.push({
+			type: "capture",
+			key: p.expression,
+			raw: p.raw ?? false,
+			isExpression: true,
+		});
+		return true;
+	}
+	if (p.type === "sequence") {
+		for (const part of p.parts) {
+			if (!collectCaptureOnly(part, out, seen)) return false;
+		}
+		return true;
+	}
+	return false; // loop | conditional
+}
+
+export function extractCaptureOnly(
+	plan: CaptureOnlyPlan,
+	finalString: string,
+	opts?: EjsOptions,
+): ExtractedObject | null {
+	const unescape = opts?.unescape ?? unescapeHtml;
+	const segments = plan.segments;
+	const result: ExtractedObject = {};
+	let pos = 0;
+
+	for (let i = 0; i < segments.length; i++) {
+		const seg = segments[i];
+		if (seg.type === "literal") {
+			if (!finalString.startsWith(seg.value, pos)) {
+				return captureOnlyMismatch(plan, finalString, opts);
+			}
+			pos += seg.value.length;
+			continue;
+		}
+		// Capture. After patternBuilder.mergeAdjacent, no two captures are
+		// adjacent in a sequence, so the next segment (if any) is a literal.
+		const next = segments[i + 1];
+		let end: number;
+		if (!next) {
+			end = finalString.length;
+		} else if (next.type === "literal") {
+			end = finalString.indexOf(next.value, pos);
+			if (end === -1) return captureOnlyMismatch(plan, finalString, opts);
+		} else {
+			// Defensive: buildCaptureOnlyPlan should never emit this.
+			return captureOnlyMismatch(plan, finalString, opts);
+		}
+		const raw = finalString.slice(pos, end);
+		const value = seg.raw ? raw : unescape(raw);
+		if (seg.isExpression) {
+			result[seg.key] = value;
+		} else {
+			setNested(result, seg.key, value);
+		}
+		pos = end;
+	}
+
+	if (pos !== finalString.length) {
+		return captureOnlyMismatch(plan, finalString, opts);
+	}
+
+	if (opts?.types) {
+		applyCoercions(
+			result as Record<string, unknown>,
+			opts.types,
+			opts.silent,
+		);
+	}
+	return result;
+}
+
+function captureOnlyMismatch(
+	plan: CaptureOnlyPlan,
+	finalString: string,
+	opts?: EjsOptions,
+): null {
+	if (opts?.safe) return null;
+	const excerpt =
+		finalString.length > 80
+			? finalString.slice(0, 40) + "..." + finalString.slice(-40)
+			: finalString;
+	const varPart = plan.lastVarName
+		? `Could not match variable "${plan.lastVarName}" - `
+		: `Template does not match the rendered string - `;
+	// Reconstruct a regex-shaped string from segments for `details.regex`.
+	// The fast path never compiled a real regex, but downstream tooling
+	// (and existing tests) expect `details.regex` to describe the shape
+	// that was being matched.
+	const regexShape = segmentsToRegexShape(plan.segments);
+	throw new ReverseEjsError(
+		varPart + `unexpected content near "${excerpt}".`,
+		{ regex: regexShape, input: finalString },
+	);
+}
+
+function segmentsToRegexShape(segments: Segment[]): string {
+	let out = "^";
+	for (const seg of segments) {
+		if (seg.type === "literal") {
+			out += seg.value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+		} else {
+			out += `(?<${seg.key.replace(/\./g, "_")}>.*?)`;
+		}
+	}
+	return out + "$";
+}
+
 export function extract(
 	pattern: Pattern,
 	finalString: string,
