@@ -21,6 +21,7 @@ const limitModules = [
 	() => import("./limits/capture-group-cap"),
 	() => import("./limits/rendered-size-sweep"),
 	() => import("./limits/pure-literal-size"),
+	() => import("./limits/literal-with-capture-size"),
 	() => import("./limits/include-depth"),
 ];
 
