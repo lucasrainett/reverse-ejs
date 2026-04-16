@@ -38,6 +38,7 @@
     "perf": "tsx perf/run.ts",
     "perf:limits": "tsx perf/run.ts --limits",
     "perf:bench": "tsx perf/run.ts --bench",
+    "perf:compare": "tsx perf/compare.ts",
     "prepare": "husky"
   },
   "lint-staged": {

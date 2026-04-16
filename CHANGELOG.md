@@ -66,6 +66,41 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   batch workloads (logs, CSV, plain emails); no effect on HTML values
   that actually contain entities.
 
+### Perf infrastructure
+
+- **Replaced misleading `reuse-vs-fresh-100x` benchmark** with three
+  focused scenarios: `compile-cold` (cache miss), `match-only`
+  (pre-compiled), `extract-product-page` (cache hit). The ratios between
+  them are now computable directly from the committed numbers.
+- **Realistic-corpus benchmarks**: `extract-log-lines` (100 log lines via
+  `reverseEjsAll`), `extract-csv-rows` (1000-row CSV table),
+  `extract-email` (long literals + sparse variables). Catches regressions
+  in workloads the product-page synthetic bench misses.
+- **Dedicated optimization regression bench**: `unescape-fast-path-vs-slow`
+  exercises the two unescape paths side-by-side and reports the ratio.
+  If a future refactor removes the fast path, the ratio collapses
+  visibly.
+- **Noise-aware PR comparison**: `perf/compare.ts` now flags changes
+  smaller than the combined stddev as "≈ within noise" instead of
+  reporting phantom deltas as regressions/improvements. Real regressions
+  must exceed both 10% AND the measured noise floor.
+- **Regex bytes column** in the limits table. The limit sweeps also
+  report the regex source size at peak successful N, so optimizations
+  that shrink the regex (e.g. capture-name shortening) are visible even
+  when the coarse N cliff doesn't shift.
+- **Git-ref support in `compare.ts`**: both arguments can now be file
+  paths OR git refs. `pnpm perf:compare v3.0.0 HEAD` resolves each side
+  via `git show <ref>:perf/results.json` and diffs any two points in
+  history.
+- **Sanity check in `runSweep`**: if the smallest sample size in a
+  sweep fails, the perf run errors out hard instead of quietly reporting
+  a meaningless limit. Protects against harness bugs or library
+  regressions masquerading as "limit discovery."
+- **Local-vs-CI output paths**: local runs write to
+  `perf/results.local.json` (gitignored), CI writes to the committed
+  `perf/results.json`. Local `pnpm perf` no longer dirties the tracked
+  file.
+
 ## [3.0.2] — 2026-04-16
 
 ### Changed
