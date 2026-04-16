@@ -20,6 +20,8 @@ export function normalizeExpression(s: string): string {
 	return result.replace(/\s+/g, " ").trim();
 }
 
+import { escapeRegex } from "./regexBuilder";
+
 /**
  * Strip a loop item prefix from an expression. Used inside loop body
  * extraction so that `item.price * item.qty` becomes `price * qty` when
@@ -27,7 +29,6 @@ export function normalizeExpression(s: string): string {
  */
 export function stripItemPrefix(expr: string, itemName: string): string {
 	if (!itemName) return expr;
-	const escaped = itemName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-	const re = new RegExp(`\\b${escaped}\\.`, "g");
+	const re = new RegExp(`\\b${escapeRegex(itemName)}\\.`, "g");
 	return expr.replace(re, "");
 }

@@ -185,4 +185,65 @@ describe("options", () => {
 			reverseEjs(template, final, { flexibleWhitespace: true }),
 		).toEqual({ message: "Hello", show: true });
 	});
+
+	// Combining flexibleWhitespace with type coercion — flexWs forces the
+	// regex path; coercion is applied as a post-pass regardless of path.
+	it("should apply types coercion when flexibleWhitespace is enabled", () => {
+		const template =
+			"<div>\n  <h1><%= title %></h1>\n  <p>Count: <%= count %></p>\n</div>";
+		const final = "<div><h1>Hi</h1><p>Count: 42</p></div>";
+		expect(
+			reverseEjs(template, final, {
+				flexibleWhitespace: true,
+				types: { count: "number" },
+			}),
+		).toEqual({ title: "Hi", count: 42 });
+	});
+
+	// Custom unescape function must be honored on both paths. The fast
+	// path and regex path both read `opts.unescape` before falling back
+	// to the default HTML unescape.
+	it("should apply a custom unescape function", () => {
+		// Only handles numeric HTML entities (&#N;) — confirms user's
+		// function is used instead of the default.
+		const numericOnly = (s: string): string =>
+			s.replace(/&#(\d+);/g, (_, c: string) =>
+				String.fromCharCode(Number(c)),
+			);
+		expect(
+			reverseEjs("<p><%= x %></p>", "<p>A&#123;B</p>", {
+				unescape: numericOnly,
+			}),
+		).toEqual({ x: "A{B" });
+	});
+
+	// Custom delimiters in safe mode — mismatches still surface as null,
+	// not as a thrown SyntaxError from the parser.
+	it("should return null in safe mode with custom delimiters on mismatch", () => {
+		expect(
+			reverseEjs("start:[%= x %]:end", "totally different format", {
+				openDelimiter: "[",
+				closeDelimiter: "]",
+				safe: true,
+			}),
+		).toBeNull();
+	});
+
+	// Combining flexibleWhitespace with a nested loop inside a conditional —
+	// exercises the regex path (flexWs forces it) under a shape the fast
+	// path normally handles.
+	it("should handle flexibleWhitespace with a loop inside a conditional", () => {
+		const template =
+			"<% if (show) { %>\n" +
+			"  <ul>\n" +
+			"    <% items.forEach(i => { %>\n" +
+			"      <li><%= i %></li>\n" +
+			"    <% }) %>\n" +
+			"  </ul>\n" +
+			"<% } %>";
+		const final = "<ul><li>a</li><li>b</li></ul>";
+		expect(
+			reverseEjs(template, final, { flexibleWhitespace: true }),
+		).toEqual({ show: true, items: ["a", "b"] });
+	});
 });

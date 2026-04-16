@@ -168,4 +168,45 @@ describe("variables", () => {
 		const final = "($29.99)";
 		expect(reverseEjs(template, final)).toEqual({ price: "29.99" });
 	});
+
+	it("should extract a value containing regex metacharacters intact", () => {
+		// Values can contain any characters. Only the TEMPLATE's literals
+		// need regex-escaping (which the library does); captured content
+		// passes through.
+		expect(
+			reverseEjs("<p><%= x %></p>", "<p>price: $5.99 (max 3 per .*)</p>"),
+		).toEqual({ x: "price: $5.99 (max 3 per .*)" });
+	});
+
+	it("should extract a value containing the delimiter characters", () => {
+		// User content often contains `<`, `>`, `%` — none of these should
+		// confuse the matcher because capture boundaries are found by the
+		// SURROUNDING literal, not by scanning for delimiter-like chars.
+		expect(reverseEjs("start:<%= x %>:end", "start:a<b>c%d:end")).toEqual({
+			x: "a<b>c%d",
+		});
+	});
+
+	it("should extract a 100KB value", () => {
+		const big = "x".repeat(100_000);
+		expect(reverseEjs("pre:<%= big %>:post", `pre:${big}:post`)).toEqual({
+			big,
+		});
+	});
+
+	it("should preserve leading and trailing whitespace in captured values", () => {
+		expect(reverseEjs("[<%= x %>]", "[  padded  ]")).toEqual({
+			x: "  padded  ",
+		});
+	});
+
+	it("should extract the locals. prefix form the same as the bare name", () => {
+		// Both spellings should produce the same result key.
+		expect(reverseEjs("<%= locals.name %>", "Alice")).toEqual({
+			name: "Alice",
+		});
+		expect(reverseEjs("<%= locals.user.age %>", "30")).toEqual({
+			user: { age: "30" },
+		});
+	});
 });

@@ -81,4 +81,38 @@ describe("HTML escaping", () => {
 			html: "&lt;b&gt;bold&lt;/b&gt;",
 		});
 	});
+
+	// The built-in unescape handles the EJS numeric entity `&#34;` (used
+	// for `"`) alongside the named entities. Unknown numeric entities
+	// pass through unchanged — the user must supply a custom unescape if
+	// they need broader coverage.
+	it("should unescape the numeric quote entity &#34;", () => {
+		expect(reverseEjs("<p><%= x %></p>", "<p>A&#34;B</p>")).toEqual({
+			x: 'A"B',
+		});
+	});
+
+	it("should pass through unknown numeric entities unchanged by default", () => {
+		// &#65; is "A" in HTML but not in the default unescape map. The
+		// library returns the raw entity — users wanting broader coverage
+		// should pass a custom `unescape`.
+		expect(reverseEjs("<p><%= x %></p>", "<p>&#65;B</p>")).toEqual({
+			x: "&#65;B",
+		});
+	});
+
+	it("should not touch values that contain no ampersand (fast-path unescape)", () => {
+		// The library skips the entity regex entirely for values with no
+		// `&` — this test pins that behavior's correctness for the common
+		// non-HTML workload (log lines, CSV fields, plain emails).
+		expect(reverseEjs("[<%= x %>]", "[plain text, no entities]")).toEqual({
+			x: "plain text, no entities",
+		});
+	});
+
+	it("should unescape multiple distinct entities in one value", () => {
+		expect(
+			reverseEjs("<p><%= x %></p>", "<p>&amp;&lt;&gt;&quot;&#39;</p>"),
+		).toEqual({ x: "&<>\"'" });
+	});
 });

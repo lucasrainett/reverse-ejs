@@ -557,6 +557,80 @@ describe("reverseEjsAll", () => {
 		expect(results.length).toBe(3);
 		expect(results[0]).toEqual({ n: "a" });
 	});
+
+	it("should stop and throw on first failure when safe is not set", () => {
+		// Without safe:true the first mismatch throws — callers opt into
+		// the null-on-failure behavior explicitly.
+		expect(() =>
+			reverseEjsAll("Hello, <%= name %>!", [
+				"Hello, Alice!",
+				"NOT HELLO",
+				"Hello, Bob!",
+			]),
+		).toThrow(ReverseEjsError);
+	});
+
+	it("should apply types coercion per-row in reverseEjsAll", () => {
+		expect(
+			reverseEjsAll("Age: <%= age %>", ["Age: 30", "Age: 25"], {
+				types: { age: "number" },
+			}),
+		).toEqual([{ age: 30 }, { age: 25 }]);
+	});
+});
+
+// These options traverse both the fast path and regex path. The tests
+// below pin behavior that depends on fast-path <-> regex-path parity.
+describe("fast-path / regex-path parity", () => {
+	it("should honor a custom unescape function on the fast path", () => {
+		// Numeric-only unescaper — not the default. If the fast path used
+		// the default instead of this function, the result would differ.
+		const numericOnly = (s: string): string =>
+			s.replace(/&#(\d+);/g, (_, c: string) =>
+				String.fromCharCode(Number(c)),
+			);
+		expect(
+			reverseEjs("<p><%= x %></p>", "<p>A&#123;B</p>", {
+				unescape: numericOnly,
+			}),
+		).toEqual({ x: "A{B" });
+	});
+
+	it("should honor a custom unescape function inside a hybrid loop", () => {
+		const numericOnly = (s: string): string =>
+			s.replace(/&#(\d+);/g, (_, c: string) =>
+				String.fromCharCode(Number(c)),
+			);
+		expect(
+			reverseEjs(
+				"<% items.forEach(i => { %><li><%= i %></li><% }) %>",
+				"<li>&#65;</li><li>&#66;</li>",
+				{ unescape: numericOnly },
+			),
+		).toEqual({ items: ["A", "B"] });
+	});
+
+	it("should capture a very-long value via the fast path", () => {
+		// 500KB value inside a capture — would have tripped V8 way before
+		// this without the fast path. Confirms the walker just slices
+		// without copying until capture, then unescapes once.
+		const big = "x".repeat(500_000);
+		expect(reverseEjs("pre:<%= v %>:post", `pre:${big}:post`)).toEqual({
+			v: big,
+		});
+	});
+
+	it("should handle a whitespace-only capture value", () => {
+		expect(reverseEjs("[<%= x %>]", "[   \n\t  ]")).toEqual({
+			x: "   \n\t  ",
+		});
+	});
+
+	it("should preserve unicode and emoji in a capture", () => {
+		expect(reverseEjs("<p><%= x %></p>", "<p>café 你好 😀</p>")).toEqual({
+			x: "café 你好 😀",
+		});
+	});
 });
 
 describe("internal pattern cache", () => {
