@@ -330,7 +330,7 @@
 			flexWs: true,
 			types: '{\n  "price": "number",\n  "rating": "number",\n  "cartCount": "number",\n  "year": "number"\n}',
 			partials:
-				'{\n  "header": "<header><h1><%= storeName %></h1><p class=\\"tagline\\"><%= tagline %></p><nav><a href=\\"<%= cartUrl %>\\">Cart (<%= cartCount %>)</a></nav></header>",\n  "footer": "<footer><p>&copy; <%= year %> <%= storeName %> &mdash; <%= footerNote %></p></footer>"\n}',
+				'{\n  "header": "<header><h1><%= storeName %></h1><p class=\\"tagline\\"><%= tagline %></p><nav><a href=\\"<%= cartUrl %>\\">Cart (<%= cartCount %>)</a></nav></header>",\n  "footer": "<footer><p>&copy; <%= year %> <%= brand %> &mdash; <%= footerNote %></p></footer>"\n}',
 			rendered:
 				"<!DOCTYPE html>\n<html>\n<body>\n" +
 				"<header>\n  <h1>TechStore</h1>\n" +
