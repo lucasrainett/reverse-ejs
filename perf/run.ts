@@ -83,7 +83,14 @@ async function main() {
 		benchmarks,
 	};
 
-	const path = resolve("perf/results.json");
+	// CI writes to the committed `perf/results.json` (the canonical file
+	// that drives PR comparison comments). Local runs write to
+	// `perf/results.local.json` so they don't dirty the tracked file —
+	// `.gitignore` can't stop modifications to an already-tracked file,
+	// so we side-step the issue by using a different path.
+	const path = resolve(
+		process.env.CI ? "perf/results.json" : "perf/results.local.json",
+	);
 	writeFileSync(path, JSON.stringify(out, null, 2) + "\n");
 	console.log(`\n✔ wrote ${path}`);
 }
