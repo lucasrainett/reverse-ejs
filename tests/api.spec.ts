@@ -53,6 +53,36 @@ describe("compileTemplate", () => {
 	});
 });
 
+// Pure-literal templates (zero captures/loops/conditionals) take a
+// compile-time fast path that bypasses regex construction. This lifts the
+// ~40KB cliff imposed by V8's regex compiler, so users can paste a full
+// HTML page into a .ejs file before adding any <%= %> tags.
+describe("pure-literal fast path", () => {
+	it("matches an identical string and returns {}", () => {
+		const html = '<div class="x">Hello (world).</div>';
+		expect(reverseEjs(html, html)).toEqual({});
+	});
+
+	it("throws ReverseEjsError on mismatch", () => {
+		expect(() => reverseEjs("<p>a</p>", "<p>b</p>")).toThrow(
+			ReverseEjsError,
+		);
+	});
+
+	it("returns null on mismatch when safe is true", () => {
+		expect(reverseEjs("<p>a</p>", "<p>b</p>", { safe: true })).toBeNull();
+	});
+
+	it("scales to a 1MB pure-literal template without hitting the regex cap", () => {
+		// ~1MB of literal HTML — would fail regex compilation at ~40KB
+		// without the fast path. Kept at 1MB (not 10MB) to keep the unit
+		// test suite quick; the perf sweep covers 10MB+.
+		const page = "<article>Body text goes here.</article>\n".repeat(30_000);
+		expect(page.length).toBeGreaterThan(1_000_000);
+		expect(reverseEjs(page, page)).toEqual({});
+	});
+});
+
 describe("reverseEjs - safe option", () => {
 	it("should return null on match failure when safe is true", () => {
 		const result = reverseEjs("Hello, <%= name %>!", "Bye!", {
