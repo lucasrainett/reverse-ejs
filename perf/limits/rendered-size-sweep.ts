@@ -17,10 +17,13 @@ export async function run(): Promise<LimitScenario> {
 		description:
 			"Fixed simple template, varying rendered-text size by inflating " +
 			"the value of one variable; finds the input-size cliff",
-		// Doubling roughly. Stops at 256 MB to keep memory safe on shared CI.
+		// Doubling roughly. V8's default string length cap is ~1 GB; push
+		// to 1 GB and see whether match time scales linearly or cliffs.
+		// Each sample allocates the full rendered string so CI memory is
+		// the practical ceiling (GitHub runners have 16 GB).
 		sizes: [
 			1_000, 10_000, 100_000, 1_000_000, 5_000_000, 10_000_000,
-			50_000_000, 100_000_000, 256_000_000,
+			50_000_000, 100_000_000, 256_000_000, 512_000_000, 1_000_000_000,
 		],
 		iterations: 1, // each iteration allocates the full rendered string
 		build(bytes) {

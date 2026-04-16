@@ -27,14 +27,19 @@ describe("conditionals", () => {
 		});
 	});
 
-	it("should extract array when if block surrounding a loop was rendered", () => {
+	it("should extract array AND the dotted-path condition key when if block surrounding a loop was rendered", () => {
 		const template =
 			"<% if (items.length) { %>" +
 			"<ul><% items.forEach(item => { %><li><%= item %></li><% }) %></ul>" +
 			"<% } %>";
 		const final = "<ul><li>Alpha</li><li>Beta</li></ul>";
+		// Dotted-path conditions produce a boolean key under their raw
+		// text, same as any complex condition. A bare identifier `admin`
+		// also emits `admin: true/false`; anything more structured
+		// (dotted paths, method calls, operators) is kept verbatim.
 		expect(reverseEjs(template, final)).toEqual({
 			items: ["Alpha", "Beta"],
+			"items.length": true,
 		});
 	});
 
@@ -270,7 +275,7 @@ describe("conditionals", () => {
 		).toEqual({ label: "Regular" });
 	});
 
-	it("should handle if/else inside a loop body", () => {
+	it("should match both branches of if/else inside a loop body but not emit the per-iteration condition key", () => {
 		const template =
 			"<% items.forEach(item => { %>" +
 			"<% if (item.featured) { %>" +
@@ -280,9 +285,16 @@ describe("conditionals", () => {
 			"<% } %>" +
 			"<% }) %>";
 		const final = '<div class="featured">Alpha</div><div>Beta</div>';
-		expect(reverseEjs(template, final)).toEqual({
+		// Conditions inside loop bodies aren't emitted as per-iteration
+		// booleans today — the library extracts the loop's captures but
+		// silently drops the condition itself. Pin the absence explicitly
+		// so this known gap can't quietly change. Tracked for a future
+		// enhancement (per-iteration condition extraction).
+		const result = reverseEjs(template, final);
+		expect(result).toEqual({
 			items: [{ name: "Alpha" }, { name: "Beta" }],
 		});
+		expect(result).not.toHaveProperty("item.featured");
 	});
 
 	it("should handle switch/case with break; } as combined scriptlet", () => {
@@ -322,5 +334,56 @@ describe("conditionals", () => {
 			val: "deep",
 		});
 		expect(reverseEjs(template, "<p>None</p>")).toEqual({ a: false });
+	});
+
+	// Type coercion applied to a variable that lives inside a conditional
+	// branch — exercises the interaction between conditional capture and
+	// the post-extraction coercion pass.
+	it("should coerce a captured variable inside a conditional branch", () => {
+		const template =
+			"<% if (show) { %><span>Score: <%= score %></span><% } %>";
+		expect(
+			reverseEjs(template, "<span>Score: 95</span>", {
+				types: { score: "number" },
+			}),
+		).toEqual({ show: true, score: 95 });
+	});
+
+	it("should coerce items inside a loop that lives inside a conditional", () => {
+		const template =
+			"<% if (hasItems) { %>" +
+			"<% items.forEach(i => { %><li><%= i.price %></li><% }) %>" +
+			"<% } %>";
+		const result = reverseEjs(template, "<li>9.99</li><li>24.50</li>", {
+			types: { price: "number" },
+		});
+		expect(result).toEqual({
+			hasItems: true,
+			items: [{ price: 9.99 }, { price: 24.5 }],
+		});
+	});
+
+	// Conditional mismatch in safe mode — the whole match fails, result
+	// should be null rather than a partial extraction.
+	it("should return null in safe mode when neither branch fits", () => {
+		const template =
+			"<% if (admin) { %><p>Admin</p><% } else { %><p>User</p><% } %>";
+		expect(
+			reverseEjs(template, "<section>unrelated</section>", {
+				safe: true,
+			}),
+		).toBeNull();
+	});
+
+	// A conditional that wraps an adjacent variable pair — checks that
+	// adjacent-merge still emits the joined key correctly even when the
+	// group sits inside a conditional.
+	it("should keep adjacent-variable joined key inside a then branch", () => {
+		const template =
+			"<% if (show) { %><span><%= a %><%= b %></span><% } %>";
+		expect(reverseEjs(template, "<span>XY</span>")).toEqual({
+			show: true,
+			"a + b": "XY",
+		});
 	});
 });

@@ -127,6 +127,8 @@ describe("complex scenarios", () => {
 
 		expect(reverseEjs(template, final)).toEqual({
 			user: { name: "Alice" },
+			// Dotted-path conditions produce a boolean keyed by the raw text.
+			"user.isAdmin": true,
 			adminMessage: "System healthy",
 			departments: [
 				{
@@ -145,7 +147,7 @@ describe("complex scenarios", () => {
 		});
 	});
 
-	it("should parse a product listing with prices, sale flags, and categories", () => {
+	it("should parse a product listing and drop per-iteration sale-flag conditions (known gap)", () => {
 		const template =
 			"<h1><%= storeName %></h1>" +
 			"<% products.forEach(p => { %>" +
@@ -166,7 +168,8 @@ describe("complex scenarios", () => {
 			"</div>" +
 			"<p>Showing 2 products</p>";
 
-		expect(reverseEjs(template, final)).toEqual({
+		const result = reverseEjs(template, final);
+		expect(result).toEqual({
 			storeName: "TechShop",
 			products: [
 				{ name: "Keyboard", price: "79.99" },
@@ -174,6 +177,9 @@ describe("complex scenarios", () => {
 			],
 			count: "2",
 		});
+		// Conditions inside loop bodies are not emitted today (per-iteration
+		// tracking would be needed). Assert the absence explicitly.
+		expect(result).not.toHaveProperty("p.onSale");
 	});
 
 	it("should extract product data from HTML (README web extraction example)", () => {
@@ -263,6 +269,58 @@ describe("complex scenarios", () => {
 			pageTitle: "Settings",
 			settings: ["theme", "language", "timezone"],
 			lastUpdated: "2025-01-15",
+		});
+	});
+
+	it("should extract a product page with mixed coercion across scalars and loop items", () => {
+		const template =
+			"<article>" +
+			"<h1><%= product.name %></h1>" +
+			"<p class='price'>$<%= product.price %></p>" +
+			"<p class='stock'>In stock: <%= product.inStock %></p>" +
+			"<ul>" +
+			"<% product.features.forEach(f => { %>" +
+			"<li><%= f.label %>: <%= f.score %></li>" +
+			"<% }) %>" +
+			"</ul>" +
+			"</article>";
+		const final =
+			"<article>" +
+			"<h1>Widget</h1>" +
+			"<p class='price'>$29.99</p>" +
+			"<p class='stock'>In stock: true</p>" +
+			"<ul>" +
+			"<li>Speed: 9</li>" +
+			"<li>Finish: 8</li>" +
+			"</ul>" +
+			"</article>";
+		const result = reverseEjs(template, final, {
+			types: { price: "number", inStock: "boolean", score: "number" },
+		});
+		expect(result).toEqual({
+			product: {
+				name: "Widget",
+				price: 29.99,
+				inStock: true,
+				features: [
+					{ label: "Speed", score: 9 },
+					{ label: "Finish", score: 8 },
+				],
+			},
+		});
+	});
+
+	it("should extract a page with unicode/emoji mixed into structured content", () => {
+		const template =
+			"<h1><%= title %></h1>" +
+			"<% tags.forEach(t => { %><span class='tag'>#<%= t %></span><% }) %>";
+		const final =
+			"<h1>Café ☕</h1>" +
+			"<span class='tag'>#你好</span>" +
+			"<span class='tag'>#😀</span>";
+		expect(reverseEjs(template, final)).toEqual({
+			title: "Café ☕",
+			tags: ["你好", "😀"],
 		});
 	});
 });
