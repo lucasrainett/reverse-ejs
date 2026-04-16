@@ -19,6 +19,43 @@ interface Case {
 
 const CASES: Case[] = [
 	{
+		name: "pure-literal HTML (no EJS tags yet)",
+		// Workflow: user pastes a rendered HTML page into an .ejs file and
+		// hasn't added any <%= %> tags yet. Extraction should succeed with
+		// an empty object — nothing to extract.
+		template:
+			"<!DOCTYPE html><html><head><title>Hello</title></head>" +
+			'<body><h1 class="greeting">Hi!</h1>' +
+			'<a href="/x?a=1&amp;b=2">link (1)</a></body></html>',
+		data: {},
+	},
+	{
+		name: "pure-literal template with every regex metacharacter",
+		// Explicit coverage for escapeRegex. If a future refactor drops any
+		// of these from the escape set, the template stops matching itself
+		// and this test fails loudly.
+		template:
+			"chars: . * + ? ^ $ { } ( ) | [ ] \\ " +
+			"inline code: `if (x > 0) { return [1, 2]; }`",
+		data: {},
+	},
+	{
+		name: "pure-literal multi-line HTML page",
+		// Closer to the real workflow: a formatted page with newlines,
+		// inline styles, and pre-rendered entities. Still zero captures.
+		template: [
+			"<!DOCTYPE html>",
+			'<html lang="en">',
+			"  <head><title>Example</title></head>",
+			"  <body>",
+			'    <header class="site">Welcome &amp; enjoy</header>',
+			'    <main><p style="color:#333;">Nothing dynamic yet.</p></main>',
+			"  </body>",
+			"</html>",
+		].join("\n"),
+		data: {},
+	},
+	{
 		name: "single variable",
 		template: "Hello, <%= name %>!",
 		data: { name: "Alice" },

@@ -20,6 +20,7 @@ const limitModules = [
 	() => import("./limits/regex-by-conditionals"),
 	() => import("./limits/capture-group-cap"),
 	() => import("./limits/rendered-size-sweep"),
+	() => import("./limits/pure-literal-size"),
 	() => import("./limits/include-depth"),
 ];
 
@@ -31,11 +32,19 @@ const benchmarkModules: Array<
 		run: () => BenchmarkResult | Promise<BenchmarkResult>;
 	}>
 > = [
-	() => import("./bench/compile"),
-	() => import("./bench/extract"),
-	() => import("./bench/reuse"),
+	// Pipeline isolation — paired so ratios are computable
+	() => import("./bench/compile"), // cache-cold compile cost
+	() => import("./bench/match-only"), // pre-compiled match+extract
+	() => import("./bench/extract"), // full reverseEjs (cache hit)
+	// Option-overhead (compare against extract-product-page for delta)
 	() => import("./bench/flexws"),
 	() => import("./bench/coercion"),
+	// Dedicated optimization-regression benches
+	() => import("./bench/unescape-paths"),
+	// Realistic workloads — catch regressions the synthetic bench misses
+	() => import("./bench/log-lines"),
+	() => import("./bench/csv-rows"),
+	() => import("./bench/email"),
 ];
 
 // ── Main ────────────────────────────────────────────────────────

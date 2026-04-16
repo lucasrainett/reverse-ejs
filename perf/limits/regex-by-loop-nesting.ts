@@ -18,7 +18,9 @@ export async function run(): Promise<LimitScenario> {
 		description:
 			"N levels of nested forEach, each with one variable; finds the " +
 			"nested-loop depth cliff",
-		sizes: [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000],
+		sizes: [
+			1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000, 5000, 10000,
+		],
 		iterations: 3,
 		build(depth) {
 			let template = "";
