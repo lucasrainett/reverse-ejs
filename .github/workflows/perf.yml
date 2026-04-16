@@ -69,7 +69,7 @@ jobs:
 
       - uses: pnpm/action-setup@v4
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           # Pinned exact version — V8 changes between Node versions affect
           # regex-engine limits directly. Bump deliberately, not by drift.
