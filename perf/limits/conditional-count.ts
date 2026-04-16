@@ -1,14 +1,15 @@
-// Regex limit, dimension: conditional alternation count.
+// Regex limit, dimension: number of conditionals in a template.
 //
-// Each <% if (X) { %>...<% } else { %>...<% } %> compiles into a regex
-// alternation (?:then|else). Many independent conditions multiply the
-// alternation count, which V8's regex engine handles less efficiently than
-// plain capture groups.
+// Conditionals always go through the regex path — each `<% if (X) { %>
+// ...<% } else { %>...<% } %>` becomes a `(?:then|else)` alternation
+// inside the compiled regex. Many independent conditions multiply the
+// alternation count, which V8's regex engine handles less efficiently
+// than plain capture groups. This sweep finds the alternation cliff.
 
 import { runSweep } from "../lib/runner";
 import type { LimitScenario } from "../lib/types";
 
-export const id = "regex-by-conditionals";
+export const id = "conditional-count";
 
 export async function run(): Promise<LimitScenario> {
 	return runSweep({

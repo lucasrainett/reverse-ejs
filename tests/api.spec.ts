@@ -53,14 +53,14 @@ describe("compileTemplate", () => {
 	});
 });
 
-// Capture-only fast path: templates made of literals + variables/
-// expressions (no loops, no conditionals, no repeated capture keys) are
-// matched by walking a cursor through the rendered string with
-// `startsWith` and `indexOf` — no regex. The pure-literal case (zero
-// captures) is subsumed. This lifts the ~40KB literal-in-regex cliff
-// for the most common template shape: product pages, form fields, log
-// lines, plain-text emails.
-describe("capture-only fast path", () => {
+// Fast path: walks the pattern's top-level sequence with a cursor over
+// the rendered string (no regex at the outer level). Subsumes pure
+// literals, capture-only templates, and — via the hybrid walker —
+// templates whose loops/conditionals are anchored by literals. Lifts
+// the ~40KB literal-in-regex cliff for the shapes users hit in
+// practice: product pages, form fields, log lines, plain-text emails,
+// HTML pages with a loop or two inside static boilerplate.
+describe("fast path (capture-only and hybrid)", () => {
 	it("pure-literal: matches an identical string and returns {}", () => {
 		const html = '<div class="x">Hello (world).</div>';
 		expect(reverseEjs(html, html)).toEqual({});

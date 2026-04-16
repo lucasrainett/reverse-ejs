@@ -1,13 +1,13 @@
 import { describe, it, expect } from "vitest";
 import { reverseEjs, ReverseEjsError } from "../src/index";
 
-// New unified behavior:
-//   - Plain variables and dotted paths still produce clean structured keys.
-//   - Anything more complex (method calls, arithmetic, ternaries, etc.) gets
-//     captured with the raw expression text as the literal key.
-//   - Adjacent variables get a joined key ("a + b").
-//   - Complex conditions get a boolean keyed by the raw condition text.
-//   - Nothing throws and nothing warns for these cases.
+// Unified capture behavior:
+//   - Plain variables and dotted paths produce structured keys.
+//   - Anything more complex (method calls, arithmetic, ternaries, ...)
+//     is captured under its raw expression text as the key.
+//   - Adjacent variables fold into a joined key ("a + b").
+//   - Complex conditions produce a boolean keyed by the raw text.
+//   - None of these paths throw or warn.
 
 describe("raw expression capture", () => {
 	it("should capture a method call as the raw expression key", () => {

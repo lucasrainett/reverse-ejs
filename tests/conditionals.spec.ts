@@ -33,9 +33,10 @@ describe("conditionals", () => {
 			"<ul><% items.forEach(item => { %><li><%= item %></li><% }) %></ul>" +
 			"<% } %>";
 		const final = "<ul><li>Alpha</li><li>Beta</li></ul>";
-		// Since v3.1: dotted-path conditions produce a boolean key under
-		// their raw text, same as any complex condition. Before this, they
-		// were silently dropped — a footgun for idiomatic `if (user.isAdmin)`.
+		// Dotted-path conditions produce a boolean key under their raw
+		// text, same as any complex condition. A bare identifier `admin`
+		// also emits `admin: true/false`; anything more structured
+		// (dotted paths, method calls, operators) is kept verbatim.
 		expect(reverseEjs(template, final)).toEqual({
 			items: ["Alpha", "Beta"],
 			"items.length": true,
@@ -274,7 +275,7 @@ describe("conditionals", () => {
 		).toEqual({ label: "Regular" });
 	});
 
-	it("should handle if/else inside a loop body", () => {
+	it("should match both branches of if/else inside a loop body but not emit the per-iteration condition key", () => {
 		const template =
 			"<% items.forEach(item => { %>" +
 			"<% if (item.featured) { %>" +
@@ -284,10 +285,11 @@ describe("conditionals", () => {
 			"<% } %>" +
 			"<% }) %>";
 		const final = '<div class="featured">Alpha</div><div>Beta</div>';
-		// Conditions inside loop bodies are dropped from the output today:
-		// the library doesn't yet emit per-iteration condition booleans, so
-		// the `item.featured` key does NOT appear. Tracked for a future
-		// enhancement. Confirm absence explicitly so the behavior is pinned.
+		// Conditions inside loop bodies aren't emitted as per-iteration
+		// booleans today — the library extracts the loop's captures but
+		// silently drops the condition itself. Pin the absence explicitly
+		// so this known gap can't quietly change. Tracked for a future
+		// enhancement (per-iteration condition extraction).
 		const result = reverseEjs(template, final);
 		expect(result).toEqual({
 			items: [{ name: "Alpha" }, { name: "Beta" }],

@@ -1,8 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { reverseEjs } from "../src/index";
 
-// Under the unified-capture model, expressions are no longer skipped.
-// They are captured with the raw expression text as the key.
+// Complex expressions (method calls, arithmetic, ternaries, ...) are
+// captured with the raw expression text as the output key — distinct
+// from plain variables, which produce a structured dotted-path key.
 
 describe("expressions", () => {
 	it("should capture a ternary expression", () => {
