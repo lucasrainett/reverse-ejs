@@ -5,7 +5,7 @@ import type {
 	EjsOptions,
 	Pattern,
 	ExtractedValue,
-	CoercionType,
+	CoercionSpec,
 } from "./types";
 import { ExtractedObject } from "./types";
 import { ReverseEjsError } from "./errors";
@@ -18,7 +18,12 @@ import { ReverseEjsError } from "./errors";
 export type ReverseEjsOptions = EjsOptions;
 
 export { ExtractedObject, ReverseEjsError };
-export type { CoercionType, ExtractedValue } from "./types";
+export type {
+	CoercionType,
+	CoercionSpec,
+	DateCoercion,
+	ExtractedValue,
+} from "./types";
 
 // ── Typed-result helpers ───────────────────────────────────────
 //
@@ -27,27 +32,98 @@ export type { CoercionType, ExtractedValue } from "./types";
 // to the broad `ExtractedValue` union via the index signature, so
 // callers can still access fields the `types` map didn't declare.
 
-/** Concrete TS type for a given `CoercionType` literal. */
-type CoerceToType<T extends CoercionType> = T extends "number"
+/** Concrete TS type for a given coercion spec (string shorthand or object form). */
+type CoerceToType<T> = T extends "number"
 	? number
 	: T extends "boolean"
 		? boolean
 		: T extends "date"
 			? Date
-			: string;
+			: T extends { type: "date" }
+				? Date
+				: string;
 
 /**
  * Extracted-object type narrowed by a `types` map. Known keys get the
  * precise coerced type; any other key is `ExtractedValue`.
  */
 export type ExtractedResult<
-	T extends Record<string, CoercionType> | undefined = undefined,
+	T extends Record<string, CoercionSpec> | undefined = undefined,
 > =
-	T extends Record<string, CoercionType>
+	T extends Record<string, CoercionSpec>
 		? { [K in keyof T]: CoerceToType<T[K]> } & {
 				[key: string]: ExtractedValue;
 			}
 		: ExtractedObject;
+
+// ── Compile-time checks ───────────────────────────────────────
+
+const BARE_IDENT_RE = /^[a-zA-Z_$][\w$]*$/;
+
+/**
+ * Throw when the pattern would produce any "raw-key fallback" output —
+ * expression keys, complex-condition booleans, adjacent-variable joined
+ * keys (which appear as expressions after mergeAdjacent). Used by
+ * `strict: true` so callers who want structured-only output fail
+ * loudly at compile time instead of getting surprising keys at runtime.
+ */
+function assertStrict(pattern: Pattern): void {
+	const fallbacks: string[] = [];
+	function walk(p: Pattern): void {
+		if (p.type === "expression") {
+			fallbacks.push(`expression "${p.expression}"`);
+		} else if (p.type === "sequence") {
+			for (const part of p.parts) walk(part);
+		} else if (p.type === "loop") {
+			walk(p.body);
+		} else if (p.type === "conditional") {
+			if (p.condition && !BARE_IDENT_RE.test(p.condition)) {
+				fallbacks.push(`complex condition "${p.condition}"`);
+			}
+			walk(p.thenBranch);
+			if (p.elseBranch) walk(p.elseBranch);
+		}
+	}
+	walk(pattern);
+	if (fallbacks.length > 0) {
+		throw new ReverseEjsError(
+			`strict mode: template contains raw-key fallbacks that won't produce ` +
+				`structured output: ${fallbacks.join(", ")}. Remove them from the ` +
+				`template or run without \`strict: true\`.`,
+			{ regex: "", input: "" },
+		);
+	}
+}
+
+/**
+ * Warn once at compile time if the template has any conditional nested
+ * inside a loop body. Those conditions are silently dropped from the
+ * extracted per-iteration object today (a known library gap), so the
+ * warning helps users discover why a `<% if (...) { %>` inside a
+ * `forEach` doesn't surface in the output. Gated by `silent: true`.
+ */
+function warnConditionsInsideLoops(pattern: Pattern): void {
+	const drops: string[] = [];
+	function walk(p: Pattern, insideLoop: boolean): void {
+		if (p.type === "conditional") {
+			if (insideLoop && p.condition) drops.push(p.condition);
+			walk(p.thenBranch, insideLoop);
+			if (p.elseBranch) walk(p.elseBranch, insideLoop);
+		} else if (p.type === "sequence") {
+			for (const part of p.parts) walk(part, insideLoop);
+		} else if (p.type === "loop") {
+			walk(p.body, true);
+		}
+	}
+	walk(pattern, false);
+	if (drops.length > 0) {
+		console.warn(
+			`[reverse-ejs] Conditions inside loop bodies are not captured ` +
+				`per iteration (known gap): ${drops.join(", ")}. Set ` +
+				`silent: true to suppress this warning.`,
+		);
+	}
+}
 
 const INCLUDE_RE =
 	/<%-\s*include\s*\(\s*['"]([^'"]+)['"]\s*(?:,[^)]+)?\s*\)\s*%>/g;
@@ -130,7 +206,7 @@ function getCachedPattern(
  * narrowed to the coerced types (`number`, `boolean`, `Date`, `string`).
  */
 export interface CompiledTemplate<
-	T extends Record<string, CoercionType> | undefined = undefined,
+	T extends Record<string, CoercionSpec> | undefined = undefined,
 > {
 	/**
 	 * Match a rendered string against the compiled template and return the
@@ -163,17 +239,32 @@ export interface CompiledTemplate<
  * compiled.match("Alice is 30 years old."); // { name: "Alice", age: "30" }
  * compiled.match("Bob is 25 years old.");   // { name: "Bob", age: "25" }
  */
-export function compileTemplate<
-	T extends Record<string, CoercionType> | undefined = undefined,
->(
+export function compileTemplate<T extends Record<string, CoercionSpec>>(
 	template: string,
-	options?: ReverseEjsOptions & { types?: T },
+	options: ReverseEjsOptions & { types: T },
 ): CompiledTemplate<T>;
+export function compileTemplate(
+	template: string,
+	options?: ReverseEjsOptions,
+): CompiledTemplate;
 export function compileTemplate(
 	template: string,
 	options?: ReverseEjsOptions,
 ): CompiledTemplate {
 	const pattern = getCachedPattern(template, options);
+
+	// Strict mode: reject templates that would produce raw-key fallback
+	// output (expression keys, joined adjacent-variable keys, complex-
+	// condition booleans). Throw eagerly at compile time so the caller
+	// sees the mismatch between template shape and their stricter
+	// expectations before any match() call.
+	if (options?.strict) assertStrict(pattern);
+
+	// Warn at compile time if the template has conditions inside loop
+	// bodies — those conditions are silently dropped from per-iteration
+	// output today (documented gap). Gated by `silent: true` so users
+	// who've accepted the limitation don't get spammed.
+	if (!options?.silent) warnConditionsInsideLoops(pattern);
 
 	// Fast path: walk the outer pattern with a cursor, delegate loop and
 	// conditional sub-sections to the regex-based extract on just their
@@ -253,13 +344,24 @@ export function compileTemplate(
  * const result = reverseEjs(template, html, { safe: true });
  * if (result === null) console.warn("did not match");
  */
-export function reverseEjs<
-	T extends Record<string, CoercionType> | undefined = undefined,
->(
+// Four ordered overloads so TS picks the right return type based on
+// whether a `types` map AND/OR `safe: true` were passed. Overloads are
+// tried top-to-bottom; the most specific (types + safe) comes first.
+export function reverseEjs<T extends Record<string, CoercionSpec>>(
 	template: string,
 	finalString: string,
-	options: ReverseEjsOptions & { safe: true; types?: T },
+	options: ReverseEjsOptions & { safe: true; types: T },
 ): ExtractedResult<T> | null;
+export function reverseEjs<T extends Record<string, CoercionSpec>>(
+	template: string,
+	finalString: string,
+	options: ReverseEjsOptions & { types: T },
+): ExtractedResult<T>;
+export function reverseEjs(
+	template: string,
+	finalString: string,
+	options: ReverseEjsOptions & { safe: true },
+): ExtractedObject | null;
 /**
  * Reverse-extract a data object from a rendered EJS template.
  *
@@ -269,13 +371,11 @@ export function reverseEjs<
  * @returns The extracted data object.
  * @throws {ReverseEjsError} If the rendered string does not match the template.
  */
-export function reverseEjs<
-	T extends Record<string, CoercionType> | undefined = undefined,
->(
+export function reverseEjs(
 	template: string,
 	finalString: string,
-	options?: ReverseEjsOptions & { types?: T },
-): ExtractedResult<T>;
+	options?: ReverseEjsOptions,
+): ExtractedObject;
 export function reverseEjs(
 	template: string,
 	finalString: string,
@@ -314,13 +414,16 @@ export function reverseEjs(
  * );
  * // => [{ name: "Alice", score: 95 }, { name: "Bob", score: 87 }]
  */
-export function reverseEjsAll<
-	T extends Record<string, CoercionType> | undefined = undefined,
->(
+export function reverseEjsAll<T extends Record<string, CoercionSpec>>(
 	template: string,
 	finalStrings: string[],
-	options?: ReverseEjsOptions & { types?: T },
+	options: ReverseEjsOptions & { types: T },
 ): Array<ExtractedResult<T> | null>;
+export function reverseEjsAll(
+	template: string,
+	finalStrings: string[],
+	options?: ReverseEjsOptions,
+): Array<ExtractedObject | null>;
 export function reverseEjsAll(
 	template: string,
 	finalStrings: string[],

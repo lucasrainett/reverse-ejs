@@ -232,6 +232,52 @@ reverseEjs("Age: <%= age %>, Active: <%= active %>", "Age: 30, Active: true", { 
 
 Supported types: `"string"` (default), `"number"`, `"boolean"`, `"date"`. Failed coercions log a warning and keep the original string. Suppress with `silent: true`.
 
+### Custom date parser
+
+The `"date"` shorthand uses `new Date(value)`, which is brittle for anything that isn't ISO 8601. Pass the object form with a `parse` function to handle non-ISO formats, epoch seconds, locale strings, etc:
+
+```ts
+reverseEjs("Shipped: <%= at %>", "Shipped: 1700000000", {
+	types: {
+		at: {
+			type: "date",
+			parse: (s) => new Date(Number(s) * 1000), // epoch seconds
+		},
+	},
+});
+// => { at: Date(2023-11-14...) }
+```
+
+If your parser returns an Invalid `Date`, the library warns and keeps the raw string (same fallback as the shorthand form).
+
+### Strict mode
+
+Set `strict: true` to reject templates that would produce any "raw-key fallback" output — expression keys, adjacent-variable joined keys, or complex-condition booleans. Useful when you want deterministic, structured extraction and would rather fail loudly than see surprising keys in your result object:
+
+```ts
+reverseEjs("<h1><%= title.toUpperCase() %></h1>", "<h1>HELLO</h1>", {
+	strict: true,
+});
+// throws ReverseEjsError: strict mode: template contains raw-key fallbacks...
+```
+
+Plain variables, dotted paths, loops, and bare-identifier conditions still work; only the fallback-shape outputs are rejected.
+
+### Typed result narrowing
+
+When you supply a `types` map with a known literal shape, TypeScript narrows the return type per key:
+
+```ts
+const result = reverseEjs("Age: <%= age %>, Admin: <%= admin %>", input, {
+	types: { age: "number", admin: "boolean" },
+});
+// result.age: number
+// result.admin: boolean
+// result[otherKey]: ExtractedValue (falls back via index signature)
+```
+
+No manual casts needed. Works for the string shorthand and the custom-date-parser object form.
+
 ## Safe mode
 
 By default, a match failure throws. Use `safe: true` to get `null` instead:
@@ -263,25 +309,28 @@ interface ReverseEjsOptions {
 	partials?: Record<string, string>;
 	/** Return null instead of throwing on match failure. */
 	safe?: boolean;
-	/** Suppress console warnings from failed type coercions. */
+	/** Suppress console warnings (coercion failures, nested-condition-in-loop). */
 	silent?: boolean;
-	/** Map of variable name to coercion type. */
-	types?: Record<string, "string" | "number" | "boolean" | "date">;
+	/** Throw at compile time on raw-key fallbacks (expressions / joined / complex conditions). */
+	strict?: boolean;
+	/** Map of variable name to coercion spec. */
+	types?: Record<string, "string" | "number" | "boolean" | "date" | { type: "date"; parse: (s: string) => Date }>;
 }
 ```
 
-| Option               | Type     | Default      | Description                           |
-| -------------------- | -------- | ------------ | ------------------------------------- |
-| `delimiter`          | string   | `"%"`        | Inner delimiter character             |
-| `openDelimiter`      | string   | `"<"`        | Opening delimiter character           |
-| `closeDelimiter`     | string   | `">"`        | Closing delimiter character           |
-| `rmWhitespace`       | boolean  | `false`      | Strip line whitespace before matching |
-| `flexibleWhitespace` | boolean  | `false`      | Ignore whitespace differences         |
-| `unescape`           | function | XML unescape | Custom HTML-unescape function         |
-| `partials`           | object   | `{}`         | Map of partial names to EJS source    |
-| `safe`               | boolean  | `false`      | Return `null` instead of throwing     |
-| `silent`             | boolean  | `false`      | Suppress coercion warnings            |
-| `types`              | object   | `{}`         | Type coercion map                     |
+| Option               | Type     | Default      | Description                                              |
+| -------------------- | -------- | ------------ | -------------------------------------------------------- |
+| `delimiter`          | string   | `"%"`        | Inner delimiter character                                |
+| `openDelimiter`      | string   | `"<"`        | Opening delimiter character                              |
+| `closeDelimiter`     | string   | `">"`        | Closing delimiter character                              |
+| `rmWhitespace`       | boolean  | `false`      | Strip line whitespace before matching                    |
+| `flexibleWhitespace` | boolean  | `false`      | Ignore whitespace differences                            |
+| `unescape`           | function | XML unescape | Custom HTML-unescape function                            |
+| `partials`           | object   | `{}`         | Map of partial names to EJS source                       |
+| `safe`               | boolean  | `false`      | Return `null` instead of throwing                        |
+| `silent`             | boolean  | `false`      | Suppress coercion + nested-condition warnings            |
+| `strict`             | boolean  | `false`      | Throw on expression / joined-key / complex-condition use |
+| `types`              | object   | `{}`         | Coercion map — string shorthand or `{type, parse}` spec  |
 
 ### Custom delimiters
 
@@ -724,6 +773,18 @@ Without `safe: true`, the first mismatch throws and the remaining inputs are ski
 ### Template-author errors are not catchable in safe mode
 
 `safe: true` only affects match failures. Template-author errors (dynamic includes, missing partials, circular includes) still throw a plain `Error` - they indicate a bug in your template, not a runtime mismatch, so they surface immediately regardless of mode.
+
+## Security considerations
+
+Templates are library-author-controlled; rendered strings often come from external sources (scraped pages, user input, log streams). A few things to keep in mind when pointing reverse-ejs at untrusted input:
+
+- **Use `safe: true` on untrusted input.** Match failures return `null` instead of throwing, so a hostile input can't crash the host process through the error path. Combine with `reverseEjsAll` for batch workloads where some inputs are expected to fail.
+- **ReDoS surface is confined to the regex fallback path.** When the fast-path walker handles a template (the majority of real shapes), there is no regex compiled and no backtracking engine involved. The regex path runs only for: `flexibleWhitespace: true`, templates with the same variable captured more than once (back-references), and shapes with back-to-back loops/conditionals the walker can't anchor. If your input sources are adversarial and you use any of those shapes, consider importing [`re2`](https://github.com/uhop/node-re2) and supplying a custom `unescape` isn't enough; the regex itself is the exposure. A `timeout` option for the match is on the roadmap.
+- **Large inputs are bounded by V8's string length (~1GB) for the fast-path shapes.** The regex path caps at roughly 40KB of literal template size before V8 refuses to compile. If a user-supplied template is in the mix, reject anything above that before passing it to `compileTemplate`.
+- **Type coercion never `eval`s.** `types: { age: "number" }` uses `Number(s)`, booleans compare to `"true"` / `"false"` literally, dates use `new Date(s)`. None of them execute strings as code, so coercion itself isn't a code-execution vector.
+- **Expressions and complex conditions are captured by string text, not evaluated.** `<%= title.toUpperCase() %>` becomes the key `"title.toUpperCase()"`; the method is not invoked during extraction.
+
+Report security issues privately — a `SECURITY.md` will be added with contact details.
 
 ## Contributing
 

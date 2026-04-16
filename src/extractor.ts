@@ -4,7 +4,7 @@ import type {
 	ExtractedObject,
 	ExtractedItem,
 	EjsOptions,
-	CoercionType,
+	CoercionSpec,
 } from "./types";
 import {
 	buildRegex,
@@ -117,12 +117,30 @@ function setNested(
 
 function coerceValue(
 	value: string,
-	type: CoercionType,
+	spec: CoercionSpec,
 	keyForWarning: string,
 	silent?: boolean,
 ): unknown {
-	if (type === "string") return value;
-	if (type === "number") {
+	// Object form — currently only `{ type: "date", parse: fn }` is
+	// supported. The custom parser can handle formats `new Date(s)`
+	// refuses (non-ISO strings, locale dates, epoch seconds, ...).
+	if (typeof spec === "object") {
+		if (spec.type === "date") {
+			const d = spec.parse(value);
+			if (!(d instanceof Date) || Number.isNaN(d.getTime())) {
+				if (!silent) {
+					console.warn(
+						`[reverse-ejs] Custom date parser returned invalid Date for "${value}" (key "${keyForWarning}") - keeping original string.`,
+					);
+				}
+				return value;
+			}
+			return d;
+		}
+		return value;
+	}
+	if (spec === "string") return value;
+	if (spec === "number") {
 		const n = Number(value);
 		if (Number.isNaN(n)) {
 			if (!silent) {
@@ -134,7 +152,7 @@ function coerceValue(
 		}
 		return n;
 	}
-	if (type === "boolean") {
+	if (spec === "boolean") {
 		const lower = value.toLowerCase();
 		if (lower === "true") return true;
 		if (lower === "false") return false;
@@ -145,7 +163,7 @@ function coerceValue(
 		}
 		return value;
 	}
-	if (type === "date") {
+	if (spec === "date") {
 		const d = new Date(value);
 		if (Number.isNaN(d.getTime())) {
 			if (!silent) {
@@ -162,7 +180,7 @@ function coerceValue(
 
 function applyCoercions(
 	obj: Record<string, unknown>,
-	types: Record<string, CoercionType>,
+	types: Record<string, CoercionSpec>,
 	silent?: boolean,
 ): void {
 	for (const [key, value] of Object.entries(obj)) {

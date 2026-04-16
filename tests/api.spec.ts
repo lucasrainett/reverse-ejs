@@ -426,6 +426,168 @@ describe("reverseEjs - types coercion", () => {
 	});
 });
 
+describe("custom date parser (types: { type: 'date', parse: fn })", () => {
+	it("uses the custom parser instead of new Date()", () => {
+		// Epoch seconds as a string — `new Date(s)` parses this as a year
+		// far in the future because it treats the digits as a calendar
+		// year. A custom parser handles the real intent.
+		const result = reverseEjs("ts: <%= at %>", "ts: 1700000000", {
+			types: {
+				at: {
+					type: "date" as const,
+					parse: (s: string) => new Date(Number(s) * 1000),
+				},
+			},
+		});
+		expect(result.at).toBeInstanceOf(Date);
+		expect(result.at.getFullYear()).toBe(2023);
+	});
+
+	it("warns and falls back to string when the parser returns an invalid Date", () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		const result = reverseEjs("d: <%= d %>", "d: garbage", {
+			types: {
+				d: {
+					type: "date" as const,
+					parse: () => new Date("not-a-date"),
+				},
+			},
+		});
+		// The parser returns Invalid Date so the value stays as string.
+		// The typed return still claims Date, so assert via the broader
+		// unknown-key route to avoid a type narrowing fight.
+		expect((result as Record<string, unknown>).d).toBe("garbage");
+		expect(warn).toHaveBeenCalled();
+		warn.mockRestore();
+	});
+
+	it("suppresses the fallback warning with silent: true", () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		reverseEjs("d: <%= d %>", "d: garbage", {
+			types: {
+				d: {
+					type: "date" as const,
+					parse: () => new Date("x"),
+				},
+			},
+			silent: true,
+		});
+		expect(warn).not.toHaveBeenCalled();
+		warn.mockRestore();
+	});
+
+	it("works alongside string-shorthand entries in the same types map", () => {
+		const result = reverseEjs(
+			"a=<%= a %> b=<%= b %>",
+			"a=42 b=1700000000",
+			{
+				types: {
+					a: "number" as const,
+					b: {
+						type: "date" as const,
+						parse: (s: string) => new Date(Number(s) * 1000),
+					},
+				},
+			},
+		);
+		expect(result.a).toBe(42);
+		expect(result.b).toBeInstanceOf(Date);
+	});
+});
+
+describe("strict mode (throws on raw-key fallbacks)", () => {
+	it("throws when the template uses an expression key", () => {
+		expect(() =>
+			reverseEjs(
+				"<h1><%= title.toUpperCase() %></h1>",
+				"<h1>HELLO</h1>",
+				{ strict: true },
+			),
+		).toThrow(/strict mode.*expression "title\.toUpperCase\(\)"/);
+	});
+
+	it("throws when the template has adjacent variables (joined key)", () => {
+		expect(() =>
+			reverseEjs("<%= a %><%= b %>", "AliceBob", { strict: true }),
+		).toThrow(/strict mode.*a \+ b/);
+	});
+
+	it("throws when the template has a complex condition", () => {
+		expect(() =>
+			reverseEjs("<% if (items.length > 0) { %>yes<% } %>", "yes", {
+				strict: true,
+			}),
+		).toThrow(/strict mode.*items\.length > 0/);
+	});
+
+	it("does not throw on a plain variable template", () => {
+		expect(() =>
+			reverseEjs("Hello, <%= name %>!", "Hello, Alice!", {
+				strict: true,
+			}),
+		).not.toThrow();
+	});
+
+	it("does not throw on a bare-identifier condition", () => {
+		// `if (isAdmin)` produces a clean boolean key — not a raw-key
+		// fallback — so strict mode accepts it.
+		expect(() =>
+			reverseEjs(
+				"<% if (isAdmin) { %><p>Admin</p><% } %>",
+				"<p>Admin</p>",
+				{ strict: true },
+			),
+		).not.toThrow();
+	});
+
+	it("does not throw on a dotted-path variable", () => {
+		expect(() =>
+			reverseEjs("<%= user.name %>", "Alice", { strict: true }),
+		).not.toThrow();
+	});
+});
+
+describe("conditions-inside-loop-body warning", () => {
+	it("warns when a conditional is nested inside a loop", () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		reverseEjs(
+			"<% items.forEach(i => { %>" +
+				"<% if (i.featured) { %>F<% } else { %>N<% } %>" +
+				"<% }) %>",
+			"FN",
+		);
+		expect(warn).toHaveBeenCalled();
+		const message = warn.mock.calls[0][0] as string;
+		expect(message).toContain("Conditions inside loop bodies");
+		expect(message).toContain("i.featured");
+		warn.mockRestore();
+	});
+
+	it("suppresses the warning with silent: true", () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		reverseEjs(
+			"<% items.forEach(i => { %>" +
+				"<% if (i.featured) { %>F<% } else { %>N<% } %>" +
+				"<% }) %>",
+			"FN",
+			{ silent: true },
+		);
+		expect(warn).not.toHaveBeenCalled();
+		warn.mockRestore();
+	});
+
+	it("does not warn on plain loops or plain conditionals", () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		reverseEjs(
+			"<ul><% items.forEach(i => { %><li><%= i %></li><% }) %></ul>",
+			"<ul><li>a</li></ul>",
+		);
+		reverseEjs("<% if (show) { %><p>X</p><% } %>", "<p>X</p>");
+		expect(warn).not.toHaveBeenCalled();
+		warn.mockRestore();
+	});
+});
+
 describe("ReverseEjsError", () => {
 	it("should be an instance of Error", () => {
 		const err = new ReverseEjsError("test", { regex: "r", input: "i" });

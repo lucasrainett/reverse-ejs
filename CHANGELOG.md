@@ -6,6 +6,54 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- **Typed return based on the `types` map.** The return type of
+  `reverseEjs()`, `compileTemplate().match()`, and `reverseEjsAll()` now
+  narrows per-key based on the supplied `types`. A call like
+  `reverseEjs(t, r, { types: { age: "number" } })` returns an object
+  typed `{ age: number; [key: string]: ExtractedValue }` — TypeScript
+  knows `result.age` is a `number` without manual casts. Unknown keys
+  fall back to the broad `ExtractedValue` union via the index signature.
+- **Custom date parser.** `types` entries now accept an object spec
+  `{ type: "date", parse: (s: string) => Date }` in addition to the
+  `"date"` string shorthand. Use this for non-ISO formats, epoch
+  seconds, locale-specific strings, etc. Backward compatible with the
+  string shorthand.
+- **`strict: true` option.** When set, `compileTemplate` and
+  `reverseEjs` throw at compile time if the template would produce any
+  raw-key fallback output — expression keys (`<%= title.toUpperCase() %>`
+  → `"title.toUpperCase()"`), adjacent-variable joined keys
+  (`<%= a %><%= b %>` → `"a + b"`), or complex-condition booleans
+  (`<% if (a > b) { %>` → `"a > b": true`). For callers who want
+  deterministic structured extraction and would rather fail loudly than
+  see surprising keys.
+- **Warning when conditions are nested inside loops.** Templates with
+  `<% if (...) { %>` inside a `forEach` body silently drop the
+  per-iteration condition from the output (a known gap in the current
+  extractor). The library now emits a `console.warn` at compile time
+  listing the affected conditions, so the gap surfaces before users
+  investigate a missing key. Suppress with `silent: true`.
+- **Property-based round-trip tests** (`tests/property.spec.ts`) via
+  fast-check. Hammers the defining invariant
+  `reverseEjs(t, ejs.render(t, d)) === d` with random data across the
+  full feature matrix (single vars, three-field templates, dotted
+  paths, loops of strings, loops of objects, numeric/boolean coercion,
+  safe mode, fast-path / regex-path parity).
+- **`tsconfig.test.json` + `pnpm typecheck` script.** `tsc --noEmit`
+  over src + tests. The new typed-result test file (`tests/typed-
+result.spec.ts`) carries explicit type annotations that would fail
+  typecheck if the `types`-map narrowing ever regresses.
+- **Dependabot config** (`.github/dependabot.yml`). Weekly devDeps
+  updates, monthly GitHub Action bumps, grouped PRs to keep noise low.
+- **Security considerations section** in the README. Documents the
+  ReDoS surface (confined to the regex fallback path), the
+  trust-boundary model (templates are author-controlled; rendered text
+  can be external), and the recommended `safe: true` posture for
+  untrusted input.
+- **Compatibility & deprecation policy** in CONTRIBUTING.md. SemVer
+  commitments for what counts as major / minor / patch.
+
 ### Fixed
 
 - **Back-reference mismatch now names the actual inconsistent variable.**

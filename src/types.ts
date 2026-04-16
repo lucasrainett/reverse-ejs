@@ -46,6 +46,32 @@ export type LoopPattern = Extract<Pattern, { type: "loop" }>;
 export type CoercionType = "string" | "number" | "boolean" | "date";
 
 /**
+ * Custom date parser for values that `new Date(string)` can't handle
+ * (non-ISO formats, locale-specific strings, epoch seconds as strings,
+ * etc.). Return an invalid `Date` to trigger the standard coercion
+ * warning / fallback to string.
+ *
+ * @example
+ * types: {
+ *   createdAt: {
+ *     type: "date",
+ *     parse: (s) => new Date(s + "Z"),   // force UTC on a naive string
+ *   },
+ * }
+ */
+export interface DateCoercion {
+	type: "date";
+	parse: (value: string) => Date;
+}
+
+/**
+ * Either the string shorthand (`"number"`, `"date"`, ...) or a richer
+ * spec object. Only `"date"` currently has a spec form; the others are
+ * deterministic enough that a custom parser isn't useful.
+ */
+export type CoercionSpec = CoercionType | DateCoercion;
+
+/**
  * Options for reversing an EJS template.
  *
  * All fields are optional. The library has sensible defaults for every option.
@@ -148,7 +174,25 @@ export interface EjsOptions {
 	 * );
 	 * // => { age: 30, active: true }
 	 */
-	types?: Record<string, CoercionType>;
+	types?: Record<string, CoercionSpec>;
+
+	/**
+	 * When `true`, `compileTemplate` and `reverseEjs` throw immediately
+	 * if the template would produce any "raw-key fallback" key in the
+	 * output — expression keys (`<%= title.toUpperCase() %>` → key
+	 * `"title.toUpperCase()"`), adjacent-variable joined keys
+	 * (`<%= a %><%= b %>` → `"a + b"`), and complex-condition booleans
+	 * (`<% if (a > b) { %>...<% } %>` → `"a > b": true`).
+	 *
+	 * Use this when you want deterministic, structured extraction and
+	 * would rather fail loudly at compile time than get surprising
+	 * keys in your result object.
+	 *
+	 * @example
+	 * reverseEjs("<%= title.toUpperCase() %>", "HELLO", { strict: true });
+	 * // throws: strict mode: template contains raw-key fallbacks...
+	 */
+	strict?: boolean;
 }
 
 /**
