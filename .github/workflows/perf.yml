@@ -109,7 +109,7 @@ jobs:
           if [ -f /tmp/perf-baseline/before.json ]; then
             BEFORE=/tmp/perf-baseline/before.json
           fi
-          tsx perf/compare.ts "$BEFORE" perf/results.json > /tmp/perf-comment.md
+          pnpm exec tsx perf/compare.ts "$BEFORE" perf/results.json > /tmp/perf-comment.md
           cat /tmp/perf-comment.md
 
       - name: Post / update PR comment
