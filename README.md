@@ -1,5 +1,11 @@
 # reverse-ejs
 
+[![npm](https://img.shields.io/npm/v/reverse-ejs)](https://www.npmjs.com/package/reverse-ejs)
+[![downloads](https://img.shields.io/npm/dw/reverse-ejs)](https://www.npmjs.com/package/reverse-ejs)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/reverse-ejs)](https://bundlephobia.com/package/reverse-ejs)
+[![ci](https://img.shields.io/github/actions/workflow/status/lucasrainett/reverse-ejs/ci.yml?branch=master&label=ci)](https://github.com/lucasrainett/reverse-ejs/actions/workflows/ci.yml)
+[![license](https://img.shields.io/npm/l/reverse-ejs)](https://github.com/lucasrainett/reverse-ejs/blob/master/LICENSE)
+
 The inverse of `ejs.render()`. Given an EJS template and the rendered output it produced, extract the data object that was used to render it.
 
 Works with **any text format**: HTML, Markdown, plain text, log lines, emails, CSV rows, config files - anything you can describe with an EJS template. Most tools in this space only handle HTML; reverse-ejs just sees text, so the same library parses a product page, a shipping confirmation email, and a structured log line with the same API.
@@ -14,6 +20,18 @@ reverseEjs("Hello, <%= name %>!", "Hello, Alice!");
 > **Read the article:** [What if you could reverse a template engine?](https://dev.to/lucasrainett/what-if-you-could-reverse-a-template-engine-5nk)
 
 **[Try it in the browser](https://lucasrainett.github.io/reverse-ejs/)**
+
+## When to reach for this
+
+| Tool              | Good at                                                                                                                                     | Not so good at                                          |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| **reverse-ejs**   | Structured text with a known shape (product pages, email templates, logs, CSV rows, Markdown, CLI output); same template across many inputs | Pages where the structure varies between inputs         |
+| Cheerio / JSDOM   | HTML scraping when the structure changes between pages                                                                                      | Non-HTML formats; large bundle overhead for simple jobs |
+| node-html-parser  | Fast HTML-only DOM traversal                                                                                                                | Non-HTML formats; relational extraction across elements |
+| LLM extraction    | One-off extraction from truly unstructured text                                                                                             | Throughput, cost, determinism, offline use              |
+| Hand-rolled regex | Raw speed on a single well-understood shape                                                                                                 | Readability, maintenance as the shape evolves           |
+
+If your source text has a stable shape (emitted by a template, a logger, a CLI tool) and you want the data back: this is the tool. If you're scraping sites where every page looks different, Cheerio is a better fit.
 
 ## Installation
 
@@ -611,6 +629,21 @@ The walker tiers skip V8's regex compiler entirely for the shapes most templates
 | Literals + loops / conditionals around literals | ~10MB             |
 | Same variable captured twice (regex path)       | ~40KB of literals |
 | `flexibleWhitespace: true` (regex path)         | ~40KB of literals |
+
+### Benchmark snapshot
+
+Median wall time per call, from the CI-tracked perf suite (`perf/results.json`):
+
+| Scenario                                                       | Time    | Throughput        |
+| -------------------------------------------------------------- | ------- | ----------------- |
+| `extract-product-page` (typical product page, 7 vars + a loop) | ~8 μs   | ~125K ops/sec     |
+| `match-only` (pre-compiled, match + extract)                   | ~7 μs   | ~140K ops/sec     |
+| `compile-cold` (tokenize + build plan, cache miss)             | ~9 μs   | ~110K ops/sec     |
+| `extract-log-lines` (100 log lines via `reverseEjsAll`)        | ~31 μs  | ~32K batches/sec  |
+| `extract-csv-rows` (1000 rows)                                 | ~720 μs | ~1.4K batches/sec |
+| `large-page-hybrid` (30KB page, 5 scalars + 50-item loop)      | ~140 μs | ~7K ops/sec       |
+
+Raw numbers live in `perf/results.json` and are regenerated on every push to master. Across v3.0.1 → current, `extract-product-page` went from 38μs to ~8μs (about 80% faster) once the walker stack landed; `extract-with-coercion` went 40μs → 9μs.
 
 ## Limitations
 

@@ -1,7 +1,12 @@
 import { tokenize } from "./tokenizer";
 import { buildPattern } from "./patternBuilder";
 import { extract, buildFastPathPlan, extractFastPath } from "./extractor";
-import type { EjsOptions, Pattern } from "./types";
+import type {
+	EjsOptions,
+	Pattern,
+	ExtractedValue,
+	CoercionType,
+} from "./types";
 import { ExtractedObject } from "./types";
 import { ReverseEjsError } from "./errors";
 
@@ -13,7 +18,36 @@ import { ReverseEjsError } from "./errors";
 export type ReverseEjsOptions = EjsOptions;
 
 export { ExtractedObject, ReverseEjsError };
-export type { CoercionType } from "./types";
+export type { CoercionType, ExtractedValue } from "./types";
+
+// ── Typed-result helpers ───────────────────────────────────────
+//
+// When the caller supplies a `types` map with a known shape, infer the
+// concrete TypeScript type for each coerced key. Unknown keys fall back
+// to the broad `ExtractedValue` union via the index signature, so
+// callers can still access fields the `types` map didn't declare.
+
+/** Concrete TS type for a given `CoercionType` literal. */
+type CoerceToType<T extends CoercionType> = T extends "number"
+	? number
+	: T extends "boolean"
+		? boolean
+		: T extends "date"
+			? Date
+			: string;
+
+/**
+ * Extracted-object type narrowed by a `types` map. Known keys get the
+ * precise coerced type; any other key is `ExtractedValue`.
+ */
+export type ExtractedResult<
+	T extends Record<string, CoercionType> | undefined = undefined,
+> =
+	T extends Record<string, CoercionType>
+		? { [K in keyof T]: CoerceToType<T[K]> } & {
+				[key: string]: ExtractedValue;
+			}
+		: ExtractedObject;
 
 const INCLUDE_RE =
 	/<%-\s*include\s*\(\s*['"]([^'"]+)['"]\s*(?:,[^)]+)?\s*\)\s*%>/g;
@@ -90,8 +124,14 @@ function getCachedPattern(
  *
  * Created by `compileTemplate()`. Reusing a compiled template avoids the cost
  * of re-tokenizing and re-building the regex on every call.
+ *
+ * The generic parameter `T` carries the shape of the `types` map passed to
+ * `compileTemplate()`, so `match()` returns an object with those keys
+ * narrowed to the coerced types (`number`, `boolean`, `Date`, `string`).
  */
-export interface CompiledTemplate {
+export interface CompiledTemplate<
+	T extends Record<string, CoercionType> | undefined = undefined,
+> {
 	/**
 	 * Match a rendered string against the compiled template and return the
 	 * extracted data.
@@ -102,7 +142,7 @@ export interface CompiledTemplate {
 	 * @throws {ReverseEjsError} If the string does not match the template and
 	 *         `safe` was not enabled.
 	 */
-	match(finalString: string): ExtractedObject | null;
+	match(finalString: string): ExtractedResult<T> | null;
 }
 
 /**
@@ -123,6 +163,12 @@ export interface CompiledTemplate {
  * compiled.match("Alice is 30 years old."); // { name: "Alice", age: "30" }
  * compiled.match("Bob is 25 years old.");   // { name: "Bob", age: "25" }
  */
+export function compileTemplate<
+	T extends Record<string, CoercionType> | undefined = undefined,
+>(
+	template: string,
+	options?: ReverseEjsOptions & { types?: T },
+): CompiledTemplate<T>;
 export function compileTemplate(
 	template: string,
 	options?: ReverseEjsOptions,
@@ -207,11 +253,13 @@ export function compileTemplate(
  * const result = reverseEjs(template, html, { safe: true });
  * if (result === null) console.warn("did not match");
  */
-export function reverseEjs(
+export function reverseEjs<
+	T extends Record<string, CoercionType> | undefined = undefined,
+>(
 	template: string,
 	finalString: string,
-	options: ReverseEjsOptions & { safe: true },
-): ExtractedObject | null;
+	options: ReverseEjsOptions & { safe: true; types?: T },
+): ExtractedResult<T> | null;
 /**
  * Reverse-extract a data object from a rendered EJS template.
  *
@@ -221,11 +269,13 @@ export function reverseEjs(
  * @returns The extracted data object.
  * @throws {ReverseEjsError} If the rendered string does not match the template.
  */
-export function reverseEjs(
+export function reverseEjs<
+	T extends Record<string, CoercionType> | undefined = undefined,
+>(
 	template: string,
 	finalString: string,
-	options?: ReverseEjsOptions,
-): ExtractedObject;
+	options?: ReverseEjsOptions & { types?: T },
+): ExtractedResult<T>;
 export function reverseEjs(
 	template: string,
 	finalString: string,
@@ -264,6 +314,13 @@ export function reverseEjs(
  * );
  * // => [{ name: "Alice", score: 95 }, { name: "Bob", score: 87 }]
  */
+export function reverseEjsAll<
+	T extends Record<string, CoercionType> | undefined = undefined,
+>(
+	template: string,
+	finalStrings: string[],
+	options?: ReverseEjsOptions & { types?: T },
+): Array<ExtractedResult<T> | null>;
 export function reverseEjsAll(
 	template: string,
 	finalStrings: string[],
