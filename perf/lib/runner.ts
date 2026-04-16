@@ -191,7 +191,7 @@ function estimateRegexBytes(template: string, options?: EjsOptions): number {
 	// modules. The eslint rule for require() is disabled for perf/.
 	const { tokenize } = require("../../src/tokenizer");
 	const { buildPattern } = require("../../src/patternBuilder");
-	const { buildRegex } = require("../../src/regexBuilder");
+	const { buildRegex, createNameContext } = require("../../src/regexBuilder");
 	const tokens = tokenize(template, options);
 	const pattern = buildPattern(tokens);
 	const regexStr = buildRegex(
@@ -201,6 +201,7 @@ function estimateRegexBytes(template: string, options?: EjsOptions): number {
 		undefined,
 		undefined,
 		options?.flexibleWhitespace,
+		createNameContext(),
 	);
 	return regexStr.length;
 }

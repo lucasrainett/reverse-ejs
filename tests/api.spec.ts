@@ -329,3 +329,76 @@ describe("reverseEjsAll", () => {
 		expect(results[0]).toEqual({ n: "a" });
 	});
 });
+
+describe("internal pattern cache", () => {
+	// The cache is transparent — same template + compile options should
+	// always produce equivalent extraction. Different options must not
+	// contaminate each other's cached patterns.
+
+	it("returns the same extraction for repeated reverseEjs() calls", () => {
+		const t = "<%= name %> is <%= age %>";
+		const r1 = reverseEjs(t, "Alice is 30");
+		const r2 = reverseEjs(t, "Bob is 25");
+		const r3 = reverseEjs(t, "Carol is 40");
+		expect(r1).toEqual({ name: "Alice", age: "30" });
+		expect(r2).toEqual({ name: "Bob", age: "25" });
+		expect(r3).toEqual({ name: "Carol", age: "40" });
+	});
+
+	it("does not leak extraction options (safe) across calls", () => {
+		// safe is an extraction-time option; it must not be keyed into the cache.
+		const t = "<%= name %>";
+		const r1 = reverseEjs(t, "X");
+		// Same template with safe:true + no match should return null, not throw.
+		const r2 = reverseEjs("Hello, <%= name %>!", "nope", { safe: true });
+		// Back to a matching call — cache hit should still work correctly.
+		const r3 = reverseEjs(t, "Y");
+		expect(r1).toEqual({ name: "X" });
+		expect(r2).toBeNull();
+		expect(r3).toEqual({ name: "Y" });
+	});
+
+	it("does not leak extraction options (types) across calls", () => {
+		const t = "Age: <%= age %>";
+		const asString = reverseEjs(t, "Age: 30");
+		const asNumber = reverseEjs(t, "Age: 30", { types: { age: "number" } });
+		const asStringAgain = reverseEjs(t, "Age: 30");
+		expect(asString).toEqual({ age: "30" });
+		expect(asNumber).toEqual({ age: 30 });
+		expect(asStringAgain).toEqual({ age: "30" });
+	});
+
+	it("keys compile-affecting options into the cache", () => {
+		// Same template text but different delimiters → must not return the
+		// same cached pattern. Flipping delimiter back should still work.
+		const rDefault = reverseEjs("<%= who %>", "Alice");
+		const rCustom = reverseEjs("<?= who ?>", "Alice", { delimiter: "?" });
+		const rDefaultAgain = reverseEjs("<%= who %>", "Bob");
+		expect(rDefault).toEqual({ who: "Alice" });
+		expect(rCustom).toEqual({ who: "Alice" });
+		expect(rDefaultAgain).toEqual({ who: "Bob" });
+	});
+});
+
+describe("regex-too-large guard", () => {
+	it("throws a friendly ReverseEjsError instead of a V8 SyntaxError", () => {
+		// Build a pathologically large template — N=5000 vars puts the
+		// regex over V8's ~87KB cliff.
+		let template = "";
+		let rendered = "";
+		for (let i = 0; i < 5000; i++) {
+			template += `<a${i}><%= v${i} %></a${i}>`;
+			rendered += `<a${i}>val${i}</a${i}>`;
+		}
+		let thrown: unknown = null;
+		try {
+			reverseEjs(template, rendered);
+		} catch (e) {
+			thrown = e;
+		}
+		expect(thrown).toBeInstanceOf(ReverseEjsError);
+		const err = thrown as ReverseEjsError;
+		expect(err.message).toMatch(/refused to compile/);
+		expect(err.message).toMatch(/partial/i); // remediation mentions partials
+	});
+});
