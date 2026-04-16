@@ -30,8 +30,11 @@
     "build": "tsup",
     "clean": "rm -rf dist",
     "format": "prettier --write --ignore-unknown .",
-    "lint": "eslint src docs",
+    "lint": "eslint src docs e2e playwright.config.ts",
     "test": "vitest run --coverage",
+    "e2e": "playwright test",
+    "e2e:headed": "PW_SLOW_MO=300 playwright test --headed --workers=1",
+    "e2e:debug": "playwright test --debug",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -50,6 +53,8 @@
   "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^25.6.0",
     "@vitest/coverage-v8": "^4.1.1",
     "eslint": "^10.1.0",
     "husky": "^9.1.7",

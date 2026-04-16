@@ -33,4 +33,30 @@ export default defineConfig([
 			},
 		},
 	},
+	{
+		// Node-side e2e harness: Playwright tests + the static dev server
+		// + the Playwright config file. Needs node globals plus the
+		// browser globals that appear inside page.evaluate / addInitScript
+		// callbacks.
+		files: [
+			"e2e/**/*.ts",
+			"e2e/**/*.mjs",
+			"e2e/**/*.js",
+			"playwright.config.ts",
+		],
+		languageOptions: {
+			globals: {
+				process: "readonly",
+				console: "readonly",
+				URL: "readonly",
+				URLSearchParams: "readonly",
+				setTimeout: "readonly",
+				clearTimeout: "readonly",
+				window: "readonly",
+				document: "readonly",
+				navigator: "readonly",
+				history: "readonly",
+			},
+		},
+	},
 ]);

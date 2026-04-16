@@ -183,6 +183,7 @@
 					<button
 						type="button"
 						class="example-btn"
+						data-testid="example-html"
 						@click="loadExample('html')"
 					>
 						HTML
@@ -190,6 +191,7 @@
 					<button
 						type="button"
 						class="example-btn"
+						data-testid="example-markdown"
 						@click="loadExample('markdown')"
 					>
 						Markdown
@@ -197,6 +199,7 @@
 					<button
 						type="button"
 						class="example-btn"
+						data-testid="example-log"
 						@click="loadExample('log')"
 					>
 						Log line
@@ -204,6 +207,7 @@
 					<button
 						type="button"
 						class="example-btn"
+						data-testid="example-email"
 						@click="loadExample('email')"
 					>
 						Email
@@ -211,6 +215,7 @@
 					<button
 						type="button"
 						class="example-btn"
+						data-testid="example-csv"
 						@click="loadExample('csv')"
 					>
 						CSV
@@ -218,6 +223,7 @@
 					<button
 						type="button"
 						class="example-btn"
+						data-testid="example-cli"
 						@click="loadExample('cli')"
 					>
 						CLI
@@ -225,6 +231,7 @@
 					<button
 						type="button"
 						class="example-btn"
+						data-testid="example-store"
 						@click="loadExample('store')"
 					>
 						Store (partials)
@@ -237,12 +244,14 @@
 							Rendered text
 							<span
 								class="format-badge"
+								data-testid="format-badge"
 								x-text="formatBadge"
 							></span>
 						</label>
 						<div class="editor-wrap">
 							<div
 								class="highlight-overlay"
+								data-testid="rendered-overlay"
 								x-ref="renderedOverlay"
 							>
 								<div
@@ -251,6 +260,7 @@
 								></div>
 							</div>
 							<textarea
+								data-testid="rendered-input"
 								x-model="rendered"
 								@input="onRenderedInput"
 								@paste="onPasteRendered"
@@ -270,6 +280,7 @@
 						<div class="editor-wrap">
 							<div
 								class="highlight-overlay"
+								data-testid="template-overlay"
 								x-ref="templateOverlay"
 							>
 								<div
@@ -278,6 +289,7 @@
 								></div>
 							</div>
 							<textarea
+								data-testid="template-input"
 								x-model="template"
 								@input="onTemplateInput"
 								@paste="onPasteTemplate"
@@ -295,12 +307,17 @@
 				</div>
 
 				<div class="actions">
-					<button id="extract" @click="onExtractClick">
+					<button
+						id="extract"
+						data-testid="extract-btn"
+						@click="onExtractClick"
+					>
 						Extract Data
 					</button>
 					<label class="auto-run-label">
 						<input
 							type="checkbox"
+							data-testid="opt-autoRun"
 							x-model="options.autoRun"
 							@change="onAutoRunChange"
 						/>
@@ -308,20 +325,32 @@
 					</label>
 					<button
 						class="options-toggle"
+						data-testid="options-toggle"
 						:class="{ open: optionsOpen }"
 						@click="toggleOptions"
 					>
 						<span class="arrow">&#9654;</span> Options
 					</button>
-					<button class="secondary" @click="reset">Reset</button>
+					<button
+						class="secondary"
+						data-testid="reset-btn"
+						@click="reset"
+					>
+						Reset
+					</button>
 					<span
 						id="status"
+						data-testid="status"
 						:class="statusKind"
 						x-text="statusText"
 					></span>
 				</div>
 
-				<div class="options-panel" :class="{ open: optionsOpen }">
+				<div
+					class="options-panel"
+					data-testid="options-panel"
+					:class="{ open: optionsOpen }"
+				>
 					<div class="options-grid">
 						<div class="option-row">
 							<label>
@@ -332,6 +361,7 @@
 							</label>
 							<input
 								type="checkbox"
+								data-testid="opt-flexWs"
 								x-model="options.flexWs"
 								@change="onCheckboxChange('flexWs')"
 							/>
@@ -346,6 +376,7 @@
 							</label>
 							<input
 								type="checkbox"
+								data-testid="opt-rmWs"
 								x-model="options.rmWs"
 								@change="onCheckboxChange('rmWs')"
 							/>
@@ -360,6 +391,7 @@
 							</label>
 							<input
 								type="checkbox"
+								data-testid="opt-safe"
 								x-model="options.safe"
 								@change="onCheckboxChange('safe')"
 							/>
@@ -374,6 +406,7 @@
 							</label>
 							<input
 								type="checkbox"
+								data-testid="opt-silent"
 								x-model="options.silent"
 								@change="onCheckboxChange('silent')"
 							/>
@@ -386,6 +419,7 @@
 							<input
 								type="text"
 								maxlength="3"
+								data-testid="opt-delimiter"
 								x-model="options.delimiter"
 								@change="onDelimiterChange('delimiter', '%')"
 								@input="autoRun"
@@ -399,6 +433,7 @@
 							<input
 								type="text"
 								maxlength="3"
+								data-testid="opt-openDelim"
 								x-model="options.openDelim"
 								@change="onDelimiterChange('openDelim', '<')"
 								@input="autoRun"
@@ -412,6 +447,7 @@
 							<input
 								type="text"
 								maxlength="3"
+								data-testid="opt-closeDelim"
 								x-model="options.closeDelim"
 								@change="onDelimiterChange('closeDelim', '>')"
 								@input="autoRun"
@@ -429,6 +465,7 @@
 								<div class="editor-wrap">
 									<div
 										class="highlight-overlay"
+										data-testid="partials-overlay"
 										x-ref="partialsOverlay"
 									>
 										<div
@@ -438,6 +475,7 @@
 									</div>
 									<textarea
 										class="partials-input"
+										data-testid="opt-partials"
 										x-model="options.partials"
 										@input="onPartialsInput"
 										@scroll="syncScroll($event, 'partialsOverlay')"
@@ -457,6 +495,7 @@
 								<div class="editor-wrap">
 									<div
 										class="highlight-overlay"
+										data-testid="types-overlay"
 										x-ref="typesOverlay"
 									>
 										<div
@@ -466,6 +505,7 @@
 									</div>
 									<textarea
 										class="partials-input"
+										data-testid="opt-types"
 										x-model="options.types"
 										@input="onTypesInput"
 										@scroll="syncScroll($event, 'typesOverlay')"
@@ -484,6 +524,7 @@
 						<button
 							type="button"
 							id="copyResult"
+							data-testid="copy-btn"
 							class="secondary"
 							:class="{ copied: copyState === 'copied' }"
 							@click="copy"
@@ -493,6 +534,7 @@
 					</div>
 					<pre
 						id="output"
+						data-testid="output"
 						x-html="outputHtml"
 						@copy="onOutputCopy"
 						@mousedown="onOutputMouseDown"
