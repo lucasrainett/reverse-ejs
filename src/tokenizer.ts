@@ -2,10 +2,7 @@
 
 import type { Token, EjsOptions } from "./types";
 import { normalizeExpression } from "./normalize";
-
-function esc(s: string): string {
-	return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
+import { escapeRegex } from "./regexBuilder";
 
 function buildEjsRe(o: string, d: string, c: string): RegExp {
 	const alts = [
@@ -19,7 +16,7 @@ function buildEjsRe(o: string, d: string, c: string): RegExp {
 		"-" + d + c,
 		"_" + d + c,
 		d + c,
-	].map(esc);
+	].map(escapeRegex);
 	return new RegExp(`(${alts.join("|")})`);
 }
 
@@ -70,9 +67,9 @@ export function tokenize(template: string, opts?: EjsOptions): Token[] {
 		text = text.replace(/[\r\n]+/g, "\n").replace(/^\s+|\s+$/gm, "");
 	}
 
-	const oe = esc(o),
-		de = esc(d),
-		ce = esc(c);
+	const oe = escapeRegex(o),
+		de = escapeRegex(d),
+		ce = escapeRegex(c);
 	const preprocessed = text
 		.replace(new RegExp(`[ \\t]*${oe + de}_`, "gm"), o + d + "_")
 		.replace(new RegExp(`_${de + ce}[ \\t]*`, "gm"), "_" + d + c);
@@ -166,9 +163,19 @@ function emitLiteral(tokens: Token[], text: string, truncate: boolean): void {
 const PLAIN_VAR_RE =
 	/^[a-zA-Z_$][\w$]*(?:\.[a-zA-Z_$][\w$]*)*(?:\[[a-zA-Z_$][\w$]*\])?$/;
 
+// EJS's `locals.x` is syntactic sugar for `x` — the runtime data object is
+// bound as `locals` but users usually reference keys directly. Strip the
+// prefix so both spellings produce the same capture key.
+const LOCALS_PREFIX = "locals.";
+function stripLocalsPrefix(raw: string): string {
+	return raw.startsWith(LOCALS_PREFIX)
+		? raw.slice(LOCALS_PREFIX.length)
+		: raw;
+}
+
 function emitVariable(tokens: Token[], raw: string): void {
 	if (!raw) return;
-	const name = raw.startsWith("locals.") ? raw.slice("locals.".length) : raw;
+	const name = stripLocalsPrefix(raw);
 	if (!name) return;
 	if (PLAIN_VAR_RE.test(name)) {
 		tokens.push({ type: "variable", name });
@@ -187,7 +194,7 @@ function emitRawVariable(tokens: Token[], raw: string): void {
 			'Dynamic include filenames are not supported. Use a quoted string: include("filename")',
 		);
 	}
-	const name = raw.startsWith("locals.") ? raw.slice("locals.".length) : raw;
+	const name = stripLocalsPrefix(raw);
 	if (!name) return;
 	if (PLAIN_VAR_RE.test(name)) {
 		tokens.push({ type: "variable", name, raw: true });

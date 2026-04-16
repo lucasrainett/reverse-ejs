@@ -10,6 +10,7 @@ import {
 	buildRegex,
 	buildExprIdMap,
 	createNameContext,
+	escapeRegex,
 	type NameContext,
 } from "./regexBuilder";
 import { stripItemPrefix } from "./normalize";
@@ -76,6 +77,17 @@ function assertNoDuplicateGroups(regexStr: string): void {
 		}
 		seen.add(m[1]);
 	}
+}
+
+// True for non-null objects that aren't arrays or Dates — the kind we
+// recurse into when walking extracted values.
+function isPlainObject(v: unknown): boolean {
+	return (
+		v != null &&
+		typeof v === "object" &&
+		!Array.isArray(v) &&
+		!(v instanceof Date)
+	);
 }
 
 function setNested(
@@ -156,11 +168,7 @@ function applyCoercions(
 	for (const [key, value] of Object.entries(obj)) {
 		if (Array.isArray(value)) {
 			for (const item of value) {
-				if (
-					item &&
-					typeof item === "object" &&
-					!(item instanceof Date)
-				) {
+				if (isPlainObject(item)) {
 					applyCoercions(
 						item as Record<string, unknown>,
 						types,
@@ -168,11 +176,7 @@ function applyCoercions(
 					);
 				}
 			}
-		} else if (
-			value &&
-			typeof value === "object" &&
-			!(value instanceof Date)
-		) {
+		} else if (isPlainObject(value)) {
 			applyCoercions(value as Record<string, unknown>, types, silent);
 		} else if (typeof value === "string" && types[key] !== undefined) {
 			obj[key] = coerceValue(value, types[key], key, silent);
@@ -198,23 +202,40 @@ function findLastVariableName(pattern: Pattern): string | null {
 	return names[names.length - 1] ?? null;
 }
 
+/**
+ * Shape the standard mismatch error consumed by both the regex-based
+ * `extract` and the fast-path walker. Keeping the construction in one
+ * place means error-message asserts in the test suite stay in sync
+ * between the two paths.
+ */
+function buildMismatchMessage(
+	lastVarName: string | null,
+	finalString: string,
+	opts: { mentionDetails: boolean },
+): string {
+	const excerpt =
+		finalString.length > 80
+			? finalString.slice(0, 40) + "..." + finalString.slice(-40)
+			: finalString;
+	const varPart = lastVarName
+		? `Could not match variable "${lastVarName}" - `
+		: "Template does not match the rendered string - ";
+	const suffix = opts.mentionDetails
+		? ` (Access error.details for the full regex and input string.)`
+		: "";
+	return varPart + `unexpected content near "${excerpt}".` + suffix;
+}
+
 function buildMatchError(
 	pattern: Pattern,
 	regexStr: string,
 	finalString: string,
 ): ReverseEjsError {
-	const lastVar = findLastVariableName(pattern);
-	const excerpt =
-		finalString.length > 80
-			? finalString.slice(0, 40) + "..." + finalString.slice(-40)
-			: finalString;
-	const varPart = lastVar
-		? `Could not match variable "${lastVar}" - `
-		: "Template does not match the rendered string - ";
-	const message =
-		varPart +
-		`unexpected content near "${excerpt}". ` +
-		`(Access error.details for the full regex and input string.)`;
+	const message = buildMismatchMessage(
+		findLastVariableName(pattern),
+		finalString,
+		{ mentionDetails: true },
+	);
 	return new ReverseEjsError(message, {
 		regex: regexStr,
 		input: finalString,
@@ -503,44 +524,31 @@ function deepMergeInto(dst: ExtractedObject, src: ExtractedObject): void {
 	}
 }
 
-function isPlainObject(v: unknown): boolean {
-	return (
-		v != null &&
-		typeof v === "object" &&
-		!Array.isArray(v) &&
-		!(v instanceof Date)
-	);
-}
-
 function fastPathMismatch(
 	plan: FastPathPlan,
 	finalString: string,
 	opts?: EjsOptions,
 ): null {
 	if (opts?.safe) return null;
-	const excerpt =
-		finalString.length > 80
-			? finalString.slice(0, 40) + "..." + finalString.slice(-40)
-			: finalString;
-	const varPart = plan.lastVarName
-		? `Could not match variable "${plan.lastVarName}" - `
-		: `Template does not match the rendered string - `;
 	// Reconstruct a regex-shaped string from segments for `details.regex`.
 	// The fast path never compiled a real regex, but downstream tooling
 	// (and existing tests) expect `details.regex` to describe the shape
 	// that was being matched.
 	const regexShape = segmentsToRegexShape(plan.segments);
-	throw new ReverseEjsError(
-		varPart + `unexpected content near "${excerpt}".`,
-		{ regex: regexShape, input: finalString },
-	);
+	const message = buildMismatchMessage(plan.lastVarName, finalString, {
+		mentionDetails: false,
+	});
+	throw new ReverseEjsError(message, {
+		regex: regexShape,
+		input: finalString,
+	});
 }
 
 function segmentsToRegexShape(segments: Segment[]): string {
 	let out = "^";
 	for (const seg of segments) {
 		if (seg.type === "literal") {
-			out += seg.value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+			out += escapeRegex(seg.value);
 		} else if (seg.type === "capture") {
 			out += `(?<${seg.key.replace(/\./g, "_")}>.*?)`;
 		} else {
@@ -852,12 +860,7 @@ function extractConditionBooleans(
 				groups[`_C${id}ES`] !== undefined ||
 				anyBranchCaptureDefined(groups, id, "E");
 			// Don't overwrite nested object with a boolean
-			const existing = result[pattern.condition];
-			const hasNestedData =
-				existing != null &&
-				typeof existing === "object" &&
-				!Array.isArray(existing) &&
-				!(existing instanceof Date);
+			const hasNestedData = isPlainObject(result[pattern.condition]);
 			// Complex conditions (anything beyond a bare identifier) emit a
 			// boolean even when the if-without-else branch did not match.
 			const isComplex = !/^[a-zA-Z_$][\w$]*$/.test(pattern.condition);

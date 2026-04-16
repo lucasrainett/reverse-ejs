@@ -139,4 +139,29 @@ describe("EJS tags", () => {
 		const final = "<% x %>%> ok";
 		expect(reverseEjs(template, final)).toEqual({ val: "ok" });
 	});
+
+	it("should ignore an EJS comment inside a loop body", () => {
+		const template =
+			"<% items.forEach(i => { %>" +
+			"<%# this comment should be ignored at extract time %>" +
+			"<li><%= i %></li>" +
+			"<% }) %>";
+		expect(reverseEjs(template, "<li>a</li><li>b</li>")).toEqual({
+			items: ["a", "b"],
+		});
+	});
+
+	it("should trim trailing newline with -%> inside a loop", () => {
+		const template =
+			"<ul>\n" +
+			"<% items.forEach(i => { -%>\n" +
+			"<li><%= i %></li>\n" +
+			"<% }) -%>\n" +
+			"</ul>";
+		// With -%> the template's trailing newline after each tag is
+		// consumed at tokenize time; the rendered output matches the
+		// compact shape.
+		const final = "<ul>\n<li>a</li>\n<li>b</li>\n</ul>";
+		expect(reverseEjs(template, final)).toEqual({ items: ["a", "b"] });
+	});
 });

@@ -104,6 +104,75 @@ const CASES: Case[] = [
 		template: "<p><%= content %></p>",
 		data: { content: 'AT&T "wireless"' },
 	},
+	{
+		name: "unicode + emoji in value",
+		template: "<%= msg %>",
+		data: { msg: "héllo 你好 😀" },
+	},
+	{
+		name: "empty-string value inside literal context",
+		template: "<p><%= x %></p>",
+		data: { x: "" },
+	},
+	{
+		name: "numeric-looking string stays string without types option",
+		template: "<%= a %>-<%= b %>",
+		data: { a: "42", b: "3.14" },
+	},
+	{
+		name: "nested loop of objects (adjacent values disambiguated by literals)",
+		template:
+			"<% rows.forEach(r => { %>" +
+			"<tr><td><%= r.name %></td><td><%= r.score %></td></tr>" +
+			"<% }) %>",
+		data: {
+			rows: [
+				{ name: "Alice", score: "95" },
+				{ name: "Bob", score: "87" },
+			],
+		},
+	},
+	{
+		name: "conditional with else branch — both branches captured on true",
+		template:
+			"<% if (admin) { %>A:<%= name %><% } else { %>U:<%= name %><% } %>",
+		data: { admin: true, name: "Alice" },
+	},
+	{
+		name: "conditional with else branch — else path captures correctly",
+		template:
+			"<% if (admin) { %>A:<%= name %><% } else { %>U:<%= name %><% } %>",
+		data: { admin: false, name: "Bob" },
+	},
+	{
+		name: "raw tag preserves HTML verbatim",
+		template: "<div><%- html %></div>",
+		data: { html: "<b>bold</b> & <i>italic</i>" },
+	},
+	{
+		name: "raw tag in loop items",
+		template: "<% items.forEach(i => { %><div><%- i %></div><% }) %>",
+		data: { items: ["<b>one</b>", "<em>two</em>"] },
+	},
+	{
+		name: "long literal mass surrounding a single variable",
+		template:
+			"<header>" +
+			"<div>filler filler filler</div>".repeat(50) +
+			"</header><main><%= who %></main>",
+		data: { who: "Alice" },
+	},
+	{
+		name: "empty loop array renders nothing (round-trips to [])",
+		template:
+			"<ul><% items.forEach(i => { %><li><%= i %></li><% }) %></ul>",
+		data: { items: [] },
+	},
+	{
+		name: "loop of a single item",
+		template: "<% items.forEach(i => { %><span>(<%= i %>)</span><% }) %>",
+		data: { items: ["only"] },
+	},
 ];
 
 describe("round-trip against real EJS", () => {

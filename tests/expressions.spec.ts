@@ -111,4 +111,36 @@ describe("expressions", () => {
 			footer: "End",
 		});
 	});
+
+	it("should coerce types on an expression key", () => {
+		// The expression text is the key. Supplying a `types` entry under
+		// that exact key coerces the value.
+		expect(
+			reverseEjs("<span><%= count * 2 %></span>", "<span>10</span>", {
+				types: { "count * 2": "number" },
+			}),
+		).toEqual({ "count * 2": 10 });
+	});
+
+	it("should capture an expression whose value is empty string", () => {
+		expect(reverseEjs("[<%= items.join(',') %>]", "[]")).toEqual({
+			"items.join(',')": "",
+		});
+	});
+
+	it("should capture an expression inside a conditional branch", () => {
+		const template = "<% if (show) { %><span><%= a + b %></span><% } %>end";
+		expect(reverseEjs(template, "<span>15</span>end")).toEqual({
+			show: true,
+			"a + b": "15",
+		});
+	});
+
+	it("should capture an expression inside a loop body", () => {
+		const template =
+			"<% items.forEach(i => { %><li><%= i.price * i.qty %></li><% }) %>";
+		expect(reverseEjs(template, "<li>10</li><li>20</li>")).toEqual({
+			items: [{ "price * qty": "10" }, { "price * qty": "20" }],
+		});
+	});
 });
