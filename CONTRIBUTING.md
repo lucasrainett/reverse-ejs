@@ -223,7 +223,9 @@ Two more guards catch contributors who force-add the file on purpose
    `perf/results.json` is staged, the hook prints a clear remediation
    message and exits 1, blocking the commit locally. This is the
    earliest catch — the bad commit never makes it into the developer's
-   own history.
+   own history. The hook short-circuits when `CI=true` so the perf
+   workflow's own auto-commit (the one legitimate writer of the file)
+   isn't blocked by its own guard.
 
 2. **`.github/workflows/perf.yml`** runs on every PR. Its first step is
 
