@@ -1,7 +1,7 @@
 {
-  "version": "3.0.3",
-  "commit": "b86df8e",
-  "ranAt": "2026-04-16T17:03:54.830Z",
+  "version": "3.1.0",
+  "commit": "9886ed4",
+  "ranAt": "2026-04-16T19:54:41.399Z",
   "platform": {
     "node": "v22.11.0",
     "v8": "12.4.254.21-node.21",
@@ -16,118 +16,118 @@
         {
           "n": 100,
           "regexBytes": 2170,
-          "compileMs": 0.09885500000001457,
-          "matchMs": 0.06508200000001807,
-          "extractMs": 0.01232300000003761,
-          "totalMs": 0.17626000000007025
+          "compileMs": 0.11255700000003799,
+          "matchMs": 0.06015899999999874,
+          "extractMs": 0.013419999999996435,
+          "totalMs": 0.18613600000003316
         },
         {
           "n": 500,
           "regexBytes": 12170,
-          "compileMs": 0.6998039999999719,
-          "matchMs": 0.5592730000000188,
-          "extractMs": 0.1043650000000298,
-          "totalMs": 1.3634420000000205
+          "compileMs": 0.7309319999999957,
+          "matchMs": 0.4267409999999927,
+          "extractMs": 0.10196100000001707,
+          "totalMs": 1.2596340000000055
         },
         {
           "n": 1000,
           "regexBytes": 24670,
-          "compileMs": 1.0636220000000094,
-          "matchMs": 0.8088769999999954,
-          "extractMs": 0.21763500000002978,
-          "totalMs": 2.0901340000000346
+          "compileMs": 1.0892220000000066,
+          "matchMs": 0.9530599999999936,
+          "extractMs": 0.2131249999999909,
+          "totalMs": 2.255406999999991
         },
         {
           "n": 2000,
           "regexBytes": 52670,
-          "compileMs": 0.5086080000000379,
-          "matchMs": 0.723698000000013,
-          "extractMs": 0.32066800000001194,
-          "totalMs": 1.552974000000063
+          "compileMs": 0.5875199999999836,
+          "matchMs": 0.676571000000024,
+          "extractMs": 0.3044399999999996,
+          "totalMs": 1.5685310000000072
         },
         {
           "n": 2500,
           "regexBytes": 66670,
-          "compileMs": 0.600338000000022,
-          "matchMs": 0.8894369999999867,
-          "extractMs": 0.3770329999999831,
-          "totalMs": 1.8668079999999918
+          "compileMs": 1.4373969999999758,
+          "matchMs": 1.2142769999999814,
+          "extractMs": 0.438919999999996,
+          "totalMs": 3.090593999999953
         },
         {
           "n": 3000,
           "regexBytes": 80670,
-          "compileMs": 0.7841710000000148,
-          "matchMs": 1.2206140000000687,
-          "extractMs": 0.4752049999999599,
-          "totalMs": 2.4799900000000434
+          "compileMs": 0.8820849999999609,
+          "matchMs": 1.1788139999999885,
+          "extractMs": 0.5157530000000179,
+          "totalMs": 2.5766519999999673
         },
         {
           "n": 3500,
           "regexBytes": 94670,
-          "compileMs": 0.8899379999999155,
-          "matchMs": 1.4251349999999547,
-          "extractMs": 0.5409980000000587,
-          "totalMs": 2.856070999999929
+          "compileMs": 0.9820529999999508,
+          "matchMs": 1.329417000000035,
+          "extractMs": 0.6003690000000006,
+          "totalMs": 2.9118389999999863
         },
         {
           "n": 4000,
           "regexBytes": 108670,
-          "compileMs": 2.506230999999957,
-          "matchMs": 1.8345990000000256,
-          "extractMs": 0.6828620000000001,
-          "totalMs": 5.023691999999983
+          "compileMs": 1.1210979999999608,
+          "matchMs": 1.5047559999999294,
+          "extractMs": 0.6761010000000169,
+          "totalMs": 3.301954999999907
         },
         {
           "n": 5000,
           "regexBytes": 136670,
-          "compileMs": 1.5452390000000378,
-          "matchMs": 1.9732470000000149,
-          "extractMs": 0.8048800000000256,
-          "totalMs": 4.323366000000078
+          "compileMs": 1.6957290000000285,
+          "matchMs": 1.8001829999999472,
+          "extractMs": 0.8486460000000307,
+          "totalMs": 4.344558000000006
         },
         {
           "n": 8000,
           "regexBytes": 220670,
-          "compileMs": 2.6146009999999933,
-          "matchMs": 3.4815869999999904,
-          "extractMs": 1.498662000000195,
-          "totalMs": 7.594850000000179
+          "compileMs": 5.135858999999982,
+          "matchMs": 3.1952779999999166,
+          "extractMs": 1.5644050000000789,
+          "totalMs": 9.895541999999978
         },
         {
           "n": 16000,
           "regexBytes": 462670,
-          "compileMs": 10.994586000000254,
-          "matchMs": 10.70131900000024,
-          "extractMs": 3.2789199999997436,
-          "totalMs": 24.974825000000237
+          "compileMs": 11.525683999999728,
+          "matchMs": 10.176758000000063,
+          "extractMs": 3.3184000000001106,
+          "totalMs": 25.020841999999902
         },
         {
           "n": 32000,
           "regexBytes": 958670,
-          "compileMs": 21.339077000000543,
-          "matchMs": 14.13489699999991,
-          "extractMs": 7.014385000000402,
-          "totalMs": 42.488359000000855
+          "compileMs": 22.894612000000052,
+          "matchMs": 13.627001999999266,
+          "extractMs": 7.472122999999556,
+          "totalMs": 43.99373699999887
         },
         {
           "n": 32767,
           "regexBytes": 982447,
-          "compileMs": 19.09466699999939,
-          "matchMs": 16.144506000000547,
-          "extractMs": 7.05133399999977,
-          "totalMs": 42.29050699999971
+          "compileMs": 20.8988530000006,
+          "matchMs": 15.617933999999877,
+          "extractMs": 7.560927000000447,
+          "totalMs": 44.077714000000924
         },
         {
           "n": 32768,
           "regexBytes": 982478,
-          "compileMs": 19.456524999997782,
-          "matchMs": 17.076629999999568,
-          "extractMs": 7.210559999999532,
-          "totalMs": 43.74371499999688
+          "compileMs": 24.526308000000427,
+          "matchMs": 15.566741999999067,
+          "extractMs": 7.717446999999083,
+          "totalMs": 47.81049699999858
         }
       ],
       "limit": null,
-      "durationMs": 17433.990076
+      "durationMs": 17952.141828
     },
     "loop-body-width": {
       "description": "Loop with 10 iterations, sweeping the body's variable count; finds the body-width cliff",
@@ -135,82 +135,82 @@
         {
           "n": 10,
           "regexBytes": 137,
-          "compileMs": 0.0375499999972817,
-          "matchMs": 0.14427900000009686,
-          "extractMs": 0.005119999997987179,
-          "totalMs": 0.18694899999536574
+          "compileMs": 0.04302500000267173,
+          "matchMs": 0.13846899999771267,
+          "extractMs": 0.0047469999990426,
+          "totalMs": 0.186240999999427
         },
         {
           "n": 50,
           "regexBytes": 697,
-          "compileMs": 0.054020999999920605,
-          "matchMs": 0.6731279999985418,
-          "extractMs": 0.04176799999913783,
-          "totalMs": 0.7689169999976002
+          "compileMs": 0.06250500000169268,
+          "matchMs": 0.6619620000019495,
+          "extractMs": 0.04279500000120606,
+          "totalMs": 0.7672620000048482
         },
         {
           "n": 100,
           "regexBytes": 1397,
-          "compileMs": 0.09386499999891385,
-          "matchMs": 1.5701130000015837,
-          "extractMs": 0.08079100000031758,
-          "totalMs": 1.7447690000008151
+          "compileMs": 0.10827299999800744,
+          "matchMs": 1.8441800000000512,
+          "extractMs": 0.08455799999865121,
+          "totalMs": 2.03701099999671
         },
         {
           "n": 500,
           "regexBytes": 7797,
-          "compileMs": 0.650074000001041,
-          "matchMs": 10.389859000002616,
-          "extractMs": 0.4540880000022298,
-          "totalMs": 11.494021000005887
+          "compileMs": 0.8097550000020419,
+          "matchMs": 11.563344999998662,
+          "extractMs": 0.7341610000003129,
+          "totalMs": 13.107261000001017
         },
         {
           "n": 1000,
           "regexBytes": 15797,
-          "compileMs": 0.4168680000002496,
-          "matchMs": 18.534672999998293,
-          "extractMs": 0.9575089999998454,
-          "totalMs": 19.909049999998388
+          "compileMs": 0.4440419999991718,
+          "matchMs": 18.9787639999995,
+          "extractMs": 0.9765669999978854,
+          "totalMs": 20.399372999996558
         },
         {
           "n": 2000,
           "regexBytes": 33797,
-          "compileMs": 0.790487000002031,
-          "matchMs": 46.20803800000067,
-          "extractMs": 2.2586389999996754,
-          "totalMs": 49.257164000002376
+          "compileMs": 1.2322039999999106,
+          "matchMs": 52.34574799999973,
+          "extractMs": 2.2437650000028952,
+          "totalMs": 55.821717000002536
         },
         {
           "n": 2500,
           "regexBytes": 42797,
-          "compileMs": 1.034512000001996,
-          "matchMs": 64.74933399999645,
-          "extractMs": 3.1374809999979334,
-          "totalMs": 68.92132699999638
+          "compileMs": 1.0806750000010652,
+          "matchMs": 70.69556000000011,
+          "extractMs": 2.82763800000248,
+          "totalMs": 74.60387300000366
         },
         {
           "n": 3000,
           "regexBytes": 51797,
-          "compileMs": 2.5877939999991213,
-          "matchMs": 86.21168300000136,
-          "extractMs": 4.315701999999874,
-          "totalMs": 93.11517900000035
+          "compileMs": 1.1264439999977185,
+          "matchMs": 98.12828100000115,
+          "extractMs": 4.222669000002497,
+          "totalMs": 103.47739400000137
         },
         {
           "n": 3500,
           "regexBytes": 60797,
-          "compileMs": 1.1949519999980112,
-          "matchMs": 135.63526099999945,
-          "extractMs": 5.624776999997266,
-          "totalMs": 142.45498999999472
+          "compileMs": 3.1327600000004168,
+          "matchMs": 120.2023130000016,
+          "extractMs": 5.615305000002991,
+          "totalMs": 128.950378000005
         },
         {
           "n": 4000,
           "regexBytes": 69797,
-          "compileMs": 1.3360859999993409,
-          "matchMs": 136.3791799999999,
-          "extractMs": 6.725062000001344,
-          "totalMs": 144.4403280000006
+          "compileMs": 4.680841999997938,
+          "matchMs": 147.43866499999785,
+          "extractMs": 6.661699000000226,
+          "totalMs": 158.78120599999602
         }
       ],
       "limit": {
@@ -219,7 +219,7 @@
         "reason": "SyntaxError: Invalid regular expression: /<f0>(?<c0>.*?)<\\/f0><f1>(?<c1>.*?)<\\/f1><f2>(?<c2>.*?)<\\/f2><f3>(?<c3>.*?)<\\/f3><f4>(?<c4>.*?)<\\/f4><f5>(?<c5>.*?)<\\/f5><f6>(?<c6>.*?)<\\/f6><f7>(?<c7>.*?)<\\/f …[+141531 chars]",
         "stage": "match"
       },
-      "durationMs": 2241.9084629999998
+      "durationMs": 2425.360585000002
     },
     "loop-nesting-depth": {
       "description": "N levels of nested forEach, each with one variable; finds the nested-loop depth cliff",
@@ -227,90 +227,90 @@
         {
           "n": 1,
           "regexBytes": 29,
-          "compileMs": 0.010980999999446794,
-          "matchMs": 0.04756900000211317,
-          "extractMs": 0.0013629999994009268,
-          "totalMs": 0.05991300000096089
+          "compileMs": 0.017576000002009096,
+          "matchMs": 0.060531999999511754,
+          "extractMs": 0.0018829999971785583,
+          "totalMs": 0.07999099999869941
         },
         {
           "n": 2,
           "regexBytes": 46,
-          "compileMs": 0.03537599999981467,
-          "matchMs": 0.07212499999877764,
-          "extractMs": 0.0021239999987301417,
-          "totalMs": 0.10962499999732245
+          "compileMs": 0.02695099999982631,
+          "matchMs": 0.089985999999044,
+          "extractMs": 0.0026640000032784883,
+          "totalMs": 0.1196010000021488
         },
         {
           "n": 5,
           "regexBytes": 97,
-          "compileMs": 0.02082900000095833,
-          "matchMs": 0.06321799999932409,
-          "extractMs": 0.0017829999997047707,
-          "totalMs": 0.0858299999999872
+          "compileMs": 0.025207999999111053,
+          "matchMs": 0.056524999999965075,
+          "extractMs": 0.001551999997900566,
+          "totalMs": 0.0832849999969767
         },
         {
           "n": 10,
           "regexBytes": 182,
-          "compileMs": 0.03299200000037672,
-          "matchMs": 0.0822729999999865,
-          "extractMs": 0.0018029999991995282,
-          "totalMs": 0.11706799999956274
+          "compileMs": 0.03208900000026915,
+          "matchMs": 0.0790290000004461,
+          "extractMs": 0.0014220000011846423,
+          "totalMs": 0.1125400000018999
         },
         {
           "n": 20,
           "regexBytes": 372,
-          "compileMs": 0.06717500000013388,
-          "matchMs": 0.1288010000025679,
-          "extractMs": 0.0026849999994738027,
-          "totalMs": 0.19866100000217557
+          "compileMs": 0.06299600000056671,
+          "matchMs": 0.1635679999999411,
+          "extractMs": 0.0034149999992223457,
+          "totalMs": 0.22997899999973015
         },
         {
           "n": 50,
           "regexBytes": 942,
-          "compileMs": 0.2540449999978591,
-          "matchMs": 0.32196100000146544,
-          "extractMs": 0.004217999998218147,
-          "totalMs": 0.5802239999975427
+          "compileMs": 0.22174600000289502,
+          "matchMs": 0.30118600000059814,
+          "extractMs": 0.004286999999749241,
+          "totalMs": 0.5272190000032424
         },
         {
           "n": 100,
           "regexBytes": 1892,
-          "compileMs": 0.5633129999987432,
-          "matchMs": 0.462163000000146,
-          "extractMs": 0.007453999998688232,
-          "totalMs": 1.0329299999975774
+          "compileMs": 0.5842940000002272,
+          "matchMs": 0.40310999999928754,
+          "extractMs": 0.008353000001079636,
+          "totalMs": 0.9957570000005944
         },
         {
           "n": 200,
           "regexBytes": 3992,
-          "compileMs": 0.9258889999982785,
-          "matchMs": 1.019533999999112,
-          "extractMs": 0.012634000002435641,
-          "totalMs": 1.958056999999826
+          "compileMs": 1.0022960000023886,
+          "matchMs": 0.4054340000002412,
+          "extractMs": 0.014731999999639811,
+          "totalMs": 1.4224620000022696
         },
         {
           "n": 500,
           "regexBytes": 10292,
-          "compileMs": 4.28320199999871,
-          "matchMs": 1.690497999999934,
-          "extractMs": 0.030136000001220964,
-          "totalMs": 6.003835999999865
+          "compileMs": 4.770045999997819,
+          "matchMs": 1.7779799999989336,
+          "extractMs": 0.03501300000061747,
+          "totalMs": 6.58303899999737
         },
         {
           "n": 1000,
           "regexBytes": 20792,
-          "compileMs": 16.926229000000603,
-          "matchMs": 3.5873219999994035,
-          "extractMs": 0.060923999997612555,
-          "totalMs": 20.57447499999762
+          "compileMs": 18.625860000000102,
+          "matchMs": 3.7644450000007055,
+          "extractMs": 0.06764200000179699,
+          "totalMs": 22.457947000002605
         },
         {
           "n": 2000,
           "regexBytes": 43792,
-          "compileMs": 87.49221799999941,
-          "matchMs": 27.944722000000183,
-          "extractMs": 0.12551499999972293,
-          "totalMs": 115.56245499999932
+          "compileMs": 90.85484799999904,
+          "matchMs": 41.42434599999979,
+          "extractMs": 0.13848000000143657,
+          "totalMs": 132.41767400000026
         }
       ],
       "limit": {
@@ -319,7 +319,7 @@
         "reason": "RangeError: Maximum call stack size exceeded",
         "stage": "compile"
       },
-      "durationMs": 571.6367769999997
+      "durationMs": 593.1649249999973
     },
     "conditional-count": {
       "description": "N independent if/else blocks (each with a literal in each branch); finds the alternation cliff",
@@ -327,74 +327,74 @@
         {
           "n": 10,
           "regexBytes": 290,
-          "compileMs": 0.017422000000806293,
-          "matchMs": 0.41481500000008964,
-          "extractMs": 0.005269999997835839,
-          "totalMs": 0.43750699999873177
+          "compileMs": 0.01969000000099186,
+          "matchMs": 0.24569200000041747,
+          "extractMs": 0.0031249999992724042,
+          "totalMs": 0.26850700000068173
         },
         {
           "n": 50,
           "regexBytes": 1610,
-          "compileMs": 0.025366999998368556,
-          "matchMs": 2.192415000001347,
-          "extractMs": 0.009297999997215811,
-          "totalMs": 2.2270799999969313
+          "compileMs": 0.04009099999893806,
+          "matchMs": 2.3170159999972384,
+          "extractMs": 0.009633999998186482,
+          "totalMs": 2.366740999994363
         },
         {
           "n": 100,
           "regexBytes": 3260,
-          "compileMs": 0.04349200000069686,
-          "matchMs": 6.7433879999989585,
-          "extractMs": 0.016821999997773673,
-          "totalMs": 6.803701999997429
+          "compileMs": 0.06765200000154437,
+          "matchMs": 7.224141999999119,
+          "extractMs": 0.020110000001295703,
+          "totalMs": 7.3119040000019595
         },
         {
           "n": 500,
           "regexBytes": 18060,
-          "compileMs": 0.18219999999928405,
-          "matchMs": 90.53925700000036,
-          "extractMs": 0.08067099999971106,
-          "totalMs": 90.80212799999936
+          "compileMs": 0.23185000000012224,
+          "matchMs": 88.13243900000089,
+          "extractMs": 0.08734199999889825,
+          "totalMs": 88.4516309999999
         },
         {
           "n": 1000,
           "regexBytes": 36560,
-          "compileMs": 0.3865320000004431,
-          "matchMs": 365.1894930000017,
-          "extractMs": 0.1596979999994801,
-          "totalMs": 365.7357230000016
+          "compileMs": 0.43964499999856343,
+          "matchMs": 359.3524890000008,
+          "extractMs": 0.17317199999888544,
+          "totalMs": 359.96530599999824
         },
         {
           "n": 2000,
           "regexBytes": 77560,
-          "compileMs": 0.46484800000325777,
-          "matchMs": 1901.713340000002,
-          "extractMs": 0.3205180000004475,
-          "totalMs": 1902.4987060000058
+          "compileMs": 0.708983000000444,
+          "matchMs": 1846.609027999999,
+          "extractMs": 0.3484470000003057,
+          "totalMs": 1847.6664579999997
         },
         {
           "n": 2500,
           "regexBytes": 98060,
-          "compileMs": 0.624747000001662,
-          "matchMs": 3449.538174000001,
-          "extractMs": 0.395368999998027,
-          "totalMs": 3450.558290000001
+          "compileMs": 0.8655399999988731,
+          "matchMs": 3584.37788,
+          "extractMs": 0.437580000001617,
+          "totalMs": 3585.6810000000005
         },
         {
           "n": 3000,
           "regexBytes": 118560,
-          "compileMs": 0.8321450000003097,
-          "matchMs": 5010.266804999999,
-          "extractMs": 0.5041019999989658,
-          "totalMs": 5011.603051999999
+          "compileMs": 1.173092999997607,
+          "matchMs": 5326.316619999998,
+          "extractMs": 0.5471880000040983,
+          "totalMs": 5328.0369009999995
         },
         {
           "n": 3500,
           "regexBytes": 139060,
-          "compileMs": 0.9664150000025984,
-          "matchMs": 6877.836684999995,
-          "extractMs": 0.6349559999944177,
-          "totalMs": 6879.438055999992
+          "compileMs": 1.2524750000011409,
+          "matchMs": 7187.488010000001,
+          "extractMs": 0.6372229999979027,
+          "totalMs": 7189.377708
         }
       ],
       "limit": {
@@ -403,7 +403,7 @@
         "reason": "ReverseEjsError: Template generates a 159560-byte regex that V8's regex engine refused to compile. The pattern is too complex (too many captures, alternations, or nested repetitions). Consider splitti …[+141 chars]",
         "stage": "match"
       },
-      "durationMs": 54387.087481
+      "durationMs": 56524.021118
     },
     "rendered-size-sweep": {
       "description": "Fixed simple template, varying rendered-text size by inflating the value of one variable; finds the input-size cliff",
@@ -411,82 +411,82 @@
         {
           "n": 1000,
           "regexBytes": 18,
-          "compileMs": 0.06806700000015553,
-          "matchMs": 0.014877999987220392,
-          "extractMs": 0.004398000004584901,
-          "totalMs": 0.08734299999196082
+          "compileMs": 0.09204899999895133,
+          "matchMs": 0.02088200001162477,
+          "extractMs": 0.0059489999985089526,
+          "totalMs": 0.11888000000908505
         },
         {
           "n": 10000,
           "regexBytes": 18,
-          "compileMs": 0.031258999995770864,
-          "matchMs": 0.005841000005602837,
-          "extractMs": 0.030235999991418794,
-          "totalMs": 0.0673359999927925
+          "compileMs": 0.013700999988941476,
+          "matchMs": 0.008704000007128343,
+          "extractMs": 0.03699600000982173,
+          "totalMs": 0.05940100000589155
         },
         {
           "n": 100000,
           "regexBytes": 18,
-          "compileMs": 0.00785399999585934,
-          "matchMs": 0.011642000012216158,
-          "extractMs": 0.27453300000343006,
-          "totalMs": 0.29402900001150556
+          "compileMs": 0.013961000004201196,
+          "matchMs": 0.018749000009847805,
+          "extractMs": 0.3283559999981662,
+          "totalMs": 0.3610660000122152
         },
         {
           "n": 1000000,
           "regexBytes": 18,
-          "compileMs": 0.00761400000192225,
-          "matchMs": 0.5487449999927776,
-          "extractMs": 3.1394450000079814,
-          "totalMs": 3.6958040000026813
+          "compileMs": 0.01533299998845905,
+          "matchMs": 0.7734099999943282,
+          "extractMs": 3.6973140000045532,
+          "totalMs": 4.4860569999873405
         },
         {
           "n": 5000000,
           "regexBytes": 18,
-          "compileMs": 0.013053999995463528,
-          "matchMs": 1.7594269999972312,
-          "extractMs": 16.534402999997837,
-          "totalMs": 18.306883999990532
+          "compileMs": 0.0178169999999227,
+          "matchMs": 1.612779999995837,
+          "extractMs": 18.426376999996137,
+          "totalMs": 20.056973999991897
         },
         {
           "n": 10000000,
           "regexBytes": 18,
-          "compileMs": 0.033281999989412725,
-          "matchMs": 2.93908100000408,
-          "extractMs": 31.026087000005646,
-          "totalMs": 33.99844999999914
+          "compileMs": 0.030336000010720454,
+          "matchMs": 3.4018660000001546,
+          "extractMs": 34.26984700000321,
+          "totalMs": 37.702049000014085
         },
         {
           "n": 50000000,
           "regexBytes": 18,
-          "compileMs": 0.041096000000834465,
-          "matchMs": 9.713908999998239,
-          "extractMs": 160.18359999998938,
-          "totalMs": 169.93860499998846
+          "compileMs": 0.04649999999674037,
+          "matchMs": 7.369479999993928,
+          "extractMs": 162.76965400000336,
+          "totalMs": 170.18563399999402
         },
         {
           "n": 100000000,
           "regexBytes": 18,
-          "compileMs": 0.043841999999131076,
-          "matchMs": 34.94050100000459,
-          "extractMs": 331.7929739999963,
-          "totalMs": 366.77731700000004
+          "compileMs": 0.054352000006474555,
+          "matchMs": 14.842125000010128,
+          "extractMs": 326.11970799999835,
+          "totalMs": 341.01618500001496
         },
         {
           "n": 256000000,
           "regexBytes": 18,
-          "compileMs": 0.05105599999660626,
-          "matchMs": 44.75741299999936,
-          "extractMs": 822.5966389999958,
-          "totalMs": 867.4051079999917
+          "compileMs": 0.049825000009150244,
+          "matchMs": 54.539503000007244,
+          "extractMs": 819.026246999987,
+          "totalMs": 873.6155750000034
         },
         {
           "n": 512000000,
           "regexBytes": 18,
-          "compileMs": 0.0422380000090925,
-          "matchMs": 88.10794699999678,
-          "extractMs": 1585.79333700001,
-          "totalMs": 1673.943522000016
+          "compileMs": 0.05809800000861287,
+          "matchMs": 72.08727100001124,
+          "extractMs": 1638.4354449999955,
+          "totalMs": 1710.5808140000154
         }
       ],
       "limit": {
@@ -495,7 +495,7 @@
         "reason": "RangeError: Invalid string length",
         "stage": "build"
       },
-      "durationMs": 3137.0124959999957
+      "durationMs": 3160.928329000002
     },
     "pure-literal-size": {
       "description": "Template with zero EJS tags (pure HTML literal); finds the size cliff for the 'paste raw HTML first, add tags later' workflow",
@@ -503,38 +503,38 @@
         {
           "n": 100,
           "regexBytes": 19400,
-          "compileMs": 0.1421459999983199,
-          "matchMs": 0.019136000002617948,
-          "extractMs": 0.001293000008445233,
-          "totalMs": 0.16257500000938307
+          "compileMs": 0.14278599999670405,
+          "matchMs": 0.016084000002592802,
+          "extractMs": 0.0011220000014873222,
+          "totalMs": 0.15999200000078417
         },
         {
           "n": 1000,
           "regexBytes": 194000,
-          "compileMs": 0.9786490000115009,
-          "matchMs": 0.11545599999953993,
-          "extractMs": 0.0013420000032056123,
-          "totalMs": 1.0954470000142464
+          "compileMs": 3.8911470000020927,
+          "matchMs": 0.09890899999300018,
+          "extractMs": 0.0013719999988097697,
+          "totalMs": 3.9914279999939026
         },
         {
           "n": 10000,
           "regexBytes": 1940000,
-          "compileMs": 8.414298000003328,
-          "matchMs": 1.162041000003228,
-          "extractMs": 0.0023939999955473468,
-          "totalMs": 9.578733000002103
+          "compileMs": 9.245788000000175,
+          "matchMs": 0.963608000005479,
+          "extractMs": 0.0024530000082449988,
+          "totalMs": 10.211849000013899
         },
         {
           "n": 50000,
           "regexBytes": 9700000,
-          "compileMs": 37.18956299999263,
-          "matchMs": 5.647470000010799,
-          "extractMs": 0.005579999997280538,
-          "totalMs": 42.84261300000071
+          "compileMs": 38.9456610000052,
+          "matchMs": 4.820283000008203,
+          "extractMs": 0.0052580000046873465,
+          "totalMs": 43.77120200001809
         }
       ],
       "limit": null,
-      "durationMs": 125.26476399999228
+      "durationMs": 134.11549299999024
     },
     "literal-with-capture-size": {
       "description": "Big literal mass surrounding a single <%= who %> capture; confirms the capture-only fast path lifts the ~40KB regex cliff",
@@ -542,38 +542,38 @@
         {
           "n": 100,
           "regexBytes": 38823,
-          "compileMs": 0.20747700000356417,
-          "matchMs": 0.04363099999318365,
-          "extractMs": 0.001552999994601123,
-          "totalMs": 0.25266099999134894
+          "compileMs": 0.22965700000349898,
+          "matchMs": 0.046459999997750856,
+          "extractMs": 0.0018229999986942858,
+          "totalMs": 0.2779399999999441
         },
         {
           "n": 1000,
           "regexBytes": 388023,
-          "compileMs": 1.9335719999944558,
-          "matchMs": 0.4824510000034934,
-          "extractMs": 0.002043999993475154,
-          "totalMs": 2.4180669999914244
+          "compileMs": 1.9832099999912316,
+          "matchMs": 0.48750799999106675,
+          "extractMs": 0.0022330000065267086,
+          "totalMs": 2.472950999988825
         },
         {
           "n": 10000,
           "regexBytes": 3880023,
-          "compileMs": 15.165059000006295,
-          "matchMs": 3.8083639999968,
-          "extractMs": 0.007172999990871176,
-          "totalMs": 18.980595999993966
+          "compileMs": 16.41150899999775,
+          "matchMs": 3.9653289999987464,
+          "extractMs": 0.007901999997557141,
+          "totalMs": 20.384739999994054
         },
         {
           "n": 25000,
           "regexBytes": 9700023,
-          "compileMs": 36.60128400000394,
-          "matchMs": 9.021912999989581,
-          "extractMs": 0.007053000008454546,
-          "totalMs": 45.63025000000198
+          "compileMs": 40.585060999990674,
+          "matchMs": 7.683243999999831,
+          "extractMs": 0.00862300000153482,
+          "totalMs": 48.27692799999204
         }
       ],
       "limit": null,
-      "durationMs": 165.2323260000121
+      "durationMs": 170.7594620000018
     },
     "literal-with-loop-size": {
       "description": "Big literal mass surrounding a <% items.forEach %> loop; confirms the hybrid fast path lifts the ~40KB regex cliff",
@@ -581,38 +581,38 @@
         {
           "n": 100,
           "regexBytes": 38838,
-          "compileMs": 0.28748699999414384,
-          "matchMs": 0.2147010000044247,
-          "extractMs": 0.0020739999890793115,
-          "totalMs": 0.5042619999876479
+          "compileMs": 0.3653420000046026,
+          "matchMs": 0.18257599999196827,
+          "extractMs": 0.002143000005162321,
+          "totalMs": 0.5500610000017332
         },
         {
           "n": 1000,
           "regexBytes": 388038,
-          "compileMs": 1.9228120000043418,
-          "matchMs": 0.5145009999978356,
-          "extractMs": 0.002183999997214414,
-          "totalMs": 2.439496999999392
+          "compileMs": 1.9662950000056298,
+          "matchMs": 0.5642740000039339,
+          "extractMs": 0.002613999997265637,
+          "totalMs": 2.5331830000068294
         },
         {
           "n": 10000,
           "regexBytes": 3880038,
-          "compileMs": 15.111720000000787,
-          "matchMs": 4.548878000001423,
-          "extractMs": 0.006211999992956407,
-          "totalMs": 19.666809999995166
+          "compileMs": 16.450748999995994,
+          "matchMs": 4.756706000000122,
+          "extractMs": 0.006580000001122244,
+          "totalMs": 21.21403499999724
         },
         {
           "n": 25000,
           "regexBytes": 9700038,
-          "compileMs": 37.502347000001464,
-          "matchMs": 9.068660999997519,
-          "extractMs": 0.0061920000007376075,
-          "totalMs": 46.57719999999972
+          "compileMs": 39.63458399999945,
+          "matchMs": 7.672246999994968,
+          "extractMs": 0.006880000000819564,
+          "totalMs": 47.31371099999524
         }
       ],
       "limit": null,
-      "durationMs": 164.12660000000324
+      "durationMs": 174.17979699998978
     },
     "include-depth": {
       "description": "N levels of nested partials (each includes the next); verifies the include-depth cap",
@@ -620,58 +620,58 @@
         {
           "n": 1,
           "regexBytes": 15,
-          "compileMs": 0.27293900000222493,
-          "matchMs": 0.015568999995593913,
-          "extractMs": 0.0019739999988814816,
-          "totalMs": 0.2904819999967003
+          "compileMs": 0.29856199999630917,
+          "matchMs": 0.01819799999066163,
+          "extractMs": 0.0019329999922774732,
+          "totalMs": 0.31869299997924827
         },
         {
           "n": 5,
           "regexBytes": 15,
-          "compileMs": 0.04241899999033194,
-          "matchMs": 0.004358999998657964,
-          "extractMs": 0.001512999995611608,
-          "totalMs": 0.04829099998460151
+          "compileMs": 0.03968000000168104,
+          "matchMs": 0.003936000008252449,
+          "extractMs": 0.00157200000830926,
+          "totalMs": 0.04518800001824275
         },
         {
           "n": 10,
           "regexBytes": 15,
-          "compileMs": 0.04022499998973217,
-          "matchMs": 0.0032659999997122213,
-          "extractMs": 0.0013619999954244122,
-          "totalMs": 0.0448529999848688
+          "compileMs": 0.09136799999396317,
+          "matchMs": 0.003425000002607703,
+          "extractMs": 0.00159200000052806,
+          "totalMs": 0.09638499999709893
         },
         {
           "n": 15,
           "regexBytes": 15,
-          "compileMs": 0.046646999995573424,
-          "matchMs": 0.003336000008857809,
-          "extractMs": 0.001472999996622093,
-          "totalMs": 0.051456000001053326
+          "compileMs": 0.03981999999086838,
+          "matchMs": 0.0030439999973168597,
+          "extractMs": 0.0012319999950705096,
+          "totalMs": 0.04409599998325575
         },
         {
           "n": 18,
           "regexBytes": 15,
-          "compileMs": 0.03703900000255089,
-          "matchMs": 0.003535999989253469,
-          "extractMs": 0.001472999996622093,
-          "totalMs": 0.042047999988426454
+          "compileMs": 0.033530000000610016,
+          "matchMs": 0.0025039999891305342,
+          "extractMs": 0.0012019999994663522,
+          "totalMs": 0.0372359999892069
         },
         {
           "n": 19,
           "regexBytes": 15,
-          "compileMs": 0.037169000002904795,
-          "matchMs": 0.0030549999937647954,
-          "extractMs": 0.0013319999998202547,
-          "totalMs": 0.041555999996489845
+          "compileMs": 0.03080700000282377,
+          "matchMs": 0.0023440000077243894,
+          "extractMs": 0.001101999994716607,
+          "totalMs": 0.034253000005264767
         },
         {
           "n": 20,
           "regexBytes": 15,
-          "compileMs": 0.040355999997700565,
-          "matchMs": 0.003145000009681098,
-          "extractMs": 0.0013919999910285696,
-          "totalMs": 0.04489299999841023
+          "compileMs": 0.03470299999753479,
+          "matchMs": 0.002303000001120381,
+          "extractMs": 0.0010610000026645139,
+          "totalMs": 0.038067000001319684
         }
       ],
       "limit": {
@@ -680,7 +680,7 @@
         "reason": "Error: Include depth limit exceeded - possible circular include",
         "stage": "compile"
       },
-      "durationMs": 2.107596999994712
+      "durationMs": 1.9385829999955604
     },
     "max-object-depth": {
       "description": "Single variable with an N-component dotted path; finds the nested-object-depth ceiling",
@@ -688,26 +688,26 @@
         {
           "n": 10,
           "regexBytes": 10,
-          "compileMs": 0.04865099999005906,
-          "matchMs": 0.04413300000305753,
-          "extractMs": 0.00239500000316184,
-          "totalMs": 0.09517899999627843
+          "compileMs": 0.04549899999983609,
+          "matchMs": 0.048523999997996725,
+          "extractMs": 0.002533999999286607,
+          "totalMs": 0.09655699999711942
         },
         {
           "n": 100,
           "regexBytes": 10,
-          "compileMs": 0.0317090000025928,
-          "matchMs": 0.1287599999923259,
-          "extractMs": 0.010879999987082556,
-          "totalMs": 0.17134899998200126
+          "compileMs": 0.029223999998066574,
+          "matchMs": 0.1400619999913033,
+          "extractMs": 0.012418999991496094,
+          "totalMs": 0.18170499998086598
         },
         {
           "n": 1000,
           "regexBytes": 10,
-          "compileMs": 0.07979899999918416,
-          "matchMs": 1.6233420000062324,
-          "extractMs": 0.2994100000069011,
-          "totalMs": 2.0025510000123177
+          "compileMs": 0.080350999996881,
+          "matchMs": 1.7697670000052312,
+          "extractMs": 0.41255399999499787,
+          "totalMs": 2.26267199999711
         }
       ],
       "limit": {
@@ -716,7 +716,7 @@
         "reason": "RangeError: Maximum call stack size exceeded",
         "stage": "extract"
       },
-      "durationMs": 12.99499599999399
+      "durationMs": 14.14076299998851
     },
     "max-loop-iterations": {
       "description": "Fixed loop body; scale the rendered array to N items to find the extraction-loop iteration ceiling",
@@ -724,46 +724,46 @@
         {
           "n": 100,
           "regexBytes": 29,
-          "compileMs": 0.08489900000859052,
-          "matchMs": 0.14871799999673385,
-          "extractMs": 0.0038780000031692907,
-          "totalMs": 0.23749500000849366
+          "compileMs": 0.08521900000050664,
+          "matchMs": 0.1467819999961648,
+          "extractMs": 0.003995999999460764,
+          "totalMs": 0.23599699999613222
         },
         {
           "n": 1000,
           "regexBytes": 29,
-          "compileMs": 0.010510000007343479,
-          "matchMs": 1.2441039999976056,
-          "extractMs": 0.02599900000495836,
-          "totalMs": 1.2806130000099074
+          "compileMs": 0.009875000003376044,
+          "matchMs": 1.1805960000056075,
+          "extractMs": 0.04147199999715667,
+          "totalMs": 1.2319430000061402
         },
         {
           "n": 10000,
           "regexBytes": 29,
-          "compileMs": 0.013384999998379499,
-          "matchMs": 29.450586000006297,
-          "extractMs": 0.4559810000064317,
-          "totalMs": 29.919952000011108
+          "compileMs": 0.016325000004144385,
+          "matchMs": 28.844738999992842,
+          "extractMs": 0.6223909999971511,
+          "totalMs": 29.483454999994137
         },
         {
           "n": 100000,
           "regexBytes": 29,
-          "compileMs": 0.050664000009419397,
-          "matchMs": 69.7237490000116,
-          "extractMs": 3.427032000006875,
-          "totalMs": 73.20144500002789
+          "compileMs": 0.053972000008798204,
+          "matchMs": 65.40033399999083,
+          "extractMs": 3.3475449999968987,
+          "totalMs": 68.80185099999653
         },
         {
           "n": 1000000,
           "regexBytes": 29,
-          "compileMs": 0.05378099999506958,
-          "matchMs": 652.9814650000044,
-          "extractMs": 25.469307999999728,
-          "totalMs": 678.5045539999992
+          "compileMs": 0.06745200000295881,
+          "matchMs": 642.9202059999952,
+          "extractMs": 25.396172000007937,
+          "totalMs": 668.3838300000061
         }
       ],
       "limit": null,
-      "durationMs": 974.4794779999938
+      "durationMs": 970.3954050000029
     },
     "max-partial-breadth": {
       "description": "Template inlines N distinct partials each with one variable; finds the include-expansion breadth ceiling",
@@ -771,54 +771,54 @@
         {
           "n": 10,
           "regexBytes": 15,
-          "compileMs": 0.1180400000012014,
-          "matchMs": 0.09307299999636598,
-          "extractMs": 0.003145999988191761,
-          "totalMs": 0.21425899998575915
+          "compileMs": 0.11805799999274313,
+          "matchMs": 0.07740700000431389,
+          "extractMs": 0.0029839999915566295,
+          "totalMs": 0.19844899998861365
         },
         {
           "n": 100,
           "regexBytes": 15,
-          "compileMs": 0.5466210000013234,
-          "matchMs": 0.1997540000011213,
-          "extractMs": 0.016310999999404885,
-          "totalMs": 0.7626860000018496
+          "compileMs": 0.4617690000013681,
+          "matchMs": 0.19972200000484008,
+          "extractMs": 0.022974000006797723,
+          "totalMs": 0.6844650000130059
         },
         {
           "n": 500,
           "regexBytes": 15,
-          "compileMs": 1.7546780000120634,
-          "matchMs": 0.4562020000012126,
-          "extractMs": 0.0723240000079386,
-          "totalMs": 2.2832040000212146
+          "compileMs": 1.2190740000078222,
+          "matchMs": 0.4634010000008857,
+          "extractMs": 0.07862900001055095,
+          "totalMs": 1.7611040000192588
         },
         {
           "n": 1000,
           "regexBytes": 15,
-          "compileMs": 3.9490769999974873,
-          "matchMs": 1.3825630000064848,
-          "extractMs": 0.21078399999532849,
-          "totalMs": 5.542423999999301
+          "compileMs": 2.3725700000068173,
+          "matchMs": 1.354959999996936,
+          "extractMs": 0.2385809999977937,
+          "totalMs": 3.966111000001547
         },
         {
           "n": 2000,
           "regexBytes": 15,
-          "compileMs": 9.625700999997207,
-          "matchMs": 2.9926399999967543,
-          "extractMs": 0.46931600000243634,
-          "totalMs": 13.087656999996398
+          "compileMs": 9.802500000005239,
+          "matchMs": 2.7938969999959227,
+          "extractMs": 0.47279499999422114,
+          "totalMs": 13.069191999995383
         },
         {
           "n": 5000,
           "regexBytes": 15,
-          "compileMs": 11.096659999995609,
-          "matchMs": 2.9999039999966044,
-          "extractMs": 0.8393979999964358,
-          "totalMs": 14.935961999988649
+          "compileMs": 13.099617999992915,
+          "matchMs": 5.355181999999331,
+          "extractMs": 1.1923440000100527,
+          "totalMs": 19.6471440000023
         }
       ],
       "limit": null,
-      "durationMs": 62.00445799999579
+      "durationMs": 62.1424449999904
     },
     "max-coercion-types": {
       "description": "N distinct numeric variables all with type coercion; finds the applyCoercions entries-walk ceiling",
@@ -826,209 +826,209 @@
         {
           "n": 100,
           "regexBytes": 2170,
-          "compileMs": 0.17058900000120047,
-          "matchMs": 0.3109110000077635,
-          "extractMs": 0.01512800001364667,
-          "totalMs": 0.49662800002261065
+          "compileMs": 0.23737899999832734,
+          "matchMs": 0.390441000010469,
+          "extractMs": 0.01583399999071844,
+          "totalMs": 0.6436539999995148
         },
         {
           "n": 1000,
           "regexBytes": 24670,
-          "compileMs": 0.8187199999956647,
-          "matchMs": 0.9845080000086455,
-          "extractMs": 0.15313500000047497,
-          "totalMs": 1.9563630000047851
+          "compileMs": 0.925980999993044,
+          "matchMs": 1.0663630000053672,
+          "extractMs": 0.15032699999574106,
+          "totalMs": 2.1426709999941522
         },
         {
           "n": 5000,
           "regexBytes": 136670,
-          "compileMs": 5.442276000001584,
-          "matchMs": 5.464206999997259,
-          "extractMs": 0.7639770000096178,
-          "totalMs": 11.670460000008461
+          "compileMs": 6.0238229999959,
+          "matchMs": 6.331418999994639,
+          "extractMs": 0.9485149999964051,
+          "totalMs": 13.303756999986945
         },
         {
           "n": 10000,
           "regexBytes": 276670,
-          "compileMs": 10.109946000011405,
-          "matchMs": 9.699789999998757,
-          "extractMs": 1.680038999998942,
-          "totalMs": 21.489775000009104
+          "compileMs": 10.73954799999774,
+          "matchMs": 10.726559000002453,
+          "extractMs": 1.7437890000001062,
+          "totalMs": 23.2098960000003
         },
         {
           "n": 20000,
           "regexBytes": 586670,
-          "compileMs": 28.60259800001222,
-          "matchMs": 19.290605999995023,
-          "extractMs": 3.964204999996582,
-          "totalMs": 51.85740900000383
+          "compileMs": 32.51486099998874,
+          "matchMs": 21.273151000001235,
+          "extractMs": 4.174880000005942,
+          "totalMs": 57.96289199999592
         },
         {
           "n": 30000,
           "regexBytes": 896670,
-          "compileMs": 52.59819000000425,
-          "matchMs": 32.675671999997576,
-          "extractMs": 6.3117720000009285,
-          "totalMs": 91.58563400000276
+          "compileMs": 61.34867900000245,
+          "matchMs": 31.420037000003504,
+          "extractMs": 6.702210000003106,
+          "totalMs": 99.47092600000906
         }
       ],
       "limit": null,
-      "durationMs": 6455.143507000001
+      "durationMs": 7122.982384999996
     }
   },
   "benchmarks": {
     "compile-cold": {
       "description": "compileTemplate() on a unique template each call (cache miss)",
       "samples": 100,
-      "median_ms": 0.0176286129032134,
-      "p99_ms": 0.053714406451646,
-      "mean_ms": 0.021216569096767234,
-      "stddev_ms": 0.007240527975089731,
-      "stddev_pct": 41.072590423548895,
-      "ops_per_sec": 56725.96054438956,
+      "median_ms": 0.016933461538493254,
+      "p99_ms": 0.057859396449698015,
+      "mean_ms": 0.021232761301776367,
+      "stddev_ms": 0.007202609161597341,
+      "stddev_pct": 42.53477143597795,
+      "ops_per_sec": 59054.67099723194,
       "noisy": true
     },
     "match-only": {
       "description": "compiled.match() on a pre-compiled template — no compile cost in the hot path",
       "samples": 100,
-      "median_ms": 0.010950223880593227,
-      "p99_ms": 0.027960216417911275,
-      "mean_ms": 0.01191498850746044,
-      "stddev_ms": 0.0030539848533343975,
-      "stddev_pct": 27.889702408248375,
-      "ops_per_sec": 91322.3337627162,
+      "median_ms": 0.017455135135143695,
+      "p99_ms": 0.03572544864861836,
+      "mean_ms": 0.019532107999999816,
+      "stddev_ms": 0.004697108295152369,
+      "stddev_pct": 26.909607165947047,
+      "ops_per_sec": 57289.73120274659,
       "noisy": true
     },
     "extract-product-page": {
       "description": "reverseEjs() compile + match + extract on the product page",
       "samples": 100,
-      "median_ms": 0.01657935661767303,
-      "p99_ms": 0.020777749999979278,
-      "mean_ms": 0.01692674014705732,
-      "stddev_ms": 0.0007404965441560016,
-      "stddev_pct": 4.466376839778315,
-      "ops_per_sec": 60315.97142521405,
-      "noisy": false
+      "median_ms": 0.02387137128712176,
+      "p99_ms": 0.03764808910889067,
+      "mean_ms": 0.02595327995049721,
+      "stddev_ms": 0.004156706280379081,
+      "stddev_pct": 17.412934642014307,
+      "ops_per_sec": 41891.18371006549,
+      "noisy": true
     },
     "extract-with-flexws": {
       "description": "reverseEjs() with flexibleWhitespace: true (compare to extract-product-page for overhead ratio)",
       "samples": 100,
-      "median_ms": 0.03845942424253956,
-      "p99_ms": 0.08706795454539436,
-      "mean_ms": 0.041501900303033336,
-      "stddev_ms": 0.0094921033660534,
-      "stddev_pct": 24.680825449160743,
-      "ops_per_sec": 26001.429290610926,
+      "median_ms": 0.04365666292125772,
+      "p99_ms": 0.07791607865175557,
+      "mean_ms": 0.04783679741572915,
+      "stddev_ms": 0.008514537163455347,
+      "stddev_pct": 19.50340817119434,
+      "ops_per_sec": 22906.01097485787,
       "noisy": true
     },
     "extract-with-coercion": {
       "description": "reverseEjs() with types: { price: 'number', rating: 'number' } (compare to extract-product-page for overhead)",
       "samples": 100,
-      "median_ms": 0.017678259067322427,
-      "p99_ms": 0.03969244041448155,
-      "mean_ms": 0.018548737720202883,
-      "stddev_ms": 0.0030108459990254716,
-      "stddev_pct": 17.03134900082386,
-      "ops_per_sec": 56566.65603732785,
+      "median_ms": 0.0257640923076766,
+      "p99_ms": 0.047613961538501406,
+      "mean_ms": 0.028160177538460215,
+      "stddev_ms": 0.005819377535263242,
+      "stddev_pct": 22.58716303981459,
+      "ops_per_sec": 38813.70971885715,
       "noisy": true
     },
     "unescape-fast-path-vs-slow": {
-      "description": "unescape: slow path 0.053ms, fast path 0.001ms (37.49× ratio — regression if ratio < 1.5)",
+      "description": "unescape: slow path 0.055ms, fast path 0.002ms (22.12× ratio — regression if ratio < 1.5)",
       "samples": 100,
-      "median_ms": 0.05296564948464235,
-      "p99_ms": 0.07106853608244829,
-      "mean_ms": 0.05397024278351365,
-      "stddev_ms": 0.002614510699890536,
-      "stddev_pct": 4.936238345663308,
-      "ops_per_sec": 18880.16119371773,
+      "median_ms": 0.05499968131870456,
+      "p99_ms": 0.07307658241748308,
+      "mean_ms": 0.05791065483517302,
+      "stddev_ms": 0.005244089030519081,
+      "stddev_pct": 9.534762574589038,
+      "ops_per_sec": 18181.923531617176,
       "noisy": false
     },
     "extract-log-lines": {
       "description": "reverseEjsAll() over 100 structured log lines — realistic log-parsing workload",
       "samples": 100,
-      "median_ms": 0.0537387999999919,
-      "p99_ms": 0.10875597999984166,
-      "mean_ms": 0.05683072379999794,
-      "stddev_ms": 0.009939918818188318,
-      "stddev_pct": 18.496726421486553,
-      "ops_per_sec": 18608.52866085865,
+      "median_ms": 0.25860519999987447,
+      "p99_ms": 0.5465607999998611,
+      "mean_ms": 0.2944460500000568,
+      "stddev_ms": 0.08605833910151169,
+      "stddev_pct": 33.27788424268091,
+      "ops_per_sec": 3866.898268095481,
       "noisy": true
     },
     "extract-csv-rows": {
       "description": "reverseEjs() extracting 1000 rows from a CSV table — tight loop inner match",
       "samples": 100,
-      "median_ms": 1.419762333331164,
-      "p99_ms": 1.6484996666695224,
-      "mean_ms": 1.4634738533333682,
-      "stddev_ms": 0.06804193012764481,
-      "stddev_pct": 4.792487343145609,
-      "ops_per_sec": 704.3432386698956,
+      "median_ms": 1.459244000002703,
+      "p99_ms": 1.8895849999971688,
+      "mean_ms": 1.5686635500001054,
+      "stddev_ms": 0.15305237442213096,
+      "stddev_pct": 10.488470360121232,
+      "ops_per_sec": 685.2863537545111,
       "noisy": false
     },
     "extract-email": {
       "description": "reverseEjs() on a transactional email — long literal content, sparse variables",
       "samples": 100,
-      "median_ms": 0.008015202821870506,
-      "p99_ms": 0.013876451499116683,
-      "mean_ms": 0.008173739911815501,
-      "stddev_ms": 0.0006278142800692859,
-      "stddev_pct": 7.83279343045711,
-      "ops_per_sec": 124762.90646961197,
-      "noisy": false
+      "median_ms": 0.012008947780662502,
+      "p99_ms": 0.05592522193211454,
+      "mean_ms": 0.012525893368150498,
+      "stddev_ms": 0.0050668443207676165,
+      "stddev_pct": 42.192242095735814,
+      "ops_per_sec": 83271.24226572602,
+      "noisy": true
     },
     "large-page-hybrid": {
       "description": "reverseEjs() on a 30KB page with 5 scalars + a 50-item loop — hybrid walker",
       "samples": 100,
-      "median_ms": 0.29086275000008754,
-      "p99_ms": 0.3695503124999959,
-      "mean_ms": 0.2960735737500272,
-      "stddev_ms": 0.012978275778780966,
-      "stddev_pct": 4.461993080508611,
-      "ops_per_sec": 3438.0476702489373,
+      "median_ms": 0.32134273333358576,
+      "p99_ms": 0.44192979999934323,
+      "mean_ms": 0.3273807573333617,
+      "stddev_ms": 0.016884697141459973,
+      "stddev_pct": 5.254420091065814,
+      "ops_per_sec": 3111.942161025625,
       "noisy": false
     },
     "batch-100-rows": {
       "description": "reverseEjsAll() across 100 table-row rendered strings — compile once, match many",
       "samples": 100,
-      "median_ms": 0.04669379687493347,
-      "p99_ms": 0.09330068750000464,
-      "mean_ms": 0.04924319546874585,
-      "stddev_ms": 0.007131291306583966,
-      "stddev_pct": 15.272459692418463,
-      "ops_per_sec": 21416.120918126235,
-      "noisy": true
+      "median_ms": 0.045841367088576564,
+      "p99_ms": 0.06367593670899013,
+      "mean_ms": 0.0467764081012644,
+      "stddev_ms": 0.0035774559727121714,
+      "stddev_pct": 7.80399058736548,
+      "ops_per_sec": 21814.35815532637,
+      "noisy": false
     },
     "deep-nested-extraction": {
       "description": "Extract a single variable with a 10-level dotted path — stresses setNested",
       "samples": 100,
-      "median_ms": 0.002098664292493651,
-      "p99_ms": 0.0028653053181401916,
-      "mean_ms": 0.002161535261158344,
-      "stddev_ms": 0.00011490685369913433,
-      "stddev_pct": 5.475237469381109,
-      "ops_per_sec": 476493.55048195506,
+      "median_ms": 0.0026679865125328285,
+      "p99_ms": 0.004199396917150762,
+      "mean_ms": 0.0027471454913301423,
+      "stddev_ms": 0.00019614357378531662,
+      "stddev_pct": 7.351745327944313,
+      "ops_per_sec": 374814.48849254457,
       "noisy": false
     },
     "backref-fallback": {
       "description": "reverseEjs() on a template with a repeated variable — forces the regex-path fallback",
       "samples": 100,
-      "median_ms": 0.003862006912443949,
-      "p99_ms": 0.007345565668196463,
-      "mean_ms": 0.004079627788017998,
-      "stddev_ms": 0.0005639164714085445,
-      "stddev_pct": 14.6016432438669,
-      "ops_per_sec": 258932.73178197956,
-      "noisy": false
+      "median_ms": 0.00452064456233189,
+      "p99_ms": 0.00988411538460229,
+      "mean_ms": 0.00477794787798411,
+      "stddev_ms": 0.0008258482884662415,
+      "stddev_pct": 18.268374721330513,
+      "ops_per_sec": 221207.39337316283,
+      "noisy": true
     },
     "partial-expansion": {
       "description": "reverseEjs() on a layout with 2 partial includes (cache-warm)",
       "samples": 100,
-      "median_ms": 0.0038282760223068667,
-      "p99_ms": 0.004750584572483093,
-      "mean_ms": 0.003937993578067081,
-      "stddev_ms": 0.00020988003414903802,
-      "stddev_pct": 5.482364200650485,
-      "ops_per_sec": 261214.18470693598,
+      "median_ms": 0.004643500537058102,
+      "p99_ms": 0.005877515574656232,
+      "mean_ms": 0.004728469162191931,
+      "stddev_ms": 0.00019674589443356417,
+      "stddev_pct": 4.237016726140251,
+      "ops_per_sec": 215354.77212059326,
       "noisy": false
     }
   }
