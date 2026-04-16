@@ -591,12 +591,26 @@ Avoid padded/aligned formats like `docker ps` or `ls -l` - the varying whitespac
 
 ## How It Works
 
-The library converts an EJS template into a regular expression with named capture groups, then matches it against the rendered string:
+1. **Tokenize** — Split the template using EJS's own delimiter logic.
+2. **Build pattern** — Convert tokens into an AST (literals, variables, expressions, loops, conditionals).
+3. **Match** — Pick the cheapest strategy for the pattern's shape:
+    - **Pure literal** (zero captures) → plain string equality.
+    - **Capture-only** (literals + variables/expressions) → cursor walk with `startsWith` / `indexOf`. No regex.
+    - **Hybrid** (captures plus loops/conditionals anchored by literals) → outer cursor walk; small per-body regex scoped to the loop/conditional's sliced sub-section.
+    - **Regex fallback** for everything else (`flexibleWhitespace`, repeated captures that need back-references, back-to-back loops with no anchor between them). A named-capture-group regex built from the AST.
+4. **Extract** — Map captures back to variable names and apply `types` coercion.
 
-1. **Tokenize** - Split the template using EJS's own delimiter logic
-2. **Build pattern** - Convert tokens into an AST (literals, variables, loops, conditionals)
-3. **Build regex** - Convert the AST into a regex with named captures, backreferences, and alternations
-4. **Extract** - Execute the regex against the rendered string and map captures back to variable names
+The walker tiers skip V8's regex compiler entirely for the shapes most templates have, so large templates (up to ~10MB for mainstream shapes) work out of the box. The regex fallback preserves exact semantics for the cases the walker can't handle, so behavior is identical either way.
+
+### Scale guidance
+
+| Template shape                                  | Practical ceiling |
+| ----------------------------------------------- | ----------------- |
+| Pure literal (no EJS tags yet)                  | ~1GB              |
+| Literals + variables / expressions              | ~10MB             |
+| Literals + loops / conditionals around literals | ~10MB             |
+| Same variable captured twice (regex path)       | ~40KB of literals |
+| `flexibleWhitespace: true` (regex path)         | ~40KB of literals |
 
 ## Limitations
 

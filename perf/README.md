@@ -10,19 +10,35 @@ comment). Standardized environment via pinned Node version on
 ```
 perf/
 ├── bench/              # benchmarks: stable workloads, statistical timings
-│   ├── compile.ts      # compileTemplate() cost
-│   ├── extract.ts      # full reverseEjs() round-trip on a typical page
-│   ├── reuse.ts        # compileTemplate × N matches vs reverseEjs in a loop
-│   ├── flexws.ts       # flexibleWhitespace overhead
-│   └── coercion.ts     # types option overhead
+│   ├── compile.ts                   # compile-cold cost
+│   ├── match-only.ts                # pre-compiled match + extract
+│   ├── extract.ts                   # full reverseEjs() on a product page
+│   ├── flexws.ts                    # flexibleWhitespace overhead
+│   ├── coercion.ts                  # types option overhead
+│   ├── unescape-paths.ts            # fast vs slow unescape ratio
+│   ├── log-lines.ts                 # 100 log lines
+│   ├── csv-rows.ts                  # 1000-row CSV
+│   ├── email.ts                     # long-literal email template
+│   ├── large-page-hybrid.ts         # ~30KB page, hybrid walker
+│   ├── batch-100-rows.ts            # reverseEjsAll amortization
+│   ├── deep-nested.ts               # 10-level dotted path
+│   ├── backref-fallback.ts          # forced regex-path
+│   ├── partial-expansion.ts         # cache-warm include overhead
+│   └── fixtures.ts                  # shared templates
 ├── limits/             # limit-finding sweeps: scale until failure
-│   ├── regex-by-variable-count.ts
-│   ├── regex-by-loop-body.ts
-│   ├── regex-by-loop-nesting.ts
-│   ├── regex-by-conditionals.ts
-│   ├── capture-group-cap.ts
-│   ├── rendered-size-sweep.ts
-│   └── include-depth.ts
+│   ├── variable-count.ts            # N <%= varI %> tags
+│   ├── loop-body-width.ts           # wide loop body (regex cliff)
+│   ├── loop-nesting-depth.ts        # deeply nested forEach (stack cliff)
+│   ├── conditional-count.ts         # many alternations (regex cliff)
+│   ├── rendered-size-sweep.ts       # variable value size
+│   ├── pure-literal-size.ts         # zero-capture template
+│   ├── literal-with-capture-size.ts # literal around one capture
+│   ├── literal-with-loop-size.ts    # literal around one loop
+│   ├── include-depth.ts             # linear partial recursion
+│   ├── max-object-depth.ts          # dotted-path depth
+│   ├── max-loop-iterations.ts       # array size
+│   ├── max-partial-breadth.ts       # distinct partials
+│   └── max-coercion-types.ts        # types entries
 ├── lib/                # shared timing harness, types
 │   ├── runner.ts
 │   └── types.ts

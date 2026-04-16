@@ -114,24 +114,40 @@ every PR (posts a comparison comment without committing).
 
 ```
 perf/
-├── bench/              # benchmarks: stable workloads, statistical timings
-│   ├── compile.ts      # compileTemplate() cost
-│   ├── extract.ts      # full reverseEjs() round-trip on a typical page
-│   ├── reuse.ts        # compileTemplate × N matches vs reverseEjs in a loop
-│   ├── flexws.ts       # flexibleWhitespace overhead
-│   └── coercion.ts     # types option overhead
-├── limits/             # limit-finding sweeps: scale until failure
-│   ├── regex-by-variable-count.ts
-│   ├── regex-by-loop-body.ts
-│   ├── regex-by-loop-nesting.ts
-│   ├── regex-by-conditionals.ts
-│   ├── capture-group-cap.ts
-│   ├── rendered-size-sweep.ts
-│   └── include-depth.ts
-├── lib/                # shared timing harness, types
-├── run.ts              # orchestrator → writes results.json
-├── compare.ts          # diff two results.json → markdown PR comment
-└── results.json        # CI-only, gitignored locally
+├── bench/                              # benchmarks: stable workloads, statistical timings
+│   ├── compile.ts                      # compile-cold cost (cache miss)
+│   ├── match-only.ts                   # match + extract on a pre-compiled template
+│   ├── extract.ts                      # full reverseEjs() round-trip on a typical page
+│   ├── flexws.ts                       # flexibleWhitespace overhead
+│   ├── coercion.ts                     # types option overhead
+│   ├── unescape-paths.ts               # fast-path vs slow-path unescape ratio
+│   ├── log-lines.ts                    # 100 log lines via reverseEjsAll
+│   ├── csv-rows.ts                     # 1000-row CSV
+│   ├── email.ts                        # long literals + sparse variables
+│   ├── large-page-hybrid.ts            # ~30KB page with 5 scalars + 50-item loop
+│   ├── batch-100-rows.ts               # reverseEjsAll amortization
+│   ├── deep-nested.ts                  # 10-level dotted path → setNested cost
+│   ├── backref-fallback.ts             # forced regex-path penalty
+│   ├── partial-expansion.ts            # cache-warm include cost
+│   └── fixtures.ts                     # shared templates/rendered strings
+├── limits/                             # limit-finding sweeps: scale until failure
+│   ├── variable-count.ts               # N <%= varI %> tags (fast path)
+│   ├── loop-body-width.ts              # wide loop body → regex cliff
+│   ├── loop-nesting-depth.ts           # deeply nested forEach → stack cliff
+│   ├── conditional-count.ts            # many if/else alternations → regex cliff
+│   ├── rendered-size-sweep.ts          # variable value size (to ~1GB)
+│   ├── pure-literal-size.ts            # template with zero captures
+│   ├── literal-with-capture-size.ts    # literal mass around a single capture
+│   ├── literal-with-loop-size.ts       # literal mass around a loop
+│   ├── include-depth.ts                # linear partial recursion
+│   ├── max-object-depth.ts             # dotted-path depth → setNested/stringify
+│   ├── max-loop-iterations.ts          # array size extracted
+│   ├── max-partial-breadth.ts          # distinct partials in one template
+│   └── max-coercion-types.ts           # applyCoercions scaling
+├── lib/                                # shared timing harness, types
+├── run.ts                              # orchestrator → writes results.json
+├── compare.ts                          # diff two results.json → markdown PR comment
+└── results.json                        # CI-only, gitignored locally
 ```
 
 See `perf/README.md` for the schema, scenario design notes, and how to add
@@ -139,35 +155,44 @@ a new measurement.
 
 ### What gets measured
 
-**Limit sweeps** (7 scenarios) scale a parameter until something throws.
-The reported number is the largest N that succeeded. They map to the
-ways a real template can blow up:
+**Limit sweeps** (13 scenarios) scale a parameter until something throws.
+The reported number is the largest N that succeeded. They cover four
+dimensions:
 
-- Number of independent variables
-- Loop body width (variables per iteration)
-- Loop nesting depth
-- Conditional alternation count
-- Pure capture-group count (probes V8's named-capture cap)
-- Rendered text size
-- Include nesting depth
+- **Shape stress** — variable count, loop body width, loop nesting depth,
+  conditional count. Exercise the regex path (where still used) and the
+  walker's pattern-tree recursion.
+- **Input size** — pure-literal templates, literal-mass-around-capture,
+  literal-mass-around-loop, rendered-value size. These benefit most from
+  the fast-path walker; ceilings now sit in the multi-MB range.
+- **Recursion / depth** — include nesting (hardcoded cap of 20).
+- **Post-process** — object depth (setNested + downstream stringify),
+  array size (extractLoopItems), partial breadth, coercion count.
 
-**Benchmarks** (5 scenarios) report median ms for stable workloads:
+**Benchmarks** (14 scenarios) report median ms for stable workloads:
 
-- Compile cost on a representative product-page template
-- Full extraction on the same page
-- `compileTemplate` reuse vs `reverseEjs` in a loop (validates the
-  documented optimization)
-- `flexibleWhitespace: true` overhead
-- `types` coercion overhead
+- Isolated pipeline stages: `compile-cold`, `match-only`, `extract-product-page`
+- Option overhead: `extract-with-flexws`, `extract-with-coercion`
+- Optimization guards: `unescape-fast-path-vs-slow`
+- Realistic corpora: `extract-log-lines`, `extract-csv-rows`, `extract-email`
+- Scaling / shape: `large-page-hybrid`, `batch-100-rows`, `deep-nested-extraction`,
+  `backref-fallback`, `partial-expansion`
 
 ### Why this matters
 
-The first run revealed a non-obvious finding: the V8 regex compiler
-refuses to compile a reverse-ejs-shaped regex at **~3500–4000 captures**,
-well below the documented 32767 named-group cap. That cliff is the same
-regardless of whether the regex is dominated by capture groups, loop
-bodies, alternations, or named groups, suggesting V8 hits a regex-tree
-node-count limit, not a capture-name-table limit.
+The limits used to cluster around **~3500–4000 captures** — V8's regex
+compiler refusing the generated pattern well before its documented 32767
+named-group cap. The current walker stack (pure-literal, capture-only,
+hybrid) skips V8's regex entirely for the template shapes users actually
+have, so the ceilings now sit much higher:
+
+- Pure literal / capture-only / literal-around-loop: **multi-MB** inputs
+  verified.
+- Regex fallback (repeated captures, `flexibleWhitespace: true`,
+  back-to-back opaques): still the old ~40KB cliff.
+
+The sweeps track both regimes — when a PR changes shape-handling code,
+the diff shows which regime moved.
 
 ### Running
 
@@ -188,12 +213,12 @@ The output is a single `perf/results.json` with this shape (see
 
 ```jsonc
 {
-  "version": "3.0.1",
+  "version": "3.0.2",
   "commit": "abc1234",
-  "ranAt": "2026-04-16T...",
+  "ranAt": "2026-04-17T...",
   "platform": { "node": "v22.11.0", "v8": "...", "os": "linux", ... },
-  "limits":      { "regex-by-variable-count": { ... }, ... },
-  "benchmarks":  { "extract-product-page":     { ... }, ... }
+  "limits":      { "variable-count": { ... }, "literal-with-loop-size": { ... }, ... },
+  "benchmarks":  { "extract-product-page": { ... }, "large-page-hybrid": { ... }, ... }
 }
 ```
 

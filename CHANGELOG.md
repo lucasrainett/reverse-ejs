@@ -61,10 +61,34 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Performance
 
-- **Fast-path HTML unescape**: skips the regex scan entirely when the
+- **Fast-path walker** — `compileTemplate()` now detects template shapes
+  that don't need V8's regex engine and matches them with a cursor walk
+  over the rendered string (`startsWith` for literals, `indexOf` for
+  capture boundaries). Three tiers, each subsumed by the next:
+    - _Pure literal_ (zero captures, zero loops, zero conditionals) —
+      plain string comparison.
+    - _Capture-only_ (literals + unique variables/expressions) — slice
+      between literal anchors.
+    - _Hybrid_ (literals + captures + loops/conditionals anchored by
+      literals) — outer walk + tiny per-branch / per-loop-body regex.
+      Result: templates that previously failed at ~40KB of literal text
+      (V8's regex compiler cliff) now scale to **10MB+** for every mainstream
+      shape. Loops and conditionals with outer literals fall out of the
+      regex by construction — only the loop body / branch interior
+      compiles, and those are typically <1KB.
+- **Fallback to regex** is automatic and behavior-preserving for
+  `flexibleWhitespace: true`, repeated capture names (back-reference
+  semantics), inner/outer name collisions across opaque sections, and
+  opaques without literal anchors (e.g. back-to-back loops). Users see
+  the same output from either path.
+- **Fast-path HTML unescape**: skips the entity-regex entirely when the
   extracted value contains no `&`. Measurable speedup for non-HTML
   batch workloads (logs, CSV, plain emails); no effect on HTML values
   that actually contain entities.
+- **Benchmark deltas vs v3.0.1** (CI, Node 22 / V8 12.x, Mac local):
+    - `extract-product-page`: 38.3μs → 7.6μs (**−80%**)
+    - `extract-with-coercion`: 40.6μs → 8.3μs (**−80%**)
+    - `extract-with-flexws`: 58.2μs → 18.1μs (−69%, regex path only)
 
 ### Perf infrastructure
 
@@ -76,10 +100,33 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `reverseEjsAll`), `extract-csv-rows` (1000-row CSV table),
   `extract-email` (long literals + sparse variables). Catches regressions
   in workloads the product-page synthetic bench misses.
+- **Shape / scaling benchmarks** covering the walker dimensions:
+  `large-page-hybrid` (30KB page with 5 scalars + 50-item loop),
+  `batch-100-rows` (reverseEjsAll amortization),
+  `deep-nested-extraction` (10-level dotted path → setNested cost),
+  `backref-fallback` (regex-path penalty on a small template),
+  `partial-expansion` (cache-warm include overhead).
 - **Dedicated optimization regression bench**: `unescape-fast-path-vs-slow`
   exercises the two unescape paths side-by-side and reports the ratio.
   If a future refactor removes the fast path, the ratio collapses
   visibly.
+- **Input-size limit sweeps** verifying the walker's new ceiling:
+  `pure-literal-size` (up to 10MB, no regex involved),
+  `literal-with-capture-size` (20MB template with a capture inside —
+  hybrid walker), `literal-with-loop-size` (20MB template around a loop).
+- **Output-shape and post-process limit sweeps**: `max-object-depth`
+  (dotted-path depth), `max-loop-iterations` (array size extracted,
+  scales to 1M items), `max-partial-breadth` (distinct partials in
+  one template), `max-coercion-types` (scaling of `applyCoercions`).
+- **Renamed limit sweeps** to reflect the post-walker reality —
+  the `regex-by-*` prefix was stale for shapes the walker now handles
+  without a regex at all:
+    - `regex-by-variable-count` → `variable-count`
+    - `regex-by-loop-body` → `loop-body-width`
+    - `regex-by-loop-nesting` → `loop-nesting-depth`
+    - `regex-by-conditionals` → `conditional-count`
+    - `capture-group-cap` **removed** (duplicated `variable-count`
+      once the fast path bypassed V8's named-group cap).
 - **Noise-aware PR comparison**: `perf/compare.ts` now flags changes
   smaller than the combined stddev as "≈ within noise" instead of
   reporting phantom deltas as regressions/improvements. Real regressions
@@ -100,6 +147,33 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `perf/results.local.json` (gitignored), CI writes to the committed
   `perf/results.json`. Local `pnpm perf` no longer dirties the tracked
   file.
+
+### Internal / refactor
+
+- **Centralized helpers** — `escapeRegex` now lives only in
+  `regexBuilder.ts` (previously duplicated in tokenizer.ts, normalize.ts,
+  and the error-path regex-shape reconstruction); `isPlainObject` is a
+  single helper used by every value-tree walk; `stripLocalsPrefix`
+  replaces a hand-inlined string-slice that appeared twice in
+  tokenizer.ts; `buildMismatchMessage` backs both the regex-path and
+  walker-path mismatch errors so both keep identical shape.
+
+### Tests
+
+- **Expanded test coverage (+54 tests, 319 total)** across all 12 spec
+  files, targeting combinations the prior suite missed:
+    - Type coercion combined with loops, conditionals, expressions,
+      and partials.
+    - Unicode / emoji values across every path (capture-only, hybrid,
+      regex fallback).
+    - Very-long capture values (100KB in `variables.spec.ts`, 500KB
+      in `api.spec.ts`).
+    - Custom `unescape` honored by both fast and regex paths.
+    - `reverseEjsAll` with coercion and without-safe failure.
+    - Empty loops + coercion, numeric HTML entities, regex
+      metacharacters in values.
+    - Round-trip cases against real EJS for the new walker shapes
+      (empty loops, single-item loops, raw tags, long literals).
 
 ## [3.0.2] — 2026-04-16
 
