@@ -14,17 +14,19 @@ import type { LimitScenario, BenchmarkResult, Results } from "./lib/types";
 // ── Limit scenarios ─────────────────────────────────────────────
 
 const limitModules = [
-	() => import("./limits/regex-by-variable-count"),
-	() => import("./limits/regex-by-loop-body"),
-	() => import("./limits/regex-by-loop-nesting"),
-	() => import("./limits/regex-by-conditionals"),
-	() => import("./limits/capture-group-cap"),
+	// Shape stress — template shapes that still compile to regex
+	() => import("./limits/variable-count"),
+	() => import("./limits/loop-body-width"),
+	() => import("./limits/loop-nesting-depth"),
+	() => import("./limits/conditional-count"),
+	// Input-size stress — how big can the template / rendered text be
 	() => import("./limits/rendered-size-sweep"),
 	() => import("./limits/pure-literal-size"),
 	() => import("./limits/literal-with-capture-size"),
 	() => import("./limits/literal-with-loop-size"),
+	// Recursion / depth limits
 	() => import("./limits/include-depth"),
-	// Output-shape / post-process extremes — dimensions beyond regex size
+	// Output-shape / post-process extremes
 	() => import("./limits/max-object-depth"),
 	() => import("./limits/max-loop-iterations"),
 	() => import("./limits/max-partial-breadth"),
@@ -52,6 +54,12 @@ const benchmarkModules: Array<
 	() => import("./bench/log-lines"),
 	() => import("./bench/csv-rows"),
 	() => import("./bench/email"),
+	() => import("./bench/large-page-hybrid"),
+	// Shape / scaling stress — dimensions the synthetic bench doesn't cover
+	() => import("./bench/batch-100-rows"),
+	() => import("./bench/deep-nested"),
+	() => import("./bench/backref-fallback"),
+	() => import("./bench/partial-expansion"),
 ];
 
 // ── Main ────────────────────────────────────────────────────────

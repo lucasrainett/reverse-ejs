@@ -147,7 +147,7 @@ describe("complex scenarios", () => {
 		});
 	});
 
-	it("should parse a product listing with prices, sale flags, and categories", () => {
+	it("should parse a product listing and drop per-iteration sale-flag conditions (known gap)", () => {
 		const template =
 			"<h1><%= storeName %></h1>" +
 			"<% products.forEach(p => { %>" +
