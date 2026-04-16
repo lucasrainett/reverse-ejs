@@ -380,6 +380,87 @@ describe("internal pattern cache", () => {
 	});
 });
 
+describe("regression: specific bugs surfaced by external review", () => {
+	// Iterating the same array twice in one template used to generate a
+	// regex with two `(?<name_LOOP>...)` captures — a duplicate-name
+	// syntax error that surfaced as a cryptic "V8 refused" message.
+	it("throws a clear error when the same array is iterated twice", () => {
+		const tmpl =
+			"<ul><% items.forEach(i => { %><li><%= i.name %></li><% }) %></ul>" +
+			"<table><% items.forEach(i => { %><tr><td><%= i.sku %></td></tr><% }) %></table>";
+		expect(() => reverseEjs(tmpl, "")).toThrow(/iterated more than once/);
+	});
+
+	// A top-level `items` array used to be shadowed by a nested `outer.items`
+	// loop because `findLoop` suffix-matched first. The top-level loop would
+	// match correctly in the regex but then the wrong loop pattern was
+	// returned, so extraction came back with `items: []`.
+	it("does not shadow a top-level array with a nested suffix-matching one", () => {
+		const tmpl =
+			"<% outer.items.forEach(x => { %>[<%= x %>]<% }) %>" +
+			"|<% items.forEach(y => { %>{<%= y %>}<% }) %>";
+		expect(reverseEjs(tmpl, "[a][b]|{c}{d}")).toEqual({
+			outer: { items: ["a", "b"] },
+			items: ["c", "d"],
+		});
+	});
+
+	// Dotted-path `if` conditions used to silently drop from the output.
+	// Users writing `if (user.isAdmin)` got empty results. Now they produce
+	// a boolean under the raw condition text.
+	it("emits a boolean key for dotted-path conditions (`if (items.length)`)", () => {
+		const tmpl =
+			"<% if (items.length) { %><div>yes</div><% } else { %><div>no</div><% } %>";
+		expect(reverseEjs(tmpl, "<div>yes</div>")).toEqual({
+			"items.length": true,
+		});
+		expect(reverseEjs(tmpl, "<div>no</div>")).toEqual({
+			"items.length": false,
+		});
+	});
+
+	// Variables with literal `__` used to be decoded as `.` because the
+	// library encoded dotted paths that way internally. Now the name map
+	// stores the original string directly, so `my__var` stays flat.
+	it("treats `my__var` as a flat key, not a nested path", () => {
+		expect(reverseEjs("<p><%= my__var %></p>", "<p>hi</p>")).toEqual({
+			my__var: "hi",
+		});
+	});
+
+	it("documents that V8 rejects duplicate named groups (our guard's premise)", () => {
+		// Our `assertNoDuplicateGroups` guard exists because V8 would throw
+		// an opaque "Invalid regular expression" error with 100+KB of regex
+		// dumped into the message. This test pins that premise: if a future
+		// engine change ever allowed duplicates, this test would fail first
+		// and we'd know the guard is now unnecessary.
+		// eslint-disable-next-line no-invalid-regexp
+		expect(() => new RegExp("(?<a>x)(?<a>y)")).toThrow();
+	});
+});
+
+describe("differential: reverseEjs() vs compileTemplate().match() are equivalent", () => {
+	const inputs: Array<{ template: string; rendered: string }> = [
+		{ template: "Hi <%= name %>", rendered: "Hi Alice" },
+		{
+			template: "<% items.forEach(i => { %><li><%= i %></li><% }) %>",
+			rendered: "<li>a</li><li>b</li>",
+		},
+		{
+			template:
+				"<% if (ok) { %><p>yes <%= n %></p><% } else { %><p>no</p><% } %>",
+			rendered: "<p>yes 1</p>",
+		},
+	];
+	for (const { template, rendered } of inputs) {
+		it(`produces the same object: ${template.slice(0, 40)}`, () => {
+			const fresh = reverseEjs(template, rendered);
+			const compiled = compileTemplate(template).match(rendered);
+			expect(compiled).toEqual(fresh);
+		});
+	}
+});
+
 describe("regex-too-large guard", () => {
 	it("throws a friendly ReverseEjsError instead of a V8 SyntaxError", () => {
 		// Build a pathologically large template — N=5000 vars puts the

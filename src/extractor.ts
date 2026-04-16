@@ -10,8 +10,6 @@ import {
 	buildRegex,
 	buildExprIdMap,
 	createNameContext,
-	fromCaptureName,
-	toCaptureName,
 	type NameContext,
 } from "./regexBuilder";
 import { stripItemPrefix } from "./normalize";
@@ -22,9 +20,13 @@ const HTML_ENTITY_MAP: Record<string, string> = {
 	"&lt;": "<",
 	"&gt;": ">",
 	"&quot;": '"',
+	// EJS's actual output uses numeric entities for " and ' — `&#34;` and
+	// `&#39;`. `&quot;` is kept for robustness against non-EJS renderers
+	// and HTML that wasn't produced by EJS directly.
+	"&#34;": '"',
 	"&#39;": "'",
 };
-const HTML_ENTITY_RE = /&(?:amp|lt|gt|quot|#39);/g;
+const HTML_ENTITY_RE = /&(?:amp|lt|gt|quot|#34|#39);/g;
 
 function unescapeHtml(s: string): string {
 	// Single regex pass instead of five sequential .replace() calls.
@@ -44,6 +46,33 @@ const EXPR_RE = /^_E(\d+)(?:_C\d+[TE])?(?:_RAW)?$/;
 // name via the regex's NameContext.
 function resolveBase(short: string, ctx: NameContext): string {
 	return ctx.shortToOriginal.get(short) ?? short;
+}
+
+/**
+ * Scan the regex source for duplicate named capture groups. A hit is
+ * always a library bug (we should never emit two groups with the same
+ * name), so we throw a library-bug-flavored error instead of letting V8
+ * reject the regex with its generic `Invalid regular expression` message.
+ */
+function assertNoDuplicateGroups(regexStr: string): void {
+	const seen = new Set<string>();
+	const re = /\(\?<([^>]+)>/g;
+	let m: RegExpExecArray | null;
+	while ((m = re.exec(regexStr)) !== null) {
+		if (seen.has(m[1])) {
+			throw new ReverseEjsError(
+				`Internal: generated regex contains duplicate named group ` +
+					`"${m[1]}". This is a reverse-ejs bug — please file an ` +
+					`issue at https://github.com/lucasrainett/reverse-ejs/issues ` +
+					`with the template you used.`,
+				{
+					regex: regexStr.slice(0, 200) + " …[truncated]",
+					input: "",
+				},
+			);
+		}
+		seen.add(m[1]);
+	}
 }
 
 function setNested(
@@ -210,6 +239,13 @@ export function extract(
 		nameCtx,
 	);
 
+	// Pre-flight: check for duplicate named groups. If the library ever
+	// emits two `(?<same_name>...)` captures that's a library bug, not a
+	// V8 complexity issue — catching it here avoids blaming V8 for our
+	// output. Duplicate loop names are the known cause (now prevented in
+	// buildRegex) but this catches anything similar that might sneak in.
+	assertNoDuplicateGroups(regexStr);
+
 	// V8's regex compiler has shape-dependent size/complexity limits that
 	// can't be computed from source length alone. It also lazy-compiles —
 	// `new RegExp` succeeds and the SyntaxError surfaces at first `.exec()`.
@@ -281,7 +317,7 @@ function groupsToObject(
 
 		if (captureName.endsWith("_LOOP")) {
 			const shortBase = captureName.slice(0, -5);
-			const arrayName = fromCaptureName(resolveBase(shortBase, nameCtx));
+			const arrayName = resolveBase(shortBase, nameCtx);
 			const loopPattern = findLoop(pattern, arrayName);
 			if (loopPattern) {
 				setNested(
@@ -312,7 +348,7 @@ function groupsToObject(
 			const cleanName = captureName.replace(RAW_RE, "");
 			const branchMatch = BRANCH_RE.exec(cleanName);
 			const shortBase = branchMatch ? branchMatch[1] : cleanName;
-			const dottedKey = fromCaptureName(resolveBase(shortBase, nameCtx));
+			const dottedKey = resolveBase(shortBase, nameCtx);
 			const val = isRaw ? value : unescape(value);
 			setNested(result, dottedKey, val);
 		}
@@ -393,9 +429,9 @@ function extractLoopItems(
 			...Object.keys(exprValues),
 		];
 
-		const expectedItemKey = loopPattern.itemName
-			? toCaptureName(loopPattern.itemName)
-			: null;
+		// No more `__` encoding — keys in simpleGroups / nestedLoops are
+		// already the original dotted names.
+		const expectedItemKey = loopPattern.itemName ?? null;
 		const isSimple =
 			allKeys.length === 1 &&
 			Object.keys(simpleGroups).length === 1 &&
@@ -406,10 +442,9 @@ function extractLoopItems(
 		} else {
 			const item: Record<string, unknown> = {};
 			for (const [k, v] of Object.entries(simpleGroups)) {
-				setNested(item, fromCaptureName(k), unescape(v));
+				setNested(item, k, unescape(v));
 			}
-			for (const [encodedName, content] of Object.entries(nestedLoops)) {
-				const arrayName = fromCaptureName(encodedName);
+			for (const [arrayName, content] of Object.entries(nestedLoops)) {
 				const nested =
 					findLoop(loopPattern.body, arrayName) ??
 					findLoop(
@@ -504,31 +539,50 @@ function extractConditionBooleans(
 	} else if (pattern.type === "sequence") {
 		for (const part of pattern.parts)
 			extractConditionBooleans(groups, part, result);
-	} else if (pattern.type === "loop") {
-		extractConditionBooleans(groups, pattern.body, result);
 	}
+	// Conditions inside loops are not handled here — their sentinels aren't
+	// reachable from the outer match (loop bodies compile into
+	// `(?:body)*` with no groups). Per-iteration condition extraction would
+	// need to happen inside `extractLoopItems`; until then, conditions nested
+	// inside a loop body are silently dropped from the output rather than
+	// emitting a misleading top-level value from the last iteration.
 }
 
 function findLoop(pattern: Pattern, arrayName: string): LoopPattern | null {
+	// Prefer an exact match — fall back to suffix match only if no exact
+	// match exists anywhere in the tree. Without this split, a top-level
+	// `items` lookup could be shadowed by a nested `outer.items` whose
+	// `arrayName.endsWith(".items")` returns truthy, silently dropping
+	// the top-level array's extracted data.
+	const exact = findLoopBy(pattern, arrayName, "exact");
+	if (exact) return exact;
+	return findLoopBy(pattern, arrayName, "suffix");
+}
+
+function findLoopBy(
+	pattern: Pattern,
+	arrayName: string,
+	mode: "exact" | "suffix",
+): LoopPattern | null {
 	if (pattern.type === "loop") {
-		if (
-			pattern.arrayName === arrayName ||
-			pattern.arrayName.endsWith(`.${arrayName}`)
-		) {
-			return pattern;
-		}
-		return findLoop(pattern.body, arrayName);
+		const isMatch =
+			mode === "exact"
+				? pattern.arrayName === arrayName
+				: pattern.arrayName.endsWith(`.${arrayName}`);
+		if (isMatch) return pattern;
+		return findLoopBy(pattern.body, arrayName, mode);
 	}
 	if (pattern.type === "sequence") {
 		for (const part of pattern.parts) {
-			const found = findLoop(part, arrayName);
+			const found = findLoopBy(part, arrayName, mode);
 			if (found) return found;
 		}
 	}
 	if (pattern.type === "conditional") {
-		const found = findLoop(pattern.thenBranch, arrayName);
+		const found = findLoopBy(pattern.thenBranch, arrayName, mode);
 		if (found) return found;
-		if (pattern.elseBranch) return findLoop(pattern.elseBranch, arrayName);
+		if (pattern.elseBranch)
+			return findLoopBy(pattern.elseBranch, arrayName, mode);
 	}
 	return null;
 }

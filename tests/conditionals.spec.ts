@@ -27,14 +27,18 @@ describe("conditionals", () => {
 		});
 	});
 
-	it("should extract array when if block surrounding a loop was rendered", () => {
+	it("should extract array AND the dotted-path condition key when if block surrounding a loop was rendered", () => {
 		const template =
 			"<% if (items.length) { %>" +
 			"<ul><% items.forEach(item => { %><li><%= item %></li><% }) %></ul>" +
 			"<% } %>";
 		const final = "<ul><li>Alpha</li><li>Beta</li></ul>";
+		// Since v3.1: dotted-path conditions produce a boolean key under
+		// their raw text, same as any complex condition. Before this, they
+		// were silently dropped — a footgun for idiomatic `if (user.isAdmin)`.
 		expect(reverseEjs(template, final)).toEqual({
 			items: ["Alpha", "Beta"],
+			"items.length": true,
 		});
 	});
 
@@ -280,9 +284,15 @@ describe("conditionals", () => {
 			"<% } %>" +
 			"<% }) %>";
 		const final = '<div class="featured">Alpha</div><div>Beta</div>';
-		expect(reverseEjs(template, final)).toEqual({
+		// Conditions inside loop bodies are dropped from the output today:
+		// the library doesn't yet emit per-iteration condition booleans, so
+		// the `item.featured` key does NOT appear. Tracked for a future
+		// enhancement. Confirm absence explicitly so the behavior is pinned.
+		const result = reverseEjs(template, final);
+		expect(result).toEqual({
 			items: [{ name: "Alpha" }, { name: "Beta" }],
 		});
+		expect(result).not.toHaveProperty("item.featured");
 	});
 
 	it("should handle switch/case with break; } as combined scriptlet", () => {
