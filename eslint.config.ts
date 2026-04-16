@@ -59,4 +59,18 @@ export default defineConfig([
 			},
 		},
 	},
+	{
+		// Performance suite — pure node scripts, run via `tsx`.
+		files: ["perf/**/*.ts"],
+		languageOptions: {
+			globals: {
+				process: "readonly",
+				console: "readonly",
+			},
+		},
+		rules: {
+			// runner.ts uses require() to lazily import private library modules.
+			"@typescript-eslint/no-require-imports": "off",
+		},
+	},
 ]);

@@ -1,3 +1,22 @@
+# ── Reject staging of perf/results.json ─────────────────────────
+# This file is owned by the perf CI workflow on master. It is in
+# .gitignore so normal `pnpm perf` runs cannot stage it, but a
+# contributor could still force-add it with `git add -f`. Catch
+# that here so the commit never forms.
+if git diff --cached --name-only | grep -q '^perf/results\.json$'; then
+	echo ""
+	echo "✗ perf/results.json is staged for commit."
+	echo ""
+	echo "  This file is owned by the perf CI workflow on master."
+	echo "  Local 'pnpm perf' runs are gitignored — you appear to"
+	echo "  have force-added it with 'git add -f'."
+	echo ""
+	echo "  Unstage and try again:"
+	echo "      git restore --staged perf/results.json"
+	echo ""
+	exit 1
+fi
+
 pnpm lint-staged
 pnpm test
 pnpm build

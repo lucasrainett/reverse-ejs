@@ -12,6 +12,11 @@ playwright-report/
 test-results/
 .playwright/
 
+# Performance results — only the CI runner is allowed to commit this file,
+# so local `pnpm perf` runs never accidentally land in git. CI bypasses
+# this rule with `git add -f perf/results.json`.
+perf/results.json
+
 # Test fixtures (downloaded) and rendered outputs (generated)
 tests/fixtures/
 tests/rendered/

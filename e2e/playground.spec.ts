@@ -39,6 +39,8 @@ test.beforeEach(async ({ page }) => {
 // documents every test handle the playground exposes.
 
 const TID = {
+	// Container
+	playground: "playground",
 	// Editors
 	rendered: "rendered-input",
 	template: "template-input",
@@ -71,7 +73,7 @@ const TID = {
 async function waitReady(page: Page) {
 	// Alpine drops `x-cloak` after init, and the silent default-load
 	// fills the output. Once both are true the playground is fully wired.
-	await expect(page.locator(".playground")).toBeVisible();
+	await expect(page.getByTestId(TID.playground)).toBeVisible();
 	await expect(page.getByTestId(TID.output)).not.toBeEmpty();
 }
 
