@@ -190,6 +190,8 @@ compiled.match("Alice is 30 years old."); // { name: "Alice", age: "30" }
 compiled.match("Bob is 25 years old."); // { name: "Bob", age: "25" }
 ```
 
+Since v3.0.2, `reverseEjs()` also uses an internal compile cache, so calling it in a loop on the same template gets most of the speedup automatically. Explicit `compileTemplate` is still faster for very-hot paths and guarantees no cache eviction. The speedup is template-size-dependent: ~1.5x on larger templates, 4-6x on smaller ones.
+
 ## Batch extraction
 
 For arrays of rendered strings, use `reverseEjsAll` to compile once and process all:

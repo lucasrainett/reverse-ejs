@@ -127,6 +127,8 @@ describe("complex scenarios", () => {
 
 		expect(reverseEjs(template, final)).toEqual({
 			user: { name: "Alice" },
+			// Dotted-path conditions produce a boolean keyed by the raw text.
+			"user.isAdmin": true,
 			adminMessage: "System healthy",
 			departments: [
 				{
@@ -166,7 +168,8 @@ describe("complex scenarios", () => {
 			"</div>" +
 			"<p>Showing 2 products</p>";
 
-		expect(reverseEjs(template, final)).toEqual({
+		const result = reverseEjs(template, final);
+		expect(result).toEqual({
 			storeName: "TechShop",
 			products: [
 				{ name: "Keyboard", price: "79.99" },
@@ -174,6 +177,9 @@ describe("complex scenarios", () => {
 			],
 			count: "2",
 		});
+		// Conditions inside loop bodies are not emitted today (per-iteration
+		// tracking would be needed). Assert the absence explicitly.
+		expect(result).not.toHaveProperty("p.onSale");
 	});
 
 	it("should extract product data from HTML (README web extraction example)", () => {
