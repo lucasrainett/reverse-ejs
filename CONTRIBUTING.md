@@ -317,5 +317,26 @@ Tagged via the publish workflow on push to master — see
 a publish; if the version already has a tag and `src/` has changed, the
 workflow auto-bumps a patch.
 
+## Compatibility and deprecation policy
+
+The library follows [SemVer](https://semver.org/):
+
+- **Major** (`x.0.0`): breaking API changes. Return-type shape changes,
+  removed exports, renamed options, stricter validation that rejects
+  previously-accepted input.
+- **Minor** (`x.y.0`): backward-compatible additions. New options, new
+  exports, new type-level narrowings, new opt-in behavior flags.
+  Anything being removed in a future major gets deprecated here —
+  either as a `console.warn` at runtime or a `@deprecated` JSDoc tag
+  (preferably both), for at least one minor release before removal.
+- **Patch** (`x.y.z`): bug fixes, perf improvements, internal refactors
+  that preserve observable behavior. Error message wording counts as
+  observable, so material changes to error shape or content go in minor
+  at least.
+
+If you need a breaking change, open a discussion or issue first — most
+changes can be additive with a new option, and "did not break anyone"
+is worth optimizing for.
+
 Reach out via [GitHub issues](https://github.com/lucasrainett/reverse-ejs)
 with anything that's unclear.

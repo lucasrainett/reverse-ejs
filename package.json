@@ -1,6 +1,6 @@
 {
   "name": "reverse-ejs",
-  "version": "3.0.3",
+  "version": "3.1.0",
   "description": "Extract data objects from rendered EJS templates",
   "sideEffects": false,
   "engines": {
@@ -31,6 +31,7 @@
     "clean": "rm -rf dist",
     "format": "prettier --write --ignore-unknown .",
     "lint": "eslint src docs e2e perf playwright.config.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.test.json",
     "test": "vitest run --coverage",
     "e2e": "playwright test",
     "e2e:headed": "PW_SLOW_MO=300 playwright test --headed --workers=1",
@@ -63,6 +64,7 @@
     "@vitest/coverage-v8": "^4.1.1",
     "ejs": "^5.0.2",
     "eslint": "^10.1.0",
+    "fast-check": "^4.6.0",
     "husky": "^9.1.7",
     "jiti": "^2.6.1",
     "lint-staged": "^16.4.0",

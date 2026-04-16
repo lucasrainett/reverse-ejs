@@ -4,7 +4,7 @@ import type {
 	ExtractedObject,
 	ExtractedItem,
 	EjsOptions,
-	CoercionType,
+	CoercionSpec,
 } from "./types";
 import {
 	buildRegex,
@@ -117,12 +117,44 @@ function setNested(
 
 function coerceValue(
 	value: string,
-	type: CoercionType,
+	spec: CoercionSpec,
 	keyForWarning: string,
 	silent?: boolean,
 ): unknown {
-	if (type === "string") return value;
-	if (type === "number") {
+	// Object form — currently only `{ type: "date", parse: fn }` is
+	// supported. The custom parser can handle formats `new Date(s)`
+	// refuses (non-ISO strings, locale dates, epoch seconds, ...).
+	if (typeof spec === "object") {
+		if (spec.type === "date") {
+			let d: Date;
+			try {
+				d = spec.parse(value);
+			} catch (err) {
+				// A throwing parser (e.g. one that assumes ISO but gets
+				// garbage, or hits a TypeError on a bad regex) shouldn't
+				// crash the whole extraction. Fall back to string with
+				// the same shape as the "invalid Date" path.
+				if (!silent) {
+					console.warn(
+						`[reverse-ejs] Custom date parser threw for "${value}" (key "${keyForWarning}") - keeping original string. Parser error: ${(err as Error).message}`,
+					);
+				}
+				return value;
+			}
+			if (!(d instanceof Date) || Number.isNaN(d.getTime())) {
+				if (!silent) {
+					console.warn(
+						`[reverse-ejs] Custom date parser returned invalid Date for "${value}" (key "${keyForWarning}") - keeping original string.`,
+					);
+				}
+				return value;
+			}
+			return d;
+		}
+		return value;
+	}
+	if (spec === "string") return value;
+	if (spec === "number") {
 		const n = Number(value);
 		if (Number.isNaN(n)) {
 			if (!silent) {
@@ -134,7 +166,7 @@ function coerceValue(
 		}
 		return n;
 	}
-	if (type === "boolean") {
+	if (spec === "boolean") {
 		const lower = value.toLowerCase();
 		if (lower === "true") return true;
 		if (lower === "false") return false;
@@ -145,7 +177,7 @@ function coerceValue(
 		}
 		return value;
 	}
-	if (type === "date") {
+	if (spec === "date") {
 		const d = new Date(value);
 		if (Number.isNaN(d.getTime())) {
 			if (!silent) {
@@ -162,7 +194,7 @@ function coerceValue(
 
 function applyCoercions(
 	obj: Record<string, unknown>,
-	types: Record<string, CoercionType>,
+	types: Record<string, CoercionSpec>,
 	silent?: boolean,
 ): void {
 	for (const [key, value] of Object.entries(obj)) {
@@ -230,7 +262,40 @@ function buildMatchError(
 	pattern: Pattern,
 	regexStr: string,
 	finalString: string,
+	nameCtx: NameContext,
 ): ReverseEjsError {
+	// Note: this helper only runs on the throw path — `safe: true`
+	// short-circuits upstream and never constructs this error. Keep it
+	// that way so the diagnostic's extra regex compile + exec doesn't
+	// penalize the happy `safe: true` flow.
+	//
+	// Before falling back to the generic "Could not match variable X"
+	// message, check whether the failure is due to a back-reference
+	// mismatch — a variable used more than once whose occurrences don't
+	// all hold the same value. The generic message would name the last
+	// variable in walk order, which is typically innocent; this path
+	// names the actually-inconsistent variable and shows its values.
+	const backref = diagnoseBackrefMismatch(
+		pattern,
+		regexStr,
+		finalString,
+		nameCtx,
+	);
+	if (backref) {
+		const formatted = backref.values
+			.map((v) => `"${truncateForMessage(v)}"`)
+			.join(" vs ");
+		const message =
+			`Variable "${backref.name}" has inconsistent values in the ` +
+			`rendered string — ${formatted}. Repeated variables ` +
+			`(including the same variable used across partial boundaries) ` +
+			`must hold the same value everywhere they appear. ` +
+			`(Access error.details for the full regex and input string.)`;
+		return new ReverseEjsError(message, {
+			regex: regexStr,
+			input: finalString,
+		});
+	}
 	const message = buildMismatchMessage(
 		findLastVariableName(pattern),
 		finalString,
@@ -240,6 +305,100 @@ function buildMatchError(
 		regex: regexStr,
 		input: finalString,
 	});
+}
+
+/**
+ * When a regex match fails and the pattern uses a variable more than
+ * once (directly or across partials), the failure is often a
+ * back-reference mismatch rather than a real template/rendered
+ * divergence. Try matching a version of the regex with each `\k<name>`
+ * expanded into a fresh capture; if that succeeds, the back-reference
+ * was the blocker, and the captured values tell us which variable had
+ * inconsistent occurrences.
+ *
+ * Returns `{ name, values }` for the first variable with differing
+ * occurrences, or null when the diagnosis doesn't apply.
+ */
+function diagnoseBackrefMismatch(
+	pattern: Pattern,
+	regexStr: string,
+	finalString: string,
+	nameCtx: NameContext,
+): { name: string; values: string[] } | null {
+	const counts = countVariableOccurrences(pattern);
+	const repeated = new Set(
+		[...counts.entries()].filter(([, n]) => n > 1).map(([name]) => name),
+	);
+	if (repeated.size === 0) return null;
+
+	// Rewrite `\k<key>` into `(?<key__rebk_{N}>.*?)` so each back-reference
+	// becomes its own capture. Double-underscore `__rebk_` can't appear in
+	// legitimate capture names (the library uses bare alphanumerics + `_`
+	// plus reserved suffixes like `_LOOP` / `_C{id}T` / `_RAW`), so the
+	// strip step below won't collide with a user variable that happens to
+	// end in a digit.
+	let counter = 0;
+	const noBackref = regexStr.replace(/\\k<([^>]+)>/g, (_, key: string) => {
+		return `(?<${key}__rebk_${counter++}>.*?)`;
+	});
+
+	let match: RegExpExecArray | null;
+	try {
+		match = new RegExp(`^${noBackref}$`, "s").exec(finalString);
+	} catch {
+		return null;
+	}
+	if (!match?.groups) return null;
+
+	const valuesByOriginalName = new Map<string, string[]>();
+	for (const [rawKey, value] of Object.entries(match.groups)) {
+		if (value == null) continue;
+		// Strip the `__rebk_{N}` suffix used to disambiguate back-refs.
+		const coreKey = rawKey.replace(/__rebk_\d+$/, "");
+		// Skip sentinels and expression captures — we only care about
+		// variable captures for this diagnosis.
+		if (SENTINEL_RE.test(coreKey.replace(RAW_RE, ""))) continue;
+		if (EXPR_RE.test(coreKey)) continue;
+		// Decode: strip `_RAW`, strip branch suffix, resolve short name.
+		const cleanKey = coreKey.replace(RAW_RE, "");
+		const branchMatch = BRANCH_RE.exec(cleanKey);
+		const shortBase = branchMatch ? branchMatch[1] : cleanKey;
+		const originalName = resolveBase(shortBase, nameCtx);
+		if (!repeated.has(originalName)) continue;
+		const list = valuesByOriginalName.get(originalName) ?? [];
+		list.push(value);
+		valuesByOriginalName.set(originalName, list);
+	}
+
+	for (const [name, values] of valuesByOriginalName) {
+		const distinct = new Set(values);
+		if (distinct.size > 1) return { name, values: [...distinct] };
+	}
+	return null;
+}
+
+function countVariableOccurrences(pattern: Pattern): Map<string, number> {
+	const counts = new Map<string, number>();
+	function walk(p: Pattern): void {
+		if (p.type === "variable") {
+			counts.set(p.name, (counts.get(p.name) ?? 0) + 1);
+		} else if (p.type === "sequence") {
+			for (const part of p.parts) walk(part);
+		} else if (p.type === "loop") {
+			walk(p.body);
+		} else if (p.type === "conditional") {
+			walk(p.thenBranch);
+			if (p.elseBranch) walk(p.elseBranch);
+		}
+	}
+	walk(pattern);
+	return counts;
+}
+
+function truncateForMessage(s: string): string {
+	const MAX = 60;
+	if (s.length <= MAX) return s;
+	return s.slice(0, MAX) + "…";
 }
 
 // ── Fast path: outer cursor walk ───────────────────────────────
@@ -621,7 +780,7 @@ export function extract(
 
 	if (!match) {
 		if (safe) return null;
-		throw buildMatchError(pattern, regexStr, finalString);
+		throw buildMatchError(pattern, regexStr, finalString, nameCtx);
 	}
 
 	const exprMap = buildExprIdMap(pattern);
@@ -711,9 +870,20 @@ function extractLoopItems(
 
 	// Loop body regex is independent of the outer regex — it gets its own
 	// NameContext so short names don't collide across regex boundaries.
+	//
+	// Same catastrophic-backtracking guard as buildRegex's loop case: if
+	// the body is a conditional-without-else, running it through
+	// `new RegExp(..., "gs")` creates a regex that matches zero-width at
+	// every position, and the `exec` loop below never advances. Unwrap
+	// to the then-branch; a branch that didn't match just produces
+	// nothing (a non-iteration), same as before.
+	const effectiveBody =
+		loopPattern.body.type === "conditional" && !loopPattern.body.elseBranch
+			? loopPattern.body.thenBranch
+			: loopPattern.body;
 	const bodyNameCtx = createNameContext();
 	const bodyRegexStr = buildRegex(
-		loopPattern.body,
+		effectiveBody,
 		loopPattern.itemName || undefined,
 		new Set(),
 		undefined,

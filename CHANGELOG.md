@@ -6,8 +6,97 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- **Typed return based on the `types` map.** The return type of
+  `reverseEjs()`, `compileTemplate().match()`, and `reverseEjsAll()` now
+  narrows per-key based on the supplied `types`. A call like
+  `reverseEjs(t, r, { types: { age: "number" } })` returns an object
+  typed `{ age: number; [key: string]: ExtractedValue }` — TypeScript
+  knows `result.age` is a `number` without manual casts. Unknown keys
+  fall back to the broad `ExtractedValue` union via the index signature.
+- **Custom date parser.** `types` entries now accept an object spec
+  `{ type: "date", parse: (s: string) => Date }` in addition to the
+  `"date"` string shorthand. Use this for non-ISO formats, epoch
+  seconds, locale-specific strings, etc. Backward compatible with the
+  string shorthand.
+- **`strict: true` option.** When set, `compileTemplate` and
+  `reverseEjs` throw at compile time if the template would produce any
+  raw-key fallback output — expression keys (`<%= title.toUpperCase() %>`
+  → `"title.toUpperCase()"`), adjacent-variable joined keys
+  (`<%= a %><%= b %>` → `"a + b"`), or complex-condition booleans
+  (`<% if (a > b) { %>` → `"a > b": true`). For callers who want
+  deterministic structured extraction and would rather fail loudly than
+  see surprising keys.
+- **Warning when conditions are nested inside loops.** Templates with
+  `<% if (...) { %>` inside a `forEach` body silently drop the
+  per-iteration condition from the output (a known gap in the current
+  extractor). The library now emits a `console.warn` at compile time
+  listing the affected conditions, so the gap surfaces before users
+  investigate a missing key. Suppress with `silent: true`.
+- **Property-based round-trip tests** (`tests/property.spec.ts`) via
+  fast-check. Hammers the defining invariant
+  `reverseEjs(t, ejs.render(t, d)) === d` with random data across the
+  full feature matrix (single vars, three-field templates, dotted
+  paths, loops of strings, loops of objects, numeric/boolean coercion,
+  safe mode, fast-path / regex-path parity).
+- **`tsconfig.test.json` + `pnpm typecheck` script.** `tsc --noEmit`
+  over src + tests. The new typed-result test file (`tests/typed-
+result.spec.ts`) carries explicit type annotations that would fail
+  typecheck if the `types`-map narrowing ever regresses.
+- **Dependabot config** (`.github/dependabot.yml`). Weekly devDeps
+  updates, monthly GitHub Action bumps, grouped PRs to keep noise low.
+- **Security considerations section** in the README. Documents the
+  ReDoS surface (confined to the regex fallback path), the
+  trust-boundary model (templates are author-controlled; rendered text
+  can be external), and the recommended `safe: true` posture for
+  untrusted input.
+- **Compatibility & deprecation policy** in CONTRIBUTING.md. SemVer
+  commitments for what counts as major / minor / patch.
+
 ### Fixed
 
+- **Catastrophic backtracking on `<% if (x) { %>...<% } %>` inside a
+  `forEach` body.** The generated regex was `^(?:(?:then)?)*$` — a
+  textbook nested-quantifier shape that V8's engine explored
+  exponentially, OOMing the process on trivial input. The loop case in
+  `buildRegex` now unwraps a conditional-without-else body to its
+  then-branch (`^(?:then)*$`), preserving semantics since the outer
+  `*` already permits zero iterations.
+- **Custom date parser now catches exceptions** instead of crashing the
+  whole extraction. Documented behavior is "warn and fall back to
+  string" when the parser produces an invalid Date; a parser that
+  throws (e.g. on malformed input) now hits the same fallback with a
+  warning that includes the parser's error message.
+- **`strict: true` throws a plain `Error`** instead of `ReverseEjsError`.
+  Template-author errors (missing partial, circular include, and now
+  strict-mode rejection) are a different category from runtime match
+  failures — the `Error` class convention matches the existing treatment
+  and makes `catch (e) { if (e instanceof ReverseEjsError) ... }` blocks
+  not log empty `details.regex` strings.
+- **Fixed broken sentence in README "Security considerations" section**
+  about `re2` / `unescape`.
+- **Back-reference mismatch now names the actual inconsistent variable.**
+  When a variable appeared twice in a template (or once in each of two
+  partials) and the rendered text had different values at those positions,
+  the error used to point at the next variable in pattern-tree walk order
+  (e.g. `footerNote`) — always an innocent bystander. On mismatch, the
+  extractor now re-runs a no-back-reference variant of the regex, compares
+  the captured values per repeated name, and reports:
+  `Variable "storeName" has inconsistent values in the rendered string —
+"NewStore" vs "TechStore". Repeated variables (including the same
+variable used across partial boundaries) must hold the same value
+everywhere they appear.`
+- **Fast-path regression on boundary-ambiguity templates.** The walker's
+  `indexOf` takes the first occurrence of the next literal, while the
+  regex path uses non-greedy captures with end-anchored backtracking and
+  can push a capture past the first occurrence to let the rest of the
+  pattern match. For templates where a captured value happens to contain
+  the next literal (`<%= x %>a<%= y %>b` on `"abaab"` → `x=""`,
+  `y="baa"`), the fast path rejected inputs the regex handled correctly.
+  `compileTemplate` now falls back to the regex path when the walker
+  returns null, preserving exact semantics while keeping the 10MB+ scale
+  wins on the common cases.
 - **Iterating the same array twice in a single template** now throws a clear
   `ReverseEjsError` at compile time instead of the previous cryptic "V8 regex
   engine refused to compile" error. The library emitted a duplicate-named

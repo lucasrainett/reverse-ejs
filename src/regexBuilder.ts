@@ -169,7 +169,17 @@ export function buildRegex(
 			}
 			seen.add(loopKey);
 			const body = flexWs ? stripWsLiterals(pattern.body) : pattern.body;
-			const bodyNoGroups = buildRegexNoGroups(body, flexWs);
+			// Catastrophic-backtracking guard. A loop whose body is an
+			// optional pattern `(?:X)?` wrapped in `*` becomes
+			// `(?:(?:X)?)*` — classic nested-quantifier ReDoS shape that
+			// blows V8's stack on the most trivial input. The outer `*`
+			// already allows zero iterations, so the inner `?` is redundant.
+			// Unwrap conditional-without-else to its then-branch only.
+			const effectiveBody =
+				body.type === "conditional" && !body.elseBranch
+					? body.thenBranch
+					: body;
+			const bodyNoGroups = buildRegexNoGroups(effectiveBody, flexWs);
 			return `(?<${loopKey}>(?:${bodyNoGroups})*)`;
 		}
 

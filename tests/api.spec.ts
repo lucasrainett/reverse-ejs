@@ -157,6 +157,32 @@ describe("fast path (capture-only and hybrid)", () => {
 		).toThrow(ReverseEjsError);
 	});
 
+	// Regression: when a captured value contains the delimiter literal,
+	// the walker's indexOf picks the first occurrence of the next literal,
+	// which may not leave room for the rest of the pattern to match. The
+	// regex path backtracks to a later occurrence; the compileTemplate
+	// wrapper falls back to regex when the walker returns null so these
+	// templates keep matching. See index.ts compileTemplate for the
+	// fallback logic.
+	it("falls back to regex when walker's first-literal-match doesn't leave room for the rest", () => {
+		// With rendered "abaab" and template "<%= x %>a<%= y %>b", the
+		// only valid match is x="" and y="baa" (the trailing "b" must
+		// anchor at position 4, not the first "b" at position 1).
+		expect(reverseEjs("<%= x %>a<%= y %>b", "abaab")).toEqual({
+			x: "",
+			y: "baa",
+		});
+	});
+
+	it("falls back to regex for capture containing the next delimiter", () => {
+		// Trailing literal "end" appears twice — walker's indexOf would
+		// pick the first, leaving "end" as trailing content; regex
+		// backtracks to the second occurrence so x = "hello end more".
+		expect(reverseEjs("<%= x %>end", "hello end moreend")).toEqual({
+			x: "hello end more",
+		});
+	});
+
 	it("scales to 1MB of literal around a single capture", () => {
 		// The shape this increment directly targets: massive literal
 		// surrounding a small capture. Previously would fail regex
@@ -400,6 +426,209 @@ describe("reverseEjs - types coercion", () => {
 	});
 });
 
+describe("custom date parser (types: { type: 'date', parse: fn })", () => {
+	it("uses the custom parser instead of new Date()", () => {
+		// Epoch seconds as a string — `new Date(s)` parses this as a year
+		// far in the future because it treats the digits as a calendar
+		// year. A custom parser handles the real intent.
+		const result = reverseEjs("ts: <%= at %>", "ts: 1700000000", {
+			types: {
+				at: {
+					type: "date" as const,
+					parse: (s: string) => new Date(Number(s) * 1000),
+				},
+			},
+		});
+		expect(result.at).toBeInstanceOf(Date);
+		expect(result.at.getFullYear()).toBe(2023);
+	});
+
+	it("warns and falls back to string when the parser returns an invalid Date", () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		const result = reverseEjs("d: <%= d %>", "d: garbage", {
+			types: {
+				d: {
+					type: "date" as const,
+					parse: () => new Date("not-a-date"),
+				},
+			},
+		});
+		// The parser returns Invalid Date so the value stays as string.
+		// The typed return still claims Date, so assert via the broader
+		// unknown-key route to avoid a type narrowing fight.
+		expect((result as Record<string, unknown>).d).toBe("garbage");
+		expect(warn).toHaveBeenCalled();
+		warn.mockRestore();
+	});
+
+	it("suppresses the fallback warning with silent: true", () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		reverseEjs("d: <%= d %>", "d: garbage", {
+			types: {
+				d: {
+					type: "date" as const,
+					parse: () => new Date("x"),
+				},
+			},
+			silent: true,
+		});
+		expect(warn).not.toHaveBeenCalled();
+		warn.mockRestore();
+	});
+
+	it("catches a throwing parser and falls back to string", () => {
+		// A user parser may throw (e.g. runs `.trim()` on non-string, hits
+		// a TypeError in a library). The documented behavior is "warn and
+		// fall back to string"; wrap the call so the whole extraction
+		// doesn't crash.
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		const result = reverseEjs("d: <%= d %>", "d: boom", {
+			types: {
+				d: {
+					type: "date" as const,
+					parse: () => {
+						throw new TypeError("bad input");
+					},
+				},
+			},
+		});
+		expect((result as Record<string, unknown>).d).toBe("boom");
+		expect(warn).toHaveBeenCalled();
+		const msg = warn.mock.calls[0][0] as string;
+		expect(msg).toContain("threw");
+		expect(msg).toContain("bad input");
+		warn.mockRestore();
+	});
+
+	it("silent: true suppresses the throwing-parser warning", () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		reverseEjs("d: <%= d %>", "d: boom", {
+			types: {
+				d: {
+					type: "date" as const,
+					parse: () => {
+						throw new Error("x");
+					},
+				},
+			},
+			silent: true,
+		});
+		expect(warn).not.toHaveBeenCalled();
+		warn.mockRestore();
+	});
+
+	it("works alongside string-shorthand entries in the same types map", () => {
+		const result = reverseEjs(
+			"a=<%= a %> b=<%= b %>",
+			"a=42 b=1700000000",
+			{
+				types: {
+					a: "number" as const,
+					b: {
+						type: "date" as const,
+						parse: (s: string) => new Date(Number(s) * 1000),
+					},
+				},
+			},
+		);
+		expect(result.a).toBe(42);
+		expect(result.b).toBeInstanceOf(Date);
+	});
+});
+
+describe("strict mode (throws on raw-key fallbacks)", () => {
+	it("throws when the template uses an expression key", () => {
+		expect(() =>
+			reverseEjs(
+				"<h1><%= title.toUpperCase() %></h1>",
+				"<h1>HELLO</h1>",
+				{ strict: true },
+			),
+		).toThrow(/strict mode.*expression "title\.toUpperCase\(\)"/);
+	});
+
+	it("throws when the template has adjacent variables (joined key)", () => {
+		expect(() =>
+			reverseEjs("<%= a %><%= b %>", "AliceBob", { strict: true }),
+		).toThrow(/strict mode.*a \+ b/);
+	});
+
+	it("throws when the template has a complex condition", () => {
+		expect(() =>
+			reverseEjs("<% if (items.length > 0) { %>yes<% } %>", "yes", {
+				strict: true,
+			}),
+		).toThrow(/strict mode.*items\.length > 0/);
+	});
+
+	it("does not throw on a plain variable template", () => {
+		expect(() =>
+			reverseEjs("Hello, <%= name %>!", "Hello, Alice!", {
+				strict: true,
+			}),
+		).not.toThrow();
+	});
+
+	it("does not throw on a bare-identifier condition", () => {
+		// `if (isAdmin)` produces a clean boolean key — not a raw-key
+		// fallback — so strict mode accepts it.
+		expect(() =>
+			reverseEjs(
+				"<% if (isAdmin) { %><p>Admin</p><% } %>",
+				"<p>Admin</p>",
+				{ strict: true },
+			),
+		).not.toThrow();
+	});
+
+	it("does not throw on a dotted-path variable", () => {
+		expect(() =>
+			reverseEjs("<%= user.name %>", "Alice", { strict: true }),
+		).not.toThrow();
+	});
+});
+
+describe("conditions-inside-loop-body warning", () => {
+	it("warns when a conditional is nested inside a loop", () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		reverseEjs(
+			"<% items.forEach(i => { %>" +
+				"<% if (i.featured) { %>F<% } else { %>N<% } %>" +
+				"<% }) %>",
+			"FN",
+		);
+		expect(warn).toHaveBeenCalled();
+		const message = warn.mock.calls[0][0] as string;
+		expect(message).toContain("Conditions inside loop bodies");
+		expect(message).toContain("i.featured");
+		warn.mockRestore();
+	});
+
+	it("suppresses the warning with silent: true", () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		reverseEjs(
+			"<% items.forEach(i => { %>" +
+				"<% if (i.featured) { %>F<% } else { %>N<% } %>" +
+				"<% }) %>",
+			"FN",
+			{ silent: true },
+		);
+		expect(warn).not.toHaveBeenCalled();
+		warn.mockRestore();
+	});
+
+	it("does not warn on plain loops or plain conditionals", () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		reverseEjs(
+			"<ul><% items.forEach(i => { %><li><%= i %></li><% }) %></ul>",
+			"<ul><li>a</li></ul>",
+		);
+		reverseEjs("<% if (show) { %><p>X</p><% } %>", "<p>X</p>");
+		expect(warn).not.toHaveBeenCalled();
+		warn.mockRestore();
+	});
+});
+
 describe("ReverseEjsError", () => {
 	it("should be an instance of Error", () => {
 		const err = new ReverseEjsError("test", { regex: "r", input: "i" });
@@ -455,6 +684,103 @@ describe("ReverseEjsError", () => {
 		} catch (e) {
 			expect((e as Error).message).toContain("title");
 		}
+	});
+
+	// The error message used to blame the LAST variable in pattern-tree
+	// walk order when a back-reference mismatch was the real cause
+	// (e.g. a variable used in both the header and footer partials with
+	// different rendered values). Now the diagnostic identifies the
+	// actually-inconsistent variable and shows its values.
+	it("should name the inconsistent variable (not an innocent one) when a back-reference fails", () => {
+		// `name` appears twice; `footerNote` is innocent but used to be
+		// named in the error because it's walked last.
+		const template =
+			"<title><%= name %></title><h1><%= name %></h1><p><%= footerNote %></p>";
+		try {
+			reverseEjs(
+				template,
+				"<title>Alice</title><h1>Bob</h1><p>footer</p>",
+			);
+			expect.fail("should have thrown");
+		} catch (e) {
+			const msg = (e as Error).message;
+			expect(msg).toContain('Variable "name"');
+			expect(msg).toContain("inconsistent values");
+			expect(msg).toContain("Alice");
+			expect(msg).toContain("Bob");
+			// footerNote should NOT be blamed.
+			expect(msg).not.toContain('"footerNote"');
+		}
+	});
+
+	it("should diagnose a back-reference mismatch across partial boundaries", () => {
+		// Cross-partial repeat of `storeName` is the playground-store
+		// repro: change header only, footer still says the old value,
+		// error should name `storeName`.
+		const partials = {
+			header: "<header><h1><%= storeName %></h1></header>",
+			footer: "<footer><%= storeName %> &mdash; <%= note %></footer>",
+		};
+		const template =
+			'<%- include("header") %><main><%= body %></main><%- include("footer") %>';
+		const rendered =
+			"<header><h1>NewStore</h1></header><main>Hi</main><footer>OldStore &mdash; Thanks</footer>";
+		try {
+			reverseEjs(template, rendered, { partials });
+			expect.fail("should have thrown");
+		} catch (e) {
+			const msg = (e as Error).message;
+			expect(msg).toContain('Variable "storeName"');
+			expect(msg).toContain("NewStore");
+			expect(msg).toContain("OldStore");
+			expect(msg).toContain("partial boundaries");
+		}
+	});
+
+	it("reports a three-way back-reference mismatch with all three values", () => {
+		// Same variable used three times with three distinct rendered
+		// values — the diagnostic should list all three. Shape keeps the
+		// template small so it stays readable.
+		const template = "<a><%= v %></a><b><%= v %></b><c><%= v %></c>";
+		const rendered = "<a>X</a><b>Y</b><c>Z</c>";
+		try {
+			reverseEjs(template, rendered);
+			expect.fail("should have thrown");
+		} catch (e) {
+			const msg = (e as Error).message;
+			expect(msg).toContain('Variable "v"');
+			// All three values should surface, not just the first pair.
+			expect(msg).toContain("X");
+			expect(msg).toContain("Y");
+			expect(msg).toContain("Z");
+		}
+	});
+});
+
+describe("regression: catastrophic-backtracking guard", () => {
+	// Before the fix, this template would emit `^(?:(?:Y)?)*$` — a
+	// nested optional-in-repeat that V8's engine explored exponentially,
+	// OOMing the process on the most trivial input. The loop-body fix
+	// flattens an optional body (conditional without else) so the final
+	// regex is `^(?:Y)*$` — linear in input length.
+	it("does not OOM on a conditional-without-else inside a loop", () => {
+		const template =
+			"<% items.forEach(i => { %><% if (i.x) { %>Y<% } %><% }) %>";
+		// Should complete in microseconds, not minutes. If the guard
+		// regresses, this test hangs the entire vitest run (the process
+		// stalls in V8's regex engine) — note in the failure output.
+		const result = reverseEjs(template, "Y", { silent: true });
+		expect(result).toBeDefined();
+	});
+
+	it("still extracts the loop array when the body is an optional conditional", () => {
+		// Sanity check that the flattening didn't break correctness —
+		// the rendered "YY" must still produce two loop iterations.
+		const template =
+			"<% items.forEach(i => { %><% if (i.x) { %>Y<% } %><% }) %>";
+		const result = reverseEjs(template, "YY", { silent: true });
+		expect(result).toHaveProperty("items");
+		expect(Array.isArray(result.items)).toBe(true);
 	});
 });
 
