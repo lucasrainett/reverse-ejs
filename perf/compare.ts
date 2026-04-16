@@ -80,9 +80,9 @@ lines.push(
 );
 lines.push("");
 lines.push(
-	"| Scenario | last N (before → after) | regex bytes (before → after) |",
+	"| Scenario | last N (before → after) | regex bytes (before → after) | Status |",
 );
-lines.push("|---|---|---|");
+lines.push("|---|---|---|:--|");
 
 const limitIds = new Set([
 	...Object.keys(after.limits),
@@ -91,7 +91,10 @@ const limitIds = new Set([
 for (const id of [...limitIds].sort()) {
 	const b = before?.limits[id];
 	const a = after.limits[id];
-	lines.push(`| \`${id}\` | ${limitNCell(b, a)} | ${regexBytesCell(b, a)} |`);
+	const status = !b ? "new" : !a ? "removed" : "";
+	lines.push(
+		`| \`${id}\` | ${limitNCell(b, a)} | ${regexBytesCell(b, a)} | ${status} |`,
+	);
 }
 lines.push("");
 
@@ -224,7 +227,9 @@ function benchDelta(
 	b: BenchmarkResult | undefined,
 	a: BenchmarkResult | undefined,
 ): { pct: string; status: string } {
-	if (!b || !a) return { pct: "—", status: "new" };
+	if (!b && !a) return { pct: "—", status: "—" };
+	if (!b) return { pct: "—", status: "new" };
+	if (!a) return { pct: "—", status: "removed" };
 	if (b.median_ms === 0) return { pct: "—", status: "—" };
 
 	const deltaPct = ((a.median_ms - b.median_ms) / b.median_ms) * 100;
