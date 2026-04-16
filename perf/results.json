@@ -1,0 +1,625 @@
+{
+  "version": "3.0.1",
+  "commit": "9c7b8ef",
+  "ranAt": "2026-04-16T09:57:18.910Z",
+  "platform": {
+    "node": "v22.11.0",
+    "v8": "12.4.254.21-node.21",
+    "os": "linux",
+    "arch": "x64",
+    "runner": "github/Linux-X64"
+  },
+  "limits": {
+    "regex-by-variable-count": {
+      "description": "N independent <%= varI %> tags separated by short literals; finds the regex size / capture-group cliff",
+      "samples": [
+        {
+          "n": 100,
+          "regexBytes": 2670,
+          "compileMs": 0.25365200000004506,
+          "matchMs": 0.2857319999999959,
+          "extractMs": 0.01614000000000715,
+          "totalMs": 0.5555240000000481
+        },
+        {
+          "n": 500,
+          "regexBytes": 14670,
+          "compileMs": 1.4144939999999906,
+          "matchMs": 2.909244000000001,
+          "extractMs": 0.07736399999998866,
+          "totalMs": 4.40110199999998
+        },
+        {
+          "n": 1000,
+          "regexBytes": 29670,
+          "compileMs": 1.0740729999999985,
+          "matchMs": 3.275368999999955,
+          "extractMs": 0.14939800000001924,
+          "totalMs": 4.498839999999973
+        },
+        {
+          "n": 2000,
+          "regexBytes": 62670,
+          "compileMs": 2.151365999999996,
+          "matchMs": 8.397207000000037,
+          "extractMs": 0.35154399999998986,
+          "totalMs": 10.900117000000023
+        },
+        {
+          "n": 2500,
+          "regexBytes": 79170,
+          "compileMs": 1.2568310000000338,
+          "matchMs": 4.256305999999995,
+          "extractMs": 0.40236899999990783,
+          "totalMs": 5.915505999999937
+        },
+        {
+          "n": 3000,
+          "regexBytes": 95670,
+          "compileMs": 1.5973650000000816,
+          "matchMs": 7.519533000000024,
+          "extractMs": 0.5202390000000605,
+          "totalMs": 9.637137000000166
+        },
+        {
+          "n": 3500,
+          "regexBytes": 112170,
+          "compileMs": 2.1181950000000143,
+          "matchMs": 6.280986999999982,
+          "extractMs": 0.5993760000000066,
+          "totalMs": 8.998558000000003
+        },
+        {
+          "n": 4000,
+          "regexBytes": 128670,
+          "compileMs": 1.9204259999999067,
+          "matchMs": 9.063247000000047,
+          "extractMs": 0.689042999999856,
+          "totalMs": 11.67271599999981
+        }
+      ],
+      "limit": {
+        "n": 5000,
+        "lastSuccessfulN": 4000,
+        "reason": "SyntaxError: Invalid regular expression: /^<a0>(?<v0>[\\s\\S]*?)<\\/a0><a1>(?<v1>[\\s\\S]*?)<\\/a1><a2>(?<v2>[\\s\\S]*?)<\\/a2><a3>(?<v3>[\\s\\S]*?)<\\/a3><a4>(?<v4>[\\s\\S]*?)<\\/a4><a5>(?<v5>[\\s\\S]*?)<\\/a5><a6>(?< …[+166532 chars]",
+        "stage": "match"
+      },
+      "durationMs": 735.366543
+    },
+    "regex-by-loop-body": {
+      "description": "Loop with 10 iterations, sweeping the body's variable count; finds the body-width cliff",
+      "samples": [
+        {
+          "n": 10,
+          "regexBytes": 190,
+          "compileMs": 0.07842600000003586,
+          "matchMs": 0.2746519999998327,
+          "extractMs": 0.011851999999862528,
+          "totalMs": 0.3649299999997311
+        },
+        {
+          "n": 50,
+          "regexBytes": 950,
+          "compileMs": 0.19362999999998465,
+          "matchMs": 1.2808950000001005,
+          "extractMs": 0.07952799999998206,
+          "totalMs": 1.5540530000000672
+        },
+        {
+          "n": 100,
+          "regexBytes": 1900,
+          "compileMs": 0.28101299999980256,
+          "matchMs": 2.5667100000000573,
+          "extractMs": 0.15230399999995825,
+          "totalMs": 3.000026999999818
+        },
+        {
+          "n": 500,
+          "regexBytes": 10300,
+          "compileMs": 1.119726000000128,
+          "matchMs": 14.115835999999945,
+          "extractMs": 0.5237859999999728,
+          "totalMs": 15.759348000000045
+        },
+        {
+          "n": 1000,
+          "regexBytes": 20800,
+          "compileMs": 1.1894350000000031,
+          "matchMs": 20.210685999999896,
+          "extractMs": 1.0552749999999378,
+          "totalMs": 22.455395999999837
+        },
+        {
+          "n": 2000,
+          "regexBytes": 43800,
+          "compileMs": 1.2041119999998955,
+          "matchMs": 32.475625000000036,
+          "extractMs": 2.581527000000051,
+          "totalMs": 36.26126399999998
+        },
+        {
+          "n": 2500,
+          "regexBytes": 55300,
+          "compileMs": 1.4960660000001553,
+          "matchMs": 39.633375000000115,
+          "extractMs": 5.698982000000115,
+          "totalMs": 46.828423000000384
+        },
+        {
+          "n": 3000,
+          "regexBytes": 66800,
+          "compileMs": 1.7634840000000622,
+          "matchMs": 53.91959900000006,
+          "extractMs": 4.851294000000053,
+          "totalMs": 60.53437700000018
+        },
+        {
+          "n": 3500,
+          "regexBytes": 78300,
+          "compileMs": 3.6959229999999934,
+          "matchMs": 72.90384099999983,
+          "extractMs": 7.011797999999999,
+          "totalMs": 83.61156199999982
+        },
+        {
+          "n": 4000,
+          "regexBytes": 89800,
+          "compileMs": 4.356682999999975,
+          "matchMs": 69.37137299999995,
+          "extractMs": 7.041562999999769,
+          "totalMs": 80.7696189999997
+        }
+      ],
+      "limit": {
+        "n": 5000,
+        "lastSuccessfulN": 4000,
+        "reason": "SyntaxError: Invalid regular expression: /<f0>(?<f0>[\\s\\S]*?)<\\/f0><f1>(?<f1>[\\s\\S]*?)<\\/f1><f2>(?<f2>[\\s\\S]*?)<\\/f2><f3>(?<f3>[\\s\\S]*?)<\\/f3><f4>(?<f4>[\\s\\S]*?)<\\/f4><f5>(?<f5>[\\s\\S]*?)<\\/f5><f6>(?<f …[+166531 chars]",
+        "stage": "match"
+      },
+      "durationMs": 1588.2710479999998
+    },
+    "regex-by-loop-nesting": {
+      "description": "N levels of nested forEach, each with one variable; finds the nested-loop depth cliff",
+      "samples": [
+        {
+          "n": 1,
+          "regexBytes": 35,
+          "compileMs": 0.027140000000144937,
+          "matchMs": 0.047357999999803724,
+          "extractMs": 0.00156299999980547,
+          "totalMs": 0.07606099999975413
+        },
+        {
+          "n": 2,
+          "regexBytes": 57,
+          "compileMs": 0.02869300000020303,
+          "matchMs": 0.07016999999996187,
+          "extractMs": 0.002304999999978463,
+          "totalMs": 0.10116800000014337
+        },
+        {
+          "n": 5,
+          "regexBytes": 123,
+          "compileMs": 0.03169900000011694,
+          "matchMs": 0.06432000000040716,
+          "extractMs": 0.001942999999755557,
+          "totalMs": 0.09796200000027966
+        },
+        {
+          "n": 10,
+          "regexBytes": 233,
+          "compileMs": 0.04583599999978105,
+          "matchMs": 0.08874500000001717,
+          "extractMs": 0.0021139999998922576,
+          "totalMs": 0.13669499999969048
+        },
+        {
+          "n": 20,
+          "regexBytes": 473,
+          "compileMs": 0.07698299999992742,
+          "matchMs": 0.14068200000019715,
+          "extractMs": 0.0028550000001814624,
+          "totalMs": 0.22052000000030603
+        },
+        {
+          "n": 50,
+          "regexBytes": 1193,
+          "compileMs": 0.1728320000001986,
+          "matchMs": 0.3087849999997161,
+          "extractMs": 0.004809000000022934,
+          "totalMs": 0.48642599999993763
+        },
+        {
+          "n": 100,
+          "regexBytes": 2393,
+          "compileMs": 0.3634670000001279,
+          "matchMs": 0.3016109999998662,
+          "extractMs": 0.007343000000219035,
+          "totalMs": 0.6724210000002131
+        },
+        {
+          "n": 200,
+          "regexBytes": 4993,
+          "compileMs": 0.6338100000002669,
+          "matchMs": 0.5230340000002798,
+          "extractMs": 0.013734999999996944,
+          "totalMs": 1.1705790000005436
+        },
+        {
+          "n": 500,
+          "regexBytes": 12793,
+          "compileMs": 1.4934610000000248,
+          "matchMs": 2.015602999999828,
+          "extractMs": 0.03428399999984322,
+          "totalMs": 3.543347999999696
+        },
+        {
+          "n": 1000,
+          "regexBytes": 25793,
+          "compileMs": 2.796628000000055,
+          "matchMs": 4.587352999999894,
+          "extractMs": 0.059021000000029744,
+          "totalMs": 7.443001999999979
+        },
+        {
+          "n": 2000,
+          "regexBytes": 53793,
+          "compileMs": 5.381310999999641,
+          "matchMs": 78.25371000000041,
+          "extractMs": 0.1226689999998598,
+          "totalMs": 83.75768999999991
+        }
+      ],
+      "limit": null,
+      "durationMs": 351.94169699999975
+    },
+    "regex-by-conditionals": {
+      "description": "N independent if/else blocks (each with a literal in each branch); finds the alternation cliff",
+      "samples": [
+        {
+          "n": 10,
+          "regexBytes": 290,
+          "compileMs": 0.11288999999987936,
+          "matchMs": 0.17768999999998414,
+          "extractMs": 0.0022250000001804437,
+          "totalMs": 0.29280500000004395
+        },
+        {
+          "n": 50,
+          "regexBytes": 1610,
+          "compileMs": 0.43622199999981603,
+          "matchMs": 1.2902619999999843,
+          "extractMs": 0.008085000000392029,
+          "totalMs": 1.7345690000001923
+        },
+        {
+          "n": 100,
+          "regexBytes": 3260,
+          "compileMs": 0.8534679999997934,
+          "matchMs": 3.3974440000001778,
+          "extractMs": 0.012783000000126776,
+          "totalMs": 4.263695000000098
+        },
+        {
+          "n": 500,
+          "regexBytes": 18060,
+          "compileMs": 3.7524750000002314,
+          "matchMs": 1.753494000000046,
+          "extractMs": 0.09628900000006979,
+          "totalMs": 5.602258000000347
+        },
+        {
+          "n": 1000,
+          "regexBytes": 36560,
+          "compileMs": 5.186775000000125,
+          "matchMs": 2.840106999999989,
+          "extractMs": 0.14269500000000335,
+          "totalMs": 8.169577000000118
+        },
+        {
+          "n": 2000,
+          "regexBytes": 77560,
+          "compileMs": 9.312744999999722,
+          "matchMs": 4.882411000000047,
+          "extractMs": 0.2906910000001517,
+          "totalMs": 14.485846999999922
+        },
+        {
+          "n": 2500,
+          "regexBytes": 98060,
+          "compileMs": 12.34938800000009,
+          "matchMs": 5.083052000000407,
+          "extractMs": 0.35532100000000355,
+          "totalMs": 17.7877610000005
+        },
+        {
+          "n": 3000,
+          "regexBytes": 118560,
+          "compileMs": 15.971280000000206,
+          "matchMs": 6.91031299999986,
+          "extractMs": 0.4568909999998141,
+          "totalMs": 23.33848399999988
+        },
+        {
+          "n": 3500,
+          "regexBytes": 139060,
+          "compileMs": 19.83606400000008,
+          "matchMs": 8.08678400000008,
+          "extractMs": 0.5436119999994844,
+          "totalMs": 28.466459999999643
+        }
+      ],
+      "limit": {
+        "n": 4000,
+        "lastSuccessfulN": 3500,
+        "reason": "SyntaxError: Invalid regular expression: /^(?:(?<_C0TS>)Y0|(?<_C0ES>)N0)(?:(?<_C1TS>)Y1|(?<_C1ES>)N1)(?:(?<_C2TS>)Y2|(?<_C2ES>)N2)(?:(?<_C3TS>)Y3|(?<_C3ES>)N3)(?:(?<_C4TS>)Y4|(?<_C4ES>)N4)(?:(?<_C5TS> …[+159422 chars]",
+        "stage": "match"
+      },
+      "durationMs": 1562.4223589999997
+    },
+    "capture-group-cap": {
+      "description": "Pure adjacent-but-separated <%= varI %> tags; probes V8's named capture group ceiling",
+      "samples": [
+        {
+          "n": 1000,
+          "regexBytes": 20890,
+          "compileMs": 0.620335000000523,
+          "matchMs": 13.093192999999701,
+          "extractMs": 0.1375159999997777,
+          "totalMs": 13.851044000000002
+        },
+        {
+          "n": 2000,
+          "regexBytes": 42890,
+          "compileMs": 1.058390000000145,
+          "matchMs": 40.537098999999216,
+          "extractMs": 0.3170010000003458,
+          "totalMs": 41.91248999999971
+        },
+        {
+          "n": 2500,
+          "regexBytes": 53890,
+          "compileMs": 2.374109999999746,
+          "matchMs": 60.293924999999945,
+          "extractMs": 0.4047039999995832,
+          "totalMs": 63.072738999999274
+        },
+        {
+          "n": 3000,
+          "regexBytes": 64890,
+          "compileMs": 1.6202459999994971,
+          "matchMs": 83.18760099999963,
+          "extractMs": 0.4955129999998462,
+          "totalMs": 85.30335999999897
+        },
+        {
+          "n": 3500,
+          "regexBytes": 75890,
+          "compileMs": 1.9200639999999112,
+          "matchMs": 110.14231499999914,
+          "extractMs": 0.5900689999998576,
+          "totalMs": 112.65244799999891
+        },
+        {
+          "n": 4000,
+          "regexBytes": 86890,
+          "compileMs": 2.199914999999237,
+          "matchMs": 140.1204200000002,
+          "extractMs": 0.6771909999997661,
+          "totalMs": 142.9975259999992
+        }
+      ],
+      "limit": {
+        "n": 5000,
+        "lastSuccessfulN": 4000,
+        "reason": "SyntaxError: Invalid regular expression: /^\\[(?<v0>[\\s\\S]*?)\\]\\[(?<v1>[\\s\\S]*?)\\]\\[(?<v2>[\\s\\S]*?)\\]\\[(?<v3>[\\s\\S]*?)\\]\\[(?<v4>[\\s\\S]*?)\\]\\[(?<v5>[\\s\\S]*?)\\]\\[(?<v6>[\\s\\S]*?)\\]\\[(?<v7>[\\s\\S]*?)\\]\\[(?< …[+108752 chars]",
+        "stage": "match"
+      },
+      "durationMs": 508.04256199999963
+    },
+    "rendered-size-sweep": {
+      "description": "Fixed simple template, varying rendered-text size by inflating the value of one variable; finds the input-size cliff",
+      "samples": [
+        {
+          "n": 1000,
+          "regexBytes": 25,
+          "compileMs": 0.041928000000552856,
+          "matchMs": 0.058998999999857915,
+          "extractMs": 0.005219999999098945,
+          "totalMs": 0.10614699999950972
+        },
+        {
+          "n": 10000,
+          "regexBytes": 25,
+          "compileMs": 0.016410000000178115,
+          "matchMs": 0.013464999999996508,
+          "extractMs": 0.031670000000303844,
+          "totalMs": 0.06154500000047847
+        },
+        {
+          "n": 100000,
+          "regexBytes": 25,
+          "compileMs": 0.012332999999671301,
+          "matchMs": 0.06800699999985227,
+          "extractMs": 0.33549500000026455,
+          "totalMs": 0.4158349999997881
+        },
+        {
+          "n": 1000000,
+          "regexBytes": 25,
+          "compileMs": 0.016171000000213098,
+          "matchMs": 0.9526139999998122,
+          "extractMs": 3.2454619999998613,
+          "totalMs": 4.214246999999887
+        },
+        {
+          "n": 5000000,
+          "regexBytes": 25,
+          "compileMs": 0.019976999999926193,
+          "matchMs": 2.871907000000647,
+          "extractMs": 15.628215000000637,
+          "totalMs": 18.52009900000121
+        },
+        {
+          "n": 10000000,
+          "regexBytes": 25,
+          "compileMs": 0.05014300000038929,
+          "matchMs": 6.276785999999447,
+          "extractMs": 32.15227899999991,
+          "totalMs": 38.479207999999744
+        },
+        {
+          "n": 50000000,
+          "regexBytes": 25,
+          "compileMs": 0.06402900000011869,
+          "matchMs": 31.171564000000217,
+          "extractMs": 163.8064860000004,
+          "totalMs": 195.04207900000074
+        },
+        {
+          "n": 100000000,
+          "regexBytes": 25,
+          "compileMs": 0.06714499999998225,
+          "matchMs": 62.798203999999714,
+          "extractMs": 329.0527240000001,
+          "totalMs": 391.9180729999998
+        },
+        {
+          "n": 256000000,
+          "regexBytes": 25,
+          "compileMs": 0.04690699999991921,
+          "matchMs": 154.07588000000032,
+          "extractMs": 819.9557910000003,
+          "totalMs": 974.0785780000006
+        }
+      ],
+      "limit": null,
+      "durationMs": 1624.945729
+    },
+    "include-depth": {
+      "description": "N levels of nested partials (each includes the next); verifies the include-depth cap",
+      "samples": [
+        {
+          "n": 1,
+          "regexBytes": 20,
+          "compileMs": 0.20406000000002678,
+          "matchMs": 0.04009399999995367,
+          "extractMs": 0.0018130000007658964,
+          "totalMs": 0.24596700000074634
+        },
+        {
+          "n": 5,
+          "regexBytes": 20,
+          "compileMs": 0.03428399999938847,
+          "matchMs": 0.023603999999977532,
+          "extractMs": 0.001653999999689404,
+          "totalMs": 0.059541999999055406
+        },
+        {
+          "n": 10,
+          "regexBytes": 20,
+          "compileMs": 0.036137000000053376,
+          "matchMs": 0.007914000000710075,
+          "extractMs": 0.001502999999502208,
+          "totalMs": 0.04555400000026566
+        },
+        {
+          "n": 15,
+          "regexBytes": 20,
+          "compileMs": 0.03676799999993818,
+          "matchMs": 0.007142999999814492,
+          "extractMs": 0.0014730000002600718,
+          "totalMs": 0.04538400000001275
+        },
+        {
+          "n": 18,
+          "regexBytes": 20,
+          "compileMs": 0.03209999999944557,
+          "matchMs": 0.007784999999785214,
+          "extractMs": 0.0015630000007149647,
+          "totalMs": 0.04144799999994575
+        },
+        {
+          "n": 19,
+          "regexBytes": 20,
+          "compileMs": 0.03673799999978655,
+          "matchMs": 0.007021999999778927,
+          "extractMs": 0.001463000000512693,
+          "totalMs": 0.04522300000007817
+        },
+        {
+          "n": 20,
+          "regexBytes": 20,
+          "compileMs": 0.03013600000031147,
+          "matchMs": 0.006422000000384287,
+          "extractMs": 0.0014220000002751476,
+          "totalMs": 0.037980000000970904
+        }
+      ],
+      "limit": {
+        "n": 21,
+        "lastSuccessfulN": 20,
+        "reason": "Error: Include depth limit exceeded - possible circular include",
+        "stage": "compile"
+      },
+      "durationMs": 2.0263629999999466
+    }
+  },
+  "benchmarks": {
+    "compile-product-page": {
+      "description": "compileTemplate() on the typical product-page template",
+      "samples": 100,
+      "median_ms": 0.012640834999997424,
+      "p99_ms": 0.04550882500000171,
+      "mean_ms": 0.013687828949999807,
+      "stddev_ms": 0.003923936856214247,
+      "stddev_pct": 31.041753620034175,
+      "ops_per_sec": 79108.69812003747,
+      "noisy": true
+    },
+    "extract-product-page": {
+      "description": "reverseEjs() compile + match + extract on the product page",
+      "samples": 100,
+      "median_ms": 0.03825446987952069,
+      "p99_ms": 0.09443521686747532,
+      "mean_ms": 0.042422128433735704,
+      "stddev_ms": 0.010786509534200924,
+      "stddev_pct": 28.19672986757404,
+      "ops_per_sec": 26140.736053836787,
+      "noisy": true
+    },
+    "reuse-vs-fresh-100x": {
+      "description": "reuse vs fresh: 1.72x speedup over reverseEjs() in a loop",
+      "samples": 100,
+      "median_ms": 2.1557485000003,
+      "p99_ms": 3.4454694999999447,
+      "mean_ms": 2.202854550000002,
+      "stddev_ms": 0.14211572437417763,
+      "stddev_pct": 6.592407434084165,
+      "ops_per_sec": 463.8760040885386,
+      "noisy": false
+    },
+    "extract-with-flexws": {
+      "description": "reverseEjs() with flexibleWhitespace: true (compare to extract-product-page for overhead ratio)",
+      "samples": 100,
+      "median_ms": 0.058200437500014836,
+      "p99_ms": 0.1217028333333398,
+      "mean_ms": 0.06171626541666608,
+      "stddev_ms": 0.010508316709508716,
+      "stddev_pct": 18.055391266613825,
+      "ops_per_sec": 17182.00142395399,
+      "noisy": true
+    },
+    "extract-with-coercion": {
+      "description": "reverseEjs() with types: { price: 'number', rating: 'number' } (compare to extract-product-page for overhead)",
+      "samples": 100,
+      "median_ms": 0.04061728124999794,
+      "p99_ms": 0.09045270833331642,
+      "mean_ms": 0.04306330666666518,
+      "stddev_ms": 0.00859261211637498,
+      "stddev_pct": 21.155064671827134,
+      "ops_per_sec": 24620.06242724704,
+      "noisy": true
+    }
+  }
+}
