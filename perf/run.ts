@@ -22,6 +22,7 @@ const limitModules = [
 	() => import("./limits/rendered-size-sweep"),
 	() => import("./limits/pure-literal-size"),
 	() => import("./limits/literal-with-capture-size"),
+	() => import("./limits/literal-with-loop-size"),
 	() => import("./limits/include-depth"),
 ];
 

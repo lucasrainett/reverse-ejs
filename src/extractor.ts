@@ -221,17 +221,34 @@ function buildMatchError(
 	});
 }
 
-// ── Capture-only fast path ─────────────────────────────────────
+// ── Fast path: outer cursor walk ───────────────────────────────
 //
-// Templates whose pattern tree contains only literals and captures (no
-// loops, no conditionals) can be matched without touching V8's regex
-// engine at all. The walk is a flat cursor scan over the rendered
-// string: prefix-match each literal with `startsWith`, find each next
-// literal with `indexOf`, slice the captured region between.
+// Walks the pattern's top-level sequence with a cursor over the rendered
+// string — `startsWith` for each literal, `indexOf` for each capture's
+// right boundary, `slice` for the captured region. No regex at all at
+// the outer level.
 //
-// This lifts the ~40KB literal-in-regex cap for this shape. The common
-// product-page / form / log-line / email-template workloads all qualify.
-// Loops and conditionals still take the regex path (for now).
+// Loops and conditionals are kept as "opaque" segments: the walker
+// determines their byte range via the NEXT literal anchor, then delegates
+// to the regex-based `extract` on that small sub-string with the
+// sub-pattern. The regex thus never sees the outer literal mass, so V8's
+// ~40KB literal-in-regex cap doesn't apply.
+//
+// The fast path subsumes:
+//   - Pure literals (zero captures, zero opaques)
+//   - Literals + captures ("capture-only" templates)
+//   - Literals + opaques + (optionally) captures, with a literal anchor
+//     after each non-literal segment (no boundary ambiguity)
+//
+// Falls back to the regex path when:
+//   - `flexibleWhitespace` is on (whitespace-collapsing isn't a cursor walk)
+//   - A non-literal segment is followed by another non-literal (ambiguous
+//     boundary — e.g. `<%= a %><%= b %>` after mergeAdjacent, or two
+//     back-to-back loops)
+//   - Any outer capture name collides with any name used inside an opaque
+//     sub-pattern (preserves the regex's back-reference semantics, which
+//     force matched slots to hold the same value)
+//   - An outer capture key repeats (same back-reference reason)
 
 type CaptureSegment = {
 	type: "capture";
@@ -240,43 +257,63 @@ type CaptureSegment = {
 	isExpression: boolean;
 };
 type LiteralSegment = { type: "literal"; value: string };
-type Segment = CaptureSegment | LiteralSegment;
+type OpaqueSegment = { type: "opaque"; pattern: Pattern };
+type Segment = CaptureSegment | LiteralSegment | OpaqueSegment;
 
-export interface CaptureOnlyPlan {
+export interface FastPathPlan {
 	segments: Segment[];
-	// The last variable (not expression) name encountered, used to reproduce
-	// the existing "Could not match variable X" shape on mismatch. Null when
-	// the template has no named variables (only expressions).
+	// The last variable name encountered anywhere in the full pattern tree
+	// (including inside opaque sub-patterns), used to reproduce the existing
+	// "Could not match variable X" error shape on mismatch.
 	lastVarName: string | null;
 }
 
 /**
- * Return a CaptureOnlyPlan when `pattern` qualifies for the fast path:
- * literals + unique captures only, no loops, no conditionals, no repeated
- * capture keys. Returns null otherwise. The caller falls back to the
- * regex-based `extract` for non-qualifying patterns.
+ * Return a FastPathPlan when `pattern` qualifies for the outer-walk fast
+ * path; otherwise null (caller falls back to the regex-based `extract`).
  *
- * Repeated keys are rejected because the regex path emits a back-reference
- * for the second occurrence (`\k<name>`), which forces both slots to hold
- * the same value. Walking captures one-by-one and overwriting the previous
- * value would silently change semantics (no mismatch error on differing
- * values), so those templates stay on the regex path.
+ * See the block comment above this function for the rules that determine
+ * qualification.
  */
-export function buildCaptureOnlyPlan(pattern: Pattern): CaptureOnlyPlan | null {
+export function buildFastPathPlan(pattern: Pattern): FastPathPlan | null {
 	const segments: Segment[] = [];
-	const seenKeys = new Set<string>();
-	if (!collectCaptureOnly(pattern, segments, seenKeys)) return null;
-	let lastVarName: string | null = null;
-	for (const seg of segments) {
-		if (seg.type === "capture" && !seg.isExpression) lastVarName = seg.key;
+	const outerKeys = new Set<string>();
+	if (!collectFastPath(pattern, segments, outerKeys)) return null;
+
+	// Each non-literal segment must be followed by a literal or be last.
+	// This guarantees a concrete right boundary for every capture/opaque.
+	for (let i = 0; i < segments.length; i++) {
+		if (segments[i].type === "literal") continue;
+		const next = segments[i + 1];
+		if (next && next.type !== "literal") return null;
 	}
-	return { segments, lastVarName };
+
+	// For every opaque segment, verify its inner names don't collide with
+	// any outer capture OR any other opaque's inner names. Outer/inner
+	// collisions would mean the regex path used a back-reference (forcing
+	// equal values across slots), which the walker can't reproduce.
+	// Inner/inner collisions cover the "same array iterated twice" case
+	// that the regex builder explicitly refuses with a friendly error —
+	// falling back to regex lets that error surface as before.
+	const allInner = new Set<string>();
+	for (const seg of segments) {
+		if (seg.type !== "opaque") continue;
+		const inner = new Set<string>();
+		collectInnerNames(seg.pattern, inner, []);
+		for (const name of inner) {
+			if (outerKeys.has(name)) return null;
+			if (allInner.has(name)) return null;
+			allInner.add(name);
+		}
+	}
+
+	return { segments, lastVarName: findLastVariableName(pattern) };
 }
 
-function collectCaptureOnly(
+function collectFastPath(
 	p: Pattern,
 	out: Segment[],
-	seen: Set<string>,
+	outerKeys: Set<string>,
 ): boolean {
 	if (p.type === "literal") {
 		// Adjacent literals can collapse. `mergeAdjacent` in patternBuilder
@@ -288,8 +325,8 @@ function collectCaptureOnly(
 		return true;
 	}
 	if (p.type === "variable") {
-		if (seen.has(p.name)) return false;
-		seen.add(p.name);
+		if (outerKeys.has(p.name)) return false;
+		outerKeys.add(p.name);
 		out.push({
 			type: "capture",
 			key: p.name,
@@ -299,8 +336,8 @@ function collectCaptureOnly(
 		return true;
 	}
 	if (p.type === "expression") {
-		if (seen.has(p.expression)) return false;
-		seen.add(p.expression);
+		if (outerKeys.has(p.expression)) return false;
+		outerKeys.add(p.expression);
 		out.push({
 			type: "capture",
 			key: p.expression,
@@ -309,17 +346,58 @@ function collectCaptureOnly(
 		});
 		return true;
 	}
+	if (p.type === "loop" || p.type === "conditional") {
+		out.push({ type: "opaque", pattern: p });
+		return true;
+	}
 	if (p.type === "sequence") {
 		for (const part of p.parts) {
-			if (!collectCaptureOnly(part, out, seen)) return false;
+			if (!collectFastPath(part, out, outerKeys)) return false;
 		}
 		return true;
 	}
-	return false; // loop | conditional
+	return false;
 }
 
-export function extractCaptureOnly(
-	plan: CaptureOnlyPlan,
+/**
+ * Walk a pattern tree collecting every variable/expression/loop-array
+ * name it references, as it would appear in the outer result object.
+ * Applies loop itemName-stripping so inner references like `i.name`
+ * (with itemName=i) register as `name` — matching the key the regex
+ * path would use and catching back-reference collisions correctly.
+ */
+function collectInnerNames(
+	p: Pattern,
+	out: Set<string>,
+	itemStack: string[],
+): void {
+	if (p.type === "variable") {
+		out.add(stripAnyItemPrefix(p.name, itemStack));
+	} else if (p.type === "expression") {
+		let expr = p.expression;
+		for (const item of itemStack) expr = stripItemPrefix(expr, item);
+		out.add(expr);
+	} else if (p.type === "loop") {
+		out.add(stripAnyItemPrefix(p.arrayName, itemStack));
+		collectInnerNames(p.body, out, [...itemStack, p.itemName]);
+	} else if (p.type === "conditional") {
+		collectInnerNames(p.thenBranch, out, itemStack);
+		if (p.elseBranch) collectInnerNames(p.elseBranch, out, itemStack);
+	} else if (p.type === "sequence") {
+		for (const part of p.parts) collectInnerNames(part, out, itemStack);
+	}
+}
+
+function stripAnyItemPrefix(name: string, items: string[]): string {
+	for (const item of items) {
+		if (name === item) return name; // bare item ref — leave alone
+		if (name.startsWith(item + ".")) return name.slice(item.length + 1);
+	}
+	return name;
+}
+
+export function extractFastPath(
+	plan: FastPathPlan,
 	finalString: string,
 	opts?: EjsOptions,
 ): ExtractedObject | null {
@@ -328,40 +406,66 @@ export function extractCaptureOnly(
 	const result: ExtractedObject = {};
 	let pos = 0;
 
+	// Options passed to inner extract() calls. `types` is applied once at
+	// the outer level after all merges, so inner calls skip it. `safe` is
+	// forced true so inner mismatches surface as null and we can throw a
+	// unified outer error instead of a regex-built one.
+	const innerOpts: EjsOptions = {
+		...opts,
+		types: undefined,
+		safe: true,
+	};
+
 	for (let i = 0; i < segments.length; i++) {
 		const seg = segments[i];
 		if (seg.type === "literal") {
 			if (!finalString.startsWith(seg.value, pos)) {
-				return captureOnlyMismatch(plan, finalString, opts);
+				return fastPathMismatch(plan, finalString, opts);
 			}
 			pos += seg.value.length;
 			continue;
 		}
-		// Capture. After patternBuilder.mergeAdjacent, no two captures are
-		// adjacent in a sequence, so the next segment (if any) is a literal.
+
+		// Non-literal. The right boundary is the NEXT literal's indexOf, or
+		// rendered.length when there is no next (validated in plan builder
+		// that next is literal or absent).
 		const next = segments[i + 1];
 		let end: number;
 		if (!next) {
 			end = finalString.length;
-		} else if (next.type === "literal") {
-			end = finalString.indexOf(next.value, pos);
-			if (end === -1) return captureOnlyMismatch(plan, finalString, opts);
 		} else {
-			// Defensive: buildCaptureOnlyPlan should never emit this.
-			return captureOnlyMismatch(plan, finalString, opts);
+			end = finalString.indexOf((next as LiteralSegment).value, pos);
+			if (end === -1) return fastPathMismatch(plan, finalString, opts);
 		}
-		const raw = finalString.slice(pos, end);
-		const value = seg.raw ? raw : unescape(raw);
-		if (seg.isExpression) {
-			result[seg.key] = value;
-		} else {
-			setNested(result, seg.key, value);
+
+		if (seg.type === "capture") {
+			const raw = finalString.slice(pos, end);
+			const value = seg.raw ? raw : unescape(raw);
+			if (seg.isExpression) {
+				result[seg.key] = value;
+			} else {
+				setNested(result, seg.key, value);
+			}
+			pos = end;
+			continue;
 		}
+
+		// Opaque: delegate the sub-section to the regex-based extract so we
+		// inherit loop iteration and conditional branching semantics without
+		// duplicating them. The regex now only covers the inner pattern, so
+		// V8's literal-in-regex cap is irrelevant no matter how big the
+		// surrounding template is.
+		const section = finalString.slice(pos, end);
+		const subResult = extract(seg.pattern, section, innerOpts);
+		if (subResult === null) {
+			return fastPathMismatch(plan, finalString, opts);
+		}
+		deepMergeInto(result, subResult);
 		pos = end;
 	}
 
 	if (pos !== finalString.length) {
-		return captureOnlyMismatch(plan, finalString, opts);
+		return fastPathMismatch(plan, finalString, opts);
 	}
 
 	if (opts?.types) {
@@ -374,8 +478,42 @@ export function extractCaptureOnly(
 	return result;
 }
 
-function captureOnlyMismatch(
-	plan: CaptureOnlyPlan,
+/**
+ * Deep-merge `src` into `dst` for extracted objects. Necessary because an
+ * outer capture and an opaque sub-result can both write under the same
+ * top-level key (e.g. outer captures `sidebar.title` → {sidebar: {title}}
+ * while the opaque loop captures `sidebar.links` → {sidebar: {links}} —
+ * a shallow Object.assign would lose one side's nested data).
+ *
+ * Rules:
+ *   - Both sides plain objects: recurse
+ *   - Otherwise: src wins (consistent with last-write-wins elsewhere)
+ */
+function deepMergeInto(dst: ExtractedObject, src: ExtractedObject): void {
+	for (const [k, v] of Object.entries(src)) {
+		const existing = dst[k];
+		if (isPlainObject(existing) && isPlainObject(v)) {
+			deepMergeInto(
+				existing as unknown as ExtractedObject,
+				v as unknown as ExtractedObject,
+			);
+		} else {
+			dst[k] = v as ExtractedObject[string];
+		}
+	}
+}
+
+function isPlainObject(v: unknown): boolean {
+	return (
+		v != null &&
+		typeof v === "object" &&
+		!Array.isArray(v) &&
+		!(v instanceof Date)
+	);
+}
+
+function fastPathMismatch(
+	plan: FastPathPlan,
 	finalString: string,
 	opts?: EjsOptions,
 ): null {
@@ -403,8 +541,12 @@ function segmentsToRegexShape(segments: Segment[]): string {
 	for (const seg of segments) {
 		if (seg.type === "literal") {
 			out += seg.value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-		} else {
+		} else if (seg.type === "capture") {
 			out += `(?<${seg.key.replace(/\./g, "_")}>.*?)`;
+		} else {
+			// Opaque — placeholder; the real sub-regex lives inside `seg.pattern`
+			// and isn't worth reconstructing just for a debug string.
+			out += `(?:…)`;
 		}
 	}
 	return out + "$";
