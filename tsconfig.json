@@ -8,8 +8,8 @@
     "strict": true,
     "skipLibCheck": true,
     "declaration": true,
-    "outDir": "dist",
-    "ignoreDeprecations": "6.0"
+    "rootDir": "src",
+    "outDir": "dist"
   },
   "include": ["src"],
   "exclude": ["**/*.spec.ts"]
