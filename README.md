@@ -685,21 +685,20 @@ Median wall time per call, from the CI-tracked perf suite (`perf/results.json`):
 
 | Scenario                                                       | Time    | Throughput        |
 | -------------------------------------------------------------- | ------- | ----------------- |
-| `extract-product-page` (typical product page, 7 vars + a loop) | ~8 μs   | ~125K ops/sec     |
-| `match-only` (pre-compiled, match + extract)                   | ~7 μs   | ~140K ops/sec     |
-| `compile-cold` (tokenize + build plan, cache miss)             | ~9 μs   | ~110K ops/sec     |
-| `extract-log-lines` (100 log lines via `reverseEjsAll`)        | ~31 μs  | ~32K batches/sec  |
-| `extract-csv-rows` (1000 rows)                                 | ~720 μs | ~1.4K batches/sec |
-| `large-page-hybrid` (30KB page, 5 scalars + 50-item loop)      | ~140 μs | ~7K ops/sec       |
+| `extract-product-page` (typical product page, 7 vars + a loop) | ~24 μs  | ~42K ops/sec      |
+| `match-only` (pre-compiled, match + extract)                   | ~18 μs  | ~57K ops/sec      |
+| `compile-cold` (tokenize + build plan, cache miss)             | ~17 μs  | ~59K ops/sec      |
+| `extract-log-lines` (100 log lines via `reverseEjsAll`)        | ~267 μs | ~3.7K batches/sec |
+| `extract-csv-rows` (1000 rows)                                 | ~1.4 ms | ~0.7K batches/sec |
+| `large-page-hybrid` (30KB page, 5 scalars + 50-item loop)      | ~319 μs | ~3.1K ops/sec     |
 
-Raw numbers live in `perf/results.json` and are regenerated on every push to master. Across v3.0.1 → current, `extract-product-page` went from 38μs to ~8μs (about 80% faster) once the walker stack landed; `extract-with-coercion` went 40μs → 9μs.
+Numbers are from the Linux-X64 GitHub Actions runner; Apple Silicon is roughly 2-3× faster. Raw numbers live in `perf/results.json` and are regenerated on every push to master. See `CHANGELOG.md` for per-release benchmark deltas — the walker-stack rollout in v3.1.0 cut `extract-product-page` by ~80% on the dev machine.
 
 ## Limitations
 
 - **JS expressions** like `<%= price * qty %>` or `<%= name.toUpperCase() %>` are captured under the raw expression text as the key (e.g. `{ "price * qty": "30" }`). The library does not evaluate them or split out the component variables.
 - **Adjacent variables** like `<%= a %><%= b %>` with no literal separator are captured as a single joined key (`{ "a + b": "AliceSmith" }`). The individual values are not recoverable because the split point is ambiguous - add static text between them if you need them separate.
 - **Complex conditions** like `<% if (a > b) { %>` are captured as booleans under the raw condition text (`{ "a > b": true }`). Bare-identifier conditions still produce clean keys. Pure dotted-path conditions (`if (items.length)`) are ignored.
-- **Variable names containing `__`** (double underscore) will be incorrectly treated as nested properties. A variable named `my__var` would be returned as `{ my: { var: "..." } }` instead of `{ my__var: "..." }`.
 - **Date coercion** uses `new Date(value)`. The result is a plain JavaScript `Date` object - no timezone or format library is used.
 
 ## Error handling

@@ -2,22 +2,30 @@ version: 2
 updates:
   # npm dev-dependency updates. The library has no runtime dependencies,
   # so this only touches devDependencies (test / build / lint tooling).
+  # Majors are excluded from the group so each one gets its own PR and
+  # review — a TS / vitest / eslint major can break builds in ways that
+  # aren't caught by `pnpm install` alone.
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 5
+      interval: "monthly"
+    open-pull-requests-limit: 2
     commit-message:
       prefix: "chore(deps)"
     groups:
       dev-dependencies:
         dependency-type: "development"
+        update-types: ["minor", "patch"]
 
-  # Keep pinned GitHub Action versions fresh. Less frequent because
-  # actions change less often and bumping them touches CI behavior.
+  # Keep pinned GitHub Action versions fresh. All action bumps land in a
+  # single grouped PR each month so CI-config churn stays in one place.
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "monthly"
+    open-pull-requests-limit: 1
     commit-message:
       prefix: "chore(ci)"
+    groups:
+      github-actions:
+        patterns: ["*"]
