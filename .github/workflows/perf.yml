@@ -3,8 +3,23 @@ name: Performance
 on:
   push:
     branches: [master]
+    # Only run when something that could actually move the numbers changes.
+    # Doc-only / test-only / CI-config-only changes are skipped so the
+    # CI-tracked perf history reflects real deltas.
+    paths:
+      - "src/**"
+      - "perf/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/perf.yml"
   pull_request:
     branches: [master]
+    paths:
+      - "src/**"
+      - "perf/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/perf.yml"
   # Manual trigger for after-release re-runs or debugging.
   # `gh workflow run Performance --ref master`
   workflow_dispatch: {}
