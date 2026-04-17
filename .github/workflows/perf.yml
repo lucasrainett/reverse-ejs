@@ -23,7 +23,7 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           # depth: 0 so we have history back to the merge base for the PR
           # guard step below (`git diff origin/<base>...HEAD`). Also lets the
