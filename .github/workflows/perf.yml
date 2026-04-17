@@ -141,7 +141,7 @@ jobs:
 
       - name: Post / update PR comment
         if: github.event_name == 'pull_request'
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@v3
         with:
           # Same key on every run → updates the existing comment instead of
           # spamming. The header text identifies it for humans.
