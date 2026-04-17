@@ -18,6 +18,9 @@ concurrency:
 
 jobs:
   perf:
+    # Skip on dependabot PRs: bench numbers don't shift from a dev-dep bump,
+    # and dependabot's read-only token can't post the sticky comment anyway.
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     permissions:
       contents: write

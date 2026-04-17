@@ -249,7 +249,7 @@ everywhere they appear.`
 
 ### Tests
 
-- **Expanded test coverage (+54 tests, 319 total)** across all 12 spec
+- **Expanded test coverage (+54 tests, 319 total)** across all 14 spec
   files, targeting combinations the prior suite missed:
     - Type coercion combined with loops, conditionals, expressions,
       and partials.

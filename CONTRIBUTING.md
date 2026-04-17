@@ -58,7 +58,7 @@ feature of the playground at <https://lucasrainett.github.io/reverse-ejs/>.
 ### Architecture
 
 - **Single selector pattern**: every test uses `page.getByTestId(...)` —
-  no CSS classes, no `getByRole`, no IDs. The HTML carries 31
+  no CSS classes, no `getByRole`, no IDs. The HTML carries 32
   `data-testid` attributes that map to the `TID` constant at the top of
   the spec file. Refactoring CSS classes or DOM structure does not break
   tests.
